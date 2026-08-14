@@ -79,7 +79,7 @@ jobs:
           # method and body -- without these flags curl silently downgrades a
           # redirected POST to a bodyless GET instead of erroring, which looked
           # like a mysterious 302 with no obvious cause.
-          curl -sL --post301 --post302 --post303 -X POST "$DASHBOARD_URL/api/youtube-status/ingest" \
+          curl -sL --post301 --post302 --post303 -X POST "$DASHBOARD_URL/api/youtube-status/ingest?debug=1" \
             -H "X-Ingest-Secret: $LOOPEDIN_INGEST_SECRET" \
             -H "Content-Type: application/json" \
             --data-binary @/tmp/youtube-status-payload.json \
