@@ -52,13 +52,19 @@ def _write_srt(beats, durations, out_path):
     Path(out_path).write_text("\n".join(lines), encoding="utf-8")
 
 
+CLIP_DURATION_BUFFER = 0.35  # each segment overshoots slightly so frame-rounding
+                              # across N clips can never leave the concatenated
+                              # video shorter than the narration audio
+
+
 def _scale_clip(src, dst, duration):
+    target = duration + CLIP_DURATION_BUFFER
     clip_len = _probe_duration(src)
-    loop_count = max(math.ceil(duration / clip_len), 1) if clip_len > 0 else 1
+    loop_count = max(math.ceil(target / clip_len), 1) if clip_len > 0 else 1
     vf = f"scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,crop={WIDTH}:{HEIGHT}"
     subprocess.run([
         "ffmpeg", "-y", "-stream_loop", str(loop_count - 1), "-i", str(src),
-        "-t", str(duration), "-vf", vf, "-an", "-c:v", "libx264", "-preset", "veryfast",
+        "-t", str(target), "-vf", vf, "-an", "-c:v", "libx264", "-preset", "veryfast",
         str(dst),
     ], check=True)
 
@@ -79,9 +85,14 @@ def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir):
     concat_list = work_dir / "concat.txt"
     concat_list.write_text("\n".join(f"file '{p.resolve()}'" for p in scaled_paths))
     video_track = work_dir / "video_track.mp4"
+    # Re-encode rather than stream-copy: these segments were encoded independently
+    # (separate ffmpeg invocations), and copy-concatenating them can produce subtly
+    # misaligned keyframes/timestamps -- symptom seen: video freezes on the last
+    # frame while audio keeps playing, because the copied track ends up shorter
+    # than its nominal duration.
     subprocess.run([
         "ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(concat_list),
-        "-c", "copy", str(video_track),
+        "-c:v", "libx264", "-preset", "veryfast", str(video_track),
     ], check=True)
 
     srt_path = work_dir / "captions.srt"
