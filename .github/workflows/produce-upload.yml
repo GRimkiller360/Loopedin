@@ -71,6 +71,15 @@ jobs:
         if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
         run: python pipeline/script_schema.py state/pending_script.json
 
+      - name: Quality gate
+        # Catches the routine not actually following ROUTINE_INSTRUCTIONS.md (lazy
+        # filler opener, near-duplicate title, narration length way off target) before
+        # any TTS/b-roll/assembly/upload cost is spent on it. Treated as a production
+        # failure below like any other -- counts toward auto-pause, leaves
+        # pending_script.json in place for a human to inspect.
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
+        run: python pipeline/quality_gate.py state/pending_script.json state/used_topics.json
+
       - name: Narration
         if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
         env:
@@ -115,6 +124,7 @@ jobs:
 
       - name: Record state on success
         if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && steps.upload.outputs.quota_exceeded != 'true' && success()
+        id: record
         run: |
           python -c "
           import json
@@ -122,11 +132,31 @@ jobs:
 
           script = json.load(open('state/pending_script.json', encoding='utf-8'))
           result = json.load(open('work/upload_result.json', encoding='utf-8'))
-          record_used_topic('state/used_topics.json', script['topic'], result['video_id'], script.get('category'), script.get('seed_source_video_id'), script.get('hook_type'))
+          record_used_topic('state/used_topics.json', script['topic'], result['video_id'], script.get('category'), script.get('seed_source_video_id'), script.get('hook_type'), script.get('title'))
           record_success('state/routine_health.json')
+
+          import os
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f\"category={script.get('category', '')}\n\")
+              f.write(f\"video_id={result['video_id']}\n\")
           "
           python pipeline/quota_guard.py record --daily-cap "${{ vars.DAILY_UPLOAD_CAP || 8 }}"
           rm -f state/pending_script.json
+
+      - name: Add to category playlist
+        # Nice-to-have, not a production-critical step -- continue-on-error so a
+        # playlist API hiccup never pauses the channel or blocks anything else. The
+        # video already published successfully by this point regardless. Reads
+        # category/video_id from the previous step's outputs since
+        # state/pending_script.json is already deleted by now.
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && steps.upload.outputs.quota_exceeded != 'true' && success()
+        continue-on-error: true
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          python pipeline/playlists.py --category "${{ steps.record.outputs.category }}" --video-id "${{ steps.record.outputs.video_id }}"
 
       - name: Record quota exhaustion
         # YouTube's own hard reject, not a bug -- mark today exhausted so later runs

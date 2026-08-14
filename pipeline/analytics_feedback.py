@@ -7,7 +7,7 @@ import argparse
 import json
 import sys
 from collections import defaultdict
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -57,7 +57,12 @@ def update_performance_log(performance_log_path, used_topics_path):
     used = load_json(used_topics_path, {"topics": []})
 
     meta_by_video = {
-        t["video_id"]: {"topic": t["topic"], "category": t.get("category"), "hook_type": t.get("hook_type")}
+        t["video_id"]: {
+            "topic": t["topic"],
+            "category": t.get("category"),
+            "hook_type": t.get("hook_type"),
+            "uploaded_at": t.get("uploaded_at"),
+        }
         for t in used["topics"] if t.get("video_id")
     }
     stats = pull_stats(list(meta_by_video.keys()))
@@ -105,6 +110,25 @@ def summarize(performance):
     }
 
 
+def recent_uploads(performance, hours=48):
+    # Raw view count (not avg_view_pct) is the right sort key here -- this is an early
+    # velocity/reach signal ("is the algorithm pushing this one"), not a retention
+    # signal, and the two can diverge in the first hours after upload.
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
+    recent = []
+    for v in performance["videos"]:
+        uploaded_at = v.get("uploaded_at")
+        if not uploaded_at or "views" not in v:
+            continue
+        try:
+            when = datetime.fromisoformat(uploaded_at)
+        except ValueError:
+            continue
+        if when >= cutoff:
+            recent.append(v)
+    return sorted(recent, key=lambda v: v.get("views", 0), reverse=True)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--performance-log", default=str(config.STATE_DIR / "performance_log.json"))
@@ -112,4 +136,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     perf = update_performance_log(args.performance_log, args.used_topics)
-    print(json.dumps(summarize(perf), indent=2))
+    output = summarize(perf)
+    output["recent_uploads"] = recent_uploads(perf)
+    print(json.dumps(output, indent=2))

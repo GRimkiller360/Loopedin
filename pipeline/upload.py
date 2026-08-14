@@ -15,20 +15,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from pipeline import config
 
 
-def _youtube_client():
-    from google.oauth2.credentials import Credentials
-    from googleapiclient.discovery import build
-
-    creds = Credentials(
-        token=None,
-        refresh_token=config.require("YOUTUBE_REFRESH_TOKEN"),
-        client_id=config.require("YOUTUBE_CLIENT_ID"),
-        client_secret=config.require("YOUTUBE_CLIENT_SECRET"),
-        token_uri="https://oauth2.googleapis.com/token",
-    )
-    return build("youtube", "v3", credentials=creds)
-
-
 def _hashtags(script):
     # #Shorts alone wastes a free discoverability signal -- add one category hashtag
     # too. Deliberately capped at 2 total: YouTube's own guidance is that piling on
@@ -45,7 +31,7 @@ def _hashtags(script):
 def upload_short(video_path, script, privacy_status="public"):
     from googleapiclient.http import MediaFileUpload
 
-    youtube = _youtube_client()
+    youtube = config.youtube_client()
     body = {
         "snippet": {
             "title": script["title"][:100],

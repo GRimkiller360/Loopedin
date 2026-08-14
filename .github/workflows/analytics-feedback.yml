@@ -39,7 +39,17 @@ jobs:
           import json
           data = json.load(open('/tmp/summary.json'))
           by_category, by_hook_type, by_topic = data['by_category'], data['by_hook_type'], data['by_topic']
+          recent = data.get('recent_uploads', [])
           lines = ['# Performance summary (auto-generated, read this before writing a script)', '']
+
+          if recent:
+              lines.append('## Recent uploads (last 48h) -- early velocity signal, not the retention ranking below')
+              lines.append('')
+              for r in recent:
+                  hook = r.get('hook_type', 'n/a')
+                  lines.append(f\"- {r['topic']} ({r.get('category', 'n/a')}/{hook}): {r.get('views', 0)} views, {r.get('avg_view_pct', 0):.1f}% avg view\")
+              lines.append('')
+
           if not by_category:
               lines.append('No performance data yet -- not enough uploads/history to summarize.')
           else:

@@ -53,7 +53,11 @@ don't investigate further, that's out of scope per "On failure" below.
   reference only -- those exact topics are already used, so their number isn't
   repeatable. Don't over-fit to a tiny sample, though -- with only a handful of videos
   so far, differences are still mostly noise, so treat both rankings as a lean, not a
-  hard rule, until more data accumulates.
+  hard rule, until more data accumulates. If present, a "Recent uploads" section lists
+  raw view counts for the last 48h -- that's an early-velocity signal (is the algorithm
+  currently pushing a video), not the same thing as the avg_view_pct retention ranking
+  above it; useful context, but don't treat one breakout video's raw views as proof a
+  whole category/hook_type is now the winner.
 - `state/used_topics.json` -- the last ~40 topics already covered. This is the variety
   safety rail.
 
@@ -101,6 +105,20 @@ Save it as `state/pending_script.json` matching the shape documented in
   clickbait/content mismatch tanks retention and hurts future recommendation, which
   works directly against the growth goal.
 - keep total narration under ~130 words so the final video stays under 58s
+
+**Structural variety matters, not just topic variety.** This pipeline is fully
+automated and produces videos on a fixed cadence -- that alone puts it at risk of
+looking like the kind of formulaic, mass-produced content YouTube's Partner Program
+explicitly excludes from monetization regardless of view count. Guard against that
+actively: don't let beat 0 fall into the same handful of opening phrasings run after
+run (rotate genuinely between a blunt claim, a direct question, a "most people think X,
+but..." reversal, a concrete number, etc. -- whichever fits `hook_type`, but vary the
+actual wording), don't let every video's beat count or pacing feel identical, and don't
+let the CTA in the closing beat repeat verbatim across videos. If you notice (from
+`state/used_topics.json` or your own recent runs) that the last several videos all
+opened the same way, treat that as a reason to deliberately open differently this time,
+even if the top-performing hook_type says otherwise -- looking hand-crafted is worth
+more here than micro-optimizing one metric.
 
 Validate it before committing:
 

@@ -1,5 +1,6 @@
 """Shared helpers for reading/writing the routine's JSON state files."""
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -40,7 +41,8 @@ def record_failure(health_path, reason, threshold):
     return health.get("paused", False)
 
 
-def record_used_topic(used_topics_path, topic, video_id, category=None, seed_source_video_id=None, hook_type=None):
+def record_used_topic(used_topics_path, topic, video_id, category=None, seed_source_video_id=None,
+                       hook_type=None, title=None):
     used = load_json(used_topics_path, {"topics": []})
     used["topics"].append({
         "topic": topic,
@@ -48,6 +50,8 @@ def record_used_topic(used_topics_path, topic, video_id, category=None, seed_sou
         "category": category,
         "seed_source_video_id": seed_source_video_id,
         "hook_type": hook_type,
+        "title": title,
+        "uploaded_at": datetime.now(timezone.utc).isoformat(),
     })
     used["topics"] = used["topics"][-500:]
     save_json(used_topics_path, used)
