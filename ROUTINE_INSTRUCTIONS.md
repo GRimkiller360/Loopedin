@@ -29,15 +29,26 @@ the run. A human needs to reset it manually.
   steer your choice, but don't over-fit to a small sample -- with only a handful of
   videos so far, differences are mostly noise.
 - `state/used_topics.json` -- the last ~40 topics already covered. This is the variety
-  safety rail -- if today's seed is too close to something recent, pick a different
-  angle before writing anything.
+  safety rail.
 
 ## 2. Write an original script -- this is your job, not a script's
 
 Using the trend seed as inspiration only, write an **original** commentary/take. Do
 not summarize, transcribe, or closely paraphrase the seed video -- riff on the topic,
-don't reuse the source. Save it as `state/pending_script.json` matching the shape
-documented in `pipeline/script_schema.py`:
+don't reuse the source. The seed's specific source video is loose inspiration, not a
+requirement -- you are not obligated to make a video "about" it specifically.
+
+**If the seed's source video/topic is too close to something in `used_topics.json`
+(same underlying trend, published recently), do NOT skip the run.** The `seed_category`
+is broad (e.g. "life hacks" covers far more than one viral clip) -- pick a different
+specific topic or angle within that same category (or a clearly related one) that
+hasn't been covered, and write about that instead. Only skip entirely (see "On
+failure" below) if you genuinely cannot find any distinct angle at all within the
+category -- that should be rare; treat it as a last resort, not the default response
+to a duplicate seed.
+
+Save it as `state/pending_script.json` matching the shape documented in
+`pipeline/script_schema.py`:
 
 - `topic`, `category` (copied verbatim from `trend_seed["seed_category"]`),
   `seed_source_video_id` (copied verbatim from `trend_seed["source_video_id"]`, which
@@ -80,8 +91,11 @@ you want to sanity-check a previous run's result, look at `state/used_topics.jso
 
 ## On failure
 
-If you can't produce a valid script for this run (e.g. every seed candidate is too
-close to something recent, or the seed data looks malformed), do not commit anything
-malformed -- just explain why in your final summary and end the run. The health/pause
-tracking for actual production failures (TTS, upload, etc.) is handled by
-`produce-upload.yml` itself, not by you.
+This should be rare -- per step 2, a duplicate seed alone is not a reason to skip,
+since the category is broad enough to find a different angle. Only skip, without
+committing anything, if the seed data itself looks malformed/unusable, or you've
+genuinely tried and cannot find any distinct angle within the category at all. If you
+do skip, explain why concretely in your final summary (not just "seed was similar") --
+what angles you actually considered and why none worked. The health/pause tracking for
+actual production failures (TTS, upload, etc.) is handled by `produce-upload.yml`
+itself, not by you.
