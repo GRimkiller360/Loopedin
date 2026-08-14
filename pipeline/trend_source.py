@@ -34,8 +34,11 @@ DURATION_RE = re.compile(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?")
 
 def _get(url, params):
     query = urllib.parse.urlencode(params)
-    with urllib.request.urlopen(f"{url}?{query}") as resp:
-        return json.loads(resp.read())
+    try:
+        with urllib.request.urlopen(f"{url}?{query}") as resp:
+            return json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"{url} request failed ({e.code}): {e.read().decode()}") from e
 
 
 def _iso_duration_to_seconds(duration):

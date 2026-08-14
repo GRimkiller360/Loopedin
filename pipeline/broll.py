@@ -25,8 +25,11 @@ def _best_vertical_file(video):
 def fetch_clip_for_query(query, out_path, used_video_ids, api_key):
     params = urllib.parse.urlencode({"query": query, "orientation": "portrait", "per_page": 5})
     req = urllib.request.Request(f"{SEARCH_URL}?{params}", headers={"Authorization": api_key})
-    with urllib.request.urlopen(req) as resp:
-        result = json.loads(resp.read())
+    try:
+        with urllib.request.urlopen(req) as resp:
+            result = json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"Pexels request failed ({e.code}): {e.read().decode()}") from e
 
     for video in result.get("videos", []):
         if video["id"] in used_video_ids:
