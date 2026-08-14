@@ -57,15 +57,25 @@ CLIP_DURATION_BUFFER = 0.35  # each segment overshoots slightly so frame-roundin
                               # video shorter than the narration audio
 
 
+OUTPUT_FPS = 30
+
+
 def _scale_clip(src, dst, duration):
     target = duration + CLIP_DURATION_BUFFER
     clip_len = _probe_duration(src)
     loop_count = max(math.ceil(target / clip_len), 1) if clip_len > 0 else 1
-    vf = f"scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,crop={WIDTH}:{HEIGHT}"
+    # fps filter forces a real, constant frame rate -- Pexels source clips come in
+    # at whatever fps the original was shot at, and concatenating segments with
+    # different/variable frame rates causes a stutter at each cut point even though
+    # the audio/captions stay on schedule.
+    vf = (
+        f"fps={OUTPUT_FPS},scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,"
+        f"crop={WIDTH}:{HEIGHT}"
+    )
     subprocess.run([
         "ffmpeg", "-y", "-stream_loop", str(loop_count - 1), "-i", str(src),
         "-t", str(target), "-vf", vf, "-an", "-c:v", "libx264", "-preset", "veryfast",
-        str(dst),
+        "-pix_fmt", "yuv420p", str(dst),
     ], check=True)
 
 
@@ -92,7 +102,8 @@ def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir):
     # than its nominal duration.
     subprocess.run([
         "ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(concat_list),
-        "-c:v", "libx264", "-preset", "veryfast", str(video_track),
+        "-c:v", "libx264", "-preset", "veryfast", "-r", str(OUTPUT_FPS), "-pix_fmt", "yuv420p",
+        str(video_track),
     ], check=True)
 
     srt_path = work_dir / "captions.srt"

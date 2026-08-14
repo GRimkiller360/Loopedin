@@ -1,0 +1,13 @@
+{
+  "topic": "octopus three hearts retest 2",
+  "title": "Why Octopuses Have 3 Hearts (Retest 2)",
+  "description": "Pipeline smoke test #3, checking the clip-transition stutter fix. AI-narrated original commentary. #Shorts",
+  "tags": ["octopus", "science facts", "ocean animals", "biology", "shorts"],
+  "beats": [
+    {"text": "Octopuses have three hearts, and it's stranger than you think.", "broll_query": "octopus underwater"},
+    {"text": "Two hearts pump blood to the gills, one pumps it to the rest of the body.", "broll_query": "ocean fish gills"},
+    {"text": "That third heart actually stops beating when the octopus swims.", "broll_query": "octopus swimming ocean"},
+    {"text": "That's why octopuses prefer crawling over swimming, it's less exhausting.", "broll_query": "octopus crawling seafloor"},
+    {"text": "Evolution really said: three hearts, but only when you're lazy.", "broll_query": "ocean coral reef"}
+  ]
+}
