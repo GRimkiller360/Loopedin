@@ -14,6 +14,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from pipeline import config
 
 SEARCH_URL = "https://api.pexels.com/videos/search"
+# Cloudflare (fronting pexels.com) fingerprint-blocks urllib's default
+# "Python-urllib/3.x" User-Agent (Cloudflare error 1010) -- any real-looking UA works.
+USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 
 
 def _best_vertical_file(video):
@@ -24,7 +27,10 @@ def _best_vertical_file(video):
 
 def fetch_clip_for_query(query, out_path, used_video_ids, api_key):
     params = urllib.parse.urlencode({"query": query, "orientation": "portrait", "per_page": 5})
-    req = urllib.request.Request(f"{SEARCH_URL}?{params}", headers={"Authorization": api_key})
+    req = urllib.request.Request(
+        f"{SEARCH_URL}?{params}",
+        headers={"Authorization": api_key, "User-Agent": USER_AGENT},
+    )
     try:
         with urllib.request.urlopen(req) as resp:
             result = json.loads(resp.read())
@@ -35,7 +41,9 @@ def fetch_clip_for_query(query, out_path, used_video_ids, api_key):
         if video["id"] in used_video_ids:
             continue
         file_info = _best_vertical_file(video)
-        urllib.request.urlretrieve(file_info["link"], out_path)
+        dl_req = urllib.request.Request(file_info["link"], headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(dl_req) as dl_resp, open(out_path, "wb") as f:
+            f.write(dl_resp.read())
         used_video_ids.add(video["id"])
         return True
     return False
