@@ -14,6 +14,19 @@ Read `state/routine_health.json`. If `paused` is true, STOP immediately -- do no
 a script, do not commit anything. Report the pause reason in your final summary and end
 the run. A human needs to reset it manually.
 
+## 0.5. In-flight check -- do this before touching anything else
+
+Check whether `state/pending_script.json` already exists. **If it does, STOP -- do not
+write or overwrite it, do not commit anything.** Its existence means a previous script
+hasn't been cleared yet, which means one of two things: `produce-upload.yml` is still
+actively processing it (narration/b-roll/assembly/upload takes a few minutes), or a real
+production failure left it there for a human to look at. Either way, overwriting it out
+from under an in-flight or unresolved run causes an actual git conflict (a real
+modify/delete conflict, not just a rejected push retryable by fetch+rebase) and silently
+destroys whatever `produce-upload.yml` was doing with it -- this has happened in
+production. Report in your summary that a script was already pending and end the run;
+don't investigate further, that's out of scope per "On failure" below.
+
 ## 1. Read this run's inputs
 
 - `state/latest_trend_seed.json` -- `{"candidates": [...]}`, up to 3 topic seeds
