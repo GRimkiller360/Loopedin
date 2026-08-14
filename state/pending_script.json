@@ -1,0 +1,21 @@
+{
+  "topic": "the unpaid five dollars that quietly wrecks roommate trust",
+  "category": "personal finance",
+  "seed_source_video_id": "ZMQcysFqT7E",
+  "title": "The Real Reason Roommates Secretly Resent Each Other",
+  "description": "It's rarely the big shared bill that causes tension -- it's the small stuff nobody ever settles. This is AI-narrated commentary breaking down why tiny unpaid IOUs quietly damage trust between roommates, and one simple same-day rule that fixes it. #PersonalFinance #Roommates #MoneyTips",
+  "tags": ["personal finance", "roommates", "money tips", "shared living", "financial boundaries", "money psychology"],
+  "beats": [
+    {"text": "You said you'd pay them back three weeks ago.", "broll_query": "phone reminder notification closeup"},
+    {"text": "That unpaid five dollars was never really about the money.", "broll_query": "cash bill on kitchen counter"},
+    {"text": "It's a tiny signal that your word didn't match your actions.", "broll_query": "broken chain link concept"},
+    {"text": "Shared households run on dozens of these small invisible IOUs at once.", "broll_query": "sticky note tally board apartment"},
+    {"text": "Each one alone feels too small to even bring up.", "broll_query": "person hesitating awkward conversation"},
+    {"text": "Together, they quietly build resentment neither person can name.", "broll_query": "tense roommates silent living room"},
+    {"text": "The fix isn't a shared spreadsheet or a splitting app.", "broll_query": "laptop budgeting spreadsheet frustrated"},
+    {"text": "It's one rule: settle it the same day, or say no upfront.", "broll_query": "calendar same day checkmark"},
+    {"text": "If you can't pay it back today, don't ask for it today.", "broll_query": "empty wallet pockets"},
+    {"text": "That single boundary kills most shared-living money fights before they start.", "broll_query": "roommates cooking together laughing"},
+    {"text": "Boundaries aren't rude. Staying silent is what actually costs you.", "broll_query": "clock ticking money concept"}
+  ]
+}
