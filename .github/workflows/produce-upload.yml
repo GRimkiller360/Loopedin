@@ -128,14 +128,23 @@ jobs:
         run: |
           python -c "
           import json
+          import os
+          import subprocess
           from pipeline.state_utils import record_used_topic, record_success
 
           script = json.load(open('state/pending_script.json', encoding='utf-8'))
           result = json.load(open('work/upload_result.json', encoding='utf-8'))
-          record_used_topic('state/used_topics.json', script['topic'], result['video_id'], script.get('category'), script.get('seed_source_video_id'), script.get('hook_type'), script.get('title'))
+
+          # Measured from the actual assembled file, not estimated from word count --
+          # more accurate, and doesn't depend on the routine's narration pace guess.
+          duration = float(subprocess.check_output([
+              'ffprobe', '-v', 'error', '-show_entries', 'format=duration',
+              '-of', 'default=noprint_wrappers=1:nokey=1', 'work/final.mp4',
+          ]).strip())
+
+          record_used_topic('state/used_topics.json', script['topic'], result['video_id'], script.get('category'), script.get('seed_source_video_id'), script.get('hook_type'), script.get('title'), round(duration, 1))
           record_success('state/routine_health.json')
 
-          import os
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
               f.write(f\"category={script.get('category', '')}\n\")
               f.write(f\"video_id={result['video_id']}\n\")

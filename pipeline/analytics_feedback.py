@@ -62,6 +62,7 @@ def update_performance_log(performance_log_path, used_topics_path):
             "category": t.get("category"),
             "hook_type": t.get("hook_type"),
             "uploaded_at": t.get("uploaded_at"),
+            "duration_seconds": t.get("duration_seconds"),
         }
         for t in used["topics"] if t.get("video_id")
     }
@@ -79,13 +80,23 @@ def update_performance_log(performance_log_path, used_topics_path):
     return performance
 
 
+def _length_bucket(seconds):
+    if seconds <= 20:
+        return "short (<=20s)"
+    if seconds <= 40:
+        return "medium (20-40s)"
+    return "long (40-58s)"
+
+
 def summarize(performance):
-    # Category and hook_type are the generalizable signals ("science facts do well",
-    # "question-hook openers do well") -- unlike an exact topic, both repeat across
-    # videos, so they're what's actually safe to steer future choices by. Per-topic
-    # detail is kept too, but only as reference.
+    # Category, hook_type, and length bucket are the generalizable signals ("science
+    # facts do well", "question-hook openers do well", "short videos do well") --
+    # unlike an exact topic, all three repeat across videos, so they're what's actually
+    # safe to steer future choices by. Per-topic detail is kept too, but only as
+    # reference.
     by_category = defaultdict(list)
     by_hook_type = defaultdict(list)
+    by_length = defaultdict(list)
     by_topic = defaultdict(list)
     for v in performance["videos"]:
         pct = v.get("avg_view_pct") or 0
@@ -93,6 +104,8 @@ def summarize(performance):
             by_category[v["category"]].append(pct)
         if v.get("hook_type"):
             by_hook_type[v["hook_type"]].append(pct)
+        if v.get("duration_seconds") is not None:
+            by_length[_length_bucket(v["duration_seconds"])].append(pct)
         if v.get("topic"):
             by_topic[v["topic"]].append(pct)
 
@@ -106,6 +119,7 @@ def summarize(performance):
     return {
         "by_category": _rank(by_category, 10),
         "by_hook_type": _rank(by_hook_type, 10),
+        "by_length": _rank(by_length, 10),
         "by_topic": _rank(by_topic, 10),
     }
 

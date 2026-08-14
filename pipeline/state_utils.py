@@ -42,7 +42,7 @@ def record_failure(health_path, reason, threshold):
 
 
 def record_used_topic(used_topics_path, topic, video_id, category=None, seed_source_video_id=None,
-                       hook_type=None, title=None):
+                       hook_type=None, title=None, duration_seconds=None):
     used = load_json(used_topics_path, {"topics": []})
     used["topics"].append({
         "topic": topic,
@@ -51,6 +51,7 @@ def record_used_topic(used_topics_path, topic, video_id, category=None, seed_sou
         "seed_source_video_id": seed_source_video_id,
         "hook_type": hook_type,
         "title": title,
+        "duration_seconds": duration_seconds,
         "uploaded_at": datetime.now(timezone.utc).isoformat(),
     })
     used["topics"] = used["topics"][-500:]

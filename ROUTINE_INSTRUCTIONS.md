@@ -57,7 +57,13 @@ don't investigate further, that's out of scope per "On failure" below.
   raw view counts for the last 48h -- that's an early-velocity signal (is the algorithm
   currently pushing a video), not the same thing as the avg_view_pct retention ranking
   above it; useful context, but don't treat one breakout video's raw views as proof a
-  whole category/hook_type is now the winner.
+  whole category/hook_type is now the winner. If present, "Top video lengths" ranks
+  actual assembled-video duration buckets (short <=20s, medium 20-40s, long 40-58s) the
+  same way -- a third independent lever, since Shorts completion/loop behavior can
+  genuinely differ by length. You don't set duration directly, only narration word
+  count, so translate: roughly 2.2 words/sec of narration, i.e. ~45 words for short,
+  ~45-90 for medium, ~90-130 for long. Let this ranking nudge your target word count for
+  this run the same way category/hook_type nudge topic and opening style.
 - `state/used_topics.json` -- the last ~40 topics already covered. This is the variety
   safety rail.
 
