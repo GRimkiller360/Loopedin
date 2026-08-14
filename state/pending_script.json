@@ -1,0 +1,18 @@
+{
+  "topic": "Earth's true shape (the geoid) and why it keeps changing",
+  "category": "space",
+  "seed_source_video_id": "Zgjlr2HxkSg",
+  "title": "Earth Isn't a Perfect Sphere — Here's Its Real Shape",
+  "description": "Earth isn't a smooth ball — it's a lumpy 'geoid' shaped by gravity, and satellites show that shape is actually shifting over time. Original AI-narrated science commentary exploring geodesy, gravity mapping, and why melting ice is subtly reshaping the planet.",
+  "tags": ["earth shape", "geoid", "space facts", "science facts", "astronomy", "earth science", "geography", "shorts"],
+  "beats": [
+    {"text": "Earth isn't a perfect sphere — it's not even a smooth oval.", "broll_query": "Earth from space rotating"},
+    {"text": "It's what scientists call a geoid: a lumpy, uneven shape defined by gravity, not geometry.", "broll_query": "geoid model gravity map animation"},
+    {"text": "Mountains, oceans, and even underground rock density pull that shape in different directions.", "broll_query": "mountain range aerial ocean"},
+    {"text": "And it's not fixed. Satellites tracking gravity shifts have shown Earth's shape actually changes over time.", "broll_query": "satellite orbiting earth gravity"},
+    {"text": "Melting ice sheets move billions of tons of mass from the poles into the oceans.", "broll_query": "melting glacier ice sheet"},
+    {"text": "That shifts Earth's center of mass and slightly reshapes the whole planet.", "broll_query": "earth rotation axis animation"},
+    {"text": "Even the planet's spin axis has wobbled measurably because of it.", "broll_query": "earth spinning axis wobble animation"},
+    {"text": "So next time someone says Earth is just a ball, remind them: it's a living, shifting shape.", "broll_query": "earth globe close up detail"}
+  ]
+}
