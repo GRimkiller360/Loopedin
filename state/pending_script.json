@@ -1,0 +1,18 @@
+{
+  "topic": "why flagship phones keep 'downgrading'",
+  "category": "technology",
+  "seed_source_video_id": "axniJub51og",
+  "title": "Why New Phones Feel Like Downgrades",
+  "description": "AI-narrated commentary on why flagship smartphones sometimes feel worse each generation -- the business logic of tiered releases, feature-gating, and spec-sheet segmentation behind it.",
+  "tags": ["technology", "smartphones", "phonetech", "googlepixel", "techtok", "gadgets", "shorts"],
+  "beats": [
+    {"text": "Every year a new flagship drops, and every year someone says it's a downgrade.", "broll_query": "person unboxing new smartphone"},
+    {"text": "Sometimes that's true -- charging bricks vanish, headphone jacks disappear, storage tiers shrink.", "broll_query": "smartphone box without charger"},
+    {"text": "But 'downgrade' rarely means the phone got worse to build.", "broll_query": "phone factory assembly line"},
+    {"text": "It usually means a feature got moved behind a paywall or a pricier tier.", "broll_query": "phone price tag close up"},
+    {"text": "Companies call it segmentation -- give away less on the base model so the pro version feels worth it.", "broll_query": "side by side phone comparison"},
+    {"text": "Camera specs get 'upgraded' on paper while real-world processing gets tuned down to save battery.", "broll_query": "smartphone camera lens macro"},
+    {"text": "It's not a mistake. It's a spreadsheet decision dressed up as an innovation.", "broll_query": "office spreadsheet on screen"},
+    {"text": "So next time a spec sheet feels smaller, ask who actually benefited from the cut.", "broll_query": "person scrolling phone specs"}
+  ]
+}
