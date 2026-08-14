@@ -1,0 +1,19 @@
+{
+  "topic": "why giant raindrops are physically impossible",
+  "category": "science facts",
+  "seed_source_video_id": "fGiTVqGkous",
+  "seed_view_count": 902802,
+  "title": "The Physics Reason Giant Raindrops Are Impossible",
+  "description": "Could a whole storm's worth of rain ever merge into one giant raindrop? Physics says no -- here's the actual size limit and why it exists, every time, in every storm. AI-narrated science commentary.",
+  "tags": ["science facts", "weather science", "meteorology", "storm physics", "rain science", "myth busted", "weird science", "physics facts", "thunderstorm", "shorts"],
+  "hook_type": "myth_bust",
+  "beats": [
+    {"text": "A giant raindrop the size of a football field could never actually form -- no matter how big the storm.", "broll_query": "giant raindrop falling slow motion"},
+    {"text": "Real raindrops top out around five millimeters across, roughly a pea, before gravity ever gets a bigger chance.", "broll_query": "close up raindrop size comparison"},
+    {"text": "As a drop falls faster, air resistance flattens it out, more like a hamburger bun than a teardrop.", "broll_query": "raindrop shape falling physics diagram"},
+    {"text": "Push it past that size and surface tension can't hold on -- the drop shreds into smaller droplets mid-air.", "broll_query": "water droplet breaking apart slow motion"},
+    {"text": "So even inside the fiercest thunderstorm, physics keeps hitting reset on raindrop size, over and over.", "broll_query": "intense thunderstorm heavy rain"},
+    {"text": "Meteorologists actually use that breakup limit to read storm intensity off radar in real time.", "broll_query": "weather radar storm meteorologist screen"},
+    {"text": "Wildest weather fact you know? Drop it in the comments, and follow if you want more science that breaks your assumptions.", "broll_query": "phone weather app follow button"}
+  ]
+}
