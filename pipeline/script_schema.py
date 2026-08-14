@@ -16,6 +16,11 @@ Expected script.json shape:
   "title": "YouTube title, <=100 chars, hook + relevant keywords",
   "description": "YouTube description; mention this is AI-narrated commentary",
   "tags": ["...", "..."],
+  "seed_source_video_id": "copy trend_seed['source_video_id'] verbatim (may be null if the
+                           seed had no source video) -- lets trend_source.py exclude this
+                           exact video from being resurfaced as a seed on a future run,
+                           since comparing topic labels against video titles doesn't work
+                           (different vocabularies, they never match)",
   "beats": [
     {"text": "one narration sentence/clause", "broll_query": "stock-footage search phrase for this beat"},
     ...
@@ -25,7 +30,7 @@ Expected script.json shape:
 import json
 import sys
 
-REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats"}
+REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id"}
 REQUIRED_BEAT_KEYS = {"text", "broll_query"}
 MIN_BEATS, MAX_BEATS = 3, 12
 MAX_TITLE_LEN = 100

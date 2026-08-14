@@ -40,8 +40,13 @@ def record_failure(health_path, reason, threshold):
     return health.get("paused", False)
 
 
-def record_used_topic(used_topics_path, topic, video_id, category=None):
+def record_used_topic(used_topics_path, topic, video_id, category=None, seed_source_video_id=None):
     used = load_json(used_topics_path, {"topics": []})
-    used["topics"].append({"topic": topic, "video_id": video_id, "category": category})
+    used["topics"].append({
+        "topic": topic,
+        "video_id": video_id,
+        "category": category,
+        "seed_source_video_id": seed_source_video_id,
+    })
     used["topics"] = used["topics"][-500:]
     save_json(used_topics_path, used)

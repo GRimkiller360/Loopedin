@@ -39,9 +39,24 @@ jobs:
               print(f"::warning::Routine is paused: {reason}")
           EOF
 
+      - name: Script exists check
+        # The push trigger fires on deletions too (e.g. a manual state-reconciliation
+        # commit that removes pending_script.json still matches the path filter) --
+        # without this, "Validate script" crashes on a file that's legitimately gone
+        # and falsely increments the failure counter. Not paused/quota-related, so
+        # this is checked unconditionally and gates everything below.
+        id: script_check
+        run: |
+          if [ -f state/pending_script.json ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::state/pending_script.json doesn't exist (likely a deletion-only commit, e.g. state reconciliation) -- nothing to produce, skipping."
+          fi
+
       - name: Quota check
         id: quota
-        if: steps.health.outputs.paused != 'true'
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true'
         run: |
           RESULT=$(python pipeline/quota_guard.py check --daily-cap "${{ vars.DAILY_UPLOAD_CAP || 4 }}")
           echo "result=$RESULT" >> "$GITHUB_OUTPUT"
@@ -50,30 +65,30 @@ jobs:
           fi
 
       - name: Validate script
-        if: steps.health.outputs.paused != 'true' && steps.quota.outputs.result != 'capped'
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
         run: python pipeline/script_schema.py state/pending_script.json
 
       - name: Narration
-        if: steps.health.outputs.paused != 'true' && steps.quota.outputs.result != 'capped'
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
         env:
           GOOGLE_TTS_CREDENTIALS_JSON: ${{ secrets.GOOGLE_TTS_CREDENTIALS_JSON }}
         run: python pipeline/tts.py --script state/pending_script.json --out work/narration.mp3
 
       - name: B-roll
-        if: steps.health.outputs.paused != 'true' && steps.quota.outputs.result != 'capped'
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
         env:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: python pipeline/broll.py --script state/pending_script.json --work-dir work/broll > work/broll_clips.json
 
       - name: Assemble
-        if: steps.health.outputs.paused != 'true' && steps.quota.outputs.result != 'capped'
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
         run: |
           python pipeline/assemble.py --script state/pending_script.json \
             --narration work/narration.mp3 --clips work/broll_clips.json \
             --work-dir work/assemble --out work/final.mp4
 
       - name: Upload
-        if: steps.health.outputs.paused != 'true' && steps.quota.outputs.result != 'capped'
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
         id: upload
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
@@ -85,7 +100,7 @@ jobs:
             --privacy "$PRIVACY" | tee work/upload_result.json
 
       - name: Record state on success
-        if: steps.health.outputs.paused != 'true' && steps.quota.outputs.result != 'capped' && success()
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && success()
         run: |
           python -c "
           import json
@@ -93,14 +108,14 @@ jobs:
 
           script = json.load(open('state/pending_script.json', encoding='utf-8'))
           result = json.load(open('work/upload_result.json', encoding='utf-8'))
-          record_used_topic('state/used_topics.json', script['topic'], result['video_id'], script.get('category'))
+          record_used_topic('state/used_topics.json', script['topic'], result['video_id'], script.get('category'), script.get('seed_source_video_id'))
           record_success('state/routine_health.json')
           "
           python pipeline/quota_guard.py record --daily-cap "${{ vars.DAILY_UPLOAD_CAP || 4 }}"
           rm -f state/pending_script.json
 
       - name: Record failure
-        if: steps.health.outputs.paused != 'true' && steps.quota.outputs.result != 'capped' && failure()
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && failure()
         run: |
           python -c "
           from pipeline.state_utils import record_failure

@@ -49,7 +49,13 @@ def _iso_duration_to_seconds(duration):
 
 def find_trend_seed(used_topics_path, api_key):
     used = load_json(used_topics_path, {"topics": []})
-    recent_topics = {t["topic"].lower() for t in used["topics"][-config.VARIETY_LOOKBACK:]}
+    recent = used["topics"][-config.VARIETY_LOOKBACK:]
+    recent_topics = {t["topic"].lower() for t in recent}
+    # The authoritative dedup check: recent_topics compares AI-authored topic labels
+    # against candidate video titles, which are worded completely differently and
+    # essentially never match -- that alone let the same top-viewCount video get
+    # reselected run after run. Excluding by exact source video ID actually works.
+    recent_source_ids = {t["seed_source_video_id"] for t in recent if t.get("seed_source_video_id")}
 
     published_after = (datetime.now(timezone.utc) - timedelta(hours=48)).strftime("%Y-%m-%dT%H:%M:%SZ")
     categories = SEED_CATEGORIES[:]
@@ -83,7 +89,7 @@ def find_trend_seed(used_topics_path, api_key):
         for video in details_resp.get("items", []):
             duration_s = _iso_duration_to_seconds(video["contentDetails"]["duration"])
             title = video["snippet"]["title"]
-            if duration_s > 60 or title.lower() in recent_topics:
+            if duration_s > 60 or video["id"] in recent_source_ids or title.lower() in recent_topics:
                 continue
             return {
                 "seed_category": query,

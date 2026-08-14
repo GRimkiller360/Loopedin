@@ -39,8 +39,11 @@ not summarize, transcribe, or closely paraphrase the seed video -- riff on the t
 don't reuse the source. Save it as `state/pending_script.json` matching the shape
 documented in `pipeline/script_schema.py`:
 
-- `topic`, `category` (copied verbatim from `trend_seed["seed_category"]`), `title`
-  (<=100 chars), `description`, `tags`
+- `topic`, `category` (copied verbatim from `trend_seed["seed_category"]`),
+  `seed_source_video_id` (copied verbatim from `trend_seed["source_video_id"]`, which
+  may be `null` -- copy it either way, this is what lets a future run exclude this
+  exact source video from being reselected), `title` (<=100 chars), `description`,
+  `tags`
 - `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`
 - keep total narration under ~130 words so the final video stays under 58s
 
