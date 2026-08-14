@@ -57,7 +57,7 @@ def update_performance_log(performance_log_path, used_topics_path):
     used = load_json(used_topics_path, {"topics": []})
 
     meta_by_video = {
-        t["video_id"]: {"topic": t["topic"], "category": t.get("category")}
+        t["video_id"]: {"topic": t["topic"], "category": t.get("category"), "hook_type": t.get("hook_type")}
         for t in used["topics"] if t.get("video_id")
     }
     stats = pull_stats(list(meta_by_video.keys()))
@@ -75,15 +75,19 @@ def update_performance_log(performance_log_path, used_topics_path):
 
 
 def summarize(performance):
-    # Category is the generalizable signal ("science facts do well") -- unlike an exact
-    # topic, categories repeat across videos, so this is what's actually safe to steer
-    # future topic choices by. Per-topic detail is kept too, but only as reference.
+    # Category and hook_type are the generalizable signals ("science facts do well",
+    # "question-hook openers do well") -- unlike an exact topic, both repeat across
+    # videos, so they're what's actually safe to steer future choices by. Per-topic
+    # detail is kept too, but only as reference.
     by_category = defaultdict(list)
+    by_hook_type = defaultdict(list)
     by_topic = defaultdict(list)
     for v in performance["videos"]:
         pct = v.get("avg_view_pct") or 0
         if v.get("category"):
             by_category[v["category"]].append(pct)
+        if v.get("hook_type"):
+            by_hook_type[v["hook_type"]].append(pct)
         if v.get("topic"):
             by_topic[v["topic"]].append(pct)
 
@@ -94,7 +98,11 @@ def summarize(performance):
             for name, vals in ranked[:limit]
         ]
 
-    return {"by_category": _rank(by_category, 10), "by_topic": _rank(by_topic, 10)}
+    return {
+        "by_category": _rank(by_category, 10),
+        "by_hook_type": _rank(by_hook_type, 10),
+        "by_topic": _rank(by_topic, 10),
+    }
 
 
 if __name__ == "__main__":

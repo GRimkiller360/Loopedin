@@ -16,6 +16,11 @@ Expected script.json shape:
   "title": "YouTube title, <=100 chars, hook + relevant keywords",
   "description": "YouTube description; mention this is AI-narrated commentary",
   "tags": ["...", "..."],
+  "hook_type": "optional -- one of a fixed small set describing how beat[0] opens the
+                video (e.g. 'question', 'shocking_fact', 'myth_bust', 'list', 'story',
+                'challenge'). Like category, this repeats across videos on purpose so
+                the performance-feedback loop can learn which opening style actually
+                holds attention, separately from which topic category performs well.",
   "seed_source_video_id": "copy trend_seed['source_video_id'] verbatim (may be null if the
                            seed had no source video) -- lets trend_source.py exclude this
                            exact video from being resurfaced as a seed on a future run,

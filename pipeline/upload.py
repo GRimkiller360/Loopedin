@@ -29,6 +29,19 @@ def _youtube_client():
     return build("youtube", "v3", credentials=creds)
 
 
+def _hashtags(script):
+    # #Shorts alone wastes a free discoverability signal -- add one category hashtag
+    # too. Deliberately capped at 2 total: YouTube's own guidance is that piling on
+    # hashtags reads as spam and can hurt reach rather than help it.
+    tags = ["#Shorts"]
+    category = (script.get("category") or "").strip()
+    if category:
+        slug = "".join(ch for ch in category if ch.isalnum())
+        if slug:
+            tags.append(f"#{slug}")
+    return " ".join(tags)
+
+
 def upload_short(video_path, script, privacy_status="public"):
     from googleapiclient.http import MediaFileUpload
 
@@ -36,7 +49,7 @@ def upload_short(video_path, script, privacy_status="public"):
     body = {
         "snippet": {
             "title": script["title"][:100],
-            "description": script["description"] + "\n\n#Shorts",
+            "description": script["description"] + "\n\n" + _hashtags(script),
             "tags": script.get("tags", []),
             "categoryId": "22",
         },

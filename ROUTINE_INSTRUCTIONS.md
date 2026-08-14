@@ -46,14 +46,14 @@ don't investigate further, that's out of scope per "On failure" below.
   Your goal for this run is channel growth: maximize views and watch-through/engagement
   (`avg_view_pct` is the engagement proxy here -- higher means people watch more of the
   short before dropping off), not just "write something." Let the *category* ranking
-  (the "by topic" section is
+  actively steer which candidate and angle you pick -- prefer topics in categories that
+  are outperforming. If present, also read the "Top hook styles" section and let it
+  steer your `hook_type` choice (see step 2) the same way -- it's a second, independent
+  lever on engagement, separate from topic category. The "by topic" section is
   reference only -- those exact topics are already used, so their number isn't
-  repeatable) actively steer which candidate and angle you pick -- prefer topics in
-  categories that are outperforming, and within your chosen category lean into whatever
-  angle/hook is most likely to hold attention early (strong opening beat, concrete
-  hook, avoid a slow windup). Don't over-fit to a tiny sample, though -- with only a
-  handful of videos so far, differences are still mostly noise, so treat the ranking as
-  a lean, not a hard rule, until more data accumulates.
+  repeatable. Don't over-fit to a tiny sample, though -- with only a handful of videos
+  so far, differences are still mostly noise, so treat both rankings as a lean, not a
+  hard rule, until more data accumulates.
 - `state/used_topics.json` -- the last ~40 topics already covered. This is the variety
   safety rail.
 
@@ -83,7 +83,23 @@ Save it as `state/pending_script.json` matching the shape documented in
   which may be `null` -- copy it either way, this is what lets a future run exclude
   this exact source video from being reselected), `title` (<=100 chars), `description`,
   `tags`
-- `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`
+- `hook_type`: pick one of `question`, `shocking_fact`, `myth_bust`, `list`, `story`,
+  `challenge` -- whichever actually matches how you wrote beat 0. Copy the label
+  verbatim (don't invent a new one) so the performance-feedback loop can compare
+  apples to apples across videos, same reasoning as `category`.
+- `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`. Two retention
+  rules that matter more than anything else here since most drop-off on Shorts happens
+  in the first couple seconds: (1) beat 0 must land the hook itself immediately --
+  the surprising claim, question, or premise -- no throat-clearing preamble like "so
+  today we're talking about" before it. (2) the last beat should close with a light,
+  natural call-to-action (e.g. inviting a comment with their own take, or a reason to
+  follow for more) -- comments/likes/follows are engagement signals, not just a nicety.
+  Don't force an identical CTA phrasing every time; vary it so it doesn't read as
+  copy-pasted spam.
+- title: prefer a genuine curiosity gap or a concrete number/claim over a generic
+  label, but it must accurately reflect what the video actually delivers -- a
+  clickbait/content mismatch tanks retention and hurts future recommendation, which
+  works directly against the growth goal.
 - keep total narration under ~130 words so the final video stays under 58s
 
 Validate it before committing:
