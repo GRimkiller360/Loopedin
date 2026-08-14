@@ -58,6 +58,8 @@ def upload_short(video_path, script, privacy_status="public"):
 
 
 if __name__ == "__main__":
+    from googleapiclient.errors import HttpError
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--video", required=True)
     parser.add_argument("--script", required=True)
@@ -65,5 +67,15 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     script_data = json.loads(Path(args.script).read_text(encoding="utf-8"))
-    video_id = upload_short(args.video, script_data, args.privacy)
-    print(json.dumps({"video_id": video_id}))
+    try:
+        video_id = upload_short(args.video, script_data, args.privacy)
+        print(json.dumps({"video_id": video_id}))
+    except HttpError as e:
+        content = (e.content or b"").decode(errors="replace")
+        if e.resp.status == 403 and "quota" in content.lower():
+            # Distinct from a real failure: this is the YouTube API's own hard reject
+            # once the day's 10,000-unit quota is spent. Exit code 2 lets the workflow
+            # tell "expected, stop trying until reset" apart from "something's broken".
+            print(json.dumps({"error": "quota_exceeded", "detail": content}))
+            sys.exit(2)
+        raise

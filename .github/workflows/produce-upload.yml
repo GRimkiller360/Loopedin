@@ -56,12 +56,15 @@ jobs:
 
       - name: Quota check
         id: quota
+        # daily-cap is a sanity ceiling on attempts, not the primary limiter -- see
+        # pipeline/quota_guard.py. The real limiter is YouTube's own quota rejection,
+        # handled reactively after the Upload step below.
         if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true'
         run: |
-          RESULT=$(python pipeline/quota_guard.py check --daily-cap "${{ vars.DAILY_UPLOAD_CAP || 4 }}")
+          RESULT=$(python pipeline/quota_guard.py check --daily-cap "${{ vars.DAILY_UPLOAD_CAP || 8 }}")
           echo "result=$RESULT" >> "$GITHUB_OUTPUT"
           if [ "$RESULT" = "capped" ]; then
-            echo "::warning::Daily upload cap reached (vars.DAILY_UPLOAD_CAP, default 4) -- skipping this run to stay under the YouTube API quota. This is expected, not a failure; it does not count toward auto-pause."
+            echo "::warning::Today's upload quota is exhausted (either the attempt ceiling or a real YouTube quota rejection earlier today) -- skipping to avoid wasting API calls until reset. This is expected, not a failure; it does not count toward auto-pause."
           fi
 
       - name: Validate script
@@ -96,11 +99,22 @@ jobs:
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           PRIVACY: ${{ inputs.privacy || vars.UPLOAD_PRIVACY || 'unlisted' }}
         run: |
-          python pipeline/upload.py --video work/final.mp4 --script state/pending_script.json \
-            --privacy "$PRIVACY" | tee work/upload_result.json
+          set -o pipefail
+          if python pipeline/upload.py --video work/final.mp4 --script state/pending_script.json \
+            --privacy "$PRIVACY" | tee work/upload_result.json; then
+            exit_code=0
+          else
+            exit_code=${PIPESTATUS[0]}
+          fi
+          if [ "$exit_code" -eq 2 ]; then
+            echo "quota_exceeded=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "quota_exceeded=false" >> "$GITHUB_OUTPUT"
+          exit "$exit_code"
 
       - name: Record state on success
-        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && success()
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && steps.upload.outputs.quota_exceeded != 'true' && success()
         run: |
           python -c "
           import json
@@ -111,11 +125,23 @@ jobs:
           record_used_topic('state/used_topics.json', script['topic'], result['video_id'], script.get('category'), script.get('seed_source_video_id'))
           record_success('state/routine_health.json')
           "
-          python pipeline/quota_guard.py record --daily-cap "${{ vars.DAILY_UPLOAD_CAP || 4 }}"
+          python pipeline/quota_guard.py record --daily-cap "${{ vars.DAILY_UPLOAD_CAP || 8 }}"
+          rm -f state/pending_script.json
+
+      - name: Record quota exhaustion
+        # YouTube's own hard reject, not a bug -- mark today exhausted so later runs
+        # today skip early (Quota check step) instead of wasting narration/b-roll/
+        # assembly work only to hit the same wall again. Clear the pending script so
+        # the routine isn't stuck behind it tomorrow -- it never actually published,
+        # so it's not recorded in used_topics.json either; a fresh trend seed will
+        # replace it on the next cron fire once quota resets.
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && steps.upload.outputs.quota_exceeded == 'true'
+        run: |
+          python pipeline/quota_guard.py exhaust
           rm -f state/pending_script.json
 
       - name: Record failure
-        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && failure()
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && steps.upload.outputs.quota_exceeded != 'true' && failure()
         run: |
           python -c "
           from pipeline.state_utils import record_failure
