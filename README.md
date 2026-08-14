@@ -27,9 +27,12 @@ credential ever needs to live anywhere but GitHub's secrets store.
    `GOOGLE_TTS_CREDENTIALS_JSON`, `PEXELS_API_KEY`, `YOUTUBE_CLIENT_ID`,
    `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN` secrets to run narration → b-roll →
    assembly → upload, then records the result and clears the pending script.
-4. **`.github/workflows/analytics-feedback.yml`** — once/day, pulls performance stats
-   (`YOUTUBE_CLIENT_ID`/`SECRET`/`REFRESH_TOKEN` again) and writes
-   `state/performance_summary.md` for the next Claude routine run to read.
+4. **`.github/workflows/analytics-feedback.yml`** — runs on the same ~10x/day cadence as
+   `trend-fetch.yml` (a few minutes earlier), pulling performance stats
+   (`YOUTUBE_CLIENT_ID`/`SECRET`/`REFRESH_TOKEN` again) and writing
+   `state/performance_summary.md` fresh before every routine fire, so topic/category
+   choice is always steered by up-to-date view/engagement data instead of a once/day
+   snapshot.
 
 ## One-time setup
 

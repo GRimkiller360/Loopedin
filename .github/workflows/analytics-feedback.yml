@@ -2,8 +2,10 @@ name: Analytics Feedback
 
 on:
   schedule:
-    # once/day is enough -- conserves Analytics API quota
-    - cron: "50 6 * * *"
+    # same cadence as trend-fetch.yml, a few minutes earlier, so performance_summary.md
+    # is freshly updated before every routine fire (not just once/day) -- the routine
+    # picks topics/categories by this data, so it should never be stale when it reads it
+    - cron: "0 0,2,5,7,10,12,14,17,19,22 * * *"
   workflow_dispatch:
 
 permissions:

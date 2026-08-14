@@ -1,6 +1,7 @@
 """Pull performance stats for previously uploaded shorts and summarize what's working,
-so the agent can weight future topic/style choices toward it. Run this once/day (not
-on every fire) to conserve Analytics API quota."""
+so the agent can weight future topic/style choices toward it. Run before every routine
+fire (see analytics-feedback.yml's schedule) so the summary is never stale when the
+routine reads it."""
 import argparse
 import json
 import sys
