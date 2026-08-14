@@ -50,6 +50,17 @@ git commit -m "Script: <topic>"
 git push
 ```
 
+If `git push` is rejected (another workflow committed to `state/` around the same
+time -- this happens routinely, not a sign of a real problem), do NOT force-push or
+overwrite. Just:
+```
+git fetch origin main
+git rebase origin/main
+git push
+```
+Retry that fetch/rebase/push once or twice if needed. If it still won't push after a
+few tries, say so plainly in your summary rather than forcing it through.
+
 That's it -- pushing this file is what triggers `produce-upload.yml`, which handles
 narration, b-roll, assembly, upload, and recording the result (including clearing
 `state/pending_script.json` once done). You won't see the outcome in this session; if

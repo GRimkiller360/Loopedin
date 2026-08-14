@@ -47,4 +47,19 @@ jobs:
           git config user.name "loopedin-bot"
           git config user.email "actions@github.com"
           git add state/performance_log.json state/performance_summary.md
-          git diff --staged --quiet && echo "No changes" || (git commit -m "Update performance summary" && git push)
+          if git diff --staged --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "Update performance summary"
+          for i in 1 2 3 4 5; do
+            if git push; then
+              exit 0
+            fi
+            echo "push rejected (another workflow likely committed at the same time), retrying ($i/5)..."
+            git fetch origin main
+            git rebase origin/main
+            sleep $((RANDOM % 4 + 1))
+          done
+          echo "::error::Failed to push performance summary after 5 retries"
+          exit 1
