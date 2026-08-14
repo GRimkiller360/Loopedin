@@ -1,0 +1,20 @@
+{
+  "topic": "why phone 'upgrades' sometimes feel like downgrades",
+  "category": "technology",
+  "seed_source_video_id": "axniJub51og",
+  "title": "Why New Phones Feel Like Downgrades (Nobody Talks About This)",
+  "description": "Every year there's a new 'best phone ever' -- and every year the comments say it feels worse. Here's the real reason upgrades can feel like cuts. AI-narrated original commentary, not a review of any specific device.",
+  "tags": ["tech", "smartphones", "techcommentary", "productdesign", "shorts", "technews", "gadgets"],
+  "beats": [
+    {"text": "Every year, a tech company promises their newest phone is the best one yet.", "broll_query": "smartphone launch event stage"},
+    {"text": "But scroll the comments and you'll see the same complaint: this feels like a downgrade.", "broll_query": "person scrolling phone comments"},
+    {"text": "It's rarely the specs -- chips and cameras almost always improve on paper.", "broll_query": "phone camera lens close up"},
+    {"text": "It's the small removed things: a headphone jack, the charger in the box, a swappable battery.", "broll_query": "old phone charger and headphone jack"},
+    {"text": "Companies call these bold decisions. Users call them cuts.", "broll_query": "unboxing new smartphone box"},
+    {"text": "A lot of the time it's simple margin math -- fewer parts, more profit per unit.", "broll_query": "factory assembly line electronics"},
+    {"text": "Sometimes it's an honest tradeoff, like a thinner body forcing a smaller battery.", "broll_query": "thin smartphone side profile"},
+    {"text": "The clearest sign growth has stalled isn't a slower chip -- it's features quietly disappearing.", "broll_query": "checklist crossing out items"},
+    {"text": "So next 'upgrade' you see, don't just count what got added.", "broll_query": "hands holding new smartphone"},
+    {"text": "Count what got taken away. That's the honest measure of progress.", "broll_query": "person thinking looking at phone"}
+  ]
+}
