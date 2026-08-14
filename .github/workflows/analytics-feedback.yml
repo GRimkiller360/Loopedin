@@ -29,53 +29,14 @@ jobs:
         run: python -m pip install --quiet -r requirements.txt
 
       - name: Pull performance and summarize
+        # Markdown rendering lives in pipeline/analytics_feedback.py itself now (was an
+        # inline python -c heredoc here before it grew past the point that was
+        # maintainable) -- --summary-out writes state/performance_summary.md directly.
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-        run: |
-          python pipeline/analytics_feedback.py > /tmp/summary.json
-          python -c "
-          import json
-          data = json.load(open('/tmp/summary.json'))
-          by_category, by_hook_type, by_length, by_topic = data['by_category'], data['by_hook_type'], data['by_length'], data['by_topic']
-          recent = data.get('recent_uploads', [])
-          lines = ['# Performance summary (auto-generated, read this before writing a script)', '']
-
-          if recent:
-              lines.append('## Recent uploads (last 48h) -- early velocity signal, not the retention ranking below')
-              lines.append('')
-              for r in recent:
-                  hook = r.get('hook_type', 'n/a')
-                  lines.append(f\"- {r['topic']} ({r.get('category', 'n/a')}/{hook}): {r.get('views', 0)} views, {r.get('avg_view_pct', 0):.1f}% avg view\")
-              lines.append('')
-
-          if not by_category:
-              lines.append('No performance data yet -- not enough uploads/history to summarize.')
-          else:
-              lines.append('## Top categories by average view percentage (steer topic choice by this)')
-              lines.append('')
-              for r in by_category:
-                  lines.append(f\"- {r['name']}: {r['avg_view_pct']:.1f}% avg view (n={r['sample_size']})\")
-              lines.append('')
-              if by_hook_type:
-                  lines.append('## Top hook styles by average view percentage (steer how you open/close by this)')
-                  lines.append('')
-                  for r in by_hook_type:
-                      lines.append(f\"- {r['name']}: {r['avg_view_pct']:.1f}% avg view (n={r['sample_size']})\")
-                  lines.append('')
-              if by_length:
-                  lines.append('## Top video lengths by average view percentage (steer target narration length by this)')
-                  lines.append('')
-                  for r in by_length:
-                      lines.append(f\"- {r['name']}: {r['avg_view_pct']:.1f}% avg view (n={r['sample_size']})\")
-                  lines.append('')
-              lines.append('## Top individual topics (reference only -- these exact topics are already used)')
-              lines.append('')
-              for r in by_topic:
-                  lines.append(f\"- {r['name']}: {r['avg_view_pct']:.1f}% avg view\")
-          open('state/performance_summary.md', 'w').write('\n'.join(lines) + '\n')
-          "
+        run: python pipeline/analytics_feedback.py --summary-out state/performance_summary.md
 
       - name: Commit summary
         run: |

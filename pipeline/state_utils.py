@@ -41,18 +41,20 @@ def record_failure(health_path, reason, threshold):
     return health.get("paused", False)
 
 
-def record_used_topic(used_topics_path, topic, video_id, category=None, seed_source_video_id=None,
-                       hook_type=None, title=None, duration_seconds=None):
+def record_used_topic(used_topics_path, topic, video_id, **fields):
+    """fields is whatever extra per-video metadata the feedback loop tracks --
+    category, seed_source_video_id, hook_type, title, duration_seconds,
+    seed_view_count, publish_hour_utc, etc. Keyword-only and open-ended on purpose so
+    adding a new tracked signal doesn't mean touching every call site's positional
+    argument order."""
     used = load_json(used_topics_path, {"topics": []})
+    now = datetime.now(timezone.utc)
     used["topics"].append({
         "topic": topic,
         "video_id": video_id,
-        "category": category,
-        "seed_source_video_id": seed_source_video_id,
-        "hook_type": hook_type,
-        "title": title,
-        "duration_seconds": duration_seconds,
-        "uploaded_at": datetime.now(timezone.utc).isoformat(),
+        "uploaded_at": now.isoformat(),
+        "publish_hour_utc": now.hour,
+        **fields,
     })
     used["topics"] = used["topics"][-500:]
     save_json(used_topics_path, used)

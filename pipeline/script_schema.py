@@ -25,6 +25,11 @@ Expected script.json shape:
                            exact video from being resurfaced as a seed on a future run,
                            since comparing topic labels against video titles doesn't work
                            (different vocabularies, they never match)",
+  "seed_view_count": "optional -- copy the chosen candidate's trend_seed['view_count']
+                      verbatim (0/absent if there was no source video). Tracked so the
+                      performance-feedback loop can eventually test whether picking a
+                      higher-momentum seed actually correlates with this channel's own
+                      video performance, or whether it doesn't matter.",
   "beats": [
     {"text": "one narration sentence/clause", "broll_query": "stock-footage search phrase for this beat"},
     ...

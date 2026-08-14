@@ -43,27 +43,37 @@ don't investigate further, that's out of scope per "On failure" below.
 - `state/performance_summary.md` -- refreshed once/day, timed right before the first
   fire of the day, so treat it as current for today (YouTube Analytics data itself
   only settles on a ~24-48h cycle, so it can't usefully be fresher than that anyway).
-  Your goal for this run is channel growth: maximize views and watch-through/engagement
-  (`avg_view_pct` is the engagement proxy here -- higher means people watch more of the
-  short before dropping off), not just "write something." Let the *category* ranking
-  actively steer which candidate and angle you pick -- prefer topics in categories that
-  are outperforming. If present, also read the "Top hook styles" section and let it
-  steer your `hook_type` choice (see step 2) the same way -- it's a second, independent
-  lever on engagement, separate from topic category. The "by topic" section is
-  reference only -- those exact topics are already used, so their number isn't
-  repeatable. Don't over-fit to a tiny sample, though -- with only a handful of videos
-  so far, differences are still mostly noise, so treat both rankings as a lean, not a
-  hard rule, until more data accumulates. If present, a "Recent uploads" section lists
-  raw view counts for the last 48h -- that's an early-velocity signal (is the algorithm
-  currently pushing a video), not the same thing as the avg_view_pct retention ranking
-  above it; useful context, but don't treat one breakout video's raw views as proof a
-  whole category/hook_type is now the winner. If present, "Top video lengths" ranks
-  actual assembled-video duration buckets (short <=20s, medium 20-40s, long 40-58s) the
-  same way -- a third independent lever, since Shorts completion/loop behavior can
-  genuinely differ by length. You don't set duration directly, only narration word
-  count, so translate: roughly 2.2 words/sec of narration, i.e. ~45 words for short,
-  ~45-90 for medium, ~90-130 for long. Let this ranking nudge your target word count for
-  this run the same way category/hook_type nudge topic and opening style.
+  Your goal for this run is channel growth -- maximize views, watch-through, and
+  subscriber conversion, not just "write something." Every ranking section below shows
+  three numbers per entry, in this priority order when they disagree:
+  1. `avg_view_pct` -- retention (do people watch the whole thing). Primary signal.
+  2. `subs/1k views` -- does this actually convert viewers into subscribers. Weight
+     this seriously: monetization needs 1,000 subscribers *and* the view threshold, not
+     views alone, so a video that's merely average on retention but a strong subscriber
+     converter is genuinely valuable, not just a consolation stat.
+  3. `likes+comments/1k views` -- explicit engagement signal, distinct from passive
+     watch time.
+  Sections, in order of how much they should steer this run: **Top categories** and
+  **Top hook styles** actively steer which candidate/angle and `hook_type` you pick.
+  **Top video lengths** should nudge your target narration word count (you only control
+  words, not seconds -- roughly 2.2 words/sec, so ~45 words for short/<=20s, ~45-90 for
+  medium/20-40s, ~90-130 for long/40-58s). **Top publish hours** and **Top seed momentum
+  tiers** are reference-only for now -- interesting once there's a real spread of data
+  behind them, but you don't control posting time and seed selection is already
+  constrained by what `trend_source.py` hands you this run, so don't force a choice
+  based on either yet. **Top individual topics** is reference only, not repeatable.
+  **Where views are coming from** (traffic sources, e.g. SHORTS/YT_SEARCH/SUBSCRIBER) is
+  channel-wide context, not a per-video lever -- useful for understanding how dependent
+  the channel is on the Shorts feed algorithm specifically, nothing to act on per script.
+  Don't over-fit to a tiny sample anywhere in this file -- with only a handful of videos
+  so far, differences are still mostly noise; treat every ranking as a lean, not a hard
+  rule, until more data accumulates.
+  A separate "Recent uploads (last 48h)" section, if present, is near-real-time (raw
+  views/likes/comments, refreshed several times a day, not once/day) -- an early
+  velocity/reach signal ("is the algorithm currently pushing this one"), not retention
+  (`avg_view_pct` isn't available yet that early). Useful context, but don't treat one
+  breakout video's early raw numbers as proof a whole category/hook_type is now the
+  winner.
 - `state/used_topics.json` -- the last ~40 topics already covered. This is the variety
   safety rail.
 
@@ -91,8 +101,9 @@ Save it as `state/pending_script.json` matching the shape documented in
 - `topic`, `category` (copied verbatim from your chosen candidate's `seed_category`),
   `seed_source_video_id` (copied verbatim from that candidate's `source_video_id`,
   which may be `null` -- copy it either way, this is what lets a future run exclude
-  this exact source video from being reselected), `title` (<=100 chars), `description`,
-  `tags`
+  this exact source video from being reselected), `seed_view_count` (copied verbatim
+  from that candidate's `view_count`, 0 if there was no source video), `title`
+  (<=100 chars), `description`, `tags`
 - `hook_type`: pick one of `question`, `shocking_fact`, `myth_bust`, `list`, `story`,
   `challenge` -- whichever actually matches how you wrote beat 0. Copy the label
   verbatim (don't invent a new one) so the performance-feedback loop can compare

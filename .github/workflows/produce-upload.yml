@@ -142,7 +142,15 @@ jobs:
               '-of', 'default=noprint_wrappers=1:nokey=1', 'work/final.mp4',
           ]).strip())
 
-          record_used_topic('state/used_topics.json', script['topic'], result['video_id'], script.get('category'), script.get('seed_source_video_id'), script.get('hook_type'), script.get('title'), round(duration, 1))
+          record_used_topic(
+              'state/used_topics.json', script['topic'], result['video_id'],
+              category=script.get('category'),
+              seed_source_video_id=script.get('seed_source_video_id'),
+              seed_view_count=script.get('seed_view_count'),
+              hook_type=script.get('hook_type'),
+              title=script.get('title'),
+              duration_seconds=round(duration, 1),
+          )
           record_success('state/routine_health.json')
 
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:

@@ -26,11 +26,20 @@ jobs:
           python -m pip install --quiet google-auth google-api-python-client
           python pipeline/trend_source.py --out state/latest_trend_seed.json
 
+      - name: Refresh live stats for recent uploads
+        # Piggybacks on this workflow's existing cadence/credentials rather than a
+        # separate workflow -- videos.list stats update far faster than YouTube
+        # Analytics, so this is what gives an early-velocity signal within hours of
+        # upload instead of waiting ~24-48h for Analytics to settle.
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python pipeline/live_stats.py --live-stats state/live_stats.json
+
       - name: Commit trend seed
         run: |
           git config user.name "loopedin-bot"
           git config user.email "actions@github.com"
-          git add state/latest_trend_seed.json
+          git add state/latest_trend_seed.json state/live_stats.json
           if git diff --staged --quiet; then
             echo "No changes"
             exit 0
