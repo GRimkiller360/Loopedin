@@ -1,0 +1,17 @@
+{
+  "topic": "portable farm automation vs industrial-scale tractors",
+  "category": "technology",
+  "seed_source_video_id": "lzrGBx6zxpU",
+  "title": "Why Tiny Farm Machines Might Matter More Than Giant Tractors",
+  "description": "A quick original take on the rise of small, portable farm automation and why it could matter more for the world's smallholder farmers than another giant tractor. AI-narrated commentary, not a review of any specific product or video.",
+  "tags": ["farm technology", "agritech", "smallholder farming", "portable machinery", "future of agriculture", "automation", "shorts"],
+  "beats": [
+    {"text": "Farm equipment used to mean giant tractors costing six figures.", "broll_query": "large industrial tractor plowing field"},
+    {"text": "Now a wave of small, portable, motor-powered tools is shrinking that scale down to something one person can carry.", "broll_query": "person carrying small motorized farm tool"},
+    {"text": "Seed threshers, mini harvesters, solar irrigation pumps — all built for a small plot, not a mega-farm.", "broll_query": "small seed threshing machine close up"},
+    {"text": "That matters because most of the world's farmers work small plots, not industrial ones.", "broll_query": "aerial view smallholder farm plots"},
+    {"text": "Big agribusiness got automation first. Smallholders are catching up last, and portable tech is how.", "broll_query": "farmer operating handheld machinery in field"},
+    {"text": "It won't replace a combine harvester. It replaces hours of manual, repetitive labor.", "broll_query": "hands separating seeds by hand"},
+    {"text": "The biggest shift in agri-tech might not be the biggest machine. It might be the smallest one that actually reaches everyone.", "broll_query": "sunset over small farm with equipment"}
+  ]
+}
