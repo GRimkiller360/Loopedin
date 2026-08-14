@@ -42,8 +42,11 @@ def synthesize_google(text, voice_name="en-US-Standard-D"):
         data=body,
         headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
     )
-    with urllib.request.urlopen(req) as resp:
-        result = json.loads(resp.read())
+    try:
+        with urllib.request.urlopen(req) as resp:
+            result = json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"Cloud TTS request failed ({e.code}): {e.read().decode()}") from e
     return base64.b64decode(result["audioContent"])
 
 

@@ -69,7 +69,7 @@ jobs:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-          PRIVACY: ${{ inputs.privacy || 'public' }}
+          PRIVACY: ${{ inputs.privacy || vars.UPLOAD_PRIVACY || 'unlisted' }}
         run: |
           python pipeline/upload.py --video work/final.mp4 --script state/pending_script.json \
             --privacy "$PRIVACY" | tee work/upload_result.json
@@ -101,5 +101,5 @@ jobs:
         run: |
           git config user.name "loopedin-bot"
           git config user.email "actions@github.com"
-          git add state/used_topics.json state/routine_health.json state/pending_script.json
+          git add state/
           git diff --staged --quiet && echo "No changes" || (git commit -m "Record run result" && git push)
