@@ -16,13 +16,17 @@ the run. A human needs to reset it manually.
 
 ## 1. Read this run's inputs
 
-- `state/latest_trend_seed.json` -- a topic seed only (title/category/view-count
-  signal), fetched moments ago. Never the source video's actual content. Its
-  `seed_category` field is one of a fixed set (technology, science facts, life hacks,
-  history, true crime mystery, personal finance, space, psychology, fitness, AI news)
-  -- copy it verbatim into your script's `category` field (see step 2). Don't invent a
-  new category string even if it feels more precise; the performance-feedback loop
-  only works if categories stay consistent across videos.
+- `state/latest_trend_seed.json` -- `{"candidates": [...]}`, up to 3 topic seeds
+  (title/category/view-count signal each), fetched moments ago and already deduped
+  against `used_topics.json` by source video ID. Never the source video's actual
+  content. Pick whichever candidate gives the best distinct angle -- you don't have to
+  use `candidates[0]`. Each `seed_category` is one of a fixed set (technology, science
+  facts, life hacks, history, true crime mystery, personal finance, space, psychology,
+  fitness, AI news) -- copy the one you pick verbatim into your script's `category`
+  field (see step 2). Don't invent a new category string even if it feels more precise;
+  the performance-feedback loop only works if categories stay consistent across videos.
+  If the list is short (1-2 entries, or entries with `source_video_id: null`), that
+  means nothing fresh turned up this run -- see step 2 for what to do about that.
 - `state/performance_summary.md` -- if present, which *categories* have performed
   best on this channel so far (the "by topic" section is reference only -- those exact
   topics are already used, so their number isn't repeatable). Let the category ranking
@@ -33,27 +37,29 @@ the run. A human needs to reset it manually.
 
 ## 2. Write an original script -- this is your job, not a script's
 
-Using the trend seed as inspiration only, write an **original** commentary/take. Do
-not summarize, transcribe, or closely paraphrase the seed video -- riff on the topic,
-don't reuse the source. The seed's specific source video is loose inspiration, not a
-requirement -- you are not obligated to make a video "about" it specifically.
+Pick one candidate from `state/latest_trend_seed.json` and use it as inspiration only
+-- write an **original** commentary/take. Do not summarize, transcribe, or closely
+paraphrase the seed video -- riff on the topic, don't reuse the source. A candidate's
+specific source video is loose inspiration, not a requirement -- you are not obligated
+to make a video "about" it specifically.
 
-**If the seed's source video/topic is too close to something in `used_topics.json`
-(same underlying trend, published recently), do NOT skip the run.** The `seed_category`
-is broad (e.g. "life hacks" covers far more than one viral clip) -- pick a different
-specific topic or angle within that same category (or a clearly related one) that
-hasn't been covered, and write about that instead. Only skip entirely (see "On
-failure" below) if you genuinely cannot find any distinct angle at all within the
-category -- that should be rare; treat it as a last resort, not the default response
-to a duplicate seed.
+**If every candidate still seems too close to something in `used_topics.json` (same
+underlying trend, published recently -- should be rare now that candidates are
+pre-deduped by source video ID), do NOT skip the run.** Each `seed_category` is broad
+(e.g. "life hacks" covers far more than one viral clip) -- pick a different specific
+topic or angle within one of the candidates' categories (or a clearly related one)
+that hasn't been covered, and write about that instead. Only skip entirely (see "On
+failure" below) if you genuinely cannot find any distinct angle at all across every
+candidate -- that should be very rare; treat it as a last resort, not the default
+response to a duplicate seed.
 
 Save it as `state/pending_script.json` matching the shape documented in
 `pipeline/script_schema.py`:
 
-- `topic`, `category` (copied verbatim from `trend_seed["seed_category"]`),
-  `seed_source_video_id` (copied verbatim from `trend_seed["source_video_id"]`, which
-  may be `null` -- copy it either way, this is what lets a future run exclude this
-  exact source video from being reselected), `title` (<=100 chars), `description`,
+- `topic`, `category` (copied verbatim from your chosen candidate's `seed_category`),
+  `seed_source_video_id` (copied verbatim from that candidate's `source_video_id`,
+  which may be `null` -- copy it either way, this is what lets a future run exclude
+  this exact source video from being reselected), `title` (<=100 chars), `description`,
   `tags`
 - `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`
 - keep total narration under ~130 words so the final video stays under 58s

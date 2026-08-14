@@ -1,11 +1,16 @@
-"""Fetch a trending-Shorts topic seed via YouTube Data API search.list.
+"""Fetch several trending-Shorts topic seed candidates via YouTube Data API search.list.
 
 There is no dedicated "trending Shorts" endpoint on the YouTube Data API, so this
 approximates it: recent (last 48h), short-duration (<=60s), high-viewCount videos
-across a rotating set of seed categories. This returns a *topic seed* only -- title,
+across a rotating set of seed categories. Returns *topic seeds* only -- title,
 category, view count -- never the source video's transcript/audio/footage. The agent
-uses the seed as inspiration for an original script; it must not summarize or
-transcribe the source video.
+uses a seed as inspiration for an original script; it must not summarize or transcribe
+the source video.
+
+Returns multiple candidates (not just one) so the agent has somewhere to go if its
+first choice turns out to be too close to a recent video -- at no extra quota cost,
+since they're already deduped/collected from the same category calls a single-seed
+fetch would have made anyway.
 """
 import argparse
 import json
@@ -29,6 +34,11 @@ SEED_CATEGORIES = [
     "personal finance", "space", "psychology", "fitness", "AI news",
 ]
 
+# search.list costs 100 quota units/call -- cap categories tried per run so a bad-luck
+# run (everything recently used) can't burn the whole day's budget on trend-spotting.
+MAX_CATEGORIES_PER_RUN = 5
+MAX_CANDIDATES = 3
+
 DURATION_RE = re.compile(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?")
 
 
@@ -47,7 +57,7 @@ def _iso_duration_to_seconds(duration):
     return h * 3600 + m * 60 + s
 
 
-def find_trend_seed(used_topics_path, api_key):
+def find_trend_seeds(used_topics_path, api_key, max_candidates=MAX_CANDIDATES):
     used = load_json(used_topics_path, {"topics": []})
     recent = used["topics"][-config.VARIETY_LOOKBACK:]
     recent_topics = {t["topic"].lower() for t in recent}
@@ -60,10 +70,10 @@ def find_trend_seed(used_topics_path, api_key):
     published_after = (datetime.now(timezone.utc) - timedelta(hours=48)).strftime("%Y-%m-%dT%H:%M:%SZ")
     categories = SEED_CATEGORIES[:]
     random.shuffle(categories)
-    # search.list costs 100 quota units/call -- cap worst-case categories tried per
-    # run so a bad-luck run (everything recently used) can't burn the whole day's
-    # budget on trend-spotting alone.
-    categories = categories[:5]
+    categories = categories[:MAX_CATEGORIES_PER_RUN]
+
+    candidates = []
+    seen_ids_this_run = set()
 
     for query in categories:
         search_resp = _get(SEARCH_URL, {
@@ -89,24 +99,38 @@ def find_trend_seed(used_topics_path, api_key):
         for video in details_resp.get("items", []):
             duration_s = _iso_duration_to_seconds(video["contentDetails"]["duration"])
             title = video["snippet"]["title"]
-            if duration_s > 60 or video["id"] in recent_source_ids or title.lower() in recent_topics:
+            vid = video["id"]
+            if (
+                duration_s > 60
+                or vid in recent_source_ids
+                or vid in seen_ids_this_run
+                or title.lower() in recent_topics
+            ):
                 continue
-            return {
+            candidates.append({
                 "seed_category": query,
                 "source_title": title,
                 "source_description": video["snippet"].get("description", "")[:500],
-                "source_video_id": video["id"],
+                "source_video_id": vid,
                 "view_count": int(video["statistics"].get("viewCount", 0)),
-            }
+            })
+            seen_ids_this_run.add(vid)
+            if len(candidates) >= max_candidates:
+                break
+        if len(candidates) >= max_candidates:
+            break
 
-    # nothing fresh found across any category -- fall back to a bare category seed
-    return {
-        "seed_category": random.choice(SEED_CATEGORIES),
-        "source_title": None,
-        "source_description": None,
-        "source_video_id": None,
-        "view_count": 0,
-    }
+    if not candidates:
+        # nothing fresh found in any tried category -- fall back to a couple of bare
+        # category seeds (no specific video) so the agent still has more than one
+        # option, just without a viral-video anchor to riff on.
+        fallback_categories = random.sample(SEED_CATEGORIES, min(2, len(SEED_CATEGORIES)))
+        candidates = [{
+            "seed_category": cat, "source_title": None, "source_description": None,
+            "source_video_id": None, "view_count": 0,
+        } for cat in fallback_categories]
+
+    return candidates
 
 
 if __name__ == "__main__":
@@ -115,7 +139,8 @@ if __name__ == "__main__":
     parser.add_argument("--used-topics", default=str(config.STATE_DIR / "used_topics.json"))
     args = parser.parse_args()
 
-    seed = find_trend_seed(args.used_topics, config.require("YOUTUBE_API_KEY"))
+    candidates = find_trend_seeds(args.used_topics, config.require("YOUTUBE_API_KEY"))
+    output = {"candidates": candidates}
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-    Path(args.out).write_text(json.dumps(seed, indent=2))
-    print(json.dumps(seed, indent=2))
+    Path(args.out).write_text(json.dumps(output, indent=2))
+    print(json.dumps(output, indent=2))
