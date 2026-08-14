@@ -74,7 +74,12 @@ jobs:
           DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
           LOOPEDIN_INGEST_SECRET: ${{ secrets.LOOPEDIN_INGEST_SECRET }}
         run: |
-          curl -s -X POST "$DASHBOARD_URL/api/youtube-status/ingest" \
+          # -L --post301 --post302 --post303: follow any redirect (e.g. an
+          # http->https upgrade at Cloudflare's edge) while preserving the POST
+          # method and body -- without these flags curl silently downgrades a
+          # redirected POST to a bodyless GET instead of erroring, which looked
+          # like a mysterious 302 with no obvious cause.
+          curl -sL --post301 --post302 --post303 -X POST "$DASHBOARD_URL/api/youtube-status/ingest" \
             -H "X-Ingest-Secret: $LOOPEDIN_INGEST_SECRET" \
             -H "Content-Type: application/json" \
             --data-binary @/tmp/youtube-status-payload.json \
