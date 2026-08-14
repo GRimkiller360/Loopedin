@@ -1,0 +1,69 @@
+"""Upload the finished short to YouTube.
+
+NOTE: the exact API field name for the "altered/synthetic content" disclosure toggle
+below (`containsSyntheticMedia`) has NOT been verified against current YouTube Data API
+docs -- confirm the real field name before relying on this for the disclosure safety
+rail. If the field is wrong, the upload will likely still succeed but silently without
+the disclosure set, which defeats that safety rail without any visible error.
+"""
+import argparse
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from pipeline import config
+
+
+def _youtube_client():
+    from google.oauth2.credentials import Credentials
+    from googleapiclient.discovery import build
+
+    creds = Credentials(
+        token=None,
+        refresh_token=config.require("YOUTUBE_REFRESH_TOKEN"),
+        client_id=config.require("YOUTUBE_CLIENT_ID"),
+        client_secret=config.require("YOUTUBE_CLIENT_SECRET"),
+        token_uri="https://oauth2.googleapis.com/token",
+    )
+    return build("youtube", "v3", credentials=creds)
+
+
+def upload_short(video_path, script, privacy_status="public"):
+    from googleapiclient.http import MediaFileUpload
+
+    youtube = _youtube_client()
+    body = {
+        "snippet": {
+            "title": script["title"][:100],
+            "description": script["description"] + "\n\n#Shorts",
+            "tags": script.get("tags", []),
+            "categoryId": "22",
+        },
+        "status": {
+            "privacyStatus": privacy_status,
+            "selfDeclaredMadeForKids": False,
+            "containsSyntheticMedia": True,  # see module docstring -- verify this field name
+        },
+    }
+
+    media = MediaFileUpload(video_path, mimetype="video/mp4", resumable=True)
+    request = youtube.videos().insert(part="snippet,status", body=body, media_body=media)
+
+    response = None
+    while response is None:
+        _, response = request.next_chunk()
+
+    return response["id"]
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--video", required=True)
+    parser.add_argument("--script", required=True)
+    parser.add_argument("--privacy", default="public", choices=["public", "unlisted", "private"])
+    args = parser.parse_args()
+
+    script_data = json.loads(Path(args.script).read_text(encoding="utf-8"))
+    video_id = upload_short(args.video, script_data, args.privacy)
+    print(json.dumps({"video_id": video_id}))
