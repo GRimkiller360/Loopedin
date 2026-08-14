@@ -1,112 +1,65 @@
 # Routine runbook
 
-You are running one unattended fire of the AI Shorts channel automation. No human
-reviews this run's output before it goes live. Follow these steps in order and do not
-skip the health check.
+You are running one unattended fire of the Loopedin channel automation. No human
+reviews this before it goes live. Your job here is narrow and deliberately does not
+touch any credentials: a GitHub Actions workflow (`trend-fetch.yml`) already ran ~10
+minutes before you and committed a fresh trend seed; another workflow
+(`produce-upload.yml`) will pick up whatever you write here and do the actual
+TTS/b-roll/assembly/upload using GitHub's own encrypted repo secrets. You never see or
+need any API key.
 
 ## 0. Health check
 
-Read `state/routine_health.json`. If `paused` is true, STOP immediately -- do not run
-the pipeline, do not upload anything. Report the pause reason in your final summary and
-end the run. A human needs to reset it manually.
+Read `state/routine_health.json`. If `paused` is true, STOP immediately -- do not write
+a script, do not commit anything. Report the pause reason in your final summary and end
+the run. A human needs to reset it manually.
 
-## 1. Set up the environment
+## 1. Read this run's inputs
 
-Run `bash setup_env.sh` once at the start of the run (installs ffmpeg + Python deps).
+- `state/latest_trend_seed.json` -- a topic seed only (title/category/view-count
+  signal), fetched moments ago. Never the source video's actual content.
+- `state/performance_summary.md` -- if present, which topics/angles have performed
+  best on this channel so far. Let it steer your choice, but don't over-fit to a small
+  sample.
+- `state/used_topics.json` -- the last ~40 topics already covered. This is the variety
+  safety rail -- if today's seed is too close to something recent, pick a different
+  angle before writing anything.
 
-## 2. Get a trend seed
-
-```
-python pipeline/trend_source.py --out work/trend_seed.json
-```
-
-This returns a *topic seed* only (a title/category/view-count signal) -- never the
-source video's actual content. Read `work/trend_seed.json`.
-
-## 3. Write an original script -- this is your job, not a script's
+## 2. Write an original script -- this is your job, not a script's
 
 Using the trend seed as inspiration only, write an **original** commentary/take. Do
 not summarize, transcribe, or closely paraphrase the seed video -- riff on the topic,
-don't reuse the source. Save it as `work/script.json` matching the shape documented in
-`pipeline/script_schema.py`:
+don't reuse the source. Save it as `state/pending_script.json` matching the shape
+documented in `pipeline/script_schema.py`:
 
 - `topic`, `title` (<=100 chars), `description`, `tags`
 - `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`
 - keep total narration under ~130 words so the final video stays under 58s
 
-Validate it:
+Validate it before committing:
 
 ```
-python pipeline/script_schema.py work/script.json
+python pipeline/script_schema.py state/pending_script.json
 ```
 
-Cross-check `script["topic"]` against the last ~40 entries in
-`state/used_topics.json`. If it's too similar to a recent one, pick a different angle
-before continuing -- this is the variety safety rail; don't skip it.
-
-## 4. Narration audio
+## 3. Commit and push
 
 ```
-python pipeline/tts.py --script work/script.json --out work/narration.mp3
+git add state/pending_script.json
+git commit -m "Script: <topic>"
+git push
 ```
 
-## 5. B-roll
+That's it -- pushing this file is what triggers `produce-upload.yml`, which handles
+narration, b-roll, assembly, upload, and recording the result (including clearing
+`state/pending_script.json` once done). You won't see the outcome in this session; if
+you want to sanity-check a previous run's result, look at `state/used_topics.json` and
+`state/routine_health.json` as they stood at the start of this run (step 0-1).
 
-```
-python pipeline/broll.py --script work/script.json --work-dir work/broll
-```
+## On failure
 
-This prints a JSON list of clip paths -- save it to `work/broll_clips.json`.
-
-## 6. Assemble the video
-
-```
-python pipeline/assemble.py --script work/script.json --narration work/narration.mp3 \
-    --clips work/broll_clips.json --work-dir work/assemble --out work/final.mp4
-```
-
-## 7. Upload
-
-```
-python pipeline/upload.py --video work/final.mp4 --script work/script.json --privacy public
-```
-
-On success, record the topic so future runs avoid repeating it:
-
-```
-python -c "from pipeline.state_utils import record_used_topic; record_used_topic('state/used_topics.json', '<topic>', '<video_id>')"
-```
-
-## 8. Performance feedback -- only on the run whose hour is 0 UTC
-
-Once/day is enough; don't burn Analytics quota on every fire.
-
-```
-python pipeline/analytics_feedback.py
-```
-
-Read the printed summary. There's nowhere to persist "lessons learned" beyond this
-run's own judgment -- let it inform which categories/angles you lean into on your next
-fire.
-
-## 9. On any failure at any step
-
-Run this immediately, then stop:
-
-```
-python -c "from pipeline.state_utils import record_failure; import pipeline.config as c; print(record_failure('state/routine_health.json', '<short reason>', c.CONSECUTIVE_FAILURES_TO_PAUSE))"
-```
-
-If it prints `True`, the routine just paused itself -- say so clearly in your final
-summary so the human knows to look.
-
-## 10. On success
-
-```
-python -c "from pipeline.state_utils import record_success; record_success('state/routine_health.json')"
-```
-
-## 11. Commit
-
-Commit and push `state/*.json` (never commit anything under `work/` -- it's gitignored
-scratch space) with a short message noting the topic and video ID.
+If you can't produce a valid script for this run (e.g. every seed candidate is too
+close to something recent, or the seed data looks malformed), do not commit anything
+malformed -- just explain why in your final summary and end the run. The health/pause
+tracking for actual production failures (TTS, upload, etc.) is handled by
+`produce-upload.yml` itself, not by you.

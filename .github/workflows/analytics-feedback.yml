@@ -1,0 +1,50 @@
+name: Analytics Feedback
+
+on:
+  schedule:
+    # once/day is enough -- conserves Analytics API quota
+    - cron: "50 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  feedback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install --quiet -r requirements.txt
+
+      - name: Pull performance and summarize
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          python pipeline/analytics_feedback.py > /tmp/summary.json
+          python -c "
+          import json
+          rows = json.load(open('/tmp/summary.json'))
+          lines = ['# Performance summary (auto-generated, read this before writing a script)', '']
+          if not rows:
+              lines.append('No performance data yet -- not enough uploads/history to summarize.')
+          else:
+              lines.append('Top topics by average view percentage:')
+              for r in rows:
+                  lines.append(f\"- {r['topic']}: {r['avg_view_pct']:.1f}% avg view\")
+          open('state/performance_summary.md', 'w').write('\n'.join(lines) + '\n')
+          "
+
+      - name: Commit summary
+        run: |
+          git config user.name "loopedin-bot"
+          git config user.email "actions@github.com"
+          git add state/performance_log.json state/performance_summary.md
+          git diff --staged --quiet && echo "No changes" || (git commit -m "Update performance summary" && git push)

@@ -1,63 +1,72 @@
-# AI Shorts channel automation
+# Loopedin channel automation
 
 Fully-automatic pipeline: spot a trending topic, write an original commentary short
 (AI voice + stock b-roll + captions + royalty-free music), upload it to YouTube as a
-Short. Runs 10x/24h as a Claude Code cloud routine. Full design rationale is in the
-plan this was built from; the short version of the constraints:
+Short. Architecture mirrors the `bracketly` project's pattern: a scheduled **GitHub
+Actions workflow** does the mechanical, secret-consuming work using GitHub's own
+encrypted repo secrets and commits plain result files; a **Claude Code cloud routine**
+only reads those files and does the actual reasoning (writing an original script),
+then commits back. Neither ever needs to touch the other's territory, and no
+credential ever needs to live anywhere but GitHub's secrets store.
 
 - No real creator's footage/audio is ever reused — only a topic *seed* (title/category/
   view count) comes from trending videos; the script is always original.
-- Runs in the cloud, so it has no access to this machine — all state lives in this repo,
-  all secrets come from environment variables provided to the routine.
 - Safety rails: topic/script variety enforcement, synthetic-content disclosure on every
   upload, auto-pause after repeated failures (see `state/routine_health.json`).
 
-See `ROUTINE_INSTRUCTIONS.md` for the actual per-run operational runbook the cloud
-agent follows.
+## How the three pieces fit together
 
-## Manual one-time setup
+1. **`.github/workflows/trend-fetch.yml`** — runs ~10x/day on its own schedule, ~10
+   minutes before each Claude routine fire. Uses the `YOUTUBE_API_KEY` secret to find a
+   trending-Shorts topic seed, writes `state/latest_trend_seed.json`, commits it.
+2. **Claude Code cloud routine** — fires shortly after, follows
+   `ROUTINE_INSTRUCTIONS.md`: reads the seed + `state/performance_summary.md` +
+   `state/used_topics.json`, writes an **original** `state/pending_script.json`,
+   commits and pushes it. Needs no credentials at all.
+3. **`.github/workflows/produce-upload.yml`** — triggered by that push. Uses
+   `GOOGLE_TTS_CREDENTIALS_JSON`, `PEXELS_API_KEY`, `YOUTUBE_CLIENT_ID`,
+   `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN` secrets to run narration → b-roll →
+   assembly → upload, then records the result and clears the pending script.
+4. **`.github/workflows/analytics-feedback.yml`** — once/day, pulls performance stats
+   (`YOUTUBE_CLIENT_ID`/`SECRET`/`REFRESH_TOKEN` again) and writes
+   `state/performance_summary.md` for the next Claude routine run to read.
 
-These steps need your own browser/accounts — they can't be done for you.
+## One-time setup
 
-1. **Google Cloud project** with these APIs enabled:
-   - YouTube Data API v3
-   - Cloud Text-to-Speech API
-2. **OAuth consent screen**: configure for `youtube.upload`, `youtube.readonly`,
-   `yt-analytics.readonly` scopes, then push to **Production** (not Testing) —
-   Testing-status refresh tokens expire after 7 days, which breaks daily automation.
-   Test this before relying on it; `youtube.upload` is a sensitive scope and it's not
-   fully confirmed the personal-use exemption avoids verification review.
-3. **OAuth client** (Desktop app type) → gives you a client_id + client_secret.
-   Run the one-time local helper to mint a refresh token:
-   ```
-   pip install google-auth-oauthlib
-   python scripts/get_refresh_token.py <client_id> <client_secret>
-   ```
-4. **YouTube Data API key** (separate from the OAuth client — used for trend search).
-5. **Service account** for Cloud Text-to-Speech → download its JSON key.
-6. **Pexels API key** (free) at pexels.com/api.
-7. **Request a YouTube API quota increase** (Cloud Console → APIs & Services →
-   YouTube Data API v3 → Quotas). `videos.insert` costs 1600 units; 10 uploads/day
-   alone is ~16,000 units against a default 10,000/day cap. Until approved, cap real
-   runs at ~6/day or run with `--privacy unlisted`.
-8. **A private GitHub repo** for this project (push this directory to it) — the cloud
-   routine clones it fresh every fire.
-9. **Secrets**: before putting any real credential anywhere, check the claude.ai
-   environment settings for the routine's environment for an env-var/secrets
-   mechanism. If none exists, the fallback is an encrypted secrets file committed to
-   the private repo with the decryption key held only in the routine's config — ask
-   before doing this, it's a real trade-off, not a default.
+### 1. Add GitHub Actions secrets
 
-## Local dry run (do this before ever letting the routine post publicly)
+In the `Loopedin` repo on GitHub: **Settings → Secrets and variables → Actions → New
+repository secret**. Add these exact names:
+
+| Secret name | Value |
+|---|---|
+| `YOUTUBE_API_KEY` | YouTube Data API v3 key (trend search) |
+| `YOUTUBE_CLIENT_ID` | OAuth client ID |
+| `YOUTUBE_CLIENT_SECRET` | OAuth client secret |
+| `YOUTUBE_REFRESH_TOKEN` | from `scripts/get_refresh_token.py` |
+| `GOOGLE_TTS_CREDENTIALS_JSON` | Cloud TTS service-account JSON, full contents |
+| `PEXELS_API_KEY` | Pexels API key |
+
+These never touch the repo's file content or git history — GitHub encrypts them and
+only exposes them as env vars inside a workflow run.
+
+### 2. Everything else
+
+Already done as part of building this: Google Cloud project + APIs enabled, OAuth
+consent screen pushed to Production, YouTube channel created, all credentials minted.
+Remaining open item: the YouTube API quota increase request (`videos.insert` costs
+1600 units/upload; 10/day exceeds the default 10,000/day cap until Google approves a
+increase — `produce-upload.yml`'s manual `workflow_dispatch` trigger defaults to
+`unlisted` for exactly this kind of cautious testing).
+
+## Local dry run (optional — GitHub Actions secrets mean you don't have to)
 
 ```
 pip install -r requirements.txt
 cp secrets.example.env secrets.env   # fill in real values, never commit this file
-# on Windows, load it into your shell before running the pipeline steps manually:
-#   Get-Content secrets.env | ForEach-Object { if ($_ -match '^(\w+)=(.*)$') { [Environment]::SetEnvironmentVariable($Matches[1], $Matches[2]) } }
 ```
 
-Then run each `pipeline/*.py` step by hand (see `ROUTINE_INSTRUCTIONS.md` for the exact
-commands) and inspect `work/final.mp4` before ever calling `upload.py`. First few real
-uploads should use `--privacy unlisted`, confirmed manually on the channel, before
-switching to `public`.
+Then run each `pipeline/*.py` step by hand and inspect `work/final.mp4` before ever
+calling `upload.py --privacy public`. Since the real pipeline now runs through GitHub
+Actions with `workflow_dispatch` (manually triggerable, defaults to `unlisted`), this
+local dry run is a nice-to-have for debugging, not a required gate.

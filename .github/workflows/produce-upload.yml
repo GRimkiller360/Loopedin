@@ -1,0 +1,105 @@
+name: Produce and Upload Short
+
+on:
+  push:
+    paths:
+      - "state/pending_script.json"
+  workflow_dispatch:
+    inputs:
+      privacy:
+        description: "Upload privacy for a manual test run"
+        default: "unlisted"
+        type: choice
+        options: [unlisted, public, private]
+
+permissions:
+  contents: write
+
+jobs:
+  produce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: bash setup_env.sh
+
+      - name: Health check
+        id: health
+        run: |
+          python - <<'EOF' >> "$GITHUB_OUTPUT"
+          from pipeline.state_utils import is_paused
+          paused, reason = is_paused("state/routine_health.json")
+          print(f"paused={str(paused).lower()}")
+          if paused:
+              print(f"::warning::Routine is paused: {reason}")
+          EOF
+
+      - name: Validate script
+        if: steps.health.outputs.paused != 'true'
+        run: python pipeline/script_schema.py state/pending_script.json
+
+      - name: Narration
+        if: steps.health.outputs.paused != 'true'
+        env:
+          GOOGLE_TTS_CREDENTIALS_JSON: ${{ secrets.GOOGLE_TTS_CREDENTIALS_JSON }}
+        run: python pipeline/tts.py --script state/pending_script.json --out work/narration.mp3
+
+      - name: B-roll
+        if: steps.health.outputs.paused != 'true'
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: python pipeline/broll.py --script state/pending_script.json --work-dir work/broll > work/broll_clips.json
+
+      - name: Assemble
+        if: steps.health.outputs.paused != 'true'
+        run: |
+          python pipeline/assemble.py --script state/pending_script.json \
+            --narration work/narration.mp3 --clips work/broll_clips.json \
+            --work-dir work/assemble --out work/final.mp4
+
+      - name: Upload
+        if: steps.health.outputs.paused != 'true'
+        id: upload
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          PRIVACY: ${{ inputs.privacy || 'public' }}
+        run: |
+          python pipeline/upload.py --video work/final.mp4 --script state/pending_script.json \
+            --privacy "$PRIVACY" | tee work/upload_result.json
+
+      - name: Record state on success
+        if: steps.health.outputs.paused != 'true' && success()
+        run: |
+          VIDEO_ID=$(python -c "import json; print(json.load(open('work/upload_result.json'))['video_id'])")
+          TOPIC=$(python -c "import json; print(json.load(open('state/pending_script.json'))['topic'])")
+          python -c "
+          from pipeline.state_utils import record_used_topic, record_success
+          record_used_topic('state/used_topics.json', '$TOPIC', '$VIDEO_ID')
+          record_success('state/routine_health.json')
+          "
+          rm -f state/pending_script.json
+
+      - name: Record failure
+        if: steps.health.outputs.paused != 'true' && failure()
+        run: |
+          python -c "
+          from pipeline.state_utils import record_failure
+          import pipeline.config as c
+          paused = record_failure('state/routine_health.json', 'produce-upload workflow failed, see run log', c.CONSECUTIVE_FAILURES_TO_PAUSE)
+          print('routine auto-paused' if paused else 'failure recorded, not yet paused')
+          "
+
+      - name: Commit state
+        if: always() && steps.health.outputs.paused != 'true'
+        run: |
+          git config user.name "loopedin-bot"
+          git config user.email "actions@github.com"
+          git add state/used_topics.json state/routine_health.json state/pending_script.json
+          git diff --staged --quiet && echo "No changes" || (git commit -m "Record run result" && git push)
