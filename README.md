@@ -35,7 +35,11 @@ credential ever needs to live anywhere but GitHub's secrets store.
    performance stats (`YOUTUBE_CLIENT_ID`/`SECRET`/`REFRESH_TOKEN` again) and writes
    `state/performance_summary.md` so every routine fire that day reads the freshest
    available snapshot. Running more than once/day wouldn't help — YouTube Analytics
-   data itself only settles on a ~24-48h cycle.
+   data itself only settles on a ~24-48h cycle. Also pushes a full channel + per-video
+   snapshot (including a composite 0-100 `score_pct` per video — see
+   `pipeline/analytics_feedback.py`'s `score_video()`) to the same car-loan-dashboard
+   app the `bracketly` repo reports into, at `/youtube-status` (same ingest pattern as
+   `bracketly`'s `status-check.yml` → `/api/bracketly-status/ingest`).
 
 ## One-time setup
 
@@ -52,6 +56,8 @@ repository secret**. Add these exact names:
 | `YOUTUBE_REFRESH_TOKEN` | from `scripts/get_refresh_token.py` |
 | `GOOGLE_TTS_CREDENTIALS_JSON` | Cloud TTS service-account JSON, full contents |
 | `PEXELS_API_KEY` | Pexels API key |
+| `DASHBOARD_URL` | The car-loan-dashboard Worker's base URL (same value the `bracketly` repo's `DASHBOARD_URL` secret uses) |
+| `LOOPEDIN_INGEST_SECRET` | A long random string — set the identical value as a `wrangler secret put LOOPEDIN_INGEST_SECRET` on the dashboard Worker. Distinct from bracketly's `BRACKETLY_INGEST_SECRET`, so either app's ingest can be rotated independently. |
 
 These never touch the repo's file content or git history — GitHub encrypts them and
 only exposes them as env vars inside a workflow run.

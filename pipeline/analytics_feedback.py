@@ -90,6 +90,7 @@ def update_performance_log(performance_log_path, used_topics_path):
     meta_by_video = {
         t["video_id"]: {
             "topic": t["topic"],
+            "title": t.get("title"),
             "category": t.get("category"),
             "hook_type": t.get("hook_type"),
             "uploaded_at": t.get("uploaded_at"),
@@ -135,6 +136,93 @@ def _rate_per_1k(count, views):
     if not views:
         return 0.0
     return count / views * 1000
+
+
+# Composite per-video score, 0-100, for the dashboard's "how is this video doing"
+# column. Weighted toward retention since that's the primary growth signal (see
+# ROUTINE_INSTRUCTIONS.md's priority order), with subscriber conversion and
+# engagement rate normalized against a ceiling and blended in. The ceilings
+# (SUB_RATE_CEILING / ENG_RATE_CEILING) are initial guesses for "what a strong
+# per-1k-views rate looks like," not measured benchmarks -- there isn't enough
+# channel history yet to derive real ones. Revisit once there's a real
+# distribution of videos to calibrate against; until then this is a deliberately
+# transparent heuristic, not a black box.
+SCORE_WEIGHTS = {"avg_view_pct": 0.6, "sub_rate": 0.25, "eng_rate": 0.15}
+SUB_RATE_CEILING = 20.0   # subs per 1k views -> treated as a "perfect" 100 on this sub-score
+ENG_RATE_CEILING = 200.0  # likes+comments per 1k views -> treated as a "perfect" 100 on this sub-score
+
+
+def _normalize_to_100(value, ceiling):
+    if not ceiling:
+        return 0.0
+    return max(0.0, min(100.0, value / ceiling * 100))
+
+
+def score_video(v):
+    """None if there's no Analytics data yet for this video (still within the
+    24-48h reporting lag) -- a video shouldn't show a misleadingly low score just
+    because it's too new to have real numbers."""
+    if v.get("avg_view_pct") is None:
+        return None
+    views = v.get("views") or 0
+    sub_rate = _rate_per_1k(v.get("subscribers_gained") or 0, views)
+    eng_rate = _rate_per_1k((v.get("likes") or 0) + (v.get("comments") or 0), views)
+    score = (
+        SCORE_WEIGHTS["avg_view_pct"] * (v.get("avg_view_pct") or 0)
+        + SCORE_WEIGHTS["sub_rate"] * _normalize_to_100(sub_rate, SUB_RATE_CEILING)
+        + SCORE_WEIGHTS["eng_rate"] * _normalize_to_100(eng_rate, ENG_RATE_CEILING)
+    )
+    return round(min(100.0, score), 1)
+
+
+def build_video_list(used_topics_path, performance, live_stats_path):
+    """Full per-video table for the dashboard -- every uploaded video (from
+    used_topics.json, the authoritative record of what's actually been published),
+    not just ones old enough for Analytics to have settled. Layers in whichever
+    stats are available: settled Analytics numbers where present, falling back to
+    live_stats.json's near-real-time counts for videos too new for Analytics yet.
+    score_pct stays None until real Analytics data exists -- a video shouldn't show
+    a misleadingly low score just because it's a few hours old."""
+    used = load_json(used_topics_path, {"topics": []})
+    live = load_json(live_stats_path, {})
+    perf_by_id = {v["video_id"]: v for v in performance["videos"]}
+
+    videos = []
+    for t in used["topics"]:
+        video_id = t.get("video_id")
+        if not video_id:
+            continue
+        analytics = perf_by_id.get(video_id)
+        fallback = live.get(video_id, {})
+        videos.append({
+            "video_id": video_id,
+            "url": f"https://www.youtube.com/shorts/{video_id}",
+            "title": t.get("title"),
+            "topic": t.get("topic"),
+            "category": t.get("category"),
+            "hook_type": t.get("hook_type"),
+            "duration_seconds": t.get("duration_seconds"),
+            "uploaded_at": t.get("uploaded_at"),
+            "views": (analytics or {}).get("views", fallback.get("views")),
+            "likes": (analytics or {}).get("likes", fallback.get("likes")),
+            "comments": (analytics or {}).get("comments", fallback.get("comments")),
+            "avg_view_pct": (analytics or {}).get("avg_view_pct"),
+            "subscribers_gained": (analytics or {}).get("subscribers_gained"),
+            "score_pct": score_video(analytics) if analytics else None,
+            "stats_pending": analytics is None,
+        })
+    return sorted(videos, key=lambda v: v.get("uploaded_at") or "", reverse=True)
+
+
+def channel_totals(video_list):
+    scored = [v for v in video_list if v.get("avg_view_pct") is not None]
+    return {
+        "total_videos": len(video_list),
+        "total_views": sum(v.get("views") or 0 for v in video_list),
+        "total_subscribers_gained": sum(v.get("subscribers_gained") or 0 for v in video_list),
+        "avg_view_pct": (sum(v["avg_view_pct"] for v in scored) / len(scored)) if scored else None,
+        "avg_score_pct": (sum(v["score_pct"] for v in scored) / len(scored)) if scored else None,
+    }
 
 
 def summarize(performance):
@@ -280,12 +368,16 @@ if __name__ == "__main__":
     parser.add_argument("--used-topics", default=str(config.STATE_DIR / "used_topics.json"))
     parser.add_argument("--live-stats", default=str(config.STATE_DIR / "live_stats.json"))
     parser.add_argument("--summary-out", default=None, help="if set, also render+write performance_summary.md here")
+    parser.add_argument("--dashboard-out", default=None,
+                         help="if set, write the full channel+per-video payload here for the "
+                              "car-loan-dashboard youtube-status ingest step to POST")
     args = parser.parse_args()
 
     perf = update_performance_log(args.performance_log, args.used_topics)
     summary = summarize(perf)
     recent = recent_uploads(args.used_topics, args.live_stats)
     traffic = pull_traffic_sources()
+    videos = build_video_list(args.used_topics, perf, args.live_stats)
 
     output = dict(summary)
     output["recent_uploads"] = recent
@@ -294,3 +386,12 @@ if __name__ == "__main__":
 
     if args.summary_out:
         Path(args.summary_out).write_text(render_summary_markdown(summary, recent, traffic), encoding="utf-8")
+
+    if args.dashboard_out:
+        dashboard_payload = dict(summary)
+        dashboard_payload["generated_at"] = datetime.now(timezone.utc).isoformat()
+        dashboard_payload["channel_totals"] = channel_totals(videos)
+        dashboard_payload["recent_uploads"] = recent
+        dashboard_payload["traffic_sources"] = traffic
+        dashboard_payload["videos"] = videos
+        Path(args.dashboard_out).write_text(json.dumps(dashboard_payload, indent=2), encoding="utf-8")

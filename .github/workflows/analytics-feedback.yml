@@ -36,7 +36,9 @@ jobs:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-        run: python pipeline/analytics_feedback.py --summary-out state/performance_summary.md
+        run: |
+          python pipeline/analytics_feedback.py --summary-out state/performance_summary.md \
+            --dashboard-out /tmp/youtube-status-payload.json
 
       - name: Commit summary
         run: |
@@ -59,3 +61,21 @@ jobs:
           done
           echo "::error::Failed to push performance summary after 5 retries"
           exit 1
+
+      - name: Push snapshot to car-loan-dashboard
+        # Mirrors the same pattern the bracketly repo uses to feed its own status
+        # page on the same dashboard app -- see that repo's
+        # .github/workflows/status-check.yml. continue-on-error since the
+        # dashboard being briefly unreachable shouldn't fail this whole workflow;
+        # state/performance_summary.md (the thing the routine actually depends
+        # on) is already committed by the step above regardless.
+        continue-on-error: true
+        env:
+          DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
+          LOOPEDIN_INGEST_SECRET: ${{ secrets.LOOPEDIN_INGEST_SECRET }}
+        run: |
+          curl -s -X POST "$DASHBOARD_URL/api/youtube-status/ingest" \
+            -H "X-Ingest-Secret: $LOOPEDIN_INGEST_SECRET" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/youtube-status-payload.json \
+            -w "\nHTTP_STATUS:%{http_code}\n"
