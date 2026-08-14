@@ -17,10 +17,17 @@ the run. A human needs to reset it manually.
 ## 1. Read this run's inputs
 
 - `state/latest_trend_seed.json` -- a topic seed only (title/category/view-count
-  signal), fetched moments ago. Never the source video's actual content.
-- `state/performance_summary.md` -- if present, which topics/angles have performed
-  best on this channel so far. Let it steer your choice, but don't over-fit to a small
-  sample.
+  signal), fetched moments ago. Never the source video's actual content. Its
+  `seed_category` field is one of a fixed set (technology, science facts, life hacks,
+  history, true crime mystery, personal finance, space, psychology, fitness, AI news)
+  -- copy it verbatim into your script's `category` field (see step 2). Don't invent a
+  new category string even if it feels more precise; the performance-feedback loop
+  only works if categories stay consistent across videos.
+- `state/performance_summary.md` -- if present, which *categories* have performed
+  best on this channel so far (the "by topic" section is reference only -- those exact
+  topics are already used, so their number isn't repeatable). Let the category ranking
+  steer your choice, but don't over-fit to a small sample -- with only a handful of
+  videos so far, differences are mostly noise.
 - `state/used_topics.json` -- the last ~40 topics already covered. This is the variety
   safety rail -- if today's seed is too close to something recent, pick a different
   angle before writing anything.
@@ -32,7 +39,8 @@ not summarize, transcribe, or closely paraphrase the seed video -- riff on the t
 don't reuse the source. Save it as `state/pending_script.json` matching the shape
 documented in `pipeline/script_schema.py`:
 
-- `topic`, `title` (<=100 chars), `description`, `tags`
+- `topic`, `category` (copied verbatim from `trend_seed["seed_category"]`), `title`
+  (<=100 chars), `description`, `tags`
 - `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`
 - keep total narration under ~130 words so the final video stays under 58s
 

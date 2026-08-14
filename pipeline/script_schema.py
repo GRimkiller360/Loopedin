@@ -8,6 +8,11 @@ downstream stages (tts.py, broll.py, assemble.py) can rely on it.
 Expected script.json shape:
 {
   "topic": "short human-readable topic label, used for variety tracking",
+  "category": "the broader bucket this topic falls under (copy trend_seed['seed_category']
+               verbatim, e.g. 'science facts', 'life hacks') -- unlike topic, this repeats
+               across videos, so it's what the performance-feedback loop can actually learn
+               from ('science facts videos do well' is a generalizable signal; one specific
+               topic's performance is not)",
   "title": "YouTube title, <=100 chars, hook + relevant keywords",
   "description": "YouTube description; mention this is AI-narrated commentary",
   "tags": ["...", "..."],
@@ -20,7 +25,7 @@ Expected script.json shape:
 import json
 import sys
 
-REQUIRED_TOP_LEVEL = {"topic", "title", "description", "tags", "beats"}
+REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats"}
 REQUIRED_BEAT_KEYS = {"text", "broll_query"}
 MIN_BEATS, MAX_BEATS = 3, 12
 MAX_TITLE_LEN = 100

@@ -87,11 +87,13 @@ jobs:
       - name: Record state on success
         if: steps.health.outputs.paused != 'true' && steps.quota.outputs.result != 'capped' && success()
         run: |
-          VIDEO_ID=$(python -c "import json; print(json.load(open('work/upload_result.json'))['video_id'])")
-          TOPIC=$(python -c "import json; print(json.load(open('state/pending_script.json'))['topic'])")
           python -c "
+          import json
           from pipeline.state_utils import record_used_topic, record_success
-          record_used_topic('state/used_topics.json', '$TOPIC', '$VIDEO_ID')
+
+          script = json.load(open('state/pending_script.json', encoding='utf-8'))
+          result = json.load(open('work/upload_result.json', encoding='utf-8'))
+          record_used_topic('state/used_topics.json', script['topic'], result['video_id'], script.get('category'))
           record_success('state/routine_health.json')
           "
           python pipeline/quota_guard.py record --daily-cap "${{ vars.DAILY_UPLOAD_CAP || 4 }}"

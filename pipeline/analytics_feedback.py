@@ -54,12 +54,15 @@ def update_performance_log(performance_log_path, used_topics_path):
     performance = load_json(performance_log_path, {"videos": []})
     used = load_json(used_topics_path, {"topics": []})
 
-    topic_by_video = {t["video_id"]: t["topic"] for t in used["topics"] if t.get("video_id")}
-    stats = pull_stats(list(topic_by_video.keys()))
+    meta_by_video = {
+        t["video_id"]: {"topic": t["topic"], "category": t.get("category")}
+        for t in used["topics"] if t.get("video_id")
+    }
+    stats = pull_stats(list(meta_by_video.keys()))
 
     for video_id, s in stats.items():
         existing = next((v for v in performance["videos"] if v["video_id"] == video_id), None)
-        record = {"video_id": video_id, "topic": topic_by_video.get(video_id), **s}
+        record = {"video_id": video_id, **meta_by_video.get(video_id, {}), **s}
         if existing:
             existing.update(record)
         else:
@@ -70,13 +73,26 @@ def update_performance_log(performance_log_path, used_topics_path):
 
 
 def summarize(performance):
+    # Category is the generalizable signal ("science facts do well") -- unlike an exact
+    # topic, categories repeat across videos, so this is what's actually safe to steer
+    # future topic choices by. Per-topic detail is kept too, but only as reference.
+    by_category = defaultdict(list)
     by_topic = defaultdict(list)
     for v in performance["videos"]:
+        pct = v.get("avg_view_pct") or 0
+        if v.get("category"):
+            by_category[v["category"]].append(pct)
         if v.get("topic"):
-            by_topic[v["topic"]].append(v.get("avg_view_pct") or 0)
+            by_topic[v["topic"]].append(pct)
 
-    ranked = sorted(by_topic.items(), key=lambda kv: sum(kv[1]) / len(kv[1]), reverse=True)
-    return [{"topic": topic, "avg_view_pct": sum(vals) / len(vals)} for topic, vals in ranked[:10]]
+    def _rank(bucket, limit):
+        ranked = sorted(bucket.items(), key=lambda kv: sum(kv[1]) / len(kv[1]), reverse=True)
+        return [
+            {"name": name, "avg_view_pct": sum(vals) / len(vals), "sample_size": len(vals)}
+            for name, vals in ranked[:limit]
+        ]
+
+    return {"by_category": _rank(by_category, 10), "by_topic": _rank(by_topic, 10)}
 
 
 if __name__ == "__main__":
