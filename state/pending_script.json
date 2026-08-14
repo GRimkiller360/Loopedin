@@ -1,0 +1,16 @@
+{
+  "topic": "watermelon nice cream food science",
+  "title": "The Real Science Behind Viral Watermelon \"Ice Cream\"",
+  "description": "AI-narrated commentary breaking down the food science behind the viral frozen-watermelon 'ice cream' hack -- why it works, why it sometimes doesn't, and how to actually get a creamy scoop instead of a popsicle.",
+  "tags": ["watermelon", "ice cream hack", "food science", "life hacks", "kitchen tips", "viral food trend", "nice cream"],
+  "beats": [
+    {"text": "Everyone's freezing watermelon and blending it into so-called ice cream, but does it actually work?", "broll_query": "watermelon blender ice cream viral trend"},
+    {"text": "It's not magic, it's ice crystal size -- tiny crystals feel creamy, big crystals feel icy.", "broll_query": "ice crystals macro close up freezer"},
+    {"text": "Watermelon is over ninety percent water, so on its own it freezes into hard slush.", "broll_query": "watermelon chunks frozen on tray"},
+    {"text": "The fix is adding fat or fiber to break up those crystals -- think yogurt, banana, or coconut cream.", "broll_query": "yogurt banana coconut cream ingredients"},
+    {"text": "Blend it hard and fast so friction warms the mix just enough to stay scoopable.", "broll_query": "blender mixing fruit puree fast motion"},
+    {"text": "Then refreeze it for twenty minutes before you scoop.", "broll_query": "ice cream container in freezer"},
+    {"text": "Skip that step and you get a popsicle, not ice cream -- still good, just a different dessert.", "broll_query": "popsicle vs ice cream scoop comparison"},
+    {"text": "The hack works, but only once you understand why it works.", "broll_query": "scooping creamy fruit ice cream bowl"}
+  ]
+}
