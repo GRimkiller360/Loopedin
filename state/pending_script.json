@@ -1,0 +1,20 @@
+{
+  "topic": "why concept vehicles rarely reach mass production",
+  "category": "technology",
+  "seed_source_video_id": "qWdbAV_lzIo",
+  "title": "Why Viral Concept Vehicles Never Reach Showrooms",
+  "description": "AI-narrated commentary: viral hybrid vehicle concepts (like bike-car mashups) rack up millions of views, but almost none ever reach a dealership. The real bottleneck isn't the engineering -- it's regulation, certification, and the economics of scale. #shorts #technology",
+  "tags": ["technology", "concept vehicles", "regulation", "engineering", "innovation", "explainer", "shorts"],
+  "beats": [
+    {"text": "Every year, wild hybrid vehicles go viral online.", "broll_query": "viral concept vehicle prototype video"},
+    {"text": "A bike that folds into a car -- the internet loves these.", "broll_query": "transforming vehicle concept animation"},
+    {"text": "But almost none ever reach an actual dealership.", "broll_query": "empty car dealership showroom"},
+    {"text": "The real barrier isn't engineering -- it's certification.", "broll_query": "vehicle safety crash test"},
+    {"text": "Every road-legal vehicle must pass crash tests, emissions rules, and insurance standards built for one category at a time.", "broll_query": "government vehicle regulation paperwork"},
+    {"text": "A part-bike, part-car vehicle falls into a legal gray zone no regulator wants to own.", "broll_query": "bureaucrat reviewing paperwork stack"},
+    {"text": "Solving that is expensive, and mass production only pays off at scale.", "broll_query": "car factory assembly line robots"},
+    {"text": "So most prototypes stay exactly that -- one-off builds for demo videos, never sold.", "broll_query": "single prototype vehicle in garage"},
+    {"text": "The Segway had the same problem -- brilliant engineering, but no legal category to fit it into.", "broll_query": "segway pedestrian sidewalk historical footage"},
+    {"text": "These ideas usually work. Laws just move slower than invention.", "broll_query": "clock ticking gavel courtroom"}
+  ]
+}
