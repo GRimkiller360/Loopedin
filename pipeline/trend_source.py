@@ -54,6 +54,10 @@ def find_trend_seed(used_topics_path, api_key):
     published_after = (datetime.now(timezone.utc) - timedelta(hours=48)).strftime("%Y-%m-%dT%H:%M:%SZ")
     categories = SEED_CATEGORIES[:]
     random.shuffle(categories)
+    # search.list costs 100 quota units/call -- cap worst-case categories tried per
+    # run so a bad-luck run (everything recently used) can't burn the whole day's
+    # budget on trend-spotting alone.
+    categories = categories[:5]
 
     for query in categories:
         search_resp = _get(SEARCH_URL, {
