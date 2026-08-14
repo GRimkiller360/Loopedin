@@ -2,10 +2,14 @@ name: Analytics Feedback
 
 on:
   schedule:
-    # same cadence as trend-fetch.yml, a few minutes earlier, so performance_summary.md
-    # is freshly updated before every routine fire (not just once/day) -- the routine
-    # picks topics/categories by this data, so it should never be stale when it reads it
-    - cron: "0 0,2,5,7,10,12,14,17,19,22 * * *"
+    # Once/day is genuinely enough here, not just a quota-saving shortcut: YouTube
+    # Analytics data itself only settles on a ~24-48h cycle, so querying more often
+    # than that just re-fetches identical numbers. What matters is *timing* --
+    # run right before the first trend-fetch/routine cycle of the day (00:03/00:13
+    # UTC) so every fire that day reads the freshest available snapshot, instead of
+    # the old 06:50 slot which left the first few fires of the day reading
+    # yesterday's data.
+    - cron: "55 23 * * *"
   workflow_dispatch:
 
 permissions:

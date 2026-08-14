@@ -1,7 +1,8 @@
 """Pull performance stats for previously uploaded shorts and summarize what's working,
-so the agent can weight future topic/style choices toward it. Run before every routine
-fire (see analytics-feedback.yml's schedule) so the summary is never stale when the
-routine reads it."""
+so the agent can weight future topic/style choices toward it. Run once/day, timed
+right before the first routine fire of the day (see analytics-feedback.yml) --
+YouTube Analytics data itself only settles on a ~24-48h cycle, so querying more often
+than daily would just re-fetch unchanged numbers."""
 import argparse
 import json
 import sys

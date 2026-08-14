@@ -40,11 +40,13 @@ don't investigate further, that's out of scope per "On failure" below.
   the performance-feedback loop only works if categories stay consistent across videos.
   If the list is short (1-2 entries, or entries with `source_video_id: null`), that
   means nothing fresh turned up this run -- see step 2 for what to do about that.
-- `state/performance_summary.md` -- refreshed fresh right before every one of your
-  fires (not just once/day), so treat it as current. Your goal for this run is channel
-  growth: maximize views and watch-through/engagement (`avg_view_pct` is the engagement
-  proxy here -- higher means people watch more of the short before dropping off), not
-  just "write something." Let the *category* ranking (the "by topic" section is
+- `state/performance_summary.md` -- refreshed once/day, timed right before the first
+  fire of the day, so treat it as current for today (YouTube Analytics data itself
+  only settles on a ~24-48h cycle, so it can't usefully be fresher than that anyway).
+  Your goal for this run is channel growth: maximize views and watch-through/engagement
+  (`avg_view_pct` is the engagement proxy here -- higher means people watch more of the
+  short before dropping off), not just "write something." Let the *category* ranking
+  (the "by topic" section is
   reference only -- those exact topics are already used, so their number isn't
   repeatable) actively steer which candidate and angle you pick -- prefer topics in
   categories that are outperforming, and within your chosen category lean into whatever
