@@ -1,18 +1,18 @@
 {
-  "topic": "why flagship phones keep 'downgrading'",
+  "topic": "bike-car hybrid vehicle engineering tradeoffs",
   "category": "technology",
-  "seed_source_video_id": "axniJub51og",
-  "title": "Why New Phones Feel Like Downgrades",
-  "description": "AI-narrated commentary on why flagship smartphones sometimes feel worse each generation -- the business logic of tiered releases, feature-gating, and spec-sheet segmentation behind it.",
-  "tags": ["technology", "smartphones", "phonetech", "googlepixel", "techtok", "gadgets", "shorts"],
+  "seed_source_video_id": "qWdbAV_lzIo",
+  "title": "Why No One's Built the Perfect Bike-Car Hybrid (Yet)",
+  "description": "AI-narrated commentary: viral bike-car hybrid concepts look like genius engineering, but there's a physics and regulatory reason they never make it to the street. A look at why cargo bikes and velomobiles won instead.",
+  "tags": ["bike car hybrid", "micro mobility", "vehicle engineering", "urban transportation", "cargo bike", "velomobile", "tech explained", "engineering shorts"],
   "beats": [
-    {"text": "Every year a new flagship drops, and every year someone says it's a downgrade.", "broll_query": "person unboxing new smartphone"},
-    {"text": "Sometimes that's true -- charging bricks vanish, headphone jacks disappear, storage tiers shrink.", "broll_query": "smartphone box without charger"},
-    {"text": "But 'downgrade' rarely means the phone got worse to build.", "broll_query": "phone factory assembly line"},
-    {"text": "It usually means a feature got moved behind a paywall or a pricier tier.", "broll_query": "phone price tag close up"},
-    {"text": "Companies call it segmentation -- give away less on the base model so the pro version feels worth it.", "broll_query": "side by side phone comparison"},
-    {"text": "Camera specs get 'upgraded' on paper while real-world processing gets tuned down to save battery.", "broll_query": "smartphone camera lens macro"},
-    {"text": "It's not a mistake. It's a spreadsheet decision dressed up as an innovation.", "broll_query": "office spreadsheet on screen"},
-    {"text": "So next time a spec sheet feels smaller, ask who actually benefited from the cut.", "broll_query": "person scrolling phone specs"}
+    {"text": "Every few months a bike-car hybrid like this goes viral.", "broll_query": "bike car hybrid vehicle concept"},
+    {"text": "It looks like genius engineering — so why isn't it on the street?", "broll_query": "futuristic vehicle prototype street"},
+    {"text": "Widen a bike for stability and you lose what makes it a bike: splitting lanes, squeezing through gaps.", "broll_query": "cyclist weaving through city traffic"},
+    {"text": "Add doors and a roof and you add weight, the one thing bikes are built to avoid.", "broll_query": "car door closing vehicle interior"},
+    {"text": "Get too car-like and regulators pull you into car safety and registration rules.", "broll_query": "vehicle safety crash test lab"},
+    {"text": "So the vehicles that actually scaled — e-bikes, cargo trikes, velomobiles — split the difference instead of merging it.", "broll_query": "cargo bike electric trike delivery"},
+    {"text": "They keep a bike's weight and legal status, and borrow just enough comfort to be practical.", "broll_query": "commuter riding e-bike city street"},
+    {"text": "The viral hybrid is a great party trick. The boring cargo trike is what's actually replacing car trips.", "broll_query": "delivery cargo trike urban street"}
   ]
 }
