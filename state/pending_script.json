@@ -1,0 +1,24 @@
+{
+  "topic": "why range-bound sideways markets favor patient investors",
+  "category": "personal finance",
+  "seed_source_video_id": "ZHRoSGJBX6Q",
+  "seed_view_count": 33542,
+  "title": "Why 'Boring' Sideways Markets Might Be Your Best Investing Move",
+  "description": "AI-narrated commentary on why range-bound, sideways stock markets aren't the dead time investors assume they are. Original commentary for entertainment/education, not financial advice.",
+  "tags": ["personal finance", "investing", "stock market", "range bound market", "dollar cost averaging", "investing tips", "money", "wealth building"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "myth_bust", "text": "Most people think you can only build wealth when stocks are ripping higher — that's actually backwards."},
+    {"hook_type": "question", "text": "What if the market doing absolutely nothing for six months was actually working in your favor?"},
+    {"hook_type": "shocking_fact", "text": "The stock market has spent nearly a third of the last decade going basically sideways — and some investors still came out ahead."},
+    {"hook_type": "story", "text": "A friend once told me he sold everything because the market stopped moving. That single decision cost him years of compounding."}
+  ],
+  "beats": [
+    {"text": "Most people think you can only build wealth when stocks are ripping higher — that's actually backwards.", "broll_query": "stock market chart moving sideways flat line"},
+    {"text": "When prices go nowhere for months, headlines call it 'dead money' and panic sets in.", "broll_query": "frustrated investor checking phone stock app"},
+    {"text": "But a range-bound market is just volatility without direction — and volatility is where disciplined buying pays off later.", "broll_query": "trader calmly analyzing charts in office"},
+    {"text": "Dollar-cost averaging into a flat market means you're quietly buying the same stock for less average cost, dip after tiny dip.", "broll_query": "coins stacking growth chart animation"},
+    {"text": "The investors who get rewarded aren't the ones predicting the next breakout — they're the ones who kept showing up while everyone else got bored and left.", "broll_query": "calm investor steadily investing over time"},
+    {"text": "Ever sat through a market that just wouldn't move? Tell me how you handled it.", "broll_query": "person typing comment on phone smiling"}
+  ]
+}
