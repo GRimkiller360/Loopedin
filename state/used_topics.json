@@ -65,6 +65,18 @@
       "hook_type": "shocking_fact",
       "title": "He Jumped From 25,000 Feet With No Parachute",
       "duration_seconds": 42.3
+    },
+    {
+      "topic": "AI crop advice gone wrong \u2014 blind trust in AI recommendations",
+      "video_id": "AecIrGalK1U",
+      "uploaded_at": "2026-08-15T12:21:14.548572+00:00",
+      "publish_hour_utc": 12,
+      "category": "AI news",
+      "seed_source_video_id": "go4VmPgM8vI",
+      "seed_view_count": 276622,
+      "hook_type": "question",
+      "title": "He Trusted AI's Farming Advice. It Cost Him 10 Hectares of Crops.",
+      "duration_seconds": 42.2
     }
   ]
 }
