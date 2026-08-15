@@ -74,14 +74,13 @@ jobs:
           DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
           LOOPEDIN_INGEST_SECRET: ${{ secrets.LOOPEDIN_INGEST_SECRET }}
         run: |
-          # -L --post301 --post302 --post303: follow any redirect (e.g. an
-          # http->https upgrade at Cloudflare's edge) while preserving the POST
-          # method and body -- without these flags curl silently downgrades a
-          # redirected POST to a bodyless GET instead of erroring, which looked
-          # like a mysterious 302 with no obvious cause.
-          echo "DASHBOARD_URL literal value length: ${#DASHBOARD_URL}"
-          echo "DASHBOARD_URL first 8 chars: ${DASHBOARD_URL:0:8}"
-          curl -sL --post301 --post302 --post303 -X POST "https://car-loan-dashboard.ethanmglindeque.workers.dev/api/youtube-status/ingest?debug=1" \
+          # -L --post301 --post302 --post303: follow any redirect while preserving
+          # the POST method and body -- without these flags curl silently downgrades
+          # a redirected POST to a bodyless GET instead of erroring. DASHBOARD_URL
+          # must be the bare origin only (no trailing slash, no path) -- appending
+          # any path here previously caused the constructed URL to miss the ingest
+          # route entirely, redirect to /login, and crash there instead.
+          curl -sL --post301 --post302 --post303 -X POST "$DASHBOARD_URL/api/youtube-status/ingest" \
             -H "X-Ingest-Secret: $LOOPEDIN_INGEST_SECRET" \
             -H "Content-Type: application/json" \
             --data-binary @/tmp/youtube-status-payload.json \
