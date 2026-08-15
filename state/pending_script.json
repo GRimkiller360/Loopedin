@@ -1,0 +1,20 @@
+{
+  "topic": "Luke Aikins no-parachute skydive net engineering",
+  "category": "fitness",
+  "seed_source_video_id": "MjRpdR15UNI",
+  "seed_view_count": 1594445,
+  "title": "He Jumped From 25,000 Feet With No Parachute — And Lived",
+  "description": "AI-narrated commentary on the 2016 stunt where Luke Aikins skydived from 25,000 feet with no parachute and landed safely in a net. This is original commentary on the engineering behind it, not the source footage. #shorts #skydiving #engineering",
+  "tags": ["skydiving", "extreme sports", "engineering", "stunts", "science", "fitness", "shorts"],
+  "hook_type": "shocking_fact",
+  "beats": [
+    {"text": "In 2016 a man jumped from four miles up with zero parachute — and lived.", "broll_query": "skydiver freefall aerial view clouds"},
+    {"text": "Luke Aikins fell for two minutes at over 120 miles an hour. No gear. No backup chute.", "broll_query": "skydiver falling fast motion blur sky"},
+    {"text": "His plan wasn't luck. It was a 100-foot net, engineered and tested for years before he stepped on the plane.", "broll_query": "large safety net rigging construction"},
+    {"text": "The net absorbed the impact by spreading force across thousands of fibers, turning a lethal stop into a controlled slowdown.", "broll_query": "fabric fiber weave closeup slow motion"},
+    {"text": "Every earlier jump was a crash-test dummy, then stunt doubles, then finally him.", "broll_query": "crash test dummy drop test"},
+    {"text": "The real danger wasn't the fall. It was missing the net's center by even a few feet.", "broll_query": "target center aim precision closeup"},
+    {"text": "He landed dead center, stood up, and walked away.", "broll_query": "person standing up walking away triumphant"},
+    {"text": "Would you trust years of testing over a parachute, or does that still sound like a coin flip? Let me know.", "broll_query": "coin flip closeup slow motion"}
+  ]
+}
