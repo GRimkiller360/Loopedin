@@ -1,0 +1,19 @@
+{
+  "topic": "companies quietly rehiring humans after AI customer service rollouts",
+  "category": "AI news",
+  "seed_source_video_id": "8wLuJZ-O4Ng",
+  "seed_view_count": 85491,
+  "title": "Companies Are Secretly Firing Their AI and Rehiring Humans",
+  "description": "Companies rushed to replace people with AI customer service and support -- now some are quietly walking it back and rehiring humans. A short original commentary on what's actually happening with the AI-jobs shift. (AI-narrated commentary)",
+  "tags": ["AI news", "artificial intelligence", "future of work", "AI jobs", "customer service AI", "tech news", "AI backlash", "shorts"],
+  "hook_type": "myth_bust",
+  "beats": [
+    {"text": "Everyone's bracing for AI to replace every job in sight -- but a quiet reversal is already happening.", "broll_query": "office worker looking worried at laptop AI news"},
+    {"text": "Some companies rushed AI chatbots into customer service, sales, even hiring, expecting to cut costs overnight.", "broll_query": "AI chatbot customer service screen interface"},
+    {"text": "Then the complaints piled up -- customers stuck in loops, wrong answers stated with total confidence, no way to escalate.", "broll_query": "frustrated customer on phone call hold"},
+    {"text": "So a handful of those same companies have started walking it back, rehiring the human teams they cut.", "broll_query": "call center team working together office"},
+    {"text": "It's not that AI failed everywhere -- it's that speed and scale beat quality in the rush to automate.", "broll_query": "robot arm assembly line fast paced"},
+    {"text": "The lesson isn't 'AI is fake' -- it's that swapping out humans only works where the tradeoff actually holds up.", "broll_query": "human hand shaking robot hand handshake"},
+    {"text": "Have you run into a bot that clearly needed a human backup? Tell me where in the comments.", "broll_query": "smartphone comment section scrolling"}
+  ]
+}
