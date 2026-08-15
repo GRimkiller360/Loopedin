@@ -53,6 +53,18 @@
       "video_id": "NmCv9TyJ5nk",
       "category": "technology",
       "seed_source_video_id": "lzrGBx6zxpU"
+    },
+    {
+      "topic": "skydiving without a parachute world record jump",
+      "video_id": "msMzLwLWVuA",
+      "uploaded_at": "2026-08-15T07:19:42.388427+00:00",
+      "publish_hour_utc": 7,
+      "category": "fitness",
+      "seed_source_video_id": "MjRpdR15UNI",
+      "seed_view_count": 1611399,
+      "hook_type": "shocking_fact",
+      "title": "He Jumped From 25,000 Feet With No Parachute",
+      "duration_seconds": 42.3
     }
   ]
 }
