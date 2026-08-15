@@ -1,0 +1,40 @@
+name: Diagnose Assemble Hang (temporary)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: bash setup_env.sh
+
+      - name: Fetch b-roll and probe durations (no assemble)
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: |
+          python - <<'PYEOF'
+          import json
+          import subprocess
+          import sys
+          sys.path.insert(0, ".")
+          from pipeline import broll, config
+
+          script = json.loads(open("state/pending_script.json").read())
+          clip_paths = broll.fetch_all(script, "work/diag_broll", config.require("PEXELS_API_KEY"))
+
+          for i, (beat, path) in enumerate(zip(script["beats"], clip_paths)):
+              dur = float(subprocess.check_output([
+                  "ffprobe", "-v", "error", "-show_entries", "format=duration",
+                  "-of", "default=noprint_wrappers=1:nokey=1", path,
+              ]).strip())
+              size = subprocess.check_output(["stat", "-c", "%s", path]).decode().strip()
+              print(f"beat {i}: query={beat['broll_query']!r} path={path} duration={dur:.3f}s size={size}b")
+          PYEOF
