@@ -1,0 +1,20 @@
+{
+  "topic": "D.B. Cooper - the only unsolved skyjacking in US history",
+  "category": "true crime mystery",
+  "seed_source_video_id": "p4I0bY4lWXM",
+  "seed_view_count": 35711,
+  "title": "D.B. Cooper: The Only Unsolved Skyjacking in U.S. History",
+  "description": "The 1971 hijacking that ended with a parachute jump into a storm and a case the FBI never closed. AI-narrated commentary, original take -- not a reupload of any source video.",
+  "tags": ["dbcooper", "truecrime", "unsolvedmystery", "coldcase", "mystery", "fbi", "shorts", "truecrimemystery"],
+  "hook_type": "question",
+  "beats": [
+    {"text": "How does someone jump out of an airliner with $200,000 strapped to his chest and vanish forever?", "broll_query": "airplane window night storm silhouette"},
+    {"text": "In 1971, a passenger calling himself Dan Cooper hijacked a Boeing 727 mid-flight.", "broll_query": "1970s airline boarding gate vintage"},
+    {"text": "He demanded cash and parachutes, got both, then had the crew fly low toward Mexico.", "broll_query": "stack of cash and parachute gear"},
+    {"text": "Somewhere over the Washington wilderness he opened the rear stairs and jumped into a storm.", "broll_query": "dark forest rainstorm aerial night"},
+    {"text": "The FBI chased the case for 45 years and hundreds of suspects -- and never closed it.", "broll_query": "FBI agents investigation files archive"},
+    {"text": "In 1980, a kid found a rotting bundle of the exact ransom bills on a riverbank -- but no body, no parachute.", "broll_query": "riverbank digging discovery money bundle"},
+    {"text": "Nobody knows if he survived, and that mystery is why the case still pulls people in.", "broll_query": "unsolved case board pins and string"},
+    {"text": "Survived or didn't make it -- what's your theory? Drop it in the comments.", "broll_query": "phone comment notification social media"}
+  ]
+}
