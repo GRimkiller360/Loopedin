@@ -53,6 +53,18 @@
       "video_id": "NmCv9TyJ5nk",
       "category": "technology",
       "seed_source_video_id": "lzrGBx6zxpU"
+    },
+    {
+      "topic": "why the newspaper window-cleaning hack actually works",
+      "video_id": "l_0a45i3chk",
+      "uploaded_at": "2026-08-15T02:17:37.489282+00:00",
+      "publish_hour_utc": 2,
+      "category": "life hacks",
+      "seed_source_video_id": "4uUNvXtyYvo",
+      "seed_view_count": 2228087,
+      "hook_type": "myth_bust",
+      "title": "The Newspaper Window Hack Isn't Magic \u2014 Here's Why It Actually Works",
+      "duration_seconds": 36.0
     }
   ]
 }
