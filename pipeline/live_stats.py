@@ -22,8 +22,6 @@ from pipeline import config
 from pipeline.state_utils import load_json, save_json
 
 VIDEOS_URL = "https://www.googleapis.com/youtube/v3/videos"
-TRACK_WINDOW_HOURS = 72  # a little past the 48h "recent" window so the last couple
-                          # points of a video's early curve are still visible
 
 
 def _get(url, params):
@@ -35,20 +33,16 @@ def _get(url, params):
         raise RuntimeError(f"{url} request failed ({e.code}): {e.read().decode()}") from e
 
 
-def _recent_video_ids(used_topics_path, hours=TRACK_WINDOW_HOURS):
+def _all_video_ids(used_topics_path):
+    # Every uploaded video, unconditionally -- not just ones uploaded "recently".
+    # videos.list (part=statistics only) is cheap, and this is the only source that
+    # keeps working once YouTube Analytics has settled data (Analytics stops being a
+    # useful fallback trigger at that point, but there's no reason to stop refreshing
+    # live counts for older videos just because they've aged past some window --
+    # build_video_list's dashboard table needs *some* number for every video, not just
+    # the newest ones).
     used = load_json(used_topics_path, {"topics": []})
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
-    ids = []
-    for t in used["topics"]:
-        if not t.get("video_id") or not t.get("uploaded_at"):
-            continue
-        try:
-            when = datetime.fromisoformat(t["uploaded_at"])
-        except ValueError:
-            continue
-        if when >= cutoff:
-            ids.append(t["video_id"])
-    return ids
+    return [t["video_id"] for t in used["topics"] if t.get("video_id")]
 
 
 def fetch_live_stats(video_ids, api_key):
@@ -71,11 +65,11 @@ def fetch_live_stats(video_ids, api_key):
 
 
 def update_live_stats(live_stats_path, used_topics_path, api_key):
-    video_ids = _recent_video_ids(used_topics_path)
+    video_ids = _all_video_ids(used_topics_path)
     fresh = fetch_live_stats(video_ids, api_key)
     existing = load_json(live_stats_path, {})
     existing.update(fresh)
-    # drop anything that's aged out of the tracking window entirely
+    # drop anything no longer in used_topics.json at all (e.g. deleted uploads)
     existing = {vid: s for vid, s in existing.items() if vid in video_ids}
     save_json(live_stats_path, existing)
     return existing
