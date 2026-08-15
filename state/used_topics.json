@@ -65,6 +65,18 @@
       "hook_type": "shocking_fact",
       "title": "He Jumped From 25,000 Feet With No Parachute",
       "duration_seconds": 42.3
+    },
+    {
+      "topic": "companies quietly rehiring humans after AI customer service rollouts",
+      "video_id": "GxRFqdU-PsU",
+      "uploaded_at": "2026-08-15T17:17:57.492851+00:00",
+      "publish_hour_utc": 17,
+      "category": "AI news",
+      "seed_source_video_id": "8wLuJZ-O4Ng",
+      "seed_view_count": 85491,
+      "hook_type": "myth_bust",
+      "title": "Companies Are Secretly Firing Their AI and Rehiring Humans",
+      "duration_seconds": 42.6
     }
   ]
 }
