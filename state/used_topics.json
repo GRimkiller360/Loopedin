@@ -53,6 +53,18 @@
       "video_id": "NmCv9TyJ5nk",
       "category": "technology",
       "seed_source_video_id": "lzrGBx6zxpU"
+    },
+    {
+      "topic": "what if a storm's rain fused into one giant drop",
+      "video_id": "p6m_sitntb4",
+      "uploaded_at": "2026-08-15T00:21:03.777901+00:00",
+      "publish_hour_utc": 0,
+      "category": "science facts",
+      "seed_source_video_id": "fGiTVqGkous",
+      "seed_view_count": 904400,
+      "hook_type": "question",
+      "title": "What If a Whole Thunderstorm Became One Giant Raindrop?",
+      "duration_seconds": 38.1
     }
   ]
 }
