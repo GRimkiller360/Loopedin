@@ -18,6 +18,8 @@ from pipeline.state_utils import load_json
 MIN_WORDS, MAX_WORDS = 25, 160
 RECENT_TITLES_TO_CHECK = 15
 TITLE_OVERLAP_THRESHOLD = 0.7
+MIN_HOOK_WINNER_OVERLAP = 0.15
+HOOK_CANDIDATE_OVERLAP_THRESHOLD = 0.75
 
 BANNED_OPENERS = (
     "so today", "in this video", "welcome back", "today we're talking about",
@@ -51,6 +53,35 @@ def check(script, used_topics_path):
             if opener.startswith(banned):
                 errors.append(f"beat 0 opens with a banned filler phrase: {banned!r}")
                 break
+
+    # The winning hook_candidate must actually be the one used -- catches "planning
+    # theater" where candidates get drafted per the schema but beat 0 is written as
+    # something unrelated anyway. Light-touch polish between candidate and final beat 0
+    # is fine (hence a low bar, not an exact match), but zero resemblance means the
+    # planning step was skipped in substance even though the file satisfies the schema.
+    winner = next(
+        (c for c in (script.get("hook_candidates") or []) if c.get("hook_type") == script.get("hook_type")),
+        None,
+    )
+    if winner and beats:
+        overlap = _title_overlap(winner.get("text", ""), beats[0].get("text", ""))
+        if overlap < MIN_HOOK_WINNER_OVERLAP:
+            errors.append(
+                f"beat 0 doesn't resemble the winning hook_candidate (overlap={overlap:.2f}) -- "
+                "the drafted hook that matched hook_type must actually be the one used, not ignored"
+            )
+
+    # Candidates need to be genuinely different options, not the same idea reworded --
+    # schema.py only catches exact-duplicate text; this catches near-duplicates.
+    candidates = script.get("hook_candidates") or []
+    for i in range(len(candidates)):
+        for j in range(i + 1, len(candidates)):
+            overlap = _title_overlap(candidates[i].get("text", ""), candidates[j].get("text", ""))
+            if overlap >= HOOK_CANDIDATE_OVERLAP_THRESHOLD:
+                errors.append(
+                    f"hook_candidates[{i}] and [{j}] are too similar (overlap={overlap:.2f}) -- "
+                    "these need to be genuinely distinct angles, not the same hook reworded"
+                )
 
     used = load_json(used_topics_path, {"topics": []})
     recent_titles = [t["title"] for t in used["topics"][-RECENT_TITLES_TO_CHECK:] if t.get("title")]

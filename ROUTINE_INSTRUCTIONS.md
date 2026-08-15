@@ -85,6 +85,32 @@ paraphrase the seed video -- riff on the topic, don't reuse the source. A candid
 specific source video is loose inspiration, not a requirement -- you are not obligated
 to make a video "about" it specifically.
 
+### 2.1. Plan the hook first -- before you write anything else
+
+The hook is the single highest-leverage decision in this entire run, not a formality to
+get through before the "real" work of writing the script. Most Shorts drop-off happens
+in the first couple seconds; a mediocre hook with a great script loses to a great hook
+with a mediocre script, because almost nobody sees the rest if the opening doesn't land.
+Treat this as its own deliberate planning step, done before you draft `beats`, not
+something you back into by writing beat 0 as you go.
+
+For your chosen topic, draft **at least 3 distinct hook options**, spanning **at least 2
+different `hook_type`s** (`question`, `shocking_fact`, `myth_bust`, `list`, `story`,
+`challenge`) -- forcing yourself across styles surfaces genuinely different angles
+instead of three phrasings of the same idea. For each candidate, actually ask: does it
+land the surprise/claim/question in one sentence with zero preamble? Would a stranger
+mid-scroll stop for this specific line, not just "this topic in general"? Is it worded
+distinctly from how the last several videos opened (check `state/used_topics.json`)?
+
+Pick the strongest candidate. That's your `hook_type` and the basis for `beats[0]` --
+light polish going from draft to final beat is fine, but it must genuinely be that
+candidate, not something unrelated you wrote afterward. Record every candidate you
+drafted (not just the winner) in `hook_candidates`, matching the shape in
+`pipeline/script_schema.py`. This is enforced, not just advisory: `script_schema.py`
+requires >=3 candidates spanning >=2 hook_types with the winning hook_type among them,
+and `quality_gate.py` checks that `beats[0]` actually resembles the winning candidate
+and that candidates aren't near-duplicates of each other.
+
 **If every candidate still seems too close to something in `used_topics.json` (same
 underlying trend, published recently -- should be rare now that candidates are
 pre-deduped by source video ID), do NOT skip the run.** Each `seed_category` is broad
@@ -104,10 +130,12 @@ Save it as `state/pending_script.json` matching the shape documented in
   this exact source video from being reselected), `seed_view_count` (copied verbatim
   from that candidate's `view_count`, 0 if there was no source video), `title`
   (<=100 chars), `description`, `tags`
-- `hook_type`: pick one of `question`, `shocking_fact`, `myth_bust`, `list`, `story`,
-  `challenge` -- whichever actually matches how you wrote beat 0. Copy the label
-  verbatim (don't invent a new one) so the performance-feedback loop can compare
-  apples to apples across videos, same reasoning as `category`.
+- `hook_type`: the winning candidate's hook_type from step 2.1 -- whichever actually
+  matches how you wrote beat 0. Copy the label verbatim (don't invent a new one) so the
+  performance-feedback loop can compare apples to apples across videos, same reasoning
+  as `category`.
+- `hook_candidates`: every hook option you drafted in step 2.1 (>=3, spanning >=2
+  hook_types), each `{"hook_type": "...", "text": "..."}`.
 - `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`. Two retention
   rules that matter more than anything else here since most drop-off on Shorts happens
   in the first couple seconds: (1) beat 0 must land the hook itself immediately --
