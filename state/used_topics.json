@@ -53,6 +53,18 @@
       "video_id": "NmCv9TyJ5nk",
       "category": "technology",
       "seed_source_video_id": "lzrGBx6zxpU"
+    },
+    {
+      "topic": "Luke Aikins no-parachute skydive net engineering",
+      "video_id": "Om85OVHcIIA",
+      "uploaded_at": "2026-08-15T05:18:29.075693+00:00",
+      "publish_hour_utc": 5,
+      "category": "fitness",
+      "seed_source_video_id": "MjRpdR15UNI",
+      "seed_view_count": 1594445,
+      "hook_type": "shocking_fact",
+      "title": "He Jumped From 25,000 Feet With No Parachute \u2014 And Lived",
+      "duration_seconds": 43.8
     }
   ]
 }
