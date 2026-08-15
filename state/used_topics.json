@@ -65,6 +65,18 @@
       "hook_type": "shocking_fact",
       "title": "He Jumped From 25,000 Feet With No Parachute",
       "duration_seconds": 42.3
+    },
+    {
+      "topic": "why 'top stock picks' videos are already priced in by the time you see them",
+      "video_id": "Wg1od3UqY6c",
+      "uploaded_at": "2026-08-15T14:19:35.982242+00:00",
+      "publish_hour_utc": 14,
+      "category": "personal finance",
+      "seed_source_video_id": "AunQHdf88Rk",
+      "seed_view_count": 42000,
+      "hook_type": "myth_bust",
+      "title": "Stop Watching 'Top Stock Picks' Videos \u2014 Here's Why",
+      "duration_seconds": 42.4
     }
   ]
 }
