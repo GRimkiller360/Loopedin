@@ -1,0 +1,50 @@
+{
+  "topic": "lie detection - overexplaining as a tell",
+  "category": "psychology",
+  "seed_source_video_id": "piBPyX8rmD8",
+  "seed_view_count": 354204,
+  "title": "The Real Reason Liars Get Caught (Hint: It's Not Nerves)",
+  "description": "AI-narrated commentary on the psychology of lie detection: why liars often get caught by adding too much unprompted detail, not by looking nervous. An interesting behavioral pattern, not investigative or legal advice. #psychology #shorts",
+  "tags": ["psychology", "liedetection", "shorts", "psychologyfacts", "behavioralscience", "mindtricks"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {
+      "hook_type": "myth_bust",
+      "text": "Forget eye contact, that's not how liars actually get caught."
+    },
+    {
+      "hook_type": "shocking_fact",
+      "text": "Most liars aren't caught by nervousness, they're caught by adding one detail nobody asked for."
+    },
+    {
+      "hook_type": "question",
+      "text": "Why do liars almost always over-explain the one detail that matters least?"
+    }
+  ],
+  "beats": [
+    {
+      "text": "Most liars don't get caught by acting nervous, they get caught by adding one detail nobody asked for.",
+      "broll_query": "detective interview room tense conversation"
+    },
+    {
+      "text": "Psychologists call it unprompted elaboration, when someone volunteers specifics no one requested, it's often their brain trying too hard to sound believable.",
+      "broll_query": "psychologist taking notes during interview"
+    },
+    {
+      "text": "Truthful memories are messy, people forget small things and correct themselves mid-sentence.",
+      "broll_query": "person pausing recalling memory thoughtful"
+    },
+    {
+      "text": "Fabricated stories are usually smoother, because they were rehearsed instead of remembered.",
+      "broll_query": "person rehearsing speech in mirror"
+    },
+    {
+      "text": "Real investigators don't watch for shifty eyes, they watch for stories that are a little too clean.",
+      "broll_query": "detective reviewing case file documents"
+    },
+    {
+      "text": "Next time someone's explanation sounds suspiciously polished, ask one follow-up question you didn't plan, and tell me in the comments if it's ever worked for you.",
+      "broll_query": "two people talking follow up question"
+    }
+  ]
+}
