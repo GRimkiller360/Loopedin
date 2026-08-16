@@ -117,6 +117,18 @@
       "hook_type": "shocking_fact",
       "title": "Why Waiting For The 'Safe' Time To Invest Backfires",
       "duration_seconds": 33.2
+    },
+    {
+      "topic": "origami folding math used in NASA spacecraft and medical stents",
+      "video_id": "AvPh7MfFeRU",
+      "uploaded_at": "2026-08-16T12:24:44.755729+00:00",
+      "publish_hour_utc": 12,
+      "category": "technology",
+      "seed_source_video_id": "Y12oWhxg8e8",
+      "seed_view_count": 652287,
+      "hook_type": "myth_bust",
+      "title": "Why NASA Needed Origami to Launch a Space Telescope",
+      "duration_seconds": 41.8
     }
   ]
 }
