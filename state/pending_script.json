@@ -1,0 +1,24 @@
+{
+  "topic": "viral kitchen life hacks that fall apart at home",
+  "category": "life hacks",
+  "seed_source_video_id": "MHQURDS0ZKQ",
+  "seed_view_count": 848881,
+  "title": "Why Viral Kitchen Hacks Never Work at Home",
+  "description": "AI-narrated commentary on why those oddly-satisfying viral kitchen hack videos look flawless online but fall apart the second you try them yourself. #shorts #lifehacks #kitchenhacks",
+  "tags": ["lifehacks", "kitchenhacks", "viral", "shorts", "mythbusting", "cooking"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "myth_bust", "text": "That viral kitchen hack you just watched? It probably takes longer than doing it the boring way."},
+    {"hook_type": "question", "text": "Ever tried one of those viral kitchen hacks and it just... didn't work?"},
+    {"hook_type": "shocking_fact", "text": "Most viral life hack videos get filmed once, in perfect conditions, and never tested again."},
+    {"hook_type": "list", "text": "Three signs a viral life hack is really just a magic trick for the camera."}
+  ],
+  "beats": [
+    {"text": "That viral kitchen hack you just watched? It probably takes longer than doing it the boring way.", "broll_query": "person frustrated cooking in kitchen"},
+    {"text": "Most of those clips get one perfect take, filmed in a spotless kitchen, with everything pre-prepped just out of frame.", "broll_query": "overhead shot clean kitchen counter food prep"},
+    {"text": "Try it yourself and suddenly the fruit won't cut clean, the tool doesn't fit, and there are five extra steps nobody showed you.", "broll_query": "messy kitchen counter cutting fruit mistake"},
+    {"text": "They're not lying exactly -- they're optimized to look oddly satisfying for fifteen seconds, not to actually save you time.", "broll_query": "satisfying slow motion food cutting closeup"},
+    {"text": "The real tell? If a trick needs three special tools and a rock-steady camera hand, it's not a hack, it's a performance.", "broll_query": "kitchen gadget drawer clutter tools"},
+    {"text": "Which viral hack wasted your time the worst? Drop it below, and follow for more of what actually works.", "broll_query": "phone filming kitchen hack video"}
+  ]
+}
