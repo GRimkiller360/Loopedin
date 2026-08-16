@@ -1,0 +1,24 @@
+{
+  "topic": "why metallic paint must be mixed fresh (leafing chemistry)",
+  "category": "science facts",
+  "seed_source_video_id": "icYL53owCMM",
+  "seed_view_count": 973709,
+  "title": "Why Metallic Paint Ruins Itself If You Mix It Too Early",
+  "description": "AI-narrated commentary on the chemistry behind metallic paint's mirror-like shine, and why painters mix it fresh right before every use instead of buying it pre-mixed. #shorts #sciencefacts",
+  "tags": ["science facts", "paint chemistry", "metallic paint", "how it works", "diy tips", "chemistry facts", "shorts", "leafing"],
+  "hook_type": "question",
+  "hook_candidates": [
+    {"hook_type": "question", "text": "Why do painters refuse to mix metallic paint until seconds before they use it?"},
+    {"hook_type": "shocking_fact", "text": "Metallic paint can ruin itself while it's just sitting in the can, before anyone even opens it."},
+    {"hook_type": "myth_bust", "text": "You'd think paint is paint - mix it whenever, use it whenever. Metallic paint breaks that rule completely."},
+    {"hook_type": "story", "text": "Picture two identical cans of metallic paint - one gets used in two minutes, one sits open for an hour. Only one comes out shiny."}
+  ],
+  "beats": [
+    {"text": "Why do painters refuse to mix metallic paint until seconds before they use it?", "broll_query": "hand shaking metallic spray paint can close up"},
+    {"text": "Aluminum powder and varnish are kept apart on purpose, until the last possible second.", "broll_query": "aluminum powder and varnish separate paint can"},
+    {"text": "Stir them together and microscopic metal flakes rise and align flat against the surface - a reaction called leafing, and it's what makes the paint look like liquid chrome.", "broll_query": "metallic paint sample shiny chrome finish macro"},
+    {"text": "Wait too long and those flakes sink and clump instead, so the finish dries dull and blotchy instead of mirror-bright.", "broll_query": "dull cracked paint finish close up"},
+    {"text": "The shine was never in the ingredients - it was always in the timing.", "broll_query": "close up paint mixing stir stick swirl"},
+    {"text": "Ever wrecked a paint job by rushing it, or waiting too long? Tell me your worst mix-up below.", "broll_query": "finished car metallic paint shine reflection"}
+  ]
+}
