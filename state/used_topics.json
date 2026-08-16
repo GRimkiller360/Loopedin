@@ -117,6 +117,18 @@
       "hook_type": "shocking_fact",
       "title": "Why Waiting For The 'Safe' Time To Invest Backfires",
       "duration_seconds": 33.2
+    },
+    {
+      "topic": "origami-inspired spacecraft engineering (Miura fold)",
+      "video_id": "OJyBZQ5KTiY",
+      "uploaded_at": "2026-08-16T05:19:02.301588+00:00",
+      "publish_hour_utc": 5,
+      "category": "space",
+      "seed_source_video_id": "Y12oWhxg8e8",
+      "seed_view_count": 627987,
+      "hook_type": "question",
+      "title": "How Origami Solves One of Space Travel's Biggest Problems",
+      "duration_seconds": 43.7
     }
   ]
 }
