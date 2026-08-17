@@ -1,0 +1,23 @@
+{
+  "topic": "the fluid physics behind underwater bubble/vortex rings",
+  "category": "fitness",
+  "seed_source_video_id": "eV7-Sqad-0Y",
+  "seed_view_count": 542041,
+  "title": "Why Underwater Bubble Rings Hold Their Perfect Donut Shape",
+  "description": "AI-narrated commentary on the fluid dynamics behind the viral underwater bubble ring trick -- the same vortex-ring physics behind smoke rings, jellyfish pulses, and dolphins blowing bubble rings for fun.",
+  "tags": ["bubble ring", "vortex ring", "physics", "underwater", "fluid dynamics", "science facts", "shorts", "dolphins"],
+  "hook_type": "question",
+  "hook_candidates": [
+    {"hook_type": "question", "text": "Why does air shoot out underwater as a perfect ring instead of just a cloud of bubbles?"},
+    {"hook_type": "shocking_fact", "text": "Dolphins blow air rings underwater on purpose, and it's the exact same physics that holds a smoke ring together."},
+    {"hook_type": "myth_bust", "text": "That underwater bubble ring everyone's filming isn't a party trick, it's 200-year-old fluid dynamics."}
+  ],
+  "beats": [
+    {"text": "Why does air shoot out underwater as a perfect ring instead of just a cloud of bubbles?", "broll_query": "underwater bubble ring forming slow motion"},
+    {"text": "When a burst of air shoots into water, the outer edge drags and slows down while the center keeps moving, so the whole thing curls into a spinning donut shape.", "broll_query": "vortex ring formation air underwater physics diagram"},
+    {"text": "That spinning donut is a vortex ring, stable enough to travel several feet through water without falling apart.", "broll_query": "underwater bubble ring traveling stable donut shape"},
+    {"text": "You'll see the same shape in a mushroom cloud, a jellyfish's pulse, or a cannon's puff, nature keeps reusing one trick.", "broll_query": "mushroom cloud jellyfish pulse cannon smoke ring comparison"},
+    {"text": "Swimmers turned it into a viral pool trick, but the physics existed in nature millions of years before anyone filmed it.", "broll_query": "swimmer blowing bubble ring underwater pool"},
+    {"text": "Ever tried one yourself? Tell me in the comments, and follow for more everyday physics hiding in plain sight.", "broll_query": "swimmer smiling underwater bubble ring close up"}
+  ]
+}
