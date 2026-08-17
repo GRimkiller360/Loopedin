@@ -1,0 +1,25 @@
+{
+  "topic": "breath-inflated jacket insulation engineering",
+  "category": "technology",
+  "seed_source_video_id": "clVkfNKOqzg",
+  "seed_view_count": 1693544,
+  "title": "The Jacket You Inflate With Your Own Breath",
+  "description": "Some cold-weather jackets skip down and synthetic fill entirely and use an air chamber you inflate yourself, just by blowing into a valve. A quick look at the engineering logic behind breath-powered insulation, why trapped air works so well, and the tradeoff nobody mentions. AI-narrated commentary.",
+  "tags": ["engineering", "how it works", "inflatable jacket", "insulation science", "cold weather gear", "tech explained", "science facts", "design engineering"],
+  "hook_type": "question",
+  "hook_candidates": [
+    {"hook_type": "question", "text": "What if the only thing keeping you warm was the air you just breathed out?"},
+    {"hook_type": "shocking_fact", "text": "There's a real jacket you inflate by blowing into it, no down, no synthetic fill, just your own breath."},
+    {"hook_type": "myth_bust", "text": "You don't need goose down to survive freezing weather, some jackets just trap the air you exhale."},
+    {"hook_type": "story", "text": "Engineers once asked why pack a jacket with feathers when the wearer already carries their own air supply?"}
+  ],
+  "beats": [
+    {"text": "What if the only thing keeping you warm was the air you just breathed out?", "broll_query": "person exhaling breath cold weather closeup"},
+    {"text": "There's real cold-weather gear that works exactly like that: you inflate an air chamber just by blowing into a valve.", "broll_query": "inflating jacket valve closeup hands"},
+    {"text": "No down, no synthetic fill, just trapped air, the same trick that makes a double-pane window insulate so well.", "broll_query": "double pane window cross section insulation"},
+    {"text": "Air is one of the best insulators there is; it's literally why goose down works, trapping tiny air pockets between feathers.", "broll_query": "goose down feather macro closeup"},
+    {"text": "So some designers skipped the feathers entirely and let you fill the insulation yourself, straight from your own lungs.", "broll_query": "product designer sketching jacket concept"},
+    {"text": "The tradeoff: one bad seal and your coat slowly turns into a deflating balloon.", "broll_query": "deflating balloon slow motion"},
+    {"text": "Clever engineering that doesn't add new material, it just reuses what you already have. Would you trust it? Tell me below.", "broll_query": "hiker walking snowy mountain trail jacket"}
+  ]
+}
