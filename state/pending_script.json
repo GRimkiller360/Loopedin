@@ -1,0 +1,58 @@
+{
+  "topic": "the shark that cost $8 million and got secretly replaced",
+  "category": "history",
+  "seed_source_video_id": "6RQt9xsoBkI",
+  "seed_view_count": 730587,
+  "title": "The $8 Million Shark That Secretly Got Replaced",
+  "description": "AI-narrated commentary: the true story of one of the most expensive (and controversial) artworks ever sold, and the detail most people never hear about. #arthistory #shorts",
+  "tags": ["art history", "weird facts", "controversial art", "damien hirst", "true story", "shorts"],
+  "hook_type": "story",
+  "hook_candidates": [
+    {
+      "hook_type": "story",
+      "text": "In 1991, an artist paid six thousand pounds for a dead tiger shark — and made it the most expensive dead animal in art history."
+    },
+    {
+      "hook_type": "shocking_fact",
+      "text": "Nearly a million animals have died to become someone's art collection."
+    },
+    {
+      "hook_type": "question",
+      "text": "Would you still call it art if it cost the lives of a million animals?"
+    },
+    {
+      "hook_type": "myth_bust",
+      "text": "That shark in the tank isn't the original — most people have no idea it was secretly replaced."
+    }
+  ],
+  "beats": [
+    {
+      "text": "In 1991, an artist paid six thousand pounds for a dead tiger shark — and made it the most expensive dead animal in art history.",
+      "broll_query": "tiger shark preserved in formaldehyde tank museum exhibit"
+    },
+    {
+      "text": "He sealed it in a tank of formaldehyde and called it art.",
+      "broll_query": "shark suspended glass tank gallery installation"
+    },
+    {
+      "text": "A billionaire later paid eight million dollars for it.",
+      "broll_query": "art auction paddle bidding wealthy collectors"
+    },
+    {
+      "text": "One problem: sharks don't preserve like taxidermy. Within years the skin wrinkled and the tank turned cloudy.",
+      "broll_query": "decaying preserved specimen cloudy glass tank close up"
+    },
+    {
+      "text": "So the studio quietly caught a second shark and swapped it in — same title, same price tag, different animal.",
+      "broll_query": "fishing boat catching large shark open ocean"
+    },
+    {
+      "text": "That's just one piece. Across his career, this artist's work has used hundreds of thousands of animals.",
+      "broll_query": "insects and specimens preserved display art gallery"
+    },
+    {
+      "text": "Still call it art, or does it cross a line? Drop your take below.",
+      "broll_query": "museum visitors looking at modern art exhibit"
+    }
+  ]
+}
