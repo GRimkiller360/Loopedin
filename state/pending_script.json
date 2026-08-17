@@ -1,0 +1,61 @@
+{
+  "topic": "the neuroscience of feeling like someone is staring at you (peripheral vision gaze detection)",
+  "category": "psychology",
+  "seed_source_video_id": "zxRKhcv6WDc",
+  "seed_view_count": 454494,
+  "title": "The Real Reason You Can 'Feel' Someone Staring At You",
+  "description": "Ever felt like someone was watching you and turned around to find out you were right? This is the real, science-backed explanation — how your peripheral vision and an ancient threat-detection reflex in your brain pick up on a stare before you're even consciously aware of it. AI-narrated original commentary inspired by a trending psychology topic, not a summary of any other video. #psychology #brainfacts #shorts #science #humanbehavior",
+  "tags": [
+    "psychology",
+    "brain facts",
+    "peripheral vision",
+    "neuroscience",
+    "human behavior",
+    "shorts",
+    "science facts",
+    "eye contact",
+    "evolutionary psychology",
+    "did you know"
+  ],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {
+      "hook_type": "myth_bust",
+      "text": "That 'sixth sense' for feeling eyes on you isn't psychic — it's your peripheral vision doing something wild you never noticed."
+    },
+    {
+      "hook_type": "question",
+      "text": "Ever spun around in a public place completely certain someone was staring — and they actually were?"
+    },
+    {
+      "hook_type": "shocking_fact",
+      "text": "Your brain can register that someone's eyes are locked on you before a single conscious thought about it even forms."
+    },
+    {
+      "hook_type": "story",
+      "text": "Researchers once tracked people walking through a crowd and found they reliably sensed a stranger's stare — without ever looking straight at them."
+    }
+  ],
+  "beats": [
+    {
+      "text": "That 'sixth sense' you get when you feel eyes on you isn't psychic — it's your peripheral vision picking up a stare before your brain even catches up.",
+      "broll_query": "person suddenly turning around looking over shoulder city street"
+    },
+    {
+      "text": "Peripheral vision isn't just blurry background — it's wired to catch motion and gaze direction fast, way before you actually look someone's way.",
+      "broll_query": "close up human eye peripheral vision blurred background"
+    },
+    {
+      "text": "That signal gets flagged by an older, faster part of your brain built for spotting danger before humans had words for it — it just reacts.",
+      "broll_query": "brain scan visualization neural activity glowing"
+    },
+    {
+      "text": "So that prickly 'someone's watching me' feeling isn't random — it's your visual system doing exactly what it evolved to do.",
+      "broll_query": "crowded room silhouettes people walking slow motion"
+    },
+    {
+      "text": "Ever turned around and someone really was looking? Tell that story below — and follow for more of the science behind stuff your body already knows.",
+      "broll_query": "person smiling looking at phone comments social media"
+    }
+  ]
+}
