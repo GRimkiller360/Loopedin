@@ -1,0 +1,25 @@
+{
+  "topic": "psychology of feeling watched (gaze detection)",
+  "category": "psychology",
+  "seed_source_video_id": "zxRKhcv6WDc",
+  "seed_view_count": 415639,
+  "title": "Why You Can Feel Someone Staring At You (Science Explains)",
+  "description": "AI-narrated commentary exploring the real psychology behind why you sometimes 'feel' a stranger's stare before you see them — it's not a sixth sense, it's your peripheral vision and amygdala working together. #shorts #psychology #sciencefacts",
+  "tags": ["psychology", "gaze detection", "science facts", "brain facts", "peripheral vision", "shorts", "psychologyfacts"],
+  "hook_type": "question",
+  "hook_candidates": [
+    {"hook_type": "question", "text": "Ever felt eyes on you, turned around, and someone actually was staring?"},
+    {"hook_type": "shocking_fact", "text": "Your peripheral vision can flag a stranger's stare before your conscious brain even 'sees' their face."},
+    {"hook_type": "myth_bust", "text": "That 'sixth sense' for being watched isn't psychic — it's a documented blind spot in how your brain triggers alarms."},
+    {"hook_type": "story", "text": "In a hidden-camera study, people guessed correctly when a stranger was staring at them far more than random chance."}
+  ],
+  "beats": [
+    {"text": "Ever felt eyes on you, turned around, and someone actually was staring?", "broll_query": "person turning around startled looking behind"},
+    {"text": "That's not a sixth sense — it's your peripheral vision working overtime.", "broll_query": "close up eyes peripheral vision blur"},
+    {"text": "It can pick up a face-shaped blob and motion way before you consciously 'see' it.", "broll_query": "silhouette face blurred background bokeh"},
+    {"text": "That raw signal gets rushed straight to your amygdala, the brain's threat alarm, before your visual cortex even finishes processing the image.", "broll_query": "brain scan glowing amygdala animation"},
+    {"text": "So you feel the alarm first, then your conscious mind scrambles to invent a reason for it.", "broll_query": "person walking alone dark street glancing back"},
+    {"text": "It's basically a leftover survival trick — ancestors who sensed a predator's stare a split second early lived longer than ones who didn't.", "broll_query": "ancient human prehistoric silhouette forest predator"},
+    {"text": "Next time the hair on your neck stands up, that's ancient wiring, not magic — comment if this has happened to you.", "broll_query": "person smiling to camera comment below"}
+  ]
+}
