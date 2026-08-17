@@ -117,6 +117,18 @@
       "hook_type": "shocking_fact",
       "title": "Why Waiting For The 'Safe' Time To Invest Backfires",
       "duration_seconds": 33.2
+    },
+    {
+      "topic": "why muscle soreness doesn't measure workout effectiveness",
+      "video_id": "KZGzwF9eXjQ",
+      "uploaded_at": "2026-08-17T12:40:52.576966+00:00",
+      "publish_hour_utc": 12,
+      "category": "fitness",
+      "seed_source_video_id": "5gB0x-6VkiU",
+      "seed_view_count": 1229022,
+      "hook_type": "myth_bust",
+      "title": "Soreness Isn't Proof Your Workout Worked",
+      "duration_seconds": 40.2
     }
   ]
 }
