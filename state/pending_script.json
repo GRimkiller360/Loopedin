@@ -1,0 +1,23 @@
+{
+  "topic": "how CRT TVs painted pictures with an electron beam",
+  "category": "science facts",
+  "seed_source_video_id": "RnIlQn2Q3L8",
+  "seed_view_count": 99372,
+  "title": "How Old CRT TVs Painted Pictures With a Beam of Electrons",
+  "description": "No pixels, no chips — just a single steered beam of electrons redrawing the whole screen thirty times a second. Original AI-narrated commentary exploring how CRT TVs actually worked.",
+  "tags": ["crt tv", "how it works", "science facts", "retro tech", "engineering", "electron beam", "old technology", "science shorts"],
+  "hook_type": "question",
+  "hook_candidates": [
+    {"hook_type": "question", "text": "How did an old TV show a moving color picture with zero computer chips inside it?"},
+    {"hook_type": "shocking_fact", "text": "Every picture on an old CRT TV was already gone before you saw it — redrawn from scratch thirty times a second by a single moving dot."},
+    {"hook_type": "myth_bust", "text": "You think old TVs had pixels like your phone? They didn't — they had one beam of electrons doing all the work."}
+  ],
+  "beats": [
+    {"text": "How did an old TV show a moving color picture with zero computer chips inside it?", "broll_query": "vintage CRT television glowing screen closeup"},
+    {"text": "No frame was ever stored. One electron beam swept side to side, redrawing the whole picture from scratch thirty times a second.", "broll_query": "CRT tube electron gun diagram animation"},
+    {"text": "Magnets around the tube neck steered that beam, aiming it at one exact point on the glass at a time.", "broll_query": "magnetic deflection coils CRT tube macro"},
+    {"text": "Hit the phosphor coating and it glowed red, green, or blue for a split second, so the beam kept racing back to refresh it.", "broll_query": "phosphor screen glowing red green blue macro"},
+    {"text": "Your eyes just blended those fast flashes into one smooth, full-color picture.", "broll_query": "old television static to picture transition"},
+    {"text": "No pixels, no sensor, just electrons painting light thousands of times a second. What old tech secretly amazed you like this? Tell me below.", "broll_query": "retro living room CRT TV glow at night"}
+  ]
+}
