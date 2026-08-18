@@ -1,18 +1,6 @@
 {
   "topics": [
     {
-      "topic": "octopus three hearts",
-      "video_id": "DEYzlh2m4rQ"
-    },
-    {
-      "topic": "octopus three hearts retest",
-      "video_id": "7roD6Mon4kI"
-    },
-    {
-      "topic": "octopus three hearts retest 2",
-      "video_id": "LINHg2CLfgw"
-    },
-    {
       "topic": "watermelon nice cream food science",
       "video_id": "B0UKh_Et3vs",
       "category": "life hacks",
@@ -83,6 +71,63 @@
       "duration_seconds": 46.0
     },
     {
+      "topic": "why concept vehicles rarely reach mass production",
+      "video_id": "Wy-DyWv3y2E",
+      "category": "technology",
+      "seed_source_video_id": "qWdbAV_lzIo",
+      "uploaded_at": "2026-08-14T14:42:07Z"
+    },
+    {
+      "topic": "the unpaid five dollars that quietly wrecks roommate trust",
+      "video_id": "BeTRPGZ12qk",
+      "category": "personal finance",
+      "seed_source_video_id": "ZMQcysFqT7E",
+      "uploaded_at": "2026-08-14T17:20:41Z"
+    },
+    {
+      "topic": "Earth's true shape (the geoid) and why it keeps changing",
+      "video_id": "A_nuOe-Cm_0",
+      "category": "space",
+      "seed_source_video_id": "Zgjlr2HxkSg",
+      "uploaded_at": "2026-08-14T19:18:03Z"
+    },
+    {
+      "topic": "what if a storm's rain fused into one giant drop",
+      "video_id": "p6m_sitntb4",
+      "uploaded_at": "2026-08-15T00:21:03.777901+00:00",
+      "publish_hour_utc": 0,
+      "category": "science facts",
+      "seed_source_video_id": "fGiTVqGkous",
+      "seed_view_count": 904400,
+      "hook_type": "question",
+      "title": "What If a Whole Thunderstorm Became One Giant Raindrop?",
+      "duration_seconds": 38.1
+    },
+    {
+      "topic": "why the newspaper window-cleaning hack actually works",
+      "video_id": "l_0a45i3chk",
+      "uploaded_at": "2026-08-15T02:17:37.489282+00:00",
+      "publish_hour_utc": 2,
+      "category": "life hacks",
+      "seed_source_video_id": "4uUNvXtyYvo",
+      "seed_view_count": 2228087,
+      "hook_type": "myth_bust",
+      "title": "The Newspaper Window Hack Isn't Magic \u2014 Here's Why It Actually Works",
+      "duration_seconds": 36.0
+    },
+    {
+      "topic": "Luke Aikins no-parachute skydive net engineering",
+      "video_id": "Om85OVHcIIA",
+      "uploaded_at": "2026-08-15T05:18:29.075693+00:00",
+      "publish_hour_utc": 5,
+      "category": "fitness",
+      "seed_source_video_id": "MjRpdR15UNI",
+      "seed_view_count": 1594445,
+      "hook_type": "shocking_fact",
+      "title": "He Jumped From 25,000 Feet With No Parachute \u2014 And Lived",
+      "duration_seconds": 43.8
+    },
+    {
       "topic": "skydiving without a parachute world record jump",
       "video_id": "msMzLwLWVuA",
       "uploaded_at": "2026-08-15T07:19:42.388427+00:00",
@@ -93,6 +138,30 @@
       "hook_type": "shocking_fact",
       "title": "He Jumped From 25,000 Feet With No Parachute",
       "duration_seconds": 42.3
+    },
+    {
+      "topic": "AI crop advice gone wrong \u2014 blind trust in AI recommendations",
+      "video_id": "AecIrGalK1U",
+      "uploaded_at": "2026-08-15T12:21:14.548572+00:00",
+      "publish_hour_utc": 12,
+      "category": "AI news",
+      "seed_source_video_id": "go4VmPgM8vI",
+      "seed_view_count": 276622,
+      "hook_type": "question",
+      "title": "He Trusted AI's Farming Advice. It Cost Him 10 Hectares of Crops.",
+      "duration_seconds": 42.2
+    },
+    {
+      "topic": "why 'top stock picks' videos are already priced in by the time you see them",
+      "video_id": "Wg1od3UqY6c",
+      "uploaded_at": "2026-08-15T14:19:35.982242+00:00",
+      "publish_hour_utc": 14,
+      "category": "personal finance",
+      "seed_source_video_id": "AunQHdf88Rk",
+      "seed_view_count": 42000,
+      "hook_type": "myth_bust",
+      "title": "Stop Watching 'Top Stock Picks' Videos \u2014 Here's Why",
+      "duration_seconds": 42.4
     },
     {
       "topic": "companies quietly rehiring humans after AI customer service rollouts",
@@ -119,6 +188,275 @@
       "duration_seconds": 33.2
     },
     {
+      "topic": "why range-bound sideways markets favor patient investors",
+      "video_id": "XlC-3myWvsY",
+      "uploaded_at": "2026-08-15T19:16:54.482376+00:00",
+      "publish_hour_utc": 19,
+      "category": "personal finance",
+      "seed_source_video_id": "ZHRoSGJBX6Q",
+      "seed_view_count": 33542,
+      "hook_type": "myth_bust",
+      "title": "Why 'Boring' Sideways Markets Might Be Your Best Investing Move",
+      "duration_seconds": 37.1
+    },
+    {
+      "topic": "why viral giant sea creature videos get the size wrong",
+      "video_id": "TTEwNkShzD8",
+      "uploaded_at": "2026-08-15T22:19:22.097876+00:00",
+      "publish_hour_utc": 22,
+      "category": "science facts",
+      "seed_source_video_id": "l--MZ1BLGAg",
+      "seed_view_count": 1233953,
+      "hook_type": "myth_bust",
+      "title": "Why Viral 'Giant Sea Creature' Videos Get the Size Wrong",
+      "duration_seconds": 42.3
+    },
+    {
+      "topic": "the hidden design rules behind national flag colors and shapes",
+      "video_id": "Uq--zNH684E",
+      "uploaded_at": "2026-08-16T00:19:23.738152+00:00",
+      "publish_hour_utc": 0,
+      "category": "history",
+      "seed_source_video_id": "XvCRdQ9DCeI",
+      "seed_view_count": 659143,
+      "hook_type": "question",
+      "title": "Why So Many Flags Share the Same 3 Colors",
+      "duration_seconds": 44.2
+    },
+    {
+      "topic": "why chicken bones look pink even when fully cooked",
+      "video_id": "4T4aN7Xj96I",
+      "uploaded_at": "2026-08-16T02:17:08.481729+00:00",
+      "publish_hour_utc": 2,
+      "category": "life hacks",
+      "seed_source_video_id": "DVKIlUtdhFw",
+      "seed_view_count": 1060987,
+      "hook_type": "question",
+      "title": "Why Chicken Bones Turn Pink (It's Not What You Think)",
+      "duration_seconds": 30.7
+    },
+    {
+      "topic": "origami-inspired spacecraft engineering (Miura fold)",
+      "video_id": "OJyBZQ5KTiY",
+      "uploaded_at": "2026-08-16T05:19:02.301588+00:00",
+      "publish_hour_utc": 5,
+      "category": "space",
+      "seed_source_video_id": "Y12oWhxg8e8",
+      "seed_view_count": 627987,
+      "hook_type": "question",
+      "title": "How Origami Solves One of Space Travel's Biggest Problems",
+      "duration_seconds": 43.7
+    },
+    {
+      "topic": "why metallic paint separates into two cans (leafing behavior)",
+      "video_id": "4yybtlG4pwM",
+      "uploaded_at": "2026-08-16T07:21:29.633757+00:00",
+      "publish_hour_utc": 7,
+      "category": "science facts",
+      "seed_source_video_id": "icYL53owCMM",
+      "seed_view_count": 850715,
+      "hook_type": "question",
+      "title": "Why Metallic Paint Comes In Two Separate Cans",
+      "duration_seconds": 41.9
+    },
+    {
+      "topic": "lincoln and darwin same birthday coincidence",
+      "video_id": "7LBghc3zHwE",
+      "uploaded_at": "2026-08-16T10:18:37.542655+00:00",
+      "publish_hour_utc": 10,
+      "category": "history",
+      "seed_source_video_id": "fVzCNZXxGpo",
+      "seed_view_count": 571155,
+      "hook_type": "shocking_fact",
+      "title": "The Same-Day Birthday That Changed History Twice",
+      "duration_seconds": 37.0
+    },
+    {
+      "topic": "origami folding math used in NASA spacecraft and medical stents",
+      "video_id": "AvPh7MfFeRU",
+      "uploaded_at": "2026-08-16T12:24:44.755729+00:00",
+      "publish_hour_utc": 12,
+      "category": "technology",
+      "seed_source_video_id": "Y12oWhxg8e8",
+      "seed_view_count": 652287,
+      "hook_type": "myth_bust",
+      "title": "Why NASA Needed Origami to Launch a Space Telescope",
+      "duration_seconds": 41.8
+    },
+    {
+      "topic": "lie detection - overexplaining as a tell",
+      "video_id": "xnVKu1A_4eY",
+      "uploaded_at": "2026-08-16T14:17:50.454817+00:00",
+      "publish_hour_utc": 14,
+      "category": "psychology",
+      "seed_source_video_id": "piBPyX8rmD8",
+      "seed_view_count": 354204,
+      "hook_type": "shocking_fact",
+      "title": "The Real Reason Liars Get Caught (Hint: It's Not Nerves)",
+      "duration_seconds": 39.7
+    },
+    {
+      "topic": "why metallic paint must be mixed fresh (leafing chemistry)",
+      "video_id": "9SolzX6WTkQ",
+      "uploaded_at": "2026-08-16T17:17:26.450268+00:00",
+      "publish_hour_utc": 17,
+      "category": "science facts",
+      "seed_source_video_id": "icYL53owCMM",
+      "seed_view_count": 973709,
+      "hook_type": "question",
+      "title": "Why Metallic Paint Ruins Itself If You Mix It Too Early",
+      "duration_seconds": 35.5
+    },
+    {
+      "topic": "viral kitchen life hacks that fall apart at home",
+      "video_id": "vcnXat0EZsM",
+      "uploaded_at": "2026-08-16T19:18:55Z"
+    },
+    {
+      "topic": "the shark that cost $8 million and got secretly replaced",
+      "video_id": "l38yTrpx_yo",
+      "uploaded_at": "2026-08-17T00:24:37.681341+00:00",
+      "publish_hour_utc": 0,
+      "category": "history",
+      "seed_source_video_id": "6RQt9xsoBkI",
+      "seed_view_count": 730587,
+      "hook_type": "story",
+      "title": "The $8 Million Shark That Secretly Got Replaced",
+      "duration_seconds": 38.0
+    },
+    {
+      "topic": "why aluminum paint can't be pre-mixed - leafing behavior physics",
+      "video_id": "9eICy_mcg0k",
+      "uploaded_at": "2026-08-17T02:18:42.600397+00:00",
+      "publish_hour_utc": 2,
+      "category": "science facts",
+      "seed_source_video_id": "icYL53owCMM",
+      "seed_view_count": 995473,
+      "hook_type": "question",
+      "title": "Why Metallic Paint Can't Be Pre-Mixed (It's Physics)",
+      "duration_seconds": 40.9
+    },
+    {
+      "topic": "breath-inflated jacket insulation engineering",
+      "video_id": "pIYOqZukhu0",
+      "uploaded_at": "2026-08-17T05:24:07.257443+00:00",
+      "publish_hour_utc": 5,
+      "category": "technology",
+      "seed_source_video_id": "clVkfNKOqzg",
+      "seed_view_count": 1693544,
+      "hook_type": "question",
+      "title": "The Jacket You Inflate With Your Own Breath",
+      "duration_seconds": 43.3
+    },
+    {
+      "topic": "the artist whose work has killed nearly a million animals",
+      "video_id": "vMlvFCppO6o",
+      "uploaded_at": "2026-08-17T07:27:56.776608+00:00",
+      "publish_hour_utc": 7,
+      "category": "history",
+      "seed_source_video_id": "6RQt9xsoBkI",
+      "seed_view_count": 864946,
+      "hook_type": "shocking_fact",
+      "title": "The Artist Whose Work Has Killed Nearly 1 Million Animals",
+      "duration_seconds": 41.0
+    },
+    {
+      "topic": "how CRT TVs painted pictures with an electron beam",
+      "video_id": "FWR8h8bgxsg",
+      "uploaded_at": "2026-08-17T10:21:25.258981+00:00",
+      "publish_hour_utc": 10,
+      "category": "science facts",
+      "seed_source_video_id": "RnIlQn2Q3L8",
+      "seed_view_count": 99372,
+      "hook_type": "question",
+      "title": "How Old CRT TVs Painted Pictures With a Beam of Electrons",
+      "duration_seconds": 39.6
+    },
+    {
+      "topic": "why muscle soreness doesn't measure workout effectiveness",
+      "video_id": "KZGzwF9eXjQ",
+      "uploaded_at": "2026-08-17T12:40:52.576966+00:00",
+      "publish_hour_utc": 12,
+      "category": "fitness",
+      "seed_source_video_id": "5gB0x-6VkiU",
+      "seed_view_count": 1229022,
+      "hook_type": "myth_bust",
+      "title": "Soreness Isn't Proof Your Workout Worked",
+      "duration_seconds": 40.2
+    },
+    {
+      "topic": "psychology of feeling watched (gaze detection)",
+      "video_id": "zcXrC5aYGFA",
+      "uploaded_at": "2026-08-17T14:21:04.120860+00:00",
+      "publish_hour_utc": 14,
+      "category": "psychology",
+      "seed_source_video_id": "zxRKhcv6WDc",
+      "seed_view_count": 415639,
+      "hook_type": "question",
+      "title": "Why You Can Feel Someone Staring At You (Science Explains)",
+      "duration_seconds": 40.0
+    },
+    {
+      "topic": "the artist whose most famous works are preserved dead animals",
+      "video_id": "smgmgcseNCU",
+      "uploaded_at": "2026-08-17T17:18:19.698905+00:00",
+      "publish_hour_utc": 17,
+      "category": "history",
+      "seed_source_video_id": "6RQt9xsoBkI",
+      "seed_view_count": 941106,
+      "hook_type": "question",
+      "title": "Would You Call This Art? Nearly 1 Million Animals Died For It",
+      "duration_seconds": 39.1
+    },
+    {
+      "topic": "the fluid physics behind underwater bubble/vortex rings",
+      "video_id": "Zufap0kALNQ",
+      "uploaded_at": "2026-08-17T19:19:28.043948+00:00",
+      "publish_hour_utc": 19,
+      "category": "fitness",
+      "seed_source_video_id": "eV7-Sqad-0Y",
+      "seed_view_count": 542041,
+      "hook_type": "question",
+      "title": "Why Underwater Bubble Rings Hold Their Perfect Donut Shape",
+      "duration_seconds": 40.4
+    },
+    {
+      "topic": "the neuroscience of feeling like someone is staring at you (peripheral vision gaze detection)",
+      "video_id": "bR4I6VM-E9A",
+      "uploaded_at": "2026-08-17T22:18:25.831030+00:00",
+      "publish_hour_utc": 22,
+      "category": "psychology",
+      "seed_source_video_id": "zxRKhcv6WDc",
+      "seed_view_count": 454494,
+      "hook_type": "myth_bust",
+      "title": "The Real Reason You Can 'Feel' Someone Staring At You",
+      "duration_seconds": 39.9
+    },
+    {
+      "topic": "why the blood moon turns red - atmospheric scattering explained",
+      "video_id": "dgLclYrTq2Q",
+      "uploaded_at": "2026-08-18T00:17:41.502383+00:00",
+      "publish_hour_utc": 0,
+      "category": "space",
+      "seed_source_video_id": "dvcKoQndj0c",
+      "seed_view_count": 582323,
+      "hook_type": "shocking_fact",
+      "title": "The Real Reason The 'Blood Moon' Turns Red",
+      "duration_seconds": 35.0
+    },
+    {
+      "topic": "Albania's sworn virgins - women who legally became men under the Kanun",
+      "video_id": "g2yQhKZGvt8",
+      "uploaded_at": "2026-08-18T02:30:34.974939+00:00",
+      "publish_hour_utc": 2,
+      "category": "history",
+      "seed_source_video_id": "UvJUVsPhDak",
+      "seed_view_count": 643014,
+      "hook_type": "shocking_fact",
+      "title": "The Albanian Law That Let Women Legally Become Men",
+      "duration_seconds": 39.0
+    },
+    {
       "topic": "AI voice cloning scams using just seconds of audio",
       "video_id": "tuDqJQ0I4qY",
       "uploaded_at": "2026-08-18T04:50:28.864378+00:00",
@@ -129,6 +467,18 @@
       "hook_type": "shocking_fact",
       "title": "They Can Clone Your Voice From 3 Seconds of Audio",
       "duration_seconds": 27.5
+    },
+    {
+      "topic": "military mirror-panel countermeasures against AI drone targeting",
+      "video_id": "8GcGCwCW-C4",
+      "uploaded_at": "2026-08-18T05:17:41.064494+00:00",
+      "publish_hour_utc": 5,
+      "category": "AI news",
+      "seed_source_video_id": "jCqwuw4jZic",
+      "seed_view_count": 71073,
+      "hook_type": "shocking_fact",
+      "title": "The Weird Reason Militaries Are Bolting Mirrors to War Vehicles",
+      "duration_seconds": 38.0
     }
   ]
 }
