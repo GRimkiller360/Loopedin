@@ -594,6 +594,19 @@
       "title": "Why You Remember Unpaid Bills Better Than Paid Ones",
       "duration_seconds": 15.2,
       "ruleset_version": "2026-08-18-hooks-v2"
+    },
+    {
+      "topic": "moral licensing -- why buying 'eco-friendly' products makes people cheat more",
+      "video_id": "RwC2zUlc31g",
+      "uploaded_at": "2026-08-18T11:57:08.657890+00:00",
+      "publish_hour_utc": 11,
+      "category": "psychology",
+      "seed_source_video_id": "QLhXMtA_B2c",
+      "seed_view_count": 1325991,
+      "hook_type": "shocking_fact",
+      "title": "Why Buying 'Eco-Friendly' Products Makes People Lie And Steal More",
+      "duration_seconds": 19.4,
+      "ruleset_version": "2026-08-18-hooks-v2"
     }
   ]
 }
