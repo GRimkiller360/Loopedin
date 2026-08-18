@@ -189,10 +189,24 @@ Save it as `state/pending_script.json` matching the shape documented in
   query worded as a full sentence returned an ocean wave, a tiger, and a CPU socket
   instead of anything mask-related; the same concept as a short phrase returned
   entirely on-topic results). Keep every beat's query this short, not just beat 0.
+  Before drafting beats, pick a deliberate **story shape** for this topic rather than
+  defaulting to a flat list of facts -- research on faceless/narrated short-form
+  consistently finds the gap is story structure, not editing polish. Choose whichever
+  genuinely fits: **curiosity-gap** (open a specific unanswered question, resolve it at
+  the end), **problem-solution** (a real friction/mistake, then the fix), or
+  **mystery-reveal** (withhold one concrete detail from beat 0, deliver it as the
+  payoff). Whichever shape, beat 0 must *open* a specific, nameable gap -- not vague
+  intrigue -- so there's something concrete left to close.
+
   Retention rules that matter more than anything else here:
-  1. **Beat 0 must land the hook itself immediately** -- the surprising claim,
-     question, or premise -- no throat-clearing preamble like "so today we're talking
-     about" before it.
+  1. **Beat 0 must land the hook itself immediately, within the first ~2-3 seconds of
+     spoken narration (roughly the first 6-8 words at this channel's ~2.2 words/sec
+     pace)** -- the surprising claim, question, or premise, with zero throat-clearing
+     preamble like "so today we're talking about." This isn't a vibe, it's a real
+     documented threshold -- short-form attention spans have compressed to ~2 seconds,
+     and hooks under 2 seconds measurably outperform longer intros. Never open on
+     setup, context, or scene-framing; open on the payoff, the claim itself, or the
+     single most visually/conceptually striking moment of the whole topic.
   2. **Beat 0's `broll_query` needs the same bar as its text, within the short-phrase
      constraint above.** Every other beat can use a straightforwardly descriptive
      query, but a generic/calm stock clip on beat 0 undercuts a strong hook -- the
@@ -200,29 +214,42 @@ Save it as `state/pending_script.json` matching the shape documented in
      Pick the 3-6 keywords that point at something visually arresting or surprising
      matching the claim (motion, an unexpected image, the specific concrete thing the
      hook is about) rather than a generic establishing shot of the general topic.
-  3. **The closing beat should loop back to the opening, not just wrap up.** Shorts
-     reward rewatches specifically -- someone who watches a 15-second video twice
-     because the ending sends them back to the start reads as retention over 100%,
-     which is a stronger algorithmic signal than a single high-retention watch. Write
-     the last beat so it calls back to a specific word, image, or claim from beat 0
-     (a twist on it, a callback phrase, an answer that recontextualizes the opening
-     question) so replaying from the top feels rewarding, not repetitive. This is
-     concrete, not just "make it good" -- if you can't point to which specific word or
-     image in beat 0 the ending calls back to, it isn't looping yet.
-  4. **The last beat should also close with a light, natural call-to-action** (e.g.
+  3. **The closing beat must actually deliver the payoff the hook promised, not just
+     conclude.** This is distinct from the loop-back rule below -- payoff means the
+     specific gap/question/tension opened in beat 0 gets a real, concrete answer or
+     resolution by the end (the mechanism, the number, the twist -- whatever beat 0
+     implicitly promised). A video that ends on a vague summary or a restated claim
+     without actually resolving what beat 0 opened will lose viewers right before the
+     end, which is the single worst place to lose them -- they were one beat away from
+     a satisfying close. If you can't point to the exact sentence that pays off beat
+     0's specific promise, the script isn't done.
+  4. **The closing beat should *also* loop back to the opening, not just deliver the
+     payoff and stop.** Shorts reward rewatches specifically -- someone who watches a
+     15-second video twice because the ending sends them back to the start reads as
+     retention over 100%, which is a stronger algorithmic signal than a single
+     high-retention watch. Write the last beat so it calls back to a specific word,
+     image, or claim from beat 0 (a twist on it, a callback phrase, an answer that
+     recontextualizes the opening question) so replaying from the top feels rewarding,
+     not repetitive. This is concrete, not just "make it good" -- if you can't point to
+     which specific word or image in beat 0 the ending calls back to, it isn't looping
+     yet. Payoff and loop-back should coexist in the same closing beat, not compete for
+     space -- the payoff line often *is* the callback, recontextualized.
+  5. **The last beat should also close with a light, natural call-to-action** (e.g.
      inviting a comment with their own take, or a reason to follow for more) --
      comments/likes/follows are engagement signals, not just a nicety. This can
      coexist with the loop-back (a callback line immediately followed by the CTA).
      Don't force identical CTA phrasing every time; vary it so it doesn't read as
      copy-pasted spam.
-  5. **Before finalizing, check the middle, not just the opener.** A strong hook still
-     loses viewers if beats 1 through N-1 sag -- re-read beats 1 through the
-     second-to-last and ask: does each one keep raising a question or adding a new
-     specific detail, or does any beat just restate/pad what the previous one already
-     said? A beat that doesn't earn its place (no new information, no rising tension)
-     is a place viewers drop off even after a great hook. Cut or rewrite any beat that
-     fails this check rather than leaving it in to hit a word-count target.
-  6. **Mark the single most load-bearing word/number per beat with `**double
+  6. **Before finalizing, check the middle, not just the opener -- each beat is a
+     micro-reveal, not a restatement.** A strong hook still loses viewers if beats 1
+     through N-1 sag; re-read beats 1 through the second-to-last and ask: does each one
+     add a genuinely new specific detail that moves the story shape forward (per the
+     curiosity-gap/problem-solution/mystery-reveal choice above), or does any beat just
+     restate/pad what the previous one already said? A beat that doesn't earn its place
+     (no new information, no rising tension) is a place viewers drop off even after a
+     great hook. Cut or rewrite any beat that fails this check rather than leaving it in
+     to hit a word-count target.
+  7. **Mark the single most load-bearing word/number per beat with `**double
      asterisks**`** for caption emphasis (bold highlight color + size bump when
      burned in -- see `pipeline/script_schema.py`). At most 1-2 marked words per
      beat, and only the specific number/claim/twist that beat exists to deliver --
