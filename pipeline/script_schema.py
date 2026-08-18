@@ -59,7 +59,7 @@ import sys
 # produce-upload.yml (not something the agent sets itself) so a future performance
 # comparison can actually tell whether a guidance change moved retention, instead of
 # every video's history being lumped into one undifferentiated average forever.
-RULESET_VERSION = "2026-08-18-hooks-v2"
+RULESET_VERSION = "2026-08-18-retention-overhaul-v3"
 
 REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates"}
 REQUIRED_BEAT_KEYS = {"text", "broll_query"}

@@ -97,6 +97,7 @@ def update_performance_log(performance_log_path, used_topics_path):
             "publish_hour_utc": t.get("publish_hour_utc"),
             "duration_seconds": t.get("duration_seconds"),
             "seed_view_count": t.get("seed_view_count"),
+            "ruleset_version": t.get("ruleset_version"),
         }
         for t in used["topics"] if t.get("video_id")
     }
@@ -241,6 +242,7 @@ def summarize(performance):
         "by_publish_hour": defaultdict(list),
         "by_seed_momentum": defaultdict(list),
         "by_topic": defaultdict(list),
+        "by_ruleset_version": defaultdict(list),
     }
     for v in performance["videos"]:
         views = v.get("views") or 0
@@ -261,6 +263,8 @@ def summarize(performance):
             dimensions["by_seed_momentum"][_seed_momentum_bucket(v["seed_view_count"])].append(entry)
         if v.get("topic"):
             dimensions["by_topic"][v["topic"]].append(entry)
+        if v.get("ruleset_version"):
+            dimensions["by_ruleset_version"][v["ruleset_version"]].append(entry)
 
     def _avg(key, entries):
         return sum(e[key] for e in entries) / len(entries)
@@ -326,12 +330,15 @@ def render_summary_markdown(summary, recent, traffic_sources):
         lines.append("No performance data yet -- not enough uploads/history to summarize.")
         return "\n".join(lines) + "\n"
 
-    def _section(title, key, note=""):
+    def _section(title, key, note="", preamble=""):
         rows = summary[key]
         if not rows:
             return
         lines.append(f"## {title}{note}")
         lines.append("")
+        if preamble:
+            lines.append(preamble)
+            lines.append("")
         for r in rows:
             lines.append(
                 f"- {r['name']}: {r['avg_view_pct']:.1f}% avg view, "
@@ -340,6 +347,22 @@ def render_summary_markdown(summary, recent, traffic_sources):
             )
         lines.append("")
 
+    _section(
+        "Performance by ruleset version -- READ THIS FIRST if more than one is listed",
+        "by_ruleset_version",
+        preamble=(
+            "A newer version means a real pipeline/guidance change (captions, b-roll "
+            "provider, hook/payoff rules, voice, motion, etc.), not just more time "
+            "passing. Older versions can look artificially weak for reasons that have "
+            "nothing to do with topic/category choice -- e.g. every video before "
+            "2026-08-18-retention-overhaul-v3 had a caption-visibility bug that made "
+            "captions unreadable regardless of topic. Weight the *current* version's "
+            "own numbers most heavily once it has a real sample size (n>=5 or so); "
+            "until then, older-version data still carries topic/category signal, but "
+            "read its absolute retention numbers as a floor the current pipeline "
+            "should beat, not a ceiling to match."
+        ),
+    )
     _section("Top categories (steer topic choice by this)", "by_category")
     _section("Top hook styles (steer how you open/close by this)", "by_hook_type")
     _section("Top video lengths (steer target narration length by this)", "by_length")
