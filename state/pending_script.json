@@ -1,0 +1,54 @@
+{
+  "topic": "the money priming effect \u2014 just seeing cash makes people less willing to help others",
+  "category": "psychology",
+  "seed_source_video_id": "GJc7bLkqQkM",
+  "seed_view_count": 167300,
+  "title": "Just Seeing Cash Makes You Less Likely To Help Someone",
+  "description": "AI-narrated commentary: psychologists found that simply being shown images of money changes how willing people are to help a stranger. #psychology #shorts #humanbehavior",
+  "tags": [
+    "psychology",
+    "money psychology",
+    "behavioral science",
+    "human behavior",
+    "science facts",
+    "shorts",
+    "mindblowing facts"
+  ],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {
+      "hook_type": "myth_bust",
+      "text": "You'd think money makes you kinder \u2014 seeing it does the opposite."
+    },
+    {
+      "hook_type": "shocking_fact",
+      "text": "Just looking at pictures of cash makes people slower to help a stranger."
+    },
+    {
+      "hook_type": "question",
+      "text": "Why does just seeing money make people less likely to help someone?"
+    },
+    {
+      "hook_type": "story",
+      "text": "In one study, people saw cash-themed images \u2014 then watched a stranger drop a handful of pencils."
+    }
+  ],
+  "beats": [
+    {
+      "text": "You'd think money makes you kinder \u2014 seeing it does the **opposite**.",
+      "broll_query": "stack of cash close up"
+    },
+    {
+      "text": "Psychologists showed people cash images, then staged a stranger dropping pencils.",
+      "broll_query": "dropped pencils floor person"
+    },
+    {
+      "text": "Money-primed people were **slower** to help \u2014 and gave less to charity.",
+      "broll_query": "person walking away alone"
+    },
+    {
+      "text": "Next time cash crosses your mind, notice who you stop helping. Sound familiar?",
+      "broll_query": "hand holding dollar bills"
+    }
+  ]
+}
