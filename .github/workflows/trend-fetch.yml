@@ -39,6 +39,8 @@ jobs:
         run: |
           git config user.name "loopedin-bot"
           git config user.email "actions@github.com"
+          mkdir -p /tmp/fresh_state
+          cp state/latest_trend_seed.json state/live_stats.json /tmp/fresh_state/
           git add state/latest_trend_seed.json state/live_stats.json
           if git diff --staged --quiet; then
             echo "No changes"
@@ -50,8 +52,17 @@ jobs:
               exit 0
             fi
             echo "push rejected (another workflow likely committed at the same time), retrying ($i/5)..."
+            # These files are full snapshots regenerated each run, not an
+            # accumulating log -- there's nothing meaningful to merge between two
+            # runs' fresh data, so don't rebase (a real content conflict here
+            # aborts the whole retry loop immediately, as it has in production).
+            # Reset to the new remote tip and re-apply this run's own fresh
+            # content on top instead.
             git fetch origin main
-            git rebase origin/main
+            git reset --hard origin/main
+            cp /tmp/fresh_state/latest_trend_seed.json /tmp/fresh_state/live_stats.json state/
+            git add state/latest_trend_seed.json state/live_stats.json
+            git commit -m "Update trend seed"
             sleep $((RANDOM % 4 + 1))
           done
           echo "::error::Failed to push trend seed after 5 retries"

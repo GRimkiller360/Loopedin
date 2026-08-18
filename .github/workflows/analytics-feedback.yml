@@ -53,6 +53,8 @@ jobs:
         run: |
           git config user.name "loopedin-bot"
           git config user.email "actions@github.com"
+          mkdir -p /tmp/fresh_state
+          cp state/performance_log.json state/performance_summary.md /tmp/fresh_state/
           git add state/performance_log.json state/performance_summary.md state/used_topics.json
           if git diff --staged --quiet; then
             echo "No changes"
@@ -64,8 +66,17 @@ jobs:
               exit 0
             fi
             echo "push rejected (another workflow likely committed at the same time), retrying ($i/5)..."
+            # performance_log.json/performance_summary.md are full snapshots
+            # regenerated each run (used_topics.json is untouched by this workflow,
+            # only read) -- nothing meaningful to merge, so don't rebase (a real
+            # content conflict here aborts the retry loop immediately, as seen in
+            # production on trend-fetch.yml's identical pattern). Reset to the new
+            # remote tip and re-apply this run's own fresh content on top instead.
             git fetch origin main
-            git rebase origin/main
+            git reset --hard origin/main
+            cp /tmp/fresh_state/performance_log.json /tmp/fresh_state/performance_summary.md state/
+            git add state/performance_log.json state/performance_summary.md
+            git commit -m "Update performance summary"
             sleep $((RANDOM % 4 + 1))
           done
           echo "::error::Failed to push performance summary after 5 retries"
