@@ -633,6 +633,19 @@
       "title": "You're Keeping 13 Secrets Right Now \u2014 Here's Why That's Exhausting You",
       "duration_seconds": 14.7,
       "ruleset_version": "2026-08-18-retention-overhaul-v3"
+    },
+    {
+      "topic": "the watching-eyes effect \u2014 a photo of eyes made people pay 3x more for honesty-box coffee",
+      "video_id": "gIm4ss1LeCc",
+      "uploaded_at": "2026-08-18T12:28:11.405744+00:00",
+      "publish_hour_utc": 12,
+      "category": "psychology",
+      "seed_source_video_id": "QLhXMtA_B2c",
+      "seed_view_count": 1325991,
+      "hook_type": "shocking_fact",
+      "title": "A Photo Of Eyes Made People Pay 3x More For Coffee",
+      "duration_seconds": 17.6,
+      "ruleset_version": "2026-08-18-retention-overhaul-v3"
     }
   ]
 }
