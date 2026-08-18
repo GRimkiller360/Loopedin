@@ -65,7 +65,12 @@ don't investigate further, that's out of scope per "On failure" below.
   specifically reward loop-rewatches (a 15s video watched twice reads as 100%+
   retention), which this channel has never actually tried. Once short has a real
   sample size to compare against medium/long, go back to letting the data decide
-  normally. **Top publish hours** and **Top seed momentum
+  normally. Independent of this channel's own data, external research on Shorts
+  retention converges on **15-30s as the general sweet spot** (enough room for a real
+  micro-story, short enough that patience never runs out) -- treat that as a mild prior
+  when this channel's own numbers don't yet clearly favor a different length, not as a
+  rule that overrides real data once there's enough of it. **Top publish hours** and
+  **Top seed momentum
   tiers** are reference-only for now -- interesting once there's a real spread of data
   behind them, but you don't control posting time and seed selection is already
   constrained by what `trend_source.py` hands you this run, so don't force a choice

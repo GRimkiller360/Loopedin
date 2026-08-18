@@ -99,15 +99,19 @@ CLIP_DURATION_BUFFER = 0.35  # each segment overshoots slightly so frame-roundin
 OUTPUT_FPS = 30
 
 
-# Continuous push-in zoom applied to beat 0 only -- a documented, easily-automated
-# visual pattern-interrupt (distinct motion treatment on the hook vs. every later beat)
-# that doesn't need to know *where* the interesting thing in frame is, unlike a
-# pointer/circle overlay would -- it just scales toward center, so it can't end up
-# pointing at nothing. HOOK_ZOOM_END is the zoom factor reached by the end of the beat.
+# Continuous push-in zoom, magnitude depends on which beat -- a documented,
+# easily-automated visual pattern-interrupt/pacing device that doesn't need to know
+# *where* the interesting thing in frame is, unlike a pointer/circle overlay would --
+# it just scales toward center, so it can't end up pointing at nothing. Beat 0 gets a
+# dramatic punch (distinct treatment on the hook); every other beat gets a much
+# subtler version -- static, unmoving stock footage reads as low-effort and gives the
+# eye nothing to track, so keep constant gentle motion through the whole video, not
+# just the opening.
 HOOK_ZOOM_END = 1.15
+SUBTLE_ZOOM_END = 1.06
 
 
-def _scale_clip(src, dst, duration, hook_punch=False):
+def _scale_clip(src, dst, duration, zoom=None):
     target = duration + CLIP_DURATION_BUFFER
     clip_len = _probe_duration(src)
     loop_count = max(math.ceil(target / clip_len), 1) if clip_len > 0 else 1
@@ -119,11 +123,12 @@ def _scale_clip(src, dst, duration, hook_punch=False):
         f"fps={OUTPUT_FPS},scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,"
         f"crop={WIDTH}:{HEIGHT}"
     )
-    if hook_punch:
+    zoom_end = {"hook": HOOK_ZOOM_END, "subtle": SUBTLE_ZOOM_END}.get(zoom)
+    if zoom_end:
         total_frames = max(int(round(target * OUTPUT_FPS)), 1)
-        zoom_step = (HOOK_ZOOM_END - 1.0) / total_frames
+        zoom_step = (zoom_end - 1.0) / total_frames
         vf += (
-            f",zoompan=z='min(zoom+{zoom_step},{HOOK_ZOOM_END})':d=1:"
+            f",zoompan=z='min(zoom+{zoom_step},{zoom_end})':d=1:"
             f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={WIDTH}x{HEIGHT}:fps={OUTPUT_FPS}"
         )
     subprocess.run([
@@ -212,7 +217,7 @@ def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir):
     scaled_paths = []
     for i, (clip, dur) in enumerate(zip(clip_paths, durations)):
         scaled = work_dir / f"beat_{i:02d}_scaled.mp4"
-        _scale_clip(clip, scaled, dur, hook_punch=(i == 0))
+        _scale_clip(clip, scaled, dur, zoom="hook" if i == 0 else "subtle")
         scaled_paths.append(scaled)
 
     concat_list = work_dir / "concat.txt"

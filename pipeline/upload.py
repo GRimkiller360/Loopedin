@@ -16,15 +16,27 @@ from pipeline import config
 
 
 def _hashtags(script):
-    # #Shorts alone wastes a free discoverability signal -- add one category hashtag
-    # too. Deliberately capped at 2 total: YouTube's own guidance is that piling on
-    # hashtags reads as spam and can hurt reach rather than help it.
+    # #Shorts + category + one topic-specific tag = 3. Capped there deliberately --
+    # YouTube's own guidance is that piling on hashtags reads as spam and can hurt
+    # reach rather than help it; research on Shorts discovery converges on 2-3 as the
+    # useful range, not more.
     tags = ["#Shorts"]
+    seen_slugs = {"shorts"}
+
     category = (script.get("category") or "").strip()
     if category:
         slug = "".join(ch for ch in category if ch.isalnum())
-        if slug:
+        if slug and slug.lower() not in seen_slugs:
             tags.append(f"#{slug}")
+            seen_slugs.add(slug.lower())
+
+    for raw_tag in script.get("tags", []):
+        slug = "".join(ch for ch in raw_tag if ch.isalnum())
+        if slug and slug.lower() not in seen_slugs:
+            tags.append(f"#{slug}")
+            seen_slugs.add(slug.lower())
+            break
+
     return " ".join(tags)
 
 
