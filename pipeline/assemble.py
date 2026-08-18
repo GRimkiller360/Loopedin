@@ -110,6 +110,15 @@ OUTPUT_FPS = 30
 HOOK_ZOOM_END = 1.15
 SUBTLE_ZOOM_END = 1.06
 
+# Applied to every clip in every video -- a consistent color grade + vignette is a
+# visual signature: raw unfiltered stock footage looks like raw unfiltered stock
+# footage no matter whose channel it's on, but a consistent, distinct grade is
+# something a viewer can start to recognize as *this channel's* look across videos,
+# unlike per-video variation which reads as generic every time. Mild boost to
+# contrast/saturation plus a soft vignette pulling focus toward center -- deliberately
+# conservative, not stylized enough to fight the footage or look artificial.
+SIGNATURE_LOOK_FILTER = "eq=contrast=1.08:saturation=1.18:brightness=0.01,vignette=PI/4"
+
 
 def _scale_clip(src, dst, duration, zoom=None):
     target = duration + CLIP_DURATION_BUFFER
@@ -121,7 +130,7 @@ def _scale_clip(src, dst, duration, zoom=None):
     # the audio/captions stay on schedule.
     vf = (
         f"fps={OUTPUT_FPS},scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,"
-        f"crop={WIDTH}:{HEIGHT}"
+        f"crop={WIDTH}:{HEIGHT},{SIGNATURE_LOOK_FILTER}"
     )
     zoom_end = {"hook": HOOK_ZOOM_END, "subtle": SUBTLE_ZOOM_END}.get(zoom)
     if zoom_end:
