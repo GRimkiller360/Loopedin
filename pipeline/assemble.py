@@ -174,6 +174,34 @@ def _pick_music_track(music_dir, category):
     return random.choice(tracks)
 
 
+# Short synthesized (not sourced -- no copyright question) two-tone attention cue,
+# mixed under the very start of beat 0 as an audio pattern-interrupt to go with the
+# visual zoom-punch -- alongside a sudden motion/zoom change, a brief distinct sound
+# at hook time is a documented technique for cutting through autoplay-muted scrolling.
+def _add_hook_sound(audio_path, narration_duration, work_dir):
+    hook_sound = work_dir / "hook_sound.mp3"
+    subprocess.run([
+        "ffmpeg", "-y",
+        "-f", "lavfi", "-i", "sine=frequency=700:duration=0.06",
+        "-f", "lavfi", "-i", "sine=frequency=1400:duration=0.09",
+        "-filter_complex",
+        "[0:a][1:a]concat=n=2:v=0:a=1,afade=t=in:st=0:d=0.01,afade=t=out:st=0.12:d=0.03,volume=0.4[out]",
+        "-map", "[out]", str(hook_sound),
+    ], check=True)
+
+    hooked_audio = work_dir / "hooked_audio.mp3"
+    subprocess.run([
+        "ffmpeg", "-y", "-i", str(audio_path), "-i", str(hook_sound),
+        # normalize=0 -- amix's default auto-normalization would quietly halve the
+        # narration's volume for the *entire* clip just because of a 150ms sound
+        # effect layered at the start; the hook tone is already pre-scaled quiet
+        # enough (volume=0.4 above) not to need it.
+        "-filter_complex", "[0:a][1:a]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[aout]",
+        "-map", "[aout]", "-t", str(narration_duration), str(hooked_audio),
+    ], check=True)
+    return hooked_audio
+
+
 def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir):
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
@@ -215,6 +243,8 @@ def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir):
             "[1:a]volume=0.12[music];[0:a][music]amix=inputs=2:duration=first:dropout_transition=2[aout]",
             "-map", "[aout]", "-t", str(narration_duration), str(mixed_audio),
         ], check=True)
+
+    mixed_audio = _add_hook_sound(mixed_audio, narration_duration, work_dir)
 
     # No force_style override needed -- the .ass file's own [V4+ Styles] section
     # carries the base look, and per-word emphasis overrides live inline in the text.
