@@ -620,6 +620,19 @@
       "title": "Why 'I'm So Busy' Makes People Trust You Less",
       "duration_seconds": 16.8,
       "ruleset_version": "2026-08-18-hooks-v2"
+    },
+    {
+      "topic": "why holding a secret is exhausting - it's alone-time rumination, not the lying",
+      "video_id": "GS0P-dM3ZSE",
+      "uploaded_at": "2026-08-18T12:21:55.712714+00:00",
+      "publish_hour_utc": 12,
+      "category": "psychology",
+      "seed_source_video_id": "gHrQKlfHlSk",
+      "seed_view_count": 167004,
+      "hook_type": "shocking_fact",
+      "title": "You're Keeping 13 Secrets Right Now \u2014 Here's Why That's Exhausting You",
+      "duration_seconds": 14.7,
+      "ruleset_version": "2026-08-18-retention-overhaul-v3"
     }
   ]
 }
