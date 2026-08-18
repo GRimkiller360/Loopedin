@@ -659,6 +659,19 @@
       "title": "Just Seeing Cash Makes You Less Likely To Help Someone",
       "duration_seconds": 16.4,
       "ruleset_version": "2026-08-18-retention-overhaul-v3"
+    },
+    {
+      "topic": "the pain of paying -- why cards make people spend more than cash",
+      "video_id": "7_f5YCRDgKc",
+      "uploaded_at": "2026-08-18T14:21:32.240025+00:00",
+      "publish_hour_utc": 14,
+      "category": "psychology",
+      "seed_source_video_id": "GJc7bLkqQkM",
+      "seed_view_count": 167300,
+      "hook_type": "shocking_fact",
+      "title": "The Real Reason Your Card Makes You Spend More Than Cash",
+      "duration_seconds": 18.6,
+      "ruleset_version": "2026-08-18-retention-overhaul-v3"
     }
   ]
 }
