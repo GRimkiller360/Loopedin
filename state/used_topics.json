@@ -646,6 +646,19 @@
       "title": "A Photo Of Eyes Made People Pay 3x More For Coffee",
       "duration_seconds": 17.6,
       "ruleset_version": "2026-08-18-retention-overhaul-v3"
+    },
+    {
+      "topic": "the money priming effect \u2014 just seeing cash makes people less willing to help others",
+      "video_id": "Z0N5ctedmro",
+      "uploaded_at": "2026-08-18T13:58:15.305031+00:00",
+      "publish_hour_utc": 13,
+      "category": "psychology",
+      "seed_source_video_id": "GJc7bLkqQkM",
+      "seed_view_count": 167300,
+      "hook_type": "myth_bust",
+      "title": "Just Seeing Cash Makes You Less Likely To Help Someone",
+      "duration_seconds": 16.4,
+      "ruleset_version": "2026-08-18-retention-overhaul-v3"
     }
   ]
 }
