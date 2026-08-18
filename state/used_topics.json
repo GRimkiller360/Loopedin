@@ -129,6 +129,18 @@
       "hook_type": "shocking_fact",
       "title": "They Can Clone Your Voice From 3 Seconds of Audio",
       "duration_seconds": 27.5
+    },
+    {
+      "topic": "military mirror-panel countermeasures against AI drone targeting",
+      "video_id": "8GcGCwCW-C4",
+      "uploaded_at": "2026-08-18T05:17:41.064494+00:00",
+      "publish_hour_utc": 5,
+      "category": "AI news",
+      "seed_source_video_id": "jCqwuw4jZic",
+      "seed_view_count": 71073,
+      "hook_type": "shocking_fact",
+      "title": "The Weird Reason Militaries Are Bolting Mirrors to War Vehicles",
+      "duration_seconds": 38.0
     }
   ]
 }
