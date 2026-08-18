@@ -542,6 +542,19 @@
       "title": "The Sun's Center of Mass Isn't Even Inside The Sun",
       "duration_seconds": 17.6,
       "ruleset_version": "2026-08-18-hooks-v2"
+    },
+    {
+      "topic": "anonymity and the deindividuation effect (1969 hooded-shock study)",
+      "video_id": "RkuwOEaTM1Y",
+      "uploaded_at": "2026-08-18T11:00:19.970508+00:00",
+      "publish_hour_utc": 11,
+      "category": "psychology",
+      "seed_source_video_id": "QLhXMtA_B2c",
+      "seed_view_count": 1325991,
+      "hook_type": "myth_bust",
+      "title": "Anonymity Doesn't Reveal You \u2014 It Changes You",
+      "duration_seconds": 16.8,
+      "ruleset_version": "2026-08-18-hooks-v2"
     }
   ]
 }
