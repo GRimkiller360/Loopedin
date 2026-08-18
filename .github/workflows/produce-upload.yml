@@ -91,7 +91,7 @@ jobs:
       - name: B-roll
         if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
         env:
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
         run: python pipeline/broll.py --script state/pending_script.json --work-dir work/broll > work/broll_clips.json
 
       - name: Assemble

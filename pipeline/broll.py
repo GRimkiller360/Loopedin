@@ -1,7 +1,11 @@
-"""Fetch stock b-roll clips from Pexels for each script beat.
+"""Fetch stock b-roll clips from Pixabay for each script beat.
 
-Pexels footage is licensed for this kind of reuse -- this is the deliberate
-alternative to clipping any real creator's copyrighted video/audio.
+Pixabay footage is licensed for this kind of reuse -- this is the deliberate
+alternative to clipping any real creator's copyrighted video/audio. Switched from
+Pexels (2026-08-18) after Pexels' Cloudflare WAF started hard-blocking GitHub Actions'
+shared runner IP range outright (confirmed via 3 failed runs, 3 different runner IPs,
+identical Cloudflare block page each time -- not a rate-limit challenge, not fixable by
+retrying).
 """
 import argparse
 import json
@@ -14,59 +18,48 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from pipeline import config
 
-SEARCH_URL = "https://api.pexels.com/videos/search"
-# Cloudflare (fronting pexels.com) fingerprint-blocks urllib's default
-# "Python-urllib/3.x" User-Agent (Cloudflare error 1010) -- any real-looking UA works.
+SEARCH_URL = "https://pixabay.com/api/videos/"
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 
 
-def _best_vertical_file(video):
-    verticals = [f for f in video["video_files"] if f["height"] > f["width"]]
-    candidates = verticals or video["video_files"]
+def _best_video_file(hit):
+    # Pixabay has no orientation filter (unlike Pexels) and most stock footage is
+    # landscape -- prefer a variant that's already vertical if one exists among the
+    # size tiers, but assemble.py's scale+crop step normalizes any aspect ratio to the
+    # 1080x1920 canvas regardless, so a landscape fallback still produces a valid video.
+    files = [f for f in hit["videos"].values() if f.get("url")]
+    verticals = [f for f in files if f["height"] > f["width"]]
+    candidates = verticals or files
     return min(candidates, key=lambda f: abs(f.get("width", 0) - 1080))
 
 
-def _is_retryable_pexels_error(e):
-    if config.is_retryable_urllib_error(e):
-        return True
-    # A 403 with a Cloudflare-fronted Server header is Cloudflare's own bot-mitigation
-    # edge challenge, not Pexels' API rejecting the request (a real bad-key/quota 403
-    # comes straight from Pexels with no such header) -- these are frequently transient
-    # per-edge-node blips, worth retrying with real backoff, unlike a genuine API 403.
-    if isinstance(e, urllib.error.HTTPError) and e.code == 403:
-        return "cloudflare" in (e.headers.get("Server") or "").lower()
-    return False
+def fetch_clip_for_query(query, out_path, used_ids, api_key):
+    params = urllib.parse.urlencode({
+        "key": api_key, "q": query, "video_type": "film", "safesearch": "true", "per_page": 5,
+    })
+    req = urllib.request.Request(f"{SEARCH_URL}?{params}", headers={"User-Agent": USER_AGENT})
 
-
-def fetch_clip_for_query(query, out_path, used_video_ids, api_key):
-    params = urllib.parse.urlencode({"query": query, "orientation": "portrait", "per_page": 5})
-    req = urllib.request.Request(
-        f"{SEARCH_URL}?{params}",
-        headers={"Authorization": api_key, "User-Agent": USER_AGENT},
-    )
     def _do_search():
         with urllib.request.urlopen(req) as resp:
             return json.loads(resp.read())
 
     try:
-        result = config.retry_transient(
-            _do_search, attempts=5, backoff_seconds=6, is_retryable=_is_retryable_pexels_error
-        )
+        result = config.retry_transient(_do_search, is_retryable=config.is_retryable_urllib_error)
     except urllib.error.HTTPError as e:
-        raise RuntimeError(f"Pexels request failed ({e.code}): {e.read().decode()}") from e
+        raise RuntimeError(f"Pixabay request failed ({e.code}): {e.read().decode()}") from e
 
-    for video in result.get("videos", []):
-        if video["id"] in used_video_ids:
+    for hit in result.get("hits", []):
+        if hit["id"] in used_ids:
             continue
-        file_info = _best_vertical_file(video)
-        dl_req = urllib.request.Request(file_info["link"], headers={"User-Agent": USER_AGENT})
+        file_info = _best_video_file(hit)
+        dl_req = urllib.request.Request(file_info["url"], headers={"User-Agent": USER_AGENT})
 
         def _do_download():
             with urllib.request.urlopen(dl_req) as dl_resp, open(out_path, "wb") as f:
                 f.write(dl_resp.read())
 
         config.retry_transient(_do_download, is_retryable=config.is_retryable_urllib_error)
-        used_video_ids.add(video["id"])
+        used_ids.add(hit["id"])
         return True
     return False
 
@@ -74,14 +67,14 @@ def fetch_clip_for_query(query, out_path, used_video_ids, api_key):
 def fetch_all(script, work_dir, api_key):
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
-    used_video_ids = set()
+    used_ids = set()
     clip_paths = []
 
     for i, beat in enumerate(script["beats"]):
         out_path = work_dir / f"beat_{i:02d}.mp4"
-        found = fetch_clip_for_query(beat["broll_query"], out_path, used_video_ids, api_key)
+        found = fetch_clip_for_query(beat["broll_query"], out_path, used_ids, api_key)
         if not found:
-            found = fetch_clip_for_query(script["topic"], out_path, used_video_ids, api_key)
+            found = fetch_clip_for_query(script["topic"], out_path, used_ids, api_key)
         if not found:
             raise RuntimeError(f"no b-roll found for beat {i} (query={beat['broll_query']!r})")
         clip_paths.append(str(out_path))
@@ -96,5 +89,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     script = json.loads(Path(args.script).read_text(encoding="utf-8"))
-    paths = fetch_all(script, args.work_dir, config.require("PEXELS_API_KEY"))
+    paths = fetch_all(script, args.work_dir, config.require("PIXABAY_API_KEY"))
     print(json.dumps(paths, indent=2))

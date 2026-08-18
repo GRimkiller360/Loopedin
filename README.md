@@ -27,7 +27,7 @@ credential ever needs to live anywhere but GitHub's secrets store.
    `state/used_topics.json`, writes an **original** `state/pending_script.json`,
    commits and pushes it. Needs no credentials at all.
 3. **`.github/workflows/produce-upload.yml`** — triggered by that push. Uses
-   `GOOGLE_TTS_CREDENTIALS_JSON`, `PEXELS_API_KEY`, `YOUTUBE_CLIENT_ID`,
+   `GOOGLE_TTS_CREDENTIALS_JSON`, `PIXABAY_API_KEY`, `YOUTUBE_CLIENT_ID`,
    `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN` secrets to run narration → b-roll →
    assembly → upload, then records the result and clears the pending script.
 4. **`.github/workflows/analytics-feedback.yml`** — once/day, timed to finish just
@@ -55,7 +55,7 @@ repository secret**. Add these exact names:
 | `YOUTUBE_CLIENT_SECRET` | OAuth client secret |
 | `YOUTUBE_REFRESH_TOKEN` | from `scripts/get_refresh_token.py` |
 | `GOOGLE_TTS_CREDENTIALS_JSON` | Cloud TTS service-account JSON, full contents |
-| `PEXELS_API_KEY` | Pexels API key |
+| `PIXABAY_API_KEY` | Pixabay API key |
 | `DASHBOARD_URL` | The car-loan-dashboard Worker's base URL (same value the `bracketly` repo's `DASHBOARD_URL` secret uses) |
 | `LOOPEDIN_INGEST_SECRET` | A long random string — set the identical value as a `wrangler secret put LOOPEDIN_INGEST_SECRET` on the dashboard Worker. Distinct from bracketly's `BRACKETLY_INGEST_SECRET`, so either app's ingest can be rotated independently. |
 
