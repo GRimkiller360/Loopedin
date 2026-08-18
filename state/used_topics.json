@@ -607,6 +607,19 @@
       "title": "Why Buying 'Eco-Friendly' Products Makes People Lie And Steal More",
       "duration_seconds": 19.4,
       "ruleset_version": "2026-08-18-hooks-v2"
+    },
+    {
+      "topic": "why humble-bragging is trusted less than flat-out complaining (Harvard study)",
+      "video_id": "OTsx_eLAi0c",
+      "uploaded_at": "2026-08-18T12:03:49.625363+00:00",
+      "publish_hour_utc": 12,
+      "category": "psychology",
+      "seed_source_video_id": "05pWKr_Lm2s",
+      "seed_view_count": 326173,
+      "hook_type": "question",
+      "title": "Why 'I'm So Busy' Makes People Trust You Less",
+      "duration_seconds": 16.8,
+      "ruleset_version": "2026-08-18-hooks-v2"
     }
   ]
 }
