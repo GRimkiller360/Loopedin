@@ -1,0 +1,20 @@
+{
+  "topic": "why humble-bragging is trusted less than flat-out complaining (Harvard study)",
+  "category": "psychology",
+  "seed_source_video_id": "05pWKr_Lm2s",
+  "seed_view_count": 326173,
+  "title": "Why 'I'm So Busy' Makes People Trust You Less",
+  "description": "Harvard research found that humble-bragging -- like complaining about how busy you are -- is trusted even less than flat-out complaining. AI-narrated commentary on the psychology of why hiding a brag backfires, and what to say instead.",
+  "tags": ["psychology", "harvard", "humblebrag", "socialpsychology", "trust", "selfpromotion", "shorts", "psychologyfacts"],
+  "hook_type": "question",
+  "hook_candidates": [
+    {"hook_type": "question", "text": "Why does saying 'ugh, I'm so busy' make people trust you less?"},
+    {"hook_type": "myth_bust", "text": "Downplaying your success to sound humble backfires -- Harvard found it's trusted less than just complaining."},
+    {"hook_type": "shocking_fact", "text": "People trust straight-up bragging more than they trust humble-bragging, Harvard found."}
+  ],
+  "beats": [
+    {"text": "Why does saying 'I'm so busy' make people trust you **less**?", "broll_query": "person stressed busy phone"},
+    {"text": "Harvard found it's a **hidden** brag -- and listeners trust it less than someone who just complains outright.", "broll_query": "researcher study clipboard notes"},
+    {"text": "Straight bragging reads more **honest** -- so skip 'so busy' and just say what you're proud of. Comment yours.", "broll_query": "person smiling proud confident"}
+  ]
+}
