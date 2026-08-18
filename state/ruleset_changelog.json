@@ -1,0 +1,22 @@
+{
+  "entries": [
+    {
+      "date": "2026-08-18",
+      "changed_by": "human-guided (Ethan + Claude Code session)",
+      "from_version": "2026-08-18-hooks-v2",
+      "to_version": "2026-08-18-retention-overhaul-v3",
+      "diagnosis": "Multiple compounding defects found by manually watching real published videos: captions invisible (font size mismatched to real canvas), captions cut off at bottom (no auto-wrap, margin too small), b-roll matching wrong content (Pixabay keyword-OR search diluted by long cinematic queries), robotic TTS voice, weak/vague 'payoff' lines that restated the hook instead of answering it, no visual/audio pattern-interrupt at the hook, static unmoving footage throughout.",
+      "evidence": "Direct visual/audio inspection of published videos (98Atn-jaygA, K4WNqjzHGuE, y0uUHqRHstI, and others) by the channel owner during this session, plus a real Pixabay API test showing a mask-related query returning an ocean wave/tiger/CPU-socket when phrased as a sentence vs. correct results when phrased as a short keyword phrase.",
+      "changes": [
+        "Fixed ASS caption font size, word-wrap, and bottom margin",
+        "Switched b-roll provider Pexels -> Pixabay (Cloudflare was hard-blocking GitHub Actions IPs) and constrained broll_query to short keyword phrases",
+        "Upgraded TTS voice Standard -> Chirp3-HD",
+        "Added explicit story-shape selection and split payoff from loop-back into two distinct required rules with a real worked failure example",
+        "Added zoom-punch (beat 0) and subtle continuous zoom (every other beat) visual pattern-interrupts",
+        "Added a synthesized audio pattern-interrupt chirp under beat 0",
+        "Tightened the hook-landing window to an explicit 2-3 second budget",
+        "Added ruleset_version segmentation to the analytics feedback loop itself (this change)"
+      ]
+    }
+  ]
+}

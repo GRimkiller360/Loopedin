@@ -1,5 +1,12 @@
 # Routine runbook
 
+<!-- PROTECTED-SECTION markers below bound content the "Loopedin Self-Improvement"
+cloud routine (runs periodically, reads real performance data, edits this file) must
+NEVER touch, regardless of what performance data seems to suggest -- these are hard
+legal/policy/trust constraints, not tunable creative choices. Everything outside
+PROTECTED-SECTION blocks is fair game for evidence-backed edits. See
+state/ruleset_changelog.json for a log of every change that routine has made and why. -->
+
 You are running one unattended fire of the Loopedin channel automation. No human
 reviews this before it goes live. Your job here is narrow and deliberately does not
 touch any credentials: a GitHub Actions workflow (`trend-fetch.yml`) already ran ~10
@@ -92,11 +99,13 @@ don't investigate further, that's out of scope per "On failure" below.
 
 ## 2. Write an original script -- this is your job, not a script's
 
+<!-- PROTECTED-SECTION: START -->
 Pick one candidate from `state/latest_trend_seed.json` and use it as inspiration only
 -- write an **original** commentary/take. Do not summarize, transcribe, or closely
 paraphrase the seed video -- riff on the topic, don't reuse the source. A candidate's
 specific source video is loose inspiration, not a requirement -- you are not obligated
 to make a video "about" it specifically.
+<!-- PROTECTED-SECTION: END -->
 
 ### 2.1. Plan the hook first -- before you write anything else
 
@@ -276,9 +285,11 @@ Save it as `state/pending_script.json` matching the shape documented in
      every beat needs one; a transitional beat with no single standout word doesn't
      need forced emphasis.
 - title: prefer a genuine curiosity gap or a concrete number/claim over a generic
-  label, but it must accurately reflect what the video actually delivers -- a
-  clickbait/content mismatch tanks retention and hurts future recommendation, which
-  works directly against the growth goal.
+  label, but <!-- PROTECTED-SECTION: START -->it must accurately reflect what the
+  video actually delivers, full stop -- never loosen this even if data seems to show
+  a mismatched/exaggerated title getting more clicks. A clickbait/content mismatch is
+  a policy and trust problem, not just a retention one; it is off-limits to the
+  self-improvement routine as an optimization lever.<!-- PROTECTED-SECTION: END -->
 - keep total narration under ~130 words so the final video stays under 58s
 
 **Structural variety matters, not just topic variety.** This pipeline is fully
