@@ -26,6 +26,18 @@ def _best_vertical_file(video):
     return min(candidates, key=lambda f: abs(f.get("width", 0) - 1080))
 
 
+def _is_retryable_pexels_error(e):
+    if config.is_retryable_urllib_error(e):
+        return True
+    # A 403 with a Cloudflare-fronted Server header is Cloudflare's own bot-mitigation
+    # edge challenge, not Pexels' API rejecting the request (a real bad-key/quota 403
+    # comes straight from Pexels with no such header) -- these are frequently transient
+    # per-edge-node blips, worth retrying with real backoff, unlike a genuine API 403.
+    if isinstance(e, urllib.error.HTTPError) and e.code == 403:
+        return "cloudflare" in (e.headers.get("Server") or "").lower()
+    return False
+
+
 def fetch_clip_for_query(query, out_path, used_video_ids, api_key):
     params = urllib.parse.urlencode({"query": query, "orientation": "portrait", "per_page": 5})
     req = urllib.request.Request(
@@ -37,7 +49,9 @@ def fetch_clip_for_query(query, out_path, used_video_ids, api_key):
             return json.loads(resp.read())
 
     try:
-        result = config.retry_transient(_do_search, is_retryable=config.is_retryable_urllib_error)
+        result = config.retry_transient(
+            _do_search, attempts=5, backoff_seconds=6, is_retryable=_is_retryable_pexels_error
+        )
     except urllib.error.HTTPError as e:
         raise RuntimeError(f"Pexels request failed ({e.code}): {e.read().decode()}") from e
 
