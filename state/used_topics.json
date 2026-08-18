@@ -568,6 +568,19 @@
       "title": "Why Silence Makes People Blink First",
       "duration_seconds": 15.0,
       "ruleset_version": "2026-08-18-hooks-v2"
+    },
+    {
+      "topic": "contingent self-worth and why approval doesn't relieve stress",
+      "video_id": "ITVVCqAtrIA",
+      "uploaded_at": "2026-08-18T11:23:29.143279+00:00",
+      "publish_hour_utc": 11,
+      "category": "psychology",
+      "seed_source_video_id": "05pWKr_Lm2s",
+      "seed_view_count": 326173,
+      "hook_type": "shocking_fact",
+      "title": "Why Getting Approval Doesn't Fix The Stress It Was Supposed To",
+      "duration_seconds": 16.4,
+      "ruleset_version": "2026-08-18-hooks-v2"
     }
   ]
 }
