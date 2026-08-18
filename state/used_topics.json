@@ -516,6 +516,19 @@
       "title": "The Physics Trick That Lets Spacecraft Leave Jupiter Faster Than They Arrive",
       "duration_seconds": 17.4,
       "ruleset_version": "2026-08-18-hooks-v2"
+    },
+    {
+      "topic": "how a $200 weather balloon reaches higher altitude than a commercial jet",
+      "video_id": "K4WNqjzHGuE",
+      "uploaded_at": "2026-08-18T08:36:08.090730+00:00",
+      "publish_hour_utc": 8,
+      "category": "space",
+      "seed_source_video_id": "Lhoq6cRAJQg",
+      "seed_view_count": 213266,
+      "hook_type": "story",
+      "title": "A $200 Balloon Flies Higher Than Any Airplane On Earth",
+      "duration_seconds": 30.1,
+      "ruleset_version": "2026-08-18-hooks-v2"
     }
   ]
 }
