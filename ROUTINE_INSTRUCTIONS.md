@@ -102,6 +102,22 @@ land the surprise/claim/question in one sentence with zero preamble? Would a str
 mid-scroll stop for this specific line, not just "this topic in general"? Is it worded
 distinctly from how the last several videos opened (check `state/used_topics.json`)?
 
+**A generic pattern-observation is not the same as "no preamble," and it performs like
+preamble anyway.** Real retention data from this channel makes this concrete: two
+videos about phones opened almost identically --
+"Every year a new flagship drops, and every year someone says it's a downgrade"
+(29.7% avg view) vs.
+"Every year, a tech company promises their newest phone is the best one yet"
+(72.0% avg view, because beat 1 immediately punctures that promise with the actual
+complaint). Both are technically preamble-free. The failing one restates a sentiment
+the viewer already holds -- nothing to resolve, no reason to keep watching. The best
+hook in this channel's history skips setup entirely and states the counter-intuitive
+fact itself: "Stock markets spend more days near all-time highs than they do in a
+dip" (97.8% avg view) -- no scene-setting, the claim *is* the first sentence. When
+drafting `hook_candidates`, actively reject any option that a viewer would already
+agree with before you finish saying it; that's the tell for a pattern-observation
+dressed up as a hook, not a real one.
+
 Pick the strongest candidate. That's your `hook_type` and the basis for `beats[0]` --
 light polish going from draft to final beat is fine, but it must genuinely be that
 candidate, not something unrelated you wrote afterward. Record every candidate you
