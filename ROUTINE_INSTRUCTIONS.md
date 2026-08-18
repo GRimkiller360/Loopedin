@@ -223,6 +223,20 @@ Save it as `state/pending_script.json` matching the shape documented in
      end, which is the single worst place to lose them -- they were one beat away from
      a satisfying close. If you can't point to the exact sentence that pays off beat
      0's specific promise, the script isn't done.
+     **A metaphor or poetic restatement of the phenomenon is NOT a payoff, even though
+     it can look like one.** Real, evidence-backed failure from this channel: a
+     Zeigarnik-effect video hooked on "why do you remember an unpaid bill perfectly,
+     but forget it the moment it's paid?" (a genuine why-question), named the effect
+     and re-described the same observation in beat 1, then closed with "your brain is
+     refusing to close the tab -- what's still open in yours?" That final line *sounds*
+     like a payoff (it's vivid, it callbacks) but never actually answers *why* --
+     it restates the phenomenon in different words instead of explaining the mechanism
+     behind it. A real payoff for that exact hook would name the actual reason (e.g.
+     unfinished tasks stay loaded in working memory as an active, unresolved goal,
+     which is *why* closing them relieves the mental tension) -- something a viewer
+     couldn't have already guessed from the hook alone. Before finalizing, ask: does
+     the closing beat teach the viewer something they didn't already know from beat 0,
+     or does it just say the same thing more evocatively? Only the former is a payoff.
   4. **The closing beat should *also* loop back to the opening, not just deliver the
      payoff and stop.** Shorts reward rewatches specifically -- someone who watches a
      15-second video twice because the ending sends them back to the start reads as
