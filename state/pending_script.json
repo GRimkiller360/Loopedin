@@ -1,0 +1,21 @@
+{
+  "topic": "the watching-eyes effect — a photo of eyes made people pay 3x more for honesty-box coffee",
+  "category": "psychology",
+  "seed_source_video_id": "QLhXMtA_B2c",
+  "seed_view_count": 1325991,
+  "title": "A Photo Of Eyes Made People Pay 3x More For Coffee",
+  "description": "A university coffee stand tripled its honesty-box payments just by taping up a photo of eyes — no camera, no rule change, just a stare. AI-narrated commentary on the psychology behind why watching eyes, even fake ones, change how we behave. #psychology #shorts",
+  "tags": ["psychology", "shorts", "behavioral science", "watching eyes effect", "honesty", "cognitive bias", "human behavior"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Taping a photo of eyes to a wall tripled what people paid for coffee."},
+    {"hook_type": "question", "text": "Why would a printed photo of eyes make people pay three times more for their coffee?"},
+    {"hook_type": "myth_bust", "text": "You'd think only a real camera keeps people honest — a flat photo of eyes did almost the same job."},
+    {"hook_type": "story", "text": "For ten weeks, a university coffee room quietly swapped a flowers banner for a pair of eyes, then just counted the cash."}
+  ],
+  "beats": [
+    {"text": "Taping a photo of eyes to a wall **tripled** what people paid for coffee.", "broll_query": "eyes poster taped wall"},
+    {"text": "Ten weeks, one office coffee stand, eyes swapped in for flowers — and **payments** jumped every time.", "broll_query": "office coffee stand honesty box"},
+    {"text": "Your brain can't tell painted eyes from real ones watching — two dots make you **honest**. What changes when eyes are on you?", "broll_query": "close-up human eyes staring"}
+  ]
+}
