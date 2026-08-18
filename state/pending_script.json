@@ -1,0 +1,22 @@
+{
+  "topic": "why holding a secret is exhausting - it's alone-time rumination, not the lying",
+  "category": "psychology",
+  "seed_source_video_id": "gHrQKlfHlSk",
+  "seed_view_count": 167004,
+  "title": "You're Keeping 13 Secrets Right Now — Here's Why That's Exhausting You",
+  "description": "The psychology of secrecy: research on secret-keeping suggests it's not the lying to people's faces that wears you down — it's the quiet moments alone when your mind keeps circling back to it. AI-narrated original commentary on the science behind why secrets feel heavy. #psychology #shorts",
+  "tags": ["psychology", "mental health", "secrets", "psychology facts", "mind", "behavioral science", "shorts", "science facts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "You're holding **thirteen** secrets right now."},
+    {"hook_type": "question", "text": "Why does keeping a secret feel so much more exhausting than telling one lie?"},
+    {"hook_type": "myth_bust", "text": "Lying to someone's face isn't what makes secrets exhausting."},
+    {"hook_type": "story", "text": "A psychologist once asked thousands of people to count every secret they were keeping — the number surprised even the researchers."}
+  ],
+  "beats": [
+    {"text": "You're holding **thirteen** secrets right now.", "broll_query": "person hiding face shadow"},
+    {"text": "We assume it's lying to people's faces that wears us down.", "broll_query": "person forcing smile conversation"},
+    {"text": "It's not — it's being **alone**, when your mind won't drop it.", "broll_query": "person alone window night"},
+    {"text": "That restless 2am feeling? That's your thirteen, **surfacing**. What's yours — tell me below.", "broll_query": "person awake phone bed night"}
+  ]
+}
