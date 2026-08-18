@@ -1,0 +1,26 @@
+{
+  "topic": "Albania's sworn virgins - women who legally became men under the Kanun",
+  "category": "history",
+  "seed_source_video_id": "UvJUVsPhDak",
+  "seed_view_count": 643014,
+  "title": "The Albanian Law That Let Women Legally Become Men",
+  "description": "AI-narrated commentary exploring the Albanian Kanun tradition, where women could take a lifelong vow of celibacy to be recognized and live legally and socially as men. Original commentary inspired by a historical topic, not a reused clip or transcript.",
+  "tags": ["history", "Albania", "Kanun", "sworn virgin", "Burrneshat", "women's history", "Balkans", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "In parts of Albania, women could legally become men - just by swearing to never marry."},
+    {"hook_type": "question", "text": "What if the only way to inherit your father's house was to legally stop being a woman?"},
+    {"hook_type": "myth_bust", "text": "You'd think gender was fixed by birth everywhere in history - one Albanian law said otherwise."},
+    {"hook_type": "story", "text": "A woman stands before the village elders, swears she'll never marry, and from that day on lives entirely as a man."}
+  ],
+  "beats": [
+    {"text": "In the mountains of northern Albania, a woman could legally become a man — just by swearing never to marry.", "broll_query": "misty mountains northern Albania aerial"},
+    {"text": "It's called a 'sworn virgin,' under an old tribal code called the Kanun.", "broll_query": "old handwritten law book parchment"},
+    {"text": "Under that law, women couldn't own land or inherit without a male relative in the house.", "broll_query": "rural stone house Balkans exterior"},
+    {"text": "So a family with no sons could have a daughter swear lifelong celibacy instead.", "broll_query": "village elders meeting silhouette black and white"},
+    {"text": "From then on she lived and was treated as a man — rifle, farmland, a seat with the men.", "broll_query": "woman in traditional male shepherd clothing mountains"},
+    {"text": "It wasn't about identity — it was a legal loophole to save the family line.", "broll_query": "old family photograph sepia"},
+    {"text": "A few sworn virgins still live in Albania today, the last of a fading tradition.", "broll_query": "elderly woman portrait mountains Albania"},
+    {"text": "Would you have taken that oath to save your family's home? Let me know below.", "broll_query": "smartphone typing comment closeup"}
+  ]
+}
