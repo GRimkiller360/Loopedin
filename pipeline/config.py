@@ -26,6 +26,38 @@ def strip_emphasis_markup(text):
     return EMPHASIS_MARKUP_RE.sub(r"\1", text)
 
 
+def retry_transient(fn, attempts=3, backoff_seconds=2, is_retryable=None):
+    """Call fn() and retry on transient-looking failures (network errors, 5xx status)
+    instead of letting a one-off blip count as a full production failure toward
+    auto-pause. is_retryable(exception) -> bool narrows what's worth retrying; without
+    it, retries on any exception -- only pass that default when the caller already
+    scopes what it catches."""
+    import time
+
+    last_exc = None
+    for attempt in range(1, attempts + 1):
+        try:
+            return fn()
+        except Exception as e:
+            last_exc = e
+            if is_retryable is not None and not is_retryable(e):
+                raise
+            if attempt < attempts:
+                time.sleep(backoff_seconds * attempt)
+    raise last_exc
+
+
+def is_retryable_urllib_error(e):
+    """5xx (server-side, transient) or a connection-level failure (DNS, timeout,
+    refused) are worth retrying. 4xx (bad auth, bad request, quota) never is --
+    retrying won't fix those and just wastes the attempts budget."""
+    import urllib.error
+
+    if isinstance(e, urllib.error.HTTPError):
+        return e.code >= 500
+    return isinstance(e, urllib.error.URLError)
+
+
 def require(name):
     value = os.environ.get(name)
     if not value:

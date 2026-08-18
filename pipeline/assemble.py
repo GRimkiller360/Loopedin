@@ -118,6 +118,41 @@ def _scale_clip(src, dst, duration):
     ], check=True)
 
 
+# Category -> preferred music mood tags. assets/music/tags.json (user-maintained) maps
+# filename -> list of mood tags; a track matching any preferred tag for the script's
+# category is preferred over a fully random pick. Inert and harmless until tagged
+# files actually exist -- falls straight back to random, same as before this existed.
+CATEGORY_MOODS = {
+    "science facts": ("curious", "upbeat"),
+    "psychology": ("curious", "calm", "mysterious"),
+    "space": ("awe", "calm", "epic"),
+    "history": ("mysterious", "dramatic", "epic"),
+}
+
+
+def _pick_music_track(music_dir, category):
+    music_dir = Path(music_dir)
+    tracks = list(music_dir.glob("*.mp3"))
+    if not tracks:
+        return None
+
+    tags_path = music_dir / "tags.json"
+    tags = {}
+    if tags_path.exists():
+        try:
+            tags = json.loads(tags_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            tags = {}
+
+    preferred = set(CATEGORY_MOODS.get(category, ()))
+    if preferred and tags:
+        matches = [t for t in tracks if preferred & set(tags.get(t.name, []))]
+        if matches:
+            return random.choice(matches)
+
+    return random.choice(tracks)
+
+
 def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir):
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
@@ -148,8 +183,7 @@ def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir):
     ass_path = work_dir / "captions.ass"
     _write_ass(script["beats"], durations, ass_path)
 
-    music_tracks = list(Path(music_dir).glob("*.mp3"))
-    music_path = random.choice(music_tracks) if music_tracks else None
+    music_path = _pick_music_track(music_dir, script.get("category"))
 
     mixed_audio = narration_path
     if music_path:

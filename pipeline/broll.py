@@ -6,6 +6,7 @@ alternative to clipping any real creator's copyrighted video/audio.
 import argparse
 import json
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -31,9 +32,12 @@ def fetch_clip_for_query(query, out_path, used_video_ids, api_key):
         f"{SEARCH_URL}?{params}",
         headers={"Authorization": api_key, "User-Agent": USER_AGENT},
     )
-    try:
+    def _do_search():
         with urllib.request.urlopen(req) as resp:
-            result = json.loads(resp.read())
+            return json.loads(resp.read())
+
+    try:
+        result = config.retry_transient(_do_search, is_retryable=config.is_retryable_urllib_error)
     except urllib.error.HTTPError as e:
         raise RuntimeError(f"Pexels request failed ({e.code}): {e.read().decode()}") from e
 
@@ -42,8 +46,12 @@ def fetch_clip_for_query(query, out_path, used_video_ids, api_key):
             continue
         file_info = _best_vertical_file(video)
         dl_req = urllib.request.Request(file_info["link"], headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(dl_req) as dl_resp, open(out_path, "wb") as f:
-            f.write(dl_resp.read())
+
+        def _do_download():
+            with urllib.request.urlopen(dl_req) as dl_resp, open(out_path, "wb") as f:
+                f.write(dl_resp.read())
+
+        config.retry_transient(_do_download, is_retryable=config.is_retryable_urllib_error)
         used_video_ids.add(video["id"])
         return True
     return False

@@ -29,9 +29,10 @@ from pipeline.state_utils import load_json
 SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
 VIDEOS_URL = "https://www.googleapis.com/youtube/v3/videos"
 
+# Kept in sync with pipeline/script_schema.py's CATEGORIES -- see that file's comment
+# for why this was narrowed from the original 10 to one coherent niche.
 SEED_CATEGORIES = [
-    "technology", "science facts", "life hacks", "history", "true crime mystery",
-    "personal finance", "space", "psychology", "fitness", "AI news",
+    "science facts", "psychology", "space", "history",
 ]
 
 # search.list costs 100 quota units/call -- cap categories tried per run so a bad-luck

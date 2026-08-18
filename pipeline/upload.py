@@ -51,7 +51,12 @@ def upload_short(video_path, script, privacy_status="public"):
 
     response = None
     while response is None:
-        _, response = request.next_chunk()
+        # num_retries: googleapiclient's own built-in exponential backoff for
+        # transient chunk-upload failures (5xx, connection resets) -- proven
+        # library behavior rather than a hand-rolled retry loop. Doesn't retry on
+        # non-transient errors like the 403 quota case, which is caught separately
+        # below and must propagate immediately, not get retried into wasted attempts.
+        _, response = request.next_chunk(num_retries=3)
 
     return response["id"]
 

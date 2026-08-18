@@ -133,6 +133,7 @@ jobs:
           import os
           import subprocess
           from pipeline.state_utils import record_used_topic, record_success
+          from pipeline.script_schema import RULESET_VERSION
 
           script = json.load(open('state/pending_script.json', encoding='utf-8'))
           result = json.load(open('work/upload_result.json', encoding='utf-8'))
@@ -152,6 +153,8 @@ jobs:
               hook_type=script.get('hook_type'),
               title=script.get('title'),
               duration_seconds=round(duration, 1),
+              # Stamped by code, not the agent -- see script_schema.py's comment.
+              ruleset_version=RULESET_VERSION,
           )
           record_success('state/routine_health.json')
 

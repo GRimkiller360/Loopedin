@@ -42,9 +42,13 @@ def synthesize_google(text, voice_name="en-US-Standard-D"):
         data=body,
         headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
     )
-    try:
+
+    def _do_request():
         with urllib.request.urlopen(req) as resp:
-            result = json.loads(resp.read())
+            return json.loads(resp.read())
+
+    try:
+        result = config.retry_transient(_do_request, is_retryable=config.is_retryable_urllib_error)
     except urllib.error.HTTPError as e:
         raise RuntimeError(f"Cloud TTS request failed ({e.code}): {e.read().decode()}") from e
     return base64.b64decode(result["audioContent"])

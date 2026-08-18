@@ -54,6 +54,13 @@ Expected script.json shape:
 import json
 import sys
 
+# Bump this string whenever ROUTINE_INSTRUCTIONS.md's hook/pacing/writing guidance
+# changes meaningfully. Auto-stamped onto every used_topics.json entry by
+# produce-upload.yml (not something the agent sets itself) so a future performance
+# comparison can actually tell whether a guidance change moved retention, instead of
+# every video's history being lumped into one undifferentiated average forever.
+RULESET_VERSION = "2026-08-18-hooks-v2"
+
 REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates"}
 REQUIRED_BEAT_KEYS = {"text", "broll_query"}
 REQUIRED_HOOK_CANDIDATE_KEYS = {"hook_type", "text"}
@@ -63,10 +70,21 @@ MAX_TITLE_LEN = 100
 
 # Fixed vocabularies -- must stay consistent across videos or the performance-feedback
 # loop (pipeline/analytics_feedback.py) can't compare like with like. Keep in sync with
-# the lists documented in ROUTINE_INSTRUCTIONS.md.
+# pipeline/trend_source.py's SEED_CATEGORIES and the list documented in
+# ROUTINE_INSTRUCTIONS.md.
+#
+# Narrowed from the original 10 to a single coherent niche -- subscriber conversion
+# was flat 0.00/1k views across every category with the full spread, and a channel
+# that jumps between tractors, sharks, and Albanian law gives neither viewers nor the
+# algorithm a reason to expect what's next. These four share the same content
+# mechanic that's already proven to drive retention here (a specific, checkable,
+# counter-intuitive claim), and carry lower factual-liability risk for a fully
+# automated, unreviewed pipeline than the categories dropped (personal finance reads
+# as financial advice with zero human review; true crime mystery involves real
+# victims/cases with no fact-check step; life hacks/technology/fitness are heavily
+# saturated by existing large channels).
 CATEGORIES = {
-    "technology", "science facts", "life hacks", "history", "true crime mystery",
-    "personal finance", "space", "psychology", "fitness", "AI news",
+    "science facts", "psychology", "space", "history",
 }
 HOOK_TYPES = {"question", "shocking_fact", "myth_bust", "list", "story", "challenge"}
 
