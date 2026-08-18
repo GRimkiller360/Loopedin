@@ -479,6 +479,18 @@
       "hook_type": "shocking_fact",
       "title": "The Weird Reason Militaries Are Bolting Mirrors to War Vehicles",
       "duration_seconds": 38.0
+    },
+    {
+      "topic": "the spotlight effect and why nobody's actually watching you at the gym",
+      "video_id": "RBXtKHyRRX0",
+      "uploaded_at": "2026-08-18T07:13:07.142693+00:00",
+      "publish_hour_utc": 7,
+      "category": "fitness",
+      "seed_source_video_id": "3jUwFdrTyv4",
+      "seed_view_count": 1086841,
+      "hook_type": "shocking_fact",
+      "title": "Why No One At The Gym Is Actually Watching You",
+      "duration_seconds": 14.8
     }
   ]
 }
