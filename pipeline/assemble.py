@@ -10,6 +10,7 @@ import argparse
 import json
 import math
 import random
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -18,6 +19,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from pipeline import config
 
 WIDTH, HEIGHT = 1080, 1920
+
+# Gold/highlight color for **word**-marked emphasis, ASS inline &HBBGGRR& order
+# (RGB 255,215,0 -> BBGGRR 00D7FF). Base caption style is already bold, so emphasis
+# is color + a slight size bump rather than bold-on-bold, which wouldn't read as
+# distinct.
+EMPHASIS_OVERRIDE = r"{\c&H00D7FF&\fscx115\fscy115}"
+EMPHASIS_RESET = r"{\r}"
 
 
 def _probe_duration(path):
@@ -29,25 +37,56 @@ def _probe_duration(path):
 
 
 def _beat_durations(beats, total_duration):
-    weights = [max(len(b["text"]), 1) for b in beats]
+    weights = [max(len(config.strip_emphasis_markup(b["text"])), 1) for b in beats]
     total_weight = sum(weights)
     return [total_duration * w / total_weight for w in weights]
 
 
-def _format_srt_timestamp(seconds):
-    ms = int(round(seconds * 1000))
-    h, ms = divmod(ms, 3_600_000)
-    m, ms = divmod(ms, 60_000)
-    s, ms = divmod(ms, 1000)
-    return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
+def _format_ass_timestamp(seconds):
+    cs = int(round(seconds * 100))
+    h, cs = divmod(cs, 360_000)
+    m, cs = divmod(cs, 6_000)
+    s, cs = divmod(cs, 100)
+    return f"{h:d}:{m:02d}:{s:02d}.{cs:02d}"
 
 
-def _write_srt(beats, durations, out_path):
-    lines = []
+def _ass_escape(text):
+    return text.replace("\\", r"\\").replace("{", r"\{").replace("}", r"\}")
+
+
+def _beat_text_to_ass(text):
+    """Converts **word** emphasis markers (see script_schema.py) into ASS inline
+    override tags; everything else is escaped plain text."""
+    parts = re.split(r"\*\*(.+?)\*\*", text)
+    out = []
+    for i, part in enumerate(parts):
+        escaped = _ass_escape(part)
+        out.append(f"{EMPHASIS_OVERRIDE}{escaped}{EMPHASIS_RESET}" if i % 2 == 1 else escaped)
+    return "".join(out)
+
+
+ASS_HEADER = f"""[Script Info]
+ScriptType: v4.00+
+PlayResX: {WIDTH}
+PlayResY: {HEIGHT}
+WrapStyle: 2
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,16,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,1,0,0,0,100,100,0,0,1,2,0,2,60,60,120,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+"""
+
+
+def _write_ass(beats, durations, out_path):
+    lines = [ASS_HEADER]
     t = 0.0
-    for i, (beat, dur) in enumerate(zip(beats, durations), start=1):
+    for beat, dur in zip(beats, durations):
         start, end = t, t + dur
-        lines += [str(i), f"{_format_srt_timestamp(start)} --> {_format_srt_timestamp(end)}", beat["text"], ""]
+        ass_text = _beat_text_to_ass(beat["text"])
+        lines.append(f"Dialogue: 0,{_format_ass_timestamp(start)},{_format_ass_timestamp(end)},Default,,0,0,0,,{ass_text}")
         t = end
     Path(out_path).write_text("\n".join(lines), encoding="utf-8")
 
@@ -106,8 +145,8 @@ def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir):
         str(video_track),
     ], check=True)
 
-    srt_path = work_dir / "captions.srt"
-    _write_srt(script["beats"], durations, srt_path)
+    ass_path = work_dir / "captions.ass"
+    _write_ass(script["beats"], durations, ass_path)
 
     music_tracks = list(Path(music_dir).glob("*.mp3"))
     music_path = random.choice(music_tracks) if music_tracks else None
@@ -122,12 +161,10 @@ def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir):
             "-map", "[aout]", "-t", str(narration_duration), str(mixed_audio),
         ], check=True)
 
-    escaped_srt = str(srt_path).replace("\\", "/").replace(":", "\\:")
-    subtitles_filter = (
-        f"subtitles='{escaped_srt}':force_style="
-        "'FontName=Arial,FontSize=16,Bold=1,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,"
-        "BorderStyle=1,Outline=2,Alignment=2,MarginV=120'"
-    )
+    # No force_style override needed -- the .ass file's own [V4+ Styles] section
+    # carries the base look, and per-word emphasis overrides live inline in the text.
+    escaped_ass = str(ass_path).replace("\\", "/").replace(":", "\\:")
+    subtitles_filter = f"subtitles='{escaped_ass}'"
     subprocess.run([
         "ffmpeg", "-y", "-i", str(video_track), "-i", str(mixed_audio),
         "-vf", subtitles_filter, "-map", "0:v", "-map", "1:a",

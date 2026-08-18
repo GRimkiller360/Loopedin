@@ -176,15 +176,47 @@ Save it as `state/pending_script.json` matching the shape documented in
   as `category`.
 - `hook_candidates`: every hook option you drafted in step 2.1 (>=3, spanning >=2
   hook_types), each `{"hook_type": "...", "text": "..."}`.
-- `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`. Two retention
-  rules that matter more than anything else here since most drop-off on Shorts happens
-  in the first couple seconds: (1) beat 0 must land the hook itself immediately --
-  the surprising claim, question, or premise -- no throat-clearing preamble like "so
-  today we're talking about" before it. (2) the last beat should close with a light,
-  natural call-to-action (e.g. inviting a comment with their own take, or a reason to
-  follow for more) -- comments/likes/follows are engagement signals, not just a nicety.
-  Don't force an identical CTA phrasing every time; vary it so it doesn't read as
-  copy-pasted spam.
+- `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`. Retention rules
+  that matter more than anything else here:
+  1. **Beat 0 must land the hook itself immediately** -- the surprising claim,
+     question, or premise -- no throat-clearing preamble like "so today we're talking
+     about" before it.
+  2. **Beat 0's `broll_query` needs the same bar as its text.** Every other beat can
+     use a straightforwardly descriptive query, but a generic/calm stock clip on beat
+     0 undercuts a strong hook -- the viewer processes the visual before they've
+     processed a single word of narration. Make beat 0's query specifically call for
+     something visually arresting or surprising that matches the claim (motion,
+     an unexpected image, a close-up on the specific thing the hook is about) rather
+     than a generic establishing shot of the general topic.
+  3. **The closing beat should loop back to the opening, not just wrap up.** Shorts
+     reward rewatches specifically -- someone who watches a 15-second video twice
+     because the ending sends them back to the start reads as retention over 100%,
+     which is a stronger algorithmic signal than a single high-retention watch. Write
+     the last beat so it calls back to a specific word, image, or claim from beat 0
+     (a twist on it, a callback phrase, an answer that recontextualizes the opening
+     question) so replaying from the top feels rewarding, not repetitive. This is
+     concrete, not just "make it good" -- if you can't point to which specific word or
+     image in beat 0 the ending calls back to, it isn't looping yet.
+  4. **The last beat should also close with a light, natural call-to-action** (e.g.
+     inviting a comment with their own take, or a reason to follow for more) --
+     comments/likes/follows are engagement signals, not just a nicety. This can
+     coexist with the loop-back (a callback line immediately followed by the CTA).
+     Don't force identical CTA phrasing every time; vary it so it doesn't read as
+     copy-pasted spam.
+  5. **Before finalizing, check the middle, not just the opener.** A strong hook still
+     loses viewers if beats 1 through N-1 sag -- re-read beats 1 through the
+     second-to-last and ask: does each one keep raising a question or adding a new
+     specific detail, or does any beat just restate/pad what the previous one already
+     said? A beat that doesn't earn its place (no new information, no rising tension)
+     is a place viewers drop off even after a great hook. Cut or rewrite any beat that
+     fails this check rather than leaving it in to hit a word-count target.
+  6. **Mark the single most load-bearing word/number per beat with `**double
+     asterisks**`** for caption emphasis (bold highlight color + size bump when
+     burned in -- see `pipeline/script_schema.py`). At most 1-2 marked words per
+     beat, and only the specific number/claim/twist that beat exists to deliver --
+     marking everything makes nothing stand out, which defeats the purpose. Not
+     every beat needs one; a transitional beat with no single standout word doesn't
+     need forced emphasis.
 - title: prefer a genuine curiosity gap or a concrete number/claim over a generic
   label, but it must accurately reflect what the video actually delivers -- a
   clickbait/content mismatch tanks retention and hurts future recommendation, which

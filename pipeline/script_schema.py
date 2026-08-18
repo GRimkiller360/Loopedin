@@ -37,7 +37,16 @@ Expected script.json shape:
                       higher-momentum seed actually correlates with this channel's own
                       video performance, or whether it doesn't matter.",
   "beats": [
-    {"text": "one narration sentence/clause", "broll_query": "stock-footage search phrase for this beat"},
+    {"text": "one narration sentence/clause -- wrap AT MOST 1-2 words per beat in "
+             "**double asterisks** to mark them for burned-in caption emphasis "
+             "(bold color highlight + size bump). Stripped automatically before TTS "
+             "synthesis and beat-duration weighting (pipeline/config.py "
+             "strip_emphasis_markup) so it never affects narration audio or timing --"
+             "this is caption-only styling. Use it on the specific surprising word or "
+             "number in a beat, not decoratively; marking most/every beat defeats the "
+             "purpose since nothing stands out if everything does. See "
+             "ROUTINE_INSTRUCTIONS.md step 2 for when to use it.",
+     "broll_query": "stock-footage search phrase for this beat"},
     ...
   ]
 }

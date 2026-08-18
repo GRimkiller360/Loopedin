@@ -66,6 +66,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     script = json.loads(Path(args.script).read_text(encoding="utf-8"))
-    full_text = " ".join(beat["text"] for beat in script["beats"])
+    full_text = " ".join(config.strip_emphasis_markup(beat["text"]) for beat in script["beats"])
     synthesize(full_text, args.out)
     print(f"wrote {args.out}")

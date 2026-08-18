@@ -5,6 +5,7 @@ them; locally, source a .env file matching secrets.example.env before running an
 script directly.
 """
 import os
+import re
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -14,6 +15,15 @@ ASSETS_DIR = REPO_ROOT / "assets"
 MAX_SHORT_SECONDS = 58
 VARIETY_LOOKBACK = 40
 CONSECUTIVE_FAILURES_TO_PAUSE = 3
+
+EMPHASIS_MARKUP_RE = re.compile(r"\*\*(.+?)\*\*")
+
+
+def strip_emphasis_markup(text):
+    """beat text may mark caption-emphasis words as **word** (see script_schema.py) --
+    strip the markers for anything that needs the plain spoken/counted text (TTS input,
+    beat-duration weighting), keeping just the word itself."""
+    return EMPHASIS_MARKUP_RE.sub(r"\1", text)
 
 
 def require(name):

@@ -57,7 +57,42 @@ def _iso_duration_to_seconds(duration):
     return h * 3600 + m * 60 + s
 
 
-def find_trend_seeds(used_topics_path, api_key, max_candidates=MAX_CANDIDATES):
+# Baseline weight for a category with no performance data yet -- roughly mid-range on
+# the avg_view_pct scale, so unexplored categories stay competitive with proven ones
+# instead of getting starved out before they've had a fair sample.
+UNEXPLORED_CATEGORY_WEIGHT = 50.0
+MIN_CATEGORY_WEIGHT = 5.0  # floor so one unlucky low-sample video doesn't zero a category out
+
+
+def _category_weights(performance_log_path):
+    perf = load_json(performance_log_path, {"videos": []})
+    by_category = {}
+    for v in perf.get("videos", []):
+        cat, pct = v.get("category"), v.get("avg_view_pct")
+        if cat and pct is not None:
+            by_category.setdefault(cat, []).append(pct)
+
+    weights = {}
+    for cat in SEED_CATEGORIES:
+        samples = by_category.get(cat)
+        if samples:
+            weights[cat] = max(sum(samples) / len(samples), MIN_CATEGORY_WEIGHT)
+        else:
+            weights[cat] = UNEXPLORED_CATEGORY_WEIGHT
+    return weights
+
+
+def _weighted_shuffle(items, weights):
+    # Exponential-key trick: sampling without replacement where each item's chance of
+    # sorting first is proportional to its weight. Still gives every category a real
+    # (if smaller) chance -- this steers the odds toward what's performed well, it
+    # doesn't hard-lock the routine into only ever trying past winners.
+    keyed = [(random.random() ** (1.0 / weights[item]), item) for item in items]
+    keyed.sort(reverse=True)
+    return [item for _, item in keyed]
+
+
+def find_trend_seeds(used_topics_path, api_key, max_candidates=MAX_CANDIDATES, performance_log_path=None):
     used = load_json(used_topics_path, {"topics": []})
     recent = used["topics"][-config.VARIETY_LOOKBACK:]
     recent_topics = {t["topic"].lower() for t in recent}
@@ -68,9 +103,13 @@ def find_trend_seeds(used_topics_path, api_key, max_candidates=MAX_CANDIDATES):
     recent_source_ids = {t["seed_source_video_id"] for t in recent if t.get("seed_source_video_id")}
 
     published_after = (datetime.now(timezone.utc) - timedelta(hours=48)).strftime("%Y-%m-%dT%H:%M:%SZ")
-    categories = SEED_CATEGORIES[:]
-    random.shuffle(categories)
-    categories = categories[:MAX_CATEGORIES_PER_RUN]
+    if performance_log_path:
+        weights = _category_weights(performance_log_path)
+        categories = _weighted_shuffle(SEED_CATEGORIES, weights)[:MAX_CATEGORIES_PER_RUN]
+    else:
+        categories = SEED_CATEGORIES[:]
+        random.shuffle(categories)
+        categories = categories[:MAX_CATEGORIES_PER_RUN]
 
     candidates = []
     seen_ids_this_run = set()
@@ -137,9 +176,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", required=True)
     parser.add_argument("--used-topics", default=str(config.STATE_DIR / "used_topics.json"))
+    parser.add_argument("--performance-log", default=str(config.STATE_DIR / "performance_log.json"))
     args = parser.parse_args()
 
-    candidates = find_trend_seeds(args.used_topics, config.require("YOUTUBE_API_KEY"))
+    candidates = find_trend_seeds(
+        args.used_topics, config.require("YOUTUBE_API_KEY"), performance_log_path=args.performance_log
+    )
     output = {"candidates": candidates}
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(output, indent=2))
