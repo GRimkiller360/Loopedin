@@ -1,0 +1,22 @@
+{
+  "topic": "AI voice cloning scams using just seconds of audio",
+  "category": "AI news",
+  "seed_source_video_id": "usgFQgjINZE",
+  "seed_view_count": 203480,
+  "title": "They Can Clone Your Voice From 3 Seconds of Audio",
+  "description": "AI-narrated commentary on how voice-cloning scams actually work and why a family code word is the one thing that still stops them. Educational, not a how-to.",
+  "tags": ["AI news", "voice cloning", "scam awareness", "artificial intelligence", "AI safety"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "question", "text": "What if a scammer only needed three seconds of your voice to sound exactly like you on a phone call?"},
+    {"hook_type": "myth_bust", "text": "Voice cloning scams aren't science fiction anymore -- they're already being used to fake real emergency calls from family members."},
+    {"hook_type": "shocking_fact", "text": "Scammers can now clone your voice well enough to fool your family -- using just three seconds of audio from a video you posted."}
+  ],
+  "beats": [
+    {"text": "Scammers can now clone your voice well enough to fool your family -- using just three seconds of audio from a video you posted.", "broll_query": "phone call scam alert warning"},
+    {"text": "It's already being used in real scam calls -- fake emergencies, asking for money right now.", "broll_query": "person answering phone worried"},
+    {"text": "The AI doesn't need a studio recording. A random video or voicemail is enough to build the clone.", "broll_query": "audio waveform sound visualization"},
+    {"text": "The fix: a family code word the AI can't know, since it only clones your voice, not your memories.", "broll_query": "family talking together at home"},
+    {"text": "Would the voice alone be enough to convince you? Let me know below.", "broll_query": "person thinking looking at phone"}
+  ]
+}
