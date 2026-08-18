@@ -34,6 +34,13 @@ def _best_video_file(hit):
 
 
 def fetch_clip_for_query(query, out_path, used_ids, api_key):
+    # Pixabay hard-rejects (400) any q over 100 chars -- the routine writes deliberately
+    # descriptive broll_query text (see ROUTINE_INSTRUCTIONS.md's "visually arresting"
+    # guidance for beat 0 especially), which routinely exceeds that. Truncate at a word
+    # boundary rather than fail the whole beat over a length limit unrelated to intent.
+    if len(query) > 100:
+        query = query[:100].rsplit(" ", 1)[0]
+
     params = urllib.parse.urlencode({
         "key": api_key, "q": query, "video_type": "film", "safesearch": "true", "per_page": 5,
     })
