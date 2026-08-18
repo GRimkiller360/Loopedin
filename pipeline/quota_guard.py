@@ -2,13 +2,12 @@
 unit/day quota (videos.insert costs 1600 units each) until a quota increase is
 approved.
 
-Reactive, not just predictive: rather than guessing a conservative safe number and
-never trying past it, this lets uploads actually attempt each day and only marks the
-day "exhausted" once YouTube's API itself hard-rejects a call with a quota error (see
-pipeline/upload.py). That's the authoritative signal, not a local guess -- it means
-some days get more real uploads than a fixed conservative cap would ever allow.
-`daily_cap` still exists as a sanity ceiling on attempts (defense in depth against a
-runaway loop), not the primary mechanism.
+Purely reactive, no artificial ceiling: uploads attempt every time, and the day is
+only marked "exhausted" once YouTube's API itself hard-rejects a call with a real
+quota error (see pipeline/upload.py's HttpError 403 detection). That's the
+authoritative signal, not a local guess -- an arbitrary daily attempt cap was tried
+and explicitly removed per user direction, since it stops real uploads for no reason
+other than a guessed number, when the actual API would have kept allowing them.
 
 Resets on UTC date change -- Google's actual reset is midnight Pacific Time, so this
 is slightly conservative near the boundary, never generous.
@@ -41,11 +40,8 @@ def is_exhausted_today(path):
     return _state_for_today(path).get("exhausted", False)
 
 
-def can_upload(path, daily_cap):
-    state = _state_for_today(path)
-    if state.get("exhausted"):
-        return False
-    return state.get("uploads", 0) < daily_cap
+def can_upload(path):
+    return not _state_for_today(path).get("exhausted")
 
 
 def record_upload(path):
@@ -65,11 +61,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("action", choices=["check", "record", "exhaust"])
     parser.add_argument("--path", default=default_path)
-    parser.add_argument("--daily-cap", type=int, default=8)
     args = parser.parse_args()
 
     if args.action == "check":
-        print("ok" if can_upload(args.path, args.daily_cap) else "capped")
+        print("ok" if can_upload(args.path) else "capped")
     elif args.action == "record":
         record_upload(args.path)
     else:

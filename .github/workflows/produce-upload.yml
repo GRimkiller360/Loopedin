@@ -66,15 +66,14 @@ jobs:
 
       - name: Quota check
         id: quota
-        # daily-cap is a sanity ceiling on attempts, not the primary limiter -- see
-        # pipeline/quota_guard.py. The real limiter is YouTube's own quota rejection,
-        # handled reactively after the Upload step below.
+        # No artificial ceiling -- see pipeline/quota_guard.py. The only limiter is
+        # YouTube's own quota rejection, handled reactively after the Upload step below.
         if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true'
         run: |
-          RESULT=$(python pipeline/quota_guard.py check --daily-cap "${{ vars.DAILY_UPLOAD_CAP || 8 }}")
+          RESULT=$(python pipeline/quota_guard.py check)
           echo "result=$RESULT" >> "$GITHUB_OUTPUT"
           if [ "$RESULT" = "capped" ]; then
-            echo "::warning::Today's upload quota is exhausted (either the attempt ceiling or a real YouTube quota rejection earlier today) -- skipping to avoid wasting API calls until reset. This is expected, not a failure; it does not count toward auto-pause."
+            echo "::warning::Today's upload quota is exhausted (a real YouTube quota rejection earlier today) -- skipping to avoid wasting API calls until reset. This is expected, not a failure; it does not count toward auto-pause."
           fi
 
       - name: Validate script
@@ -170,7 +169,7 @@ jobs:
               f.write(f\"category={script.get('category', '')}\n\")
               f.write(f\"video_id={result['video_id']}\n\")
           "
-          python pipeline/quota_guard.py record --daily-cap "${{ vars.DAILY_UPLOAD_CAP || 8 }}"
+          python pipeline/quota_guard.py record
           rm -f state/pending_script.json
 
       - name: Record quota exhaustion
