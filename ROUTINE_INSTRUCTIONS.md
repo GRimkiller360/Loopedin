@@ -178,18 +178,28 @@ Save it as `state/pending_script.json` matching the shape documented in
   as `category`.
 - `hook_candidates`: every hook option you drafted in step 2.1 (>=3, spanning >=2
   hook_types), each `{"hook_type": "...", "text": "..."}`.
-- `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`. Retention rules
-  that matter more than anything else here:
+- `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`. Every
+  `broll_query` must be a **short, literal keyword phrase -- 3-6 concrete nouns/
+  adjectives, not a cinematic sentence** (e.g. `"person wearing black mask"`, not
+  `"close-up hand slowly putting on a plain black mask, dramatic side lighting, slow
+  motion"`). This is a hard technical constraint, not a style preference: the b-roll
+  provider (Pixabay) does simple keyword-OR matching across the whole query string with
+  no scene understanding, so a long descriptive sentence dilutes the match and returns
+  unrelated footage matched on a single stray word (verified in production: a mask
+  query worded as a full sentence returned an ocean wave, a tiger, and a CPU socket
+  instead of anything mask-related; the same concept as a short phrase returned
+  entirely on-topic results). Keep every beat's query this short, not just beat 0.
+  Retention rules that matter more than anything else here:
   1. **Beat 0 must land the hook itself immediately** -- the surprising claim,
      question, or premise -- no throat-clearing preamble like "so today we're talking
      about" before it.
-  2. **Beat 0's `broll_query` needs the same bar as its text.** Every other beat can
-     use a straightforwardly descriptive query, but a generic/calm stock clip on beat
-     0 undercuts a strong hook -- the viewer processes the visual before they've
-     processed a single word of narration. Make beat 0's query specifically call for
-     something visually arresting or surprising that matches the claim (motion,
-     an unexpected image, a close-up on the specific thing the hook is about) rather
-     than a generic establishing shot of the general topic.
+  2. **Beat 0's `broll_query` needs the same bar as its text, within the short-phrase
+     constraint above.** Every other beat can use a straightforwardly descriptive
+     query, but a generic/calm stock clip on beat 0 undercuts a strong hook -- the
+     viewer processes the visual before they've processed a single word of narration.
+     Pick the 3-6 keywords that point at something visually arresting or surprising
+     matching the claim (motion, an unexpected image, the specific concrete thing the
+     hook is about) rather than a generic establishing shot of the general topic.
   3. **The closing beat should loop back to the opening, not just wrap up.** Shorts
      reward rewatches specifically -- someone who watches a 15-second video twice
      because the ending sends them back to the start reads as retention over 100%,

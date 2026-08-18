@@ -16,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from pipeline.state_utils import load_json
 
 MIN_WORDS, MAX_WORDS = 25, 160
+MAX_BROLL_QUERY_WORDS = 8
 RECENT_TITLES_TO_CHECK = 15
 TITLE_OVERLAP_THRESHOLD = 0.7
 MIN_HOOK_WINNER_OVERLAP = 0.15
@@ -59,6 +60,20 @@ def check(script, used_topics_path):
             if opener.startswith(banned):
                 errors.append(f"beat 0 opens with a banned filler phrase: {banned!r}")
                 break
+
+    # Pixabay (the b-roll provider) does keyword-OR matching with no scene understanding
+    # -- a long cinematic broll_query dilutes the match and returns unrelated footage
+    # matched on one stray word (verified in production: a full-sentence mask query
+    # returned an ocean wave and a CPU socket). Catch it here, before wasting a
+    # narration/b-roll/assembly run on a query that was never going to match well.
+    for i, beat in enumerate(beats):
+        query = beat.get("broll_query", "")
+        word_count = len(query.split())
+        if word_count > MAX_BROLL_QUERY_WORDS:
+            errors.append(
+                f"beat {i}'s broll_query is {word_count} words (max {MAX_BROLL_QUERY_WORDS}) -- "
+                "must be a short literal keyword phrase, not a cinematic sentence"
+            )
 
     # The winning hook_candidate must actually be the one used -- catches "planning
     # theater" where candidates get drafted per the schema but beat 0 is written as
