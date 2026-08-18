@@ -67,7 +67,7 @@ def require(name):
 
 def youtube_client():
     """Shared YouTube Data API v3 client, used by anything that needs to read/write
-    the channel (upload.py, playlists.py) via the same OAuth refresh token."""
+    the channel (upload.py) via the same OAuth refresh token."""
     from google.oauth2.credentials import Credentials
     from googleapiclient.discovery import build
 

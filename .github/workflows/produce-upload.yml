@@ -165,21 +165,6 @@ jobs:
           python pipeline/quota_guard.py record --daily-cap "${{ vars.DAILY_UPLOAD_CAP || 8 }}"
           rm -f state/pending_script.json
 
-      - name: Add to category playlist
-        # Nice-to-have, not a production-critical step -- continue-on-error so a
-        # playlist API hiccup never pauses the channel or blocks anything else. The
-        # video already published successfully by this point regardless. Reads
-        # category/video_id from the previous step's outputs since
-        # state/pending_script.json is already deleted by now.
-        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && steps.upload.outputs.quota_exceeded != 'true' && success()
-        continue-on-error: true
-        env:
-          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
-          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
-          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-        run: |
-          python pipeline/playlists.py --category "${{ steps.record.outputs.category }}" --video-id "${{ steps.record.outputs.video_id }}"
-
       - name: Record quota exhaustion
         # YouTube's own hard reject, not a bug -- mark today exhausted so later runs
         # today skip early (Quota check step) instead of wasting narration/b-roll/
