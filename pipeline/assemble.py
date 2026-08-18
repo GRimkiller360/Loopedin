@@ -130,7 +130,13 @@ CATEGORY_MOODS = {
 }
 
 
+MUSIC_ENABLED = False  # disabled per user request (2026-08-18) -- re-enable by flipping this back
+
+
 def _pick_music_track(music_dir, category):
+    if not MUSIC_ENABLED:
+        return None
+
     music_dir = Path(music_dir)
     tracks = list(music_dir.glob("*.mp3"))
     if not tracks:
