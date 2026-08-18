@@ -1,11 +1,17 @@
 """Fetch several trending-Shorts topic seed candidates via YouTube Data API search.list.
 
-There is no dedicated "trending Shorts" endpoint on the YouTube Data API, so this
-approximates it: recent (last 48h), short-duration (<=60s), high-viewCount videos
-across a rotating set of seed categories. Returns *topic seeds* only -- title,
-category, view count -- never the source video's transcript/audio/footage. The agent
-uses a seed as inspiration for an original script; it must not summarize or transcribe
-the source video.
+There is no dedicated "trending Shorts" endpoint on the YouTube Data API -- and
+videos.list's chart=mostPopular (the actual trending-chart endpoint) was narrowed by
+YouTube in mid-2025 to only cover Music/Movies/Gaming, so it can't be used for these
+niches at all. This approximates real trending instead: recent (last 48h),
+short-duration (<=60s) videos across a rotating set of seed categories, re-ranked by
+views-per-hour-since-published (velocity) rather than raw view count -- raw view count
+conflates "big channel posted something" with "this specific topic is actually taking
+off," and a smaller video climbing fast is a stronger trend signal than a large
+channel's video that front-loaded most of its views from subscriber notifications on
+day one. Returns *topic seeds* only -- title, category, view count -- never the
+source video's transcript/audio/footage. The agent uses a seed as inspiration for an
+original script; it must not summarize or transcribe the source video.
 
 Returns multiple candidates (not just one) so the agent has somewhere to go if its
 first choice turns out to be too close to a recent video -- at no extra quota cost,
@@ -56,6 +62,12 @@ def _iso_duration_to_seconds(duration):
     match = DURATION_RE.match(duration)
     h, m, s = (int(x) if x else 0 for x in match.groups())
     return h * 3600 + m * 60 + s
+
+
+def _views_per_hour(view_count, published_at_iso):
+    published_at = datetime.strptime(published_at_iso, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    hours = max((datetime.now(timezone.utc) - published_at).total_seconds() / 3600, 1.0)
+    return view_count / hours
 
 
 # Baseline weight for a category with no performance data yet -- roughly mid-range on
@@ -123,6 +135,9 @@ def find_trend_seeds(used_topics_path, api_key, max_candidates=MAX_CANDIDATES, p
             "videoDuration": "short",
             "order": "viewCount",
             "publishedAfter": published_after,
+            "regionCode": "US",  # largest English-speaking Shorts ad market -- biases
+                                  # relevance/ranking toward what's actually resonating
+                                  # there rather than an unweighted global result set
             "maxResults": 10,
             "q": query,
         })
@@ -136,6 +151,7 @@ def find_trend_seeds(used_topics_path, api_key, max_candidates=MAX_CANDIDATES, p
             "id": ",".join(video_ids),
         })
 
+        category_candidates = []
         for video in details_resp.get("items", []):
             duration_s = _iso_duration_to_seconds(video["contentDetails"]["duration"])
             title = video["snippet"]["title"]
@@ -147,14 +163,27 @@ def find_trend_seeds(used_topics_path, api_key, max_candidates=MAX_CANDIDATES, p
                 or title.lower() in recent_topics
             ):
                 continue
-            candidates.append({
+            view_count = int(video["statistics"].get("viewCount", 0))
+            category_candidates.append({
                 "seed_category": query,
                 "source_title": title,
                 "source_description": video["snippet"].get("description", "")[:500],
                 "source_video_id": vid,
-                "view_count": int(video["statistics"].get("viewCount", 0)),
+                "view_count": view_count,
+                "_velocity": _views_per_hour(view_count, video["snippet"]["publishedAt"]),
             })
             seen_ids_this_run.add(vid)
+
+        # Raw view count conflates "big channel posted" with "this topic is actually
+        # taking off" -- a video with fewer total views but climbing fast (high
+        # views/hour since publish) is a stronger trend signal than an old-in-the-
+        # window video from a huge channel that front-loaded most of its views on
+        # day one from subscriber notifications alone. Re-rank by velocity within
+        # this category's batch before taking any.
+        category_candidates.sort(key=lambda c: c["_velocity"], reverse=True)
+        for c in category_candidates:
+            del c["_velocity"]
+            candidates.append(c)
             if len(candidates) >= max_candidates:
                 break
         if len(candidates) >= max_candidates:
