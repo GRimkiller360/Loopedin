@@ -117,6 +117,18 @@
       "hook_type": "shocking_fact",
       "title": "Why Waiting For The 'Safe' Time To Invest Backfires",
       "duration_seconds": 33.2
+    },
+    {
+      "topic": "AI voice cloning scams using just seconds of audio",
+      "video_id": "tuDqJQ0I4qY",
+      "uploaded_at": "2026-08-18T04:50:28.864378+00:00",
+      "publish_hour_utc": 4,
+      "category": "AI news",
+      "seed_source_video_id": "usgFQgjINZE",
+      "seed_view_count": 203480,
+      "hook_type": "shocking_fact",
+      "title": "They Can Clone Your Voice From 3 Seconds of Audio",
+      "duration_seconds": 27.5
     }
   ]
 }
