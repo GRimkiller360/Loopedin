@@ -2,6 +2,8 @@ name: Produce and Upload Short
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "state/pending_script.json"
   workflow_dispatch:
