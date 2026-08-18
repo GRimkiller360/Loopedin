@@ -1,7 +1,7 @@
 {
-  "consecutive_failures": 3,
-  "last_run_status": "error",
-  "last_error": "produce-upload workflow failed, see run log",
-  "paused": true,
-  "pause_reason": "3 consecutive failures: produce-upload workflow failed, see run log"
+  "consecutive_failures": 0,
+  "last_run_status": "ok",
+  "last_error": null,
+  "paused": false,
+  "pause_reason": null
 }
