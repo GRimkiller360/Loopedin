@@ -124,6 +124,24 @@ drafting `hook_candidates`, actively reject any option that a viewer would alrea
 agree with before you finish saying it; that's the tell for a pattern-observation
 dressed up as a hook, not a real one.
 
+**When picking the winner, specificity beats genre-fit.** Don't default to whichever
+candidate matches the top-performing `hook_type` in `performance_summary.md` if a
+more concrete option is sitting right there in your own `hook_candidates` list -- a
+real named study, an exact number, or a specific unexpected mechanism will
+out-perform a generic phrasing of the same idea even if the generic one happens to be
+worded as a `shocking_fact`. Case in point from this channel: a gym-anxiety script
+drafted four hook candidates, one of which was "A psychologist once sent students
+into a room wearing an embarrassing t-shirt, certain everyone would notice -- almost
+no one did" (a real, specific experiment) -- and the run picked the generic
+"Almost nobody at the gym is watching you" instead, because that one was tagged
+`shocking_fact` and shocking_fact was the top-ranked style. That's backwards: the
+t-shirt study is inherently harder to have already heard, gives the viewer a concrete
+image, and still delivers the exact same underlying insight. `hook_type` tells you
+*how* to say something; it should never override *which* option actually says
+something less generic. When two candidates make the same underlying point, the one
+with a specific, checkable detail wins, regardless of which `hook_type` label either
+one carries.
+
 Pick the strongest candidate. That's your `hook_type` and the basis for `beats[0]` --
 light polish going from draft to final beat is fine, but it must genuinely be that
 candidate, not something unrelated you wrote afterward. Record every candidate you
