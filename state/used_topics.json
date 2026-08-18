@@ -555,6 +555,19 @@
       "title": "Anonymity Doesn't Reveal You \u2014 It Changes You",
       "duration_seconds": 16.8,
       "ruleset_version": "2026-08-18-hooks-v2"
+    },
+    {
+      "topic": "using silence as leverage in an argument or negotiation",
+      "video_id": "gotvTI9rJ30",
+      "uploaded_at": "2026-08-18T11:14:52.499821+00:00",
+      "publish_hour_utc": 11,
+      "category": "psychology",
+      "seed_source_video_id": "gHrQKlfHlSk",
+      "seed_view_count": 167004,
+      "hook_type": "shocking_fact",
+      "title": "Why Silence Makes People Blink First",
+      "duration_seconds": 15.0,
+      "ruleset_version": "2026-08-18-hooks-v2"
     }
   ]
 }
