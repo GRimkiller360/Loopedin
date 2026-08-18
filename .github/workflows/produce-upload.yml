@@ -33,10 +33,18 @@ jobs:
       - name: Health check
         id: health
         run: |
-          python - <<'EOF' >> "$GITHUB_OUTPUT"
+          python - <<'EOF'
+          import os
           from pipeline.state_utils import is_paused
           paused, reason = is_paused("state/routine_health.json")
-          print(f"paused={str(paused).lower()}")
+          # GITHUB_OUTPUT only accepts key=value lines -- a raw ::warning:: workflow
+          # command written into that file (as the old `>> "$GITHUB_OUTPUT"` redirect
+          # on the whole block did) makes the runner reject the file outright ("Unable
+          # to process file command 'output' successfully"), crashing this step instead
+          # of cleanly reporting "paused, skipping" like it's supposed to. Write the
+          # output key explicitly and let the warning go to the step's own stdout.
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"paused={str(paused).lower()}\n")
           if paused:
               print(f"::warning::Routine is paused: {reason}")
           EOF
