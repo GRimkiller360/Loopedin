@@ -503,6 +503,19 @@
       "hook_type": "shocking_fact",
       "title": "Why Training To Failure Might Be Wasting Your Gains",
       "duration_seconds": 16.4
+    },
+    {
+      "topic": "gravity assist - how spacecraft leave Jupiter faster than they arrive",
+      "video_id": "98Atn-jaygA",
+      "uploaded_at": "2026-08-18T08:07:22.267837+00:00",
+      "publish_hour_utc": 8,
+      "category": "space",
+      "seed_source_video_id": "Se-KRJTZ6f8",
+      "seed_view_count": 977215,
+      "hook_type": "question",
+      "title": "The Physics Trick That Lets Spacecraft Leave Jupiter Faster Than They Arrive",
+      "duration_seconds": 17.4,
+      "ruleset_version": "2026-08-18-hooks-v2"
     }
   ]
 }
