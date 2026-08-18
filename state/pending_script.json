@@ -1,0 +1,20 @@
+{
+  "topic": "gravity assist - how spacecraft leave Jupiter faster than they arrive",
+  "category": "space",
+  "seed_source_video_id": "Se-KRJTZ6f8",
+  "seed_view_count": 977215,
+  "title": "The Physics Trick That Lets Spacecraft Leave Jupiter Faster Than They Arrive",
+  "description": "How a gravity assist lets spacecraft like New Horizons steal a free speed boost from Jupiter -- leaving faster than they arrived, no extra fuel needed. Original AI-narrated commentary on real orbital mechanics, not a reused clip. #space #NASA #shorts",
+  "tags": ["space", "NASA", "gravity assist", "New Horizons", "Jupiter", "orbital mechanics", "science facts", "shorts"],
+  "hook_type": "question",
+  "hook_candidates": [
+    {"hook_type": "question", "text": "How does a spacecraft leave Jupiter faster than it arrived -- without burning a drop of extra fuel?"},
+    {"hook_type": "shocking_fact", "text": "A spacecraft can fly past Jupiter and leave faster than it arrived, without burning any extra fuel."},
+    {"hook_type": "myth_bust", "text": "You'd think reaching Jupiter takes decades -- one spacecraft did it in barely 13 months, then left even faster than it arrived."}
+  ],
+  "beats": [
+    {"text": "How does a spacecraft leave Jupiter **faster** than it arrived, without extra fuel?", "broll_query": "spacecraft accelerating away from Jupiter dramatic flyby animation close-up, dynamic motion"},
+    {"text": "It steals momentum from the planet itself -- a free **slingshot**, no engine needed.", "broll_query": "gravity assist trajectory animation, spacecraft swinging close around a giant planet"},
+    {"text": "New Horizons used it to leave Jupiter **faster** than it came -- on its way to Pluto. What would you slingshot past? Comment below.", "broll_query": "New Horizons spacecraft flyby Jupiter and Pluto animation, deep space probe"}
+  ]
+}
