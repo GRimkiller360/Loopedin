@@ -1,0 +1,22 @@
+{
+  "topic": "why the blood moon turns red - atmospheric scattering explained",
+  "category": "space",
+  "seed_source_video_id": "dvcKoQndj0c",
+  "seed_view_count": 582323,
+  "title": "The Real Reason The 'Blood Moon' Turns Red",
+  "description": "AI-narrated commentary on the real science behind why a total lunar eclipse turns the Moon red — it's the same atmospheric physics as a sunset, not an omen. The next one lights up the sky August 27-28.",
+  "tags": ["blood moon", "lunar eclipse", "space facts", "astronomy", "science", "moon", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "The 'Blood Moon' isn't red because of Mars, magic, or a bad omen — it's Earth's atmosphere acting like a giant lens."},
+    {"hook_type": "question", "text": "Ever wonder why a total lunar eclipse turns the Moon blood red instead of just going dark?"},
+    {"hook_type": "myth_bust", "text": "Everyone calls it a rare 'Blood Moon' event — it's neither rare, nor really about the moon at all."}
+  ],
+  "beats": [
+    {"text": "The 'Blood Moon' isn't red because of Mars, magic, or a bad omen — it's Earth's atmosphere acting like a giant lens.", "broll_query": "blood moon lunar eclipse night sky"},
+    {"text": "During a total lunar eclipse, Earth blocks the Sun's direct light, but sunlight still bends around the edges of our planet.", "broll_query": "earth shadow lunar eclipse diagram animation"},
+    {"text": "That bent light passes through the atmosphere, which filters out blue and lets red and orange through — the same physics as every sunset.", "broll_query": "sunset red sky atmosphere scattering light"},
+    {"text": "So the Moon isn't glowing red on its own — it's being lit by every sunrise and sunset on Earth happening at once.", "broll_query": "moon glowing red total eclipse timelapse"},
+    {"text": "The next one lights up the sky August 27-28 — comment if you're staying up for it.", "broll_query": "night sky stargazing calendar reminder"}
+  ]
+}
