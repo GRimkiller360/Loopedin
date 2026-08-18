@@ -581,6 +581,19 @@
       "title": "Why Getting Approval Doesn't Fix The Stress It Was Supposed To",
       "duration_seconds": 16.4,
       "ruleset_version": "2026-08-18-hooks-v2"
+    },
+    {
+      "topic": "the Zeigarnik effect -- why unfinished thoughts stick harder than finished ones",
+      "video_id": "y0uUHqRHstI",
+      "uploaded_at": "2026-08-18T11:36:49.821576+00:00",
+      "publish_hour_utc": 11,
+      "category": "psychology",
+      "seed_source_video_id": "QLhXMtA_B2c",
+      "seed_view_count": 1325991,
+      "hook_type": "question",
+      "title": "Why You Remember Unpaid Bills Better Than Paid Ones",
+      "duration_seconds": 15.2,
+      "ruleset_version": "2026-08-18-hooks-v2"
     }
   ]
 }
