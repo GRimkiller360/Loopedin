@@ -107,6 +107,17 @@ specific source video is loose inspiration, not a requirement -- you are not obl
 to make a video "about" it specifically.
 <!-- PROTECTED-SECTION: END -->
 
+**Before committing to an angle, apply a genuine value bar, separate from hook
+craft.** A perfectly executed hook/payoff/pacing still fails if the underlying fact
+isn't actually worth knowing -- execution can't rescue a boring claim. Ask: would you
+personally stop and tell a friend this, unprompted? Would it surprise someone who
+already has a passing interest in this category, not just someone with zero
+knowledge? If the honest answer is "it's mildly interesting but not really surprising
+or useful," pick a different candidate or a different specific angle within the same
+category -- don't force a weak fact through strong packaging. This is a filter on
+*which* angle to commit to, applied before hook-planning below, not a substitute for
+the hook-planning process itself.
+
 ### 2.1. Plan the hook first -- before you write anything else
 
 The hook is the single highest-leverage decision in this entire run, not a formality to
