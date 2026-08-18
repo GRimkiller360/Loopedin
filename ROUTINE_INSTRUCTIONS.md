@@ -57,7 +57,13 @@ don't investigate further, that's out of scope per "On failure" below.
   **Top hook styles** actively steer which candidate/angle and `hook_type` you pick.
   **Top video lengths** should nudge your target narration word count (you only control
   words, not seconds -- roughly 2.2 words/sec, so ~45 words for short/<=20s, ~45-90 for
-  medium/20-40s, ~90-130 for long/40-58s). **Top publish hours** and **Top seed momentum
+  medium/20-40s, ~90-130 for long/40-58s). **If the short/<=20s bucket has no entries
+  (n=0) in this file, deliberately target it this run instead of defaulting to
+  medium/long** -- an option with zero data isn't "unproven," it's untested, and Shorts
+  specifically reward loop-rewatches (a 15s video watched twice reads as 100%+
+  retention), which this channel has never actually tried. Once short has a real
+  sample size to compare against medium/long, go back to letting the data decide
+  normally. **Top publish hours** and **Top seed momentum
   tiers** are reference-only for now -- interesting once there's a real spread of data
   behind them, but you don't control posting time and seed selection is already
   constrained by what `trend_source.py` hands you this run, so don't force a choice
