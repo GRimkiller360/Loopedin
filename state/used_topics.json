@@ -672,6 +672,19 @@
       "title": "The Real Reason Your Card Makes You Spend More Than Cash",
       "duration_seconds": 18.6,
       "ruleset_version": "2026-08-18-retention-overhaul-v3"
+    },
+    {
+      "topic": "WWII German U-boat crew death rate and the 1943 turning point",
+      "video_id": "PcZrpBi93vE",
+      "uploaded_at": "2026-08-18T19:27:32.622945+00:00",
+      "publish_hour_utc": 19,
+      "category": "history",
+      "seed_source_video_id": "ThvY2bMa884",
+      "seed_view_count": 764575,
+      "hook_type": "shocking_fact",
+      "title": "Why 2 Out of 3 WWII U-Boat Crewmen Never Made It Home",
+      "duration_seconds": 17.3,
+      "ruleset_version": "2026-08-18-retention-overhaul-v3"
     }
   ]
 }
