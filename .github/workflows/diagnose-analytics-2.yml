@@ -40,13 +40,18 @@ jobs:
               token_uri="https://oauth2.googleapis.com/token",
           )
 
-          # Print the actual granted scopes on this token -- if yt-analytics.readonly
-          # isn't in here, that's the whole answer.
+          # creds.scopes only reflects scopes we told this Credentials object to expect
+          # (we never did) -- it does NOT reflect what was actually granted. Query
+          # Google's tokeninfo endpoint against the live access token instead; that's
+          # the only way to see the real, currently-granted scope list.
           import google.auth.transport.requests
+          import urllib.request as urlreq
           req = google.auth.transport.requests.Request()
           creds.refresh(req)
-          print("=== granted OAuth scopes on this refresh token ===")
-          print(creds.scopes)
+          with urlreq.urlopen(f"https://oauth2.googleapis.com/tokeninfo?access_token={creds.token}") as resp:
+              tokeninfo = json.loads(resp.read())
+          print("=== REAL granted OAuth scopes (from tokeninfo endpoint) ===")
+          print(json.dumps(tokeninfo, indent=2))
           print()
 
           CHANNEL_ID = "UCX17Pmkp9IpNEpTtpoSthlg"  # from channels.list mine=True, confirmed real channel
@@ -82,22 +87,27 @@ jobs:
           )
 
           run(
-              "explicit channel id, video dimension, last 2 days, no filter",
+              "explicit channel id, 90 days, views+estimatedMinutesWatched, no dimension",
               ids=f"channel=={CHANNEL_ID}",
-              startDate=(today - timedelta(days=2)).isoformat(),
+              startDate=(today - timedelta(days=90)).isoformat(),
               endDate=today.isoformat(),
-              metrics="views",
-              dimensions="video",
-              sort="-views",
+              metrics="views,estimatedMinutesWatched",
           )
 
           run(
-              "channel==MINE, video dimension, last 2 days, no filter (compare to above)",
+              "channel==MINE, 90 days, views+estimatedMinutesWatched, no dimension (compare to above)",
               ids="channel==MINE",
-              startDate=(today - timedelta(days=2)).isoformat(),
+              startDate=(today - timedelta(days=90)).isoformat(),
               endDate=today.isoformat(),
-              metrics="views",
-              dimensions="video",
-              sort="-views",
+              metrics="views,estimatedMinutesWatched",
           )
+
+          # Current live channel totals via the Data API, for comparison against
+          # whatever Analytics says -- confirms whether the channel has real
+          # accumulated activity by now (it's been days since the last check).
+          youtube = build("youtube", "v3", credentials=creds)
+          ch = youtube.channels().list(part="snippet,statistics", mine=True).execute()
+          print("=== current channels.list (Data API) stats ===")
+          print(json.dumps(ch["items"][0]["statistics"], indent=2))
+          print("channel published at:", ch["items"][0]["snippet"]["publishedAt"])
           PYEOF
