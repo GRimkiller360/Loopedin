@@ -264,9 +264,20 @@ def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir):
     # carries the base look, and per-word emphasis overrides live inline in the text.
     escaped_ass = str(ass_path).replace("\\", "/").replace(":", "\\:")
     subtitles_filter = f"subtitles='{escaped_ass}'"
+    # Progress bar: a thin strip at the very top edge, out of the way of captions
+    # (which live near the bottom). Dark background track shows total distance; the
+    # gold foreground bar (same color as caption emphasis, for a consistent look)
+    # fills left-to-right over the real narration duration. This is a completion-
+    # anxiety device, not a retention-through-interest one -- distinct from
+    # everything else in this pipeline, which is about making people *want* to keep
+    # watching rather than making the remaining distance visible.
+    progress_bar_filter = (
+        f"drawbox=x=0:y=0:w=iw:h=10:color=black@0.35:t=fill,"
+        f"drawbox=x=0:y=0:w='iw*min(t/{narration_duration},1)':h=10:color=0xFFD700@0.9:t=fill"
+    )
     subprocess.run([
         "ffmpeg", "-y", "-i", str(video_track), "-i", str(mixed_audio),
-        "-vf", subtitles_filter, "-map", "0:v", "-map", "1:a",
+        "-vf", f"{progress_bar_filter},{subtitles_filter}", "-map", "0:v", "-map", "1:a",
         "-c:v", "libx264", "-preset", "veryfast", "-c:a", "aac",
         "-t", str(narration_duration), str(out_path),
     ], check=True)

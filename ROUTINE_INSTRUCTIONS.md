@@ -151,6 +151,25 @@ drafting `hook_candidates`, actively reject any option that a viewer would alrea
 agree with before you finish saying it; that's the tell for a pattern-observation
 dressed up as a hook, not a real one.
 
+**Where it fits naturally, have the hook explicitly promise a specific payoff is
+coming, not just state the claim.** A hook that just states a surprising fact gives
+the viewer curiosity; a hook that also flags "there's a specific reason for this, and
+it's not what you'd guess" gives them a consciously-held open loop they want closed --
+a stronger commitment to watch through than curiosity alone. This isn't a rewrite of
+every hook (forcing it where it doesn't fit reads as a gimmick), but when a topic has
+a genuinely counter-intuitive mechanism behind it (which most of this channel's topics
+do), consider a hook shape like "X happens -- and the reason is [specific tease]," not
+just "X happens."
+
+**Lean into the `list` hook_type more than it's been used.** A numbered structure
+("3 reasons," "here's what actually happens") hands the viewer a concrete, countable
+stopping point to anticipate -- "just one more" is a real reason to keep watching that
+an open-ended narrative doesn't give as explicitly. This only fits topics that
+genuinely decompose into distinct parallel points (not every topic does -- don't force
+a list structure onto a single mechanism/story just to use it), but when a topic
+naturally has 3-4 genuinely separate facts/reasons/steps, prefer structuring it as an
+explicit numbered list over folding the same content into flowing narrative beats.
+
 **When picking the winner, specificity beats genre-fit.** Don't default to whichever
 candidate matches the top-performing `hook_type` in `performance_summary.md` if a
 more concrete option is sitting right there in your own `hook_candidates` list -- a
