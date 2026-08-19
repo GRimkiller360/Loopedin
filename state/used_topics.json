@@ -1104,6 +1104,49 @@
           "note": "Confirms first fuel debris sample retrieved November 2024, roughly 0.7 grams."
         }
       ]
+    },
+    {
+      "topic": "the Hampi stone chariot that looks like one solid rock but isn't",
+      "video_id": "AKt4sEWMPz4",
+      "uploaded_at": "2026-08-19T16:12:14.821736+00:00",
+      "publish_hour_utc": 16,
+      "category": "history",
+      "seed_source_video_id": "DIFgHhu6kF0",
+      "seed_view_count": 1435938,
+      "hook_type": "myth_bust",
+      "title": "India's Stone Chariot Isn't One Block -- It's a 500-Year-Old Trick",
+      "duration_seconds": 18.5,
+      "ruleset_version": "2026-08-19-share-first-v1",
+      "beat_timings": [
+        {
+          "start_frac": 0.0,
+          "end_frac": 0.312,
+          "text": "India's 500-year-old stone chariot looks like **one solid block** of granite. It isn't."
+        },
+        {
+          "start_frac": 0.312,
+          "end_frac": 0.7331,
+          "text": "Vijayanagara sculptors built it from **separate granite pieces**, then hid every seam inside the decorative carving."
+        },
+        {
+          "start_frac": 0.7331,
+          "end_frac": 1.0,
+          "text": "Still think it's **one solid block**? Say so in the comments -- I dare you."
+        }
+      ],
+      "first_clip_tags": "church, stone, castle, wall, carving, religion, ancient, tomb, archaeology, ruin, europe, medieval, cathedral, knight, history, relic, templar, germany, travel, tourism, munich, rome",
+      "holdout": false,
+      "experiment_arm": "control",
+      "sources": [
+        {
+          "url": "https://karnatakatourism.org/en/attractions/stone-chariot",
+          "note": "Official state tourism page: the chariot's granite blocks have joints hidden inside decorative carving, creating a monolithic illusion."
+        },
+        {
+          "url": "https://www.ritiriwaz.com/vittala-temple-hampi/",
+          "note": "Independent heritage site corroborating the chariot's multi-block construction disguised as a single carved stone."
+        }
+      ]
     }
   ]
 }
