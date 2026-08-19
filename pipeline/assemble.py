@@ -273,37 +273,31 @@ def assemble(script, narration_path, beats_clips, music_dir, out_path, work_dir)
     # carries the base look, and per-word emphasis overrides live inline in the text.
     escaped_ass = str(ass_path).replace("\\", "/").replace(":", "\\:")
     subtitles_filter = f"subtitles='{escaped_ass}'"
-    # Progress bar: a thin strip at the very top edge, out of the way of captions
-    # (which live near the bottom). Dark background track shows total distance; the
-    # gold foreground bar (same color as caption emphasis, for a consistent look)
-    # fills left-to-right over the real narration duration. This is a completion-
-    # anxiety device, not a retention-through-interest one -- distinct from
-    # everything else in this pipeline, which is about making people *want* to keep
-    # watching rather than making the remaining distance visible.
-    # Two real bugs fixed here after a production failure:
-    # 1. drawbox has no `eval` option at all (confirmed: ffmpeg rejected it outright,
-    #    "Error applying option 'eval' to filter 'drawbox': Option not found") --
-    #    that "fix" was wrong and broke every video since it shipped.
-    # 2. drawbox's own thickness option has the short alias `t` (`t=fill` = filled
-    #    box) -- using `t` as both that option's alias AND the width expression's
-    #    time variable on the same filter instance is exactly the kind of collision
-    #    that could resolve the expression's `t` wrong. Spelled out as `thickness=fill`
-    #    instead so `t` unambiguously means the timestamp inside the expression.
-    # setpts=PTS-STARTPTS is required first -- video_track.mp4 is the result of
-    # concatenating several independently-encoded clips, which can carry forward
-    # non-zero starting timestamps. Without resetting PTS to 0 here, drawbox's `t`
-    # variable doesn't actually start at 0 either, so `t/duration` can already be
-    # near/at 1 from frame one -- which exactly matches what was seen in production
-    # twice now (a bar that's always full instead of animating). This is the standard
-    # fix for time-based filters behaving oddly on a clip with inherited timestamps.
-    progress_bar_filter = (
-        f"setpts=PTS-STARTPTS,"
-        f"drawbox=x=0:y=0:w=iw:h=10:color=black@0.35:thickness=fill,"
-        f"drawbox=x=0:y=0:w='iw*min(t/{narration_duration},1)':h=10:color=0xFFD700@0.9:thickness=fill"
-    )
+
+    # Progress bar, take 4. Three prior attempts (a static drawbox width expression,
+    # eval=frame -- drawbox doesn't have that option at all and it broke every video
+    # in production, then thickness=fill to dodge a t-alias collision, then
+    # setpts=PTS-STARTPTS to rule out inherited timestamps) all still rendered a
+    # solid full-width bar with no animation. Rather than guess at drawbox's per-frame
+    # evaluation behavior a fourth time, this pre-renders the animated fill as its own
+    # small standalone clip first (crop DOES have a real, documented eval option,
+    # unlike drawbox) and then just overlays that already-animated clip onto the main
+    # video -- no time-based expression left to evaluate at composite time at all.
+    bar_source = work_dir / "progress_bar_source.mp4"
     subprocess.run([
-        "ffmpeg", "-y", "-i", str(video_track), "-i", str(mixed_audio),
-        "-vf", f"{progress_bar_filter},{subtitles_filter}", "-map", "0:v", "-map", "1:a",
+        "ffmpeg", "-y", "-f", "lavfi",
+        "-i", f"color=0xFFD700:size={WIDTH}x10:duration={narration_duration}:rate={OUTPUT_FPS}",
+        "-vf", f"crop=w='iw*t/{narration_duration}':h=10:x=0:y=0:eval=frame",
+        "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p", str(bar_source),
+    ], check=True)
+
+    subprocess.run([
+        "ffmpeg", "-y", "-i", str(video_track), "-i", str(mixed_audio), "-i", str(bar_source),
+        "-filter_complex",
+        f"[0:v]drawbox=x=0:y=0:w=iw:h=10:color=black@0.35:thickness=fill[bg];"
+        f"[bg][2:v]overlay=x=0:y=0:shortest=0[withbar];"
+        f"[withbar]{subtitles_filter}[vout]",
+        "-map", "[vout]", "-map", "1:a",
         "-c:v", "libx264", "-preset", "veryfast", "-c:a", "aac",
         "-t", str(narration_duration), str(out_path),
     ], check=True)
