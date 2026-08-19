@@ -1,0 +1,23 @@
+{
+  "topic": "the Brazil nut effect -- why the biggest pieces in a shaken mix always end up on top",
+  "category": "science facts",
+  "seed_source_video_id": "G6dm2LRaZ6k",
+  "seed_view_count": 341069,
+  "title": "Why The Biggest Nuts Always End Up On Top Of The Jar",
+  "description": "Ever notice the biggest pieces in a bag of trail mix always end up on top, no matter how you shake it? That's not chance -- it's a real, named phenomenon in granular physics called the Brazil nut effect. AI-narrated original commentary exploring science facts most people never stop to think about.",
+  "tags": ["brazil nut effect", "science facts", "physics", "granular physics", "did you know", "science shorts", "physics facts", "random facts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Shake a jar of mixed nuts, and the biggest ones always end up on top -- never the bottom."},
+    {"hook_type": "question", "text": "Why do the biggest nuts in a trail mix bag always end up on top, no matter how you shake it?"},
+    {"hook_type": "myth_bust", "text": "You'd think shaking a jar of mixed nuts would randomize them. It does the opposite -- it sorts them, every time."},
+    {"hook_type": "story", "text": "Physicists spent years shaking jars of Brazil nuts and rice, just to explain one weird rule of granular physics."}
+  ],
+  "payoff_mechanism": "When a container of different-sized particles gets shaken, small gaps briefly open beneath the larger pieces with every vibration, and the smaller particles fall through those gaps to fill the space underneath, which effectively pushes the bigger particles upward until they end up sitting on the surface.",
+  "beats": [
+    {"text": "Shake a jar of mixed nuts, and the **biggest** ones always end up on top -- never the bottom.", "broll_query": "mixed nuts jar shaking"},
+    {"text": "Physicists call it the **Brazil nut effect**.", "broll_query": "brazil nuts pile closeup"},
+    {"text": "Shaking opens gaps beneath big pieces -- smaller ones **slip through** and push them up.", "broll_query": "sand grains sieve shaking"},
+    {"text": "Next handful, the **biggest** piece on top isn't luck. It's physics. Ever tried it yourself?", "broll_query": "trail mix bowl hand"}
+  ]
+}
