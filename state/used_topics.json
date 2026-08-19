@@ -854,6 +854,39 @@
       "title": "Hypatia's Murder Wasn't About Science \u2014 Here's The Real Reason",
       "duration_seconds": 29.6,
       "ruleset_version": "2026-08-19-payoff-mechanism-v4"
+    },
+    {
+      "topic": "SpaceX's rocket booster has no landing legs -- it gets caught by a tower instead",
+      "video_id": "eybZwS54Pvo",
+      "uploaded_at": "2026-08-19T13:09:06.643909+00:00",
+      "publish_hour_utc": 13,
+      "category": "space",
+      "seed_source_video_id": "2RZ-rWVSs70",
+      "seed_view_count": 104029,
+      "hook_type": "shocking_fact",
+      "title": "The Rocket With Zero Landing Legs \u2014 Watch How SpaceX Actually Lands It",
+      "duration_seconds": 13.7,
+      "ruleset_version": "2026-08-19-share-trigger-v5",
+      "beat_timings": [
+        {
+          "start_frac": 0.0,
+          "end_frac": 0.3259,
+          "text": "Zero **landing legs.** That's how SpaceX's biggest rocket booster comes home."
+        },
+        {
+          "start_frac": 0.3259,
+          "end_frac": 0.5938,
+          "text": "Instead, a giant tower reaches out and catches it **in midair**."
+        },
+        {
+          "start_frac": 0.5938,
+          "end_frac": 1.0,
+          "text": "Losing the legs means **more fuel** \u2014 ready to fly again within hours. Follow for the next one."
+        }
+      ],
+      "first_clip_tags": "waterfall, stream, brook, forest, falls, green, rainforest, hidden, cove, water, falling, river, branch, leaves, branches, scotland, uk, highlands, relaxing, calm, peaceful, nature",
+      "holdout": false,
+      "experiment_arm": "control"
     }
   ]
 }
