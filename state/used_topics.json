@@ -920,6 +920,32 @@
       "first_clip_tags": "swan, water bird, bird, animal rich, nature, lake, lake zurich",
       "holdout": false,
       "experiment_arm": "variant"
+    },
+    {
+      "topic": "straw checkerboard grids that stopped a desert from burying a Chinese railway",
+      "video_id": "rL1YkvaDUJ4",
+      "uploaded_at": "2026-08-19T14:13:14.849294+00:00",
+      "publish_hour_utc": 14,
+      "category": "science facts",
+      "seed_source_video_id": "yB6pPN0ckzU",
+      "seed_view_count": 53412,
+      "hook_type": "myth_bust",
+      "title": "China Stopped a Desert From Swallowing a Railway \u2014 With Dead Grass",
+      "duration_seconds": 40.0,
+      "ruleset_version": "2026-08-19-share-first-v1",
+      "holdout": false,
+      "experiment_arm": "control",
+      "sources": [
+        {
+          "url": "https://english.cas.cn/newsroom/archive/mutimedia_news/mn2018/201806/t20180622_194419_1.shtml",
+          "note": "Chinese Academy of Sciences: straw checkerboard grids at Shapotou protect the Baotou-Lanzhou railway from the Tengger Desert."
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Straw_checkerboard",
+          "note": "Overview of the straw checkerboard technique used to stabilize sand dunes and reduce wind erosion."
+        }
+      ],
+      "recovery_note": "produce-upload run 32261544007 succeeded through Upload but crashed in Record-state on a broll_clips.json FileNotFoundError bug (fixed) -- this record was reconstructed manually from the committed script + the real uploaded video_id, duration is word-count-estimated not measured"
     }
   ]
 }
