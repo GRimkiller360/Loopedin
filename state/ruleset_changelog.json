@@ -17,6 +17,20 @@
         "Tightened the hook-landing window to an explicit 2-3 second budget",
         "Added ruleset_version segmentation to the analytics feedback loop itself (this change)"
       ]
+    },
+    {
+      "date": "2026-08-19",
+      "changed_by": "human-guided (Ethan + Claude Code session)",
+      "from_version": "2026-08-18-retention-overhaul-v3",
+      "to_version": "2026-08-19-payoff-mechanism-v4",
+      "diagnosis": "The v3 payoff rule (metaphor-is-not-a-payoff, with the Zeigarnik-effect worked example) was prose-only advisory guidance, and it did not hold: a subsequent video (gravity-tunnel-through-Earth, PT42S->17.3s duration under the v3 ultra-short-video push) made the identical mistake -- its entire explanation was 'gravity inside pulls like a spring, not a straight drop,' asserted with zero elaboration on why that produces equal travel times regardless of tunnel length. The channel owner flagged the video as not making sense on direct viewing. Root cause: advisory prose alone is not a reliable enforcement mechanism for this failure mode, and the drive toward very short (14-19s) videos left too little room for genuine explanation, so the routine was defaulting to assertion-plus-metaphor to hit the duration target.",
+      "evidence": "Direct inspection of the published gravity-tunnel script (video id in used_topics.json, ruleset_version 2026-08-18-retention-overhaul-v3) by the channel owner, who reported the explanation didn't make sense; likes+comments/1k views also remained near-zero across the same run of ultra-short videos, consistent with content that doesn't give viewers anything substantive to react to.",
+      "changes": [
+        "Added a required top-level payoff_mechanism field to script_schema.py: >=20 words of actual causal explanation, written before the beats (same pattern as hook_candidates forcing real hook planning before beat 0 is written)",
+        "Added a quality_gate.py check that payoff_mechanism's content must actually resemble something in beats[1:] -- it can no longer sit in the file as unused decorative metadata while a beat quietly reverts to metaphor",
+        "Fixed quality_gate.py's _word_set() to strip ** caption-emphasis markup before computing word overlap, which was silently degrading every existing overlap check (hook-winner, hook-candidate-distinctness, title-similarity) whenever beat text contained emphasis markup",
+        "Documented in ROUTINE_INSTRUCTIONS.md step 2 that a real mechanism needing more room should extend the video length (up to the existing ~58s cap) rather than being compressed into an assertion -- the 15-30s prior is a lean for topics that fit it naturally, not a hard ceiling that justifies cutting the explanation itself"
+      ]
     }
   ]
 }

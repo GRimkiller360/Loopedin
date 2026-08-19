@@ -203,6 +203,10 @@ Save it as `state/pending_script.json` matching the shape documented in
   as `category`.
 - `hook_candidates`: every hook option you drafted in step 2.1 (>=3, spanning >=2
   hook_types), each `{"hook_type": "...", "text": "..."}`.
+- `payoff_mechanism`: one sentence, >=20 words, stating the real causal reason behind
+  this video's claim -- written before the beats, and its content must actually appear
+  in `beats[1:]`. See the payoff rule (item 3) below for why this exists and what
+  "real mechanism" vs. "metaphor" actually means in practice.
 - `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`. Every
   `broll_query` must be a **short, literal keyword phrase -- 3-6 concrete nouns/
   adjectives, not a cinematic sentence** (e.g. `"person wearing black mask"`, not
@@ -262,6 +266,28 @@ Save it as `state/pending_script.json` matching the shape documented in
      couldn't have already guessed from the hook alone. Before finalizing, ask: does
      the closing beat teach the viewer something they didn't already know from beat 0,
      or does it just say the same thing more evocatively? Only the former is a payoff.
+     **This rule failed to hold as prose alone -- it's now also enforced structurally.**
+     Despite the Zeigarnik example above already being documented, a later video (the
+     gravity-tunnel-through-Earth script) made the identical mistake: its entire
+     explanation was "gravity inside pulls like a spring, not a straight drop" -- a
+     metaphor asserted with zero elaboration on *why* that produces equal travel times
+     regardless of tunnel length. Advisory text alone clearly isn't sufficient to
+     prevent this pattern from recurring. `script_schema.py` now requires a top-level
+     `payoff_mechanism` field: one sentence, **>=20 words**, stating the actual causal
+     reason in plain language, written *before* you draft the beats (same reasoning as
+     `hook_candidates` in step 2.1 -- force the real content to exist before it gets
+     compressed). `quality_gate.py` then checks that `payoff_mechanism`'s content
+     actually resembles something in `beats[1:]` -- it can't just sit in the file
+     unused while a beat quietly reverts to metaphor. If you genuinely cannot state the
+     mechanism in >=20 real words, that is itself a signal the angle was picked before
+     you understood it well enough to explain it -- go back and either research the
+     actual reason or pick a different angle, don't pad with filler to clear the count.
+     **If a real mechanism needs more room than an ultra-short video allows, let the
+     video run longer (up to the existing ~58s/130-word cap) rather than compressing
+     the explanation into an assertion** -- a slightly longer video that actually makes
+     sense beats a shorter one that doesn't; the 15-30s prior in step 1 is a mild lean
+     for topics that fit it naturally, not a ceiling that justifies cutting the
+     explanation itself.
   4. **The closing beat should *also* loop back to the opening, not just deliver the
      payoff and stop.** Shorts reward rewatches specifically -- someone who watches a
      15-second video twice because the ending sends them back to the start reads as

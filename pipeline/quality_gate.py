@@ -36,7 +36,10 @@ BANNED_OPENERS = (
 
 
 def _word_set(text):
-    return {w.strip(".,!?:;\"'").lower() for w in text.split() if w.strip(".,!?:;\"'")}
+    # Strip ** too -- beat text carries **emphasis** caption markup (see
+    # script_schema.py) that overlap checks against non-beat text (hook_candidates,
+    # payoff_mechanism) would otherwise silently mismatch on (e.g. "**same**" != "same").
+    return {w.strip(".,!?:;\"'*").lower() for w in text.split() if w.strip(".,!?:;\"'*")}
 
 
 def _title_overlap(a, b):
@@ -90,6 +93,24 @@ def check(script, used_topics_path):
             errors.append(
                 f"beat 0 doesn't resemble the winning hook_candidate (overlap={overlap:.2f}) -- "
                 "the drafted hook that matched hook_type must actually be the one used, not ignored"
+            )
+
+    # payoff_mechanism must actually show up in the narration, not just satisfy
+    # script_schema.py's word-count check as an unused field. Checked against beats[1:]
+    # (not beat 0, which is the hook, not the explanation) with the same low bar as the
+    # hook-winner check -- light polish is fine, zero resemblance means the explanation
+    # written in payoff_mechanism never actually made it into the video.
+    mechanism = script.get("payoff_mechanism", "")
+    if mechanism and len(beats) > 1:
+        best_overlap = max(
+            (_title_overlap(mechanism, b.get("text", "")) for b in beats[1:]),
+            default=0.0,
+        )
+        if best_overlap < MIN_HOOK_WINNER_OVERLAP:
+            errors.append(
+                f"payoff_mechanism doesn't resemble any beat after the hook (best overlap="
+                f"{best_overlap:.2f}) -- the explanation written in payoff_mechanism has to "
+                "actually be narrated, not just exist as metadata"
             )
 
     # Candidates need to be genuinely different options, not the same idea reworded --
