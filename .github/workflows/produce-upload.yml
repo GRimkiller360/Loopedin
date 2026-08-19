@@ -115,7 +115,15 @@ jobs:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-          PRIVACY: ${{ inputs.privacy || vars.UPLOAD_PRIVACY || 'unlisted' }}
+          # Push-triggered runs (the real pipeline) have no `inputs` context, so they
+          # fall straight to vars.UPLOAD_PRIVACY -- if that repo variable is ever unset
+          # or cleared, this must default to 'public', not 'unlisted': the repo variable
+          # silently changing (or never being set) previously caused a run of real
+          # uploads to go out unlisted with no visible error anywhere in the workflow.
+          # Manual workflow_dispatch test runs are unaffected -- their own input above
+          # already defaults to 'unlisted' and always has a value, so `inputs.privacy`
+          # is never empty for that trigger.
+          PRIVACY: ${{ inputs.privacy || vars.UPLOAD_PRIVACY || 'public' }}
         run: |
           set -o pipefail
           if python pipeline/upload.py --video work/final.mp4 --script state/pending_script.json \
