@@ -274,28 +274,46 @@ def assemble(script, narration_path, beats_clips, music_dir, out_path, work_dir)
     escaped_ass = str(ass_path).replace("\\", "/").replace(":", "\\:")
     subtitles_filter = f"subtitles='{escaped_ass}'"
 
-    # Progress bar, take 4. Three prior attempts (a static drawbox width expression,
-    # eval=frame -- drawbox doesn't have that option at all and it broke every video
-    # in production, then thickness=fill to dodge a t-alias collision, then
-    # setpts=PTS-STARTPTS to rule out inherited timestamps) all still rendered a
-    # solid full-width bar with no animation. Rather than guess at drawbox's per-frame
-    # evaluation behavior a fourth time, this pre-renders the animated fill as its own
-    # small standalone clip first (crop DOES have a real, documented eval option,
-    # unlike drawbox) and then just overlays that already-animated clip onto the main
-    # video -- no time-based expression left to evaluate at composite time at all.
+    # Progress bar, take 5. Four prior attempts all relied on ffmpeg evaluating a
+    # time-based expression (drawbox's w, then crop's w) -- and it turned out neither
+    # drawbox nor crop even has an `eval` option on this ffmpeg build ("Option not
+    # found" both times), and without it the first attempt's expression just rendered
+    # as a solid full-width bar in production. Done guessing at filter internals: this
+    # generates the bar with zero expressions of any kind. Every step's width is a
+    # literal number computed in Python, rendered as its own tiny fixed-width segment,
+    # then concatenated -- the exact same concat pattern already used for beat clips
+    # elsewhere in this file. A ~20-step "staircase" fill is imperceptible as discrete
+    # steps at normal viewing speed and can't depend on any filter's expression-
+    # evaluation behavior, because there is no expression anywhere in it.
+    BAR_STEPS = 20
+    step_dur = narration_duration / BAR_STEPS
+    bar_step_paths = []
+    for i in range(BAR_STEPS):
+        step_width = max(round(WIDTH * (i + 1) / BAR_STEPS), 1)
+        step_path = work_dir / f"progress_bar_step_{i:02d}.mp4"
+        subprocess.run([
+            "ffmpeg", "-y", "-f", "lavfi",
+            "-i", f"color=black@0.35:size={WIDTH}x10:duration={step_dur}:rate={OUTPUT_FPS}",
+            "-vf", f"drawbox=x=0:y=0:w={step_width}:h=10:color=0xFFD700@0.9:thickness=fill",
+            "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p", str(step_path),
+        ], check=True)
+        bar_step_paths.append(step_path)
+
+    bar_concat_list = work_dir / "progress_bar_concat.txt"
+    bar_concat_list.write_text("\n".join(f"file '{p.resolve()}'" for p in bar_step_paths))
     bar_source = work_dir / "progress_bar_source.mp4"
     subprocess.run([
-        "ffmpeg", "-y", "-f", "lavfi",
-        "-i", f"color=0xFFD700:size={WIDTH}x10:duration={narration_duration}:rate={OUTPUT_FPS}",
-        "-vf", f"crop=w='iw*t/{narration_duration}':h=10:x=0:y=0:eval=frame",
-        "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p", str(bar_source),
+        "ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(bar_concat_list),
+        "-c:v", "libx264", "-preset", "veryfast", "-r", str(OUTPUT_FPS), "-pix_fmt", "yuv420p",
+        str(bar_source),
     ], check=True)
 
+    # bar_source already has its own black@0.35 background baked into every step, so
+    # this is just a plain fixed-position overlay -- no drawbox needed here at all.
     subprocess.run([
         "ffmpeg", "-y", "-i", str(video_track), "-i", str(mixed_audio), "-i", str(bar_source),
         "-filter_complex",
-        f"[0:v]drawbox=x=0:y=0:w=iw:h=10:color=black@0.35:thickness=fill[bg];"
-        f"[bg][2:v]overlay=x=0:y=0:shortest=0[withbar];"
+        f"[0:v][2:v]overlay=x=0:y=0:shortest=0[withbar];"
         f"[withbar]{subtitles_filter}[vout]",
         "-map", "[vout]", "-map", "1:a",
         "-c:v", "libx264", "-preset", "veryfast", "-c:a", "aac",
