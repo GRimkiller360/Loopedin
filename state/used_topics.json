@@ -698,6 +698,19 @@
       "title": "Why This Owl Keeps a Live Snake In Its Nest",
       "duration_seconds": 17.8,
       "ruleset_version": "2026-08-18-retention-overhaul-v3"
+    },
+    {
+      "topic": "space itself expanding faster than light -- why some galaxies are already unreachable",
+      "video_id": "epJ_B1_RaWI",
+      "uploaded_at": "2026-08-19T00:18:12.702877+00:00",
+      "publish_hour_utc": 0,
+      "category": "space",
+      "seed_source_video_id": "VKbNiD6tCUE",
+      "seed_view_count": 232323,
+      "hook_type": "shocking_fact",
+      "title": "Some Galaxies Are Moving Away From Us Faster Than Light",
+      "duration_seconds": 12.5,
+      "ruleset_version": "2026-08-18-retention-overhaul-v3"
     }
   ]
 }
