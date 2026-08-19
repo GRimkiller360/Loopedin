@@ -191,6 +191,36 @@ def _best_video_file(hit):
     return min(candidates, key=lambda f: abs(f.get("width", 0) - 1080))
 
 
+# Pixabay's keyword-OR search can return a completely unrelated clip when a query's
+# only "hit" was a generic word, not the actual subject -- confirmed in production: a
+# snake-shedding beat's query ("snake eye scale close-up") returned a lipstick video,
+# almost certainly matched on "close-up" alone. These words carry no real subject
+# signal on their own and don't count when checking whether a candidate clip's own
+# tags actually relate to the query.
+GENERIC_QUERY_WORDS = {
+    "close-up", "close", "up", "macro", "shot", "video", "footage", "scene",
+    "background", "slow", "motion", "view", "angle", "aerial", "wide", "still",
+    "the", "a", "an", "of", "in", "on", "with", "and", "or",
+}
+
+
+def _query_content_words(text):
+    return {w.strip(".,!?:;\"'-").lower() for w in text.split()} - GENERIC_QUERY_WORDS - {""}
+
+
+def _tags_relevant(query, tags):
+    """True if the candidate clip's own Pixabay tags share at least one real subject
+    word with the query -- not proof the footage is actually on-topic (still just tag
+    text, not pixels), but catches the clearest spurious keyword-OR matches before a
+    completely unrelated clip gets used. If the query has no real content words left
+    after stripping generic terms, don't block on an empty check."""
+    query_words = _query_content_words(query)
+    if not query_words:
+        return True
+    tag_words = {t.strip().lower() for t in (tags or "").split(",")}
+    return bool(query_words & tag_words)
+
+
 def fetch_clip_for_query(query, out_path, used_ids, api_key):
     # Always returns (found, tags) -- tags is the matched Pixabay hit's own "tags"
     # field, already present in the search response at no extra API cost. This is the
@@ -222,6 +252,11 @@ def fetch_clip_for_query(query, out_path, used_ids, api_key):
 
     for hit in result.get("hits", []):
         if hit["id"] in used_ids:
+            continue
+        if not _tags_relevant(query, hit.get("tags")):
+            # A keyword-OR match with zero real subject overlap in the clip's own
+            # tags is almost always spurious -- skip it and try the next hit rather
+            # than using a plausible-looking but unrelated clip.
             continue
         file_info = _best_video_file(hit)
         dl_req = urllib.request.Request(file_info["url"], headers={"User-Agent": USER_AGENT})

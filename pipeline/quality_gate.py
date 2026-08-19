@@ -81,6 +81,7 @@ STOPWORDS = {
     "just", "who", "what", "which", "do", "does", "did", "have", "has", "had",
 }
 MIN_BELIEF_BEAT0_OVERLAP = 0.25
+MAX_CLOSER_MIDDLE_RECAP_OVERLAP = 0.22
 
 BANNED_OPENERS = (
     "so today", "in this video", "welcome back", "today we're talking about",
@@ -249,6 +250,28 @@ def check(script, used_topics_path):
                 "end on the claim restated harder, an open question, or a challenge, "
                 "never a tidy wrap-up"
             )
+
+        # Catches a closing beat that avoids the banned phrases literally but still
+        # just re-lists facts from the middle beats -- real failure caught in
+        # production: a snake-shedding script ended "it's skin maintenance, mites and
+        # eyesight included, growth just tags along free," which dodges "So"/"and
+        # that's why" while doing exactly what that rule exists to prevent. Checked
+        # against beats[1:-1] specifically (the middle explanation beats), not beat 0
+        # -- calling back to beat 0's opening word/image is rule 4's loop-back and is
+        # required, not penalized here.
+        middle_beats = beats[1:-1]
+        if middle_beats:
+            middle_text = " ".join(b.get("text", "") for b in middle_beats)
+            recap_overlap = _directional_content_overlap(closer, middle_text)
+            if recap_overlap > MAX_CLOSER_MIDDLE_RECAP_OVERLAP:
+                errors.append(
+                    f"final beat ({closer!r}) reads as a recap of the middle beats "
+                    f"(overlap={recap_overlap:.2f}) rather than a new closing move -- "
+                    "restating the claim harder, an open question, or a challenge "
+                    "should mostly use fresh phrasing, not re-list facts already "
+                    "covered (a callback to beat 0's specific word/image is fine and "
+                    "expected, this checks against the middle beats only)"
+                )
 
     series_label = script.get("series_label") or ""
     if not SERIES_LABEL_RE.match(series_label):

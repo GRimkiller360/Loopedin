@@ -8,7 +8,10 @@ Voice defaults to Chirp3-HD (Google's highest-quality TTS tier, 2026-08-18) --
 this channel's actual volume (~10 videos/day, ~400 chars narration each, ~120k
 chars/month) sits comfortably under Chirp3-HD's ~1M free characters/month, so this
 costs $0 at current scale despite being the premium tier, not the free-by-necessity
-Standard voice used before.
+Standard voice used before. Switched from the male voice (Puck) to a female voice
+(Kore) 2026-08-19, user's call -- no real A/B data on this channel either way, just
+a cheap one-line change to try. Chirp3-HD offers 8 English voices total: Aoede,
+Kore, Leda, Zephyr (female) and Charon, Fenrir, Orus, Puck (male).
 """
 import argparse
 import base64
@@ -33,7 +36,7 @@ def _google_access_token():
     return creds.token
 
 
-def synthesize_google(text, voice_name="en-US-Chirp3-HD-Puck"):
+def synthesize_google(text, voice_name="en-US-Chirp3-HD-Kore"):
     import urllib.request
 
     token = _google_access_token()
