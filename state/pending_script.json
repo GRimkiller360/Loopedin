@@ -1,0 +1,31 @@
+{
+  "topic": "reheating leftover pasta doesn't destroy Bacillus cereus cereulide toxin (fried rice syndrome death)",
+  "category": "science facts",
+  "seed_source_video_id": "GSfae9-0cYQ",
+  "seed_view_count": 27213,
+  "title": "He Microwaved 5-Day-Old Pasta Until It Was Steaming Hot. He Still Died.",
+  "description": "A 20-year-old in Belgium reheated pasta that had sat on his counter for five days, microwaved it until it was steaming hot, and was dead by the next morning. This is the real, documented case behind \"fried rice syndrome\" -- proof that heat alone can't undo how long food sat out.",
+  "tags": ["food safety", "bacillus cereus", "fried rice syndrome", "science facts", "food poisoning", "leftovers", "cereulide", "true story"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "question", "text": "Why didn't microwaving leftover pasta until it was steaming hot save a healthy 20-year-old?"},
+    {"hook_type": "shocking_fact", "text": "A 20-year-old microwaved 5-day-old pasta until it was steaming hot -- and died anyway."},
+    {"hook_type": "myth_bust", "text": "Steaming hot doesn't mean safe: reheating never destroys the toxin already in your leftovers."},
+    {"hook_type": "story", "text": "He left spaghetti out for five days, reheated it until it was steaming, and never woke up."}
+  ],
+  "payoff_mechanism": "Bacillus cereus bacteria growing in food left at room temperature produce a heat-stable toxin called cereulide, and reheating kills the bacteria itself but cannot break down or destroy that toxin once it has already formed.",
+  "share_trigger": "A viewer sends this to the friend who leaves rice or pasta on the counter overnight and just microwaves it the next day, because they want them to actually throw it out this time.",
+  "contradicted_belief": "Most people believe microwaving leftovers until they're steaming hot makes them safe to eat again.",
+  "series_label": "Things that shouldn't be true #7",
+  "holdout": false,
+  "experiment_arm": "variant",
+  "sources": [
+    {"url": "https://pubmed.ncbi.nlm.nih.gov/22012017/", "note": "Naranjo et al. 2011, J Clin Microbiol -- fatal case, pasta left 5 days at room temp, cereulide toxin found"},
+    {"url": "https://www.today.com/health/what-is-fried-rice-syndrome-rcna122986", "note": "Confirms case timeline: leftover pasta, room temp storage, death after reheating and eating"}
+  ],
+  "beats": [
+    {"text": "Microwaving 5-day-old pasta until it's **steaming** hot didn't save a healthy 20-year-old from dying.", "broll_query": "steaming plate pasta microwave close-up"},
+    {"text": "The bacteria that grew while it sat release a toxin called **cereulide** -- heat never destroys it.", "broll_query": "bacteria toxin illustration microscope"},
+    {"text": "**Steaming** hot was never the test. Follow before your leftovers get the same chance.", "broll_query": "kitchen clock leftovers counter"}
+  ]
+}
