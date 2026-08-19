@@ -406,10 +406,28 @@ def _composite_beat_over_archival(background_path, start, dur, text_png_path, ou
     ], check=True)
 
 
+TYPOGRAPHIC_ZOOM_END = 1.05  # gentle push-in on every flat-color beat frame -- real
+                              # user feedback on the first live test: a fully static
+                              # frame reads as "boring, no video" when there's no
+                              # archival photo to Ken-Burns over (see
+                              # _build_archival_background). Subtler than the stock
+                              # path's zoom (HOOK_ZOOM_END/SUBTLE_ZOOM_END above) since
+                              # there's large flat-color area here with nothing for a
+                              # stronger zoom to reveal -- this is about not being
+                              # inert, not about drawing the eye anywhere specific.
+
+
 def _frame_to_clip(frame_path, duration, out_path):
+    total_frames = max(int(round(duration * OUTPUT_FPS)), 1)
+    zoom_step = (TYPOGRAPHIC_ZOOM_END - 1.0) / total_frames
+    vf = (
+        f"scale={WIDTH}:{HEIGHT},"
+        f"zoompan=z='min(zoom+{zoom_step},{TYPOGRAPHIC_ZOOM_END})':d=1:"
+        f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={WIDTH}x{HEIGHT}:fps={OUTPUT_FPS}"
+    )
     subprocess.run([
         "ffmpeg", "-y", "-loop", "1", "-i", str(frame_path), "-t", str(duration),
-        "-vf", f"scale={WIDTH}:{HEIGHT}", "-r", str(OUTPUT_FPS), "-pix_fmt", "yuv420p",
+        "-vf", vf, "-r", str(OUTPUT_FPS), "-pix_fmt", "yuv420p",
         "-c:v", "libx264", "-preset", "veryfast", str(out_path),
     ], check=True)
 
