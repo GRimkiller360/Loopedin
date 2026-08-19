@@ -31,6 +31,20 @@
         "Fixed quality_gate.py's _word_set() to strip ** caption-emphasis markup before computing word overlap, which was silently degrading every existing overlap check (hook-winner, hook-candidate-distinctness, title-similarity) whenever beat text contained emphasis markup",
         "Documented in ROUTINE_INSTRUCTIONS.md step 2 that a real mechanism needing more room should extend the video length (up to the existing ~58s cap) rather than being compressed into an assertion -- the 15-30s prior is a lean for topics that fit it naturally, not a hard ceiling that justifies cutting the explanation itself"
       ]
+    },
+    {
+      "date": "2026-08-19",
+      "changed_by": "human-guided (Ethan + Claude Code session) -- explicit revert request",
+      "from_version": "2026-08-19-share-first-v1",
+      "to_version": "2026-08-19-payoff-mechanism-v4",
+      "diagnosis": "The channel owner requested reverting everything from the 'share-first refactor' -- a multi-commit initiative (Phase 1: share_trigger/contradicted_belief/series numbering; Phase 2: typographic render path + cold open; Phase 3: shares-first optimization target; Phase 4: render-style alternation -- plus the stakes test, sourcing requirement, and holdout/experiment-arm mechanism built alongside it) implemented autonomously between sessions. No specific defect was cited; this was a direct instruction to return to the prior ruleset, not a diagnosed failure of the share-first work itself.",
+      "evidence": "Explicit, repeated user instruction in a live session (\"remove everything that happened in phases\", after clarifying \"topogify\" meant the typographic render path). Verified the exact commit boundary via git diff (e632cea, the payoff-mechanism-v4 commit, is the last commit before the share-first refactor's first commit c492b84) and confirmed pipeline/state_utils.py was unchanged across the whole range, so reverting the calling code doesn't break any function signature.",
+      "changes": [
+        "Reverted ROUTINE_INSTRUCTIONS.md, SELF_IMPROVEMENT_INSTRUCTIONS.md, pipeline/{analytics_feedback,assemble,broll,quality_gate,script_schema,trend_source,tts,upload,live_stats}.py, .github/workflows/{produce-upload,trend-fetch}.yml, and requirements.txt to their exact content at commit e632cea",
+        "Deleted pipeline/experiment_arm.py, pipeline/update_channel_branding.py, and .github/workflows/update-channel-branding.yml -- didn't exist before the refactor",
+        "Deliberately did NOT touch any state/*.json file (used_topics.json, live_stats.json, pending_script.json, latest_trend_seed.json, quota_usage.json, routine_health.json, series_log.json) -- these are real accumulated production history/in-flight state, not code, and must never be rolled back",
+        "Verified the currently in-flight state/pending_script.json (written under share-first rules, contains fields like share_trigger/series_label the reverted schema no longer requires) still validates cleanly against the reverted script_schema.py/quality_gate.py -- extra unused fields are harmless, so the in-flight video will still produce correctly under the restored (stock b-roll, no cold-open) pipeline"
+      ]
     }
   ]
 }
