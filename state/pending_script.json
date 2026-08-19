@@ -1,0 +1,27 @@
+{
+  "topic": "Lake Natron in Tanzania calcifies dead animals into stone-like statues",
+  "category": "science facts",
+  "seed_source_video_id": "HcedT88Shrs",
+  "seed_view_count": 68024,
+  "title": "The African Lake That Turns Animals Into Stone (It's Not Staged)",
+  "description": "There's a real lake in Tanzania so caustic and mineral-saturated that animals which die in it end up calcified, preserved by the same class of chemical ancient Egypt used to mummify pharaohs. AI-narrated original commentary on a real, verifiable natural phenomenon (Lake Natron) -- not a summary or reuse of any single source video. #ScienceFacts #LakeNatron #Nature",
+  "tags": ["Lake Natron", "science facts", "nature", "Tanzania", "mummification", "shorts", "weird nature facts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Those viral photos of animals turned to stone in an African lake aren't staged -- the lake mummifies them itself, with the same minerals Egypt used on pharaohs."},
+    {"hook_type": "myth_bust", "text": "You'd guess someone Photoshopped a bird into solid stone. Nobody did -- Lake Natron does this to animals completely on its own."},
+    {"hook_type": "question", "text": "How does a lake turn a bird into a stone statue with no taxidermist, no Photoshop, and nobody touching it?"},
+    {"hook_type": "story", "text": "A photographer walked an African shoreline and found birds standing perfectly calcified like statues -- and none of it was staged."}
+  ],
+  "payoff_mechanism": "The lake sits beside an active volcano that fills it with sodium carbonate and other alkaline minerals, the same class of chemical ancient Egypt used to mummify pharaohs, so anything that dies in the caustic water gets chemically preserved instead of decomposing normally.",
+  "share_trigger": "Send this to the friend who thinks every insane nature photo online is AI or Photoshopped fake.",
+  "contradicted_belief": "People assume the viral 'stone animal' photos from Lake Natron had to be staged or Photoshopped, not something a lake does on its own.",
+  "series_label": "Things that shouldn't be true #1",
+  "holdout": false,
+  "experiment_arm": "variant",
+  "beats": [
+    {"text": "Those viral photos of animals turned to **stone**? The lake did it, nobody staged this.", "broll_query": "calcified bird stone lake"},
+    {"text": "It's Lake Natron in Tanzania, so caustic it burns skin, filled with the same minerals Egypt used to **mummify** pharaohs.", "broll_query": "red caustic lake Tanzania"},
+    {"text": "No photographer, no taxidermist, just a lake quietly turning wildlife to **stone**. Follow for the next one.", "broll_query": "mummified bird stone statue"}
+  ]
+}
