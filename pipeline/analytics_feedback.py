@@ -377,6 +377,7 @@ def summarize(performance):
             "sub_rate": _rate_per_1k(v.get("subscribers_gained") or 0, views),
             "eng_rate": _rate_per_1k((v.get("likes") or 0) + (v.get("comments") or 0), views),
             "share_rate": _rate_per_1k(v.get("shares") or 0, views),
+            "comment_rate": _rate_per_1k(v.get("comments") or 0, views),
         }
         if v.get("category"):
             dimensions["by_category"][v["category"]].append(entry)
@@ -404,7 +405,11 @@ def summarize(performance):
         return sum(e[key] for e in entries) / len(entries)
 
     def _rank(bucket, limit):
-        ranked = sorted(bucket.items(), key=lambda kv: _avg("avg_view_pct", kv[1]), reverse=True)
+        # Ranked by share_rate first -- shares/1k views is the stated primary metric
+        # (see the callout at the top of render_summary_markdown and
+        # SELF_IMPROVEMENT_INSTRUCTIONS.md's optimization-target section); the table
+        # itself should reflect that priority, not silently still rank by retention.
+        ranked = sorted(bucket.items(), key=lambda kv: _avg("share_rate", kv[1]), reverse=True)
         return [
             {
                 "name": name,
@@ -412,6 +417,7 @@ def summarize(performance):
                 "sub_rate_per_1k_views": _avg("sub_rate", entries),
                 "engagement_rate_per_1k_views": _avg("eng_rate", entries),
                 "share_rate_per_1k_views": _avg("share_rate", entries),
+                "comment_rate_per_1k_views": _avg("comment_rate", entries),
                 "sample_size": len(entries),
             }
             for name, entries in ranked[:limit]
@@ -524,10 +530,11 @@ def render_summary_markdown(summary, recent, traffic_sources, weekly=None, beat_
             lines.append("")
         for r in rows:
             lines.append(
-                f"- {r['name']}: {r['avg_view_pct']:.1f}% avg view, "
+                f"- {r['name']}: {r['share_rate_per_1k_views']:.2f} shares/1k views, "
                 f"{r['sub_rate_per_1k_views']:.2f} subs/1k views, "
+                f"{r['comment_rate_per_1k_views']:.2f} comments/1k views, "
                 f"{r['engagement_rate_per_1k_views']:.2f} likes+comments/1k views, "
-                f"{r['share_rate_per_1k_views']:.2f} shares/1k views (n={r['sample_size']})"
+                f"{r['avg_view_pct']:.1f}% avg view (n={r['sample_size']})"
             )
         lines.append("")
 

@@ -12,6 +12,27 @@ No human reviews your edits before they take effect on the next content-producti
 run. That is deliberate -- but it also means the hard rules below are non-negotiable,
 not suggestions.
 
+## Optimization target -- read this before anything else
+
+**Primary metric: `shares_per_1000_views`. Secondary: `subs_per_1000_views`, then
+`comments_per_1000_views`.**
+
+**`avg_view_pct` (average percentage viewed) is NOT a target.** The channel averages
+~56% retention and this is not the constraint -- shares sit at 0.019% of views and
+subscribers at 0.05%. **Do not propose a change justified only by retention data.** A
+diagnosis that only points at avg_view_pct, without also showing it connects to
+shares/subs/comments, does not clear the evidence bar below, no matter how clean the
+retention pattern looks. If you genuinely cannot find a share/subscriber/engagement
+angle on a pattern you've noticed, that's a sign it isn't the right thing to act on
+yet, not a reason to fall back to optimizing retention instead.
+
+**When comparing ruleset versions or experiment arms, report max views in the window
+alongside the median, not just the median.** A ruleset producing higher variance (one
+real outlier plus several ordinary videos) is preferred over one producing a tighter,
+lower-ceiling distribution at the same median -- only an outlier actually changes the
+channel's distribution/reach; the median doesn't. Don't recommend against a
+higher-variance ruleset just because its median looks flat or slightly worse.
+
 ## Hard rules
 
 1. **Never edit anything between `<!-- PROTECTED-SECTION: START -->` and
