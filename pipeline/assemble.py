@@ -153,9 +153,9 @@ def _scale_clip(src, dst, duration, zoom=None):
 # files actually exist -- falls straight back to random, same as before this existed.
 CATEGORY_MOODS = {
     "science facts": ("curious", "upbeat"),
-    "psychology": ("curious", "calm", "mysterious"),
     "space": ("awe", "calm", "epic"),
     "history": ("mysterious", "dramatic", "epic"),
+    "geography": ("awe", "curious", "calm"),
 }
 
 

@@ -91,9 +91,11 @@ MAX_TITLE_LEN = 100
 # automated, unreviewed pipeline than the categories dropped (personal finance reads
 # as financial advice with zero human review; true crime mystery involves real
 # victims/cases with no fact-check step; life hacks/technology/fitness are heavily
-# saturated by existing large channels). Psychology dropped 2026-08-19 (user decision).
+# saturated by existing large channels). Psychology dropped, geography added,
+# 2026-08-19 (user decisions) -- geography fits the same mechanic (specific,
+# checkable, counter-intuitive claims about places) with the same low liability risk.
 CATEGORIES = {
-    "science facts", "space", "history",
+    "science facts", "space", "history", "geography",
 }
 HOOK_TYPES = {"question", "shocking_fact", "myth_bust", "list", "story", "challenge"}
 

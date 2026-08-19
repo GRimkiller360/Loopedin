@@ -66,10 +66,10 @@ it to the current time. If it's missing, or more than **90 minutes** old:
   against `used_topics.json` by source video ID. Never the source video's actual
   content. Pick whichever candidate gives the best distinct angle -- you don't have to
   use `candidates[0]`. Each `seed_category` is one of a fixed set (**science facts,
-  space, history** -- deliberately narrowed from a broader original list to build a
-  coherent channel identity, psychology later dropped from that set too; see
-  `pipeline/script_schema.py`'s `CATEGORIES` comment for the full reasoning) -- copy
-  the one you pick verbatim into your script's
+  space, history, geography** -- deliberately narrowed from a broader original list
+  to build a coherent channel identity, psychology later dropped and geography added
+  to that set; see `pipeline/script_schema.py`'s `CATEGORIES` comment for the full
+  reasoning) -- copy the one you pick verbatim into your script's
   `category` field (see step 2). Don't invent a new category string even if it feels
   more precise; the performance-feedback loop only works if categories stay consistent
   across videos.
