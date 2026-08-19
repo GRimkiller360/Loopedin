@@ -946,6 +946,49 @@
         }
       ],
       "recovery_note": "produce-upload run 32261544007 succeeded through Upload but crashed in Record-state on a broll_clips.json FileNotFoundError bug (fixed) -- this record was reconstructed manually from the committed script + the real uploaded video_id, duration is word-count-estimated not measured"
+    },
+    {
+      "topic": "the mass ceiling that stops black holes from growing forever (TON 618)",
+      "video_id": "EvX57hXfPFE",
+      "uploaded_at": "2026-08-19T14:23:29.348410+00:00",
+      "publish_hour_utc": 14,
+      "category": "space",
+      "seed_source_video_id": "1YGGZhl9Ciw",
+      "seed_view_count": 180237,
+      "hook_type": "shocking_fact",
+      "title": "Physics Says Black Holes Can't Grow Past 50 Billion Suns",
+      "duration_seconds": 16.4,
+      "ruleset_version": "2026-08-19-share-first-v1",
+      "beat_timings": [
+        {
+          "start_frac": 0.0,
+          "end_frac": 0.364,
+          "text": "Most people think black holes eat forever -- physics actually caps them at **50 billion** Suns."
+        },
+        {
+          "start_frac": 0.364,
+          "end_frac": 0.676,
+          "text": "Get one too massive and its own gas disc **collapses** into stars instead of fuel."
+        },
+        {
+          "start_frac": 0.676,
+          "end_frac": 1.0,
+          "text": "TON 618 already sits at that same **50-billion-Sun** wall -- follow for the next one."
+        }
+      ],
+      "first_clip_tags": null,
+      "holdout": false,
+      "experiment_arm": "variant",
+      "sources": [
+        {
+          "url": "https://www.eurekalert.org/news-releases/610062",
+          "note": "University of Leicester (Andrew King): black holes cap out near 50 billion solar masses before their feeding disc collapses into stars."
+        },
+        {
+          "url": "https://arxiv.org/abs/1511.08502",
+          "note": "Andrew King, 'How Big Can a Black Hole Grow?' -- derives the ~5x10^10 solar-mass accretion limit."
+        }
+      ]
     }
   ]
 }
