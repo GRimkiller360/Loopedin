@@ -1147,6 +1147,49 @@
           "note": "Independent heritage site corroborating the chariot's multi-block construction disguised as a single carved stone."
         }
       ]
+    },
+    {
+      "topic": "reheating leftover pasta doesn't destroy Bacillus cereus cereulide toxin (fried rice syndrome death)",
+      "video_id": "g8XM42n2xvQ",
+      "uploaded_at": "2026-08-19T17:06:02.165643+00:00",
+      "publish_hour_utc": 17,
+      "category": "science facts",
+      "seed_source_video_id": "GSfae9-0cYQ",
+      "seed_view_count": 27213,
+      "hook_type": "shocking_fact",
+      "title": "He Microwaved 5-Day-Old Pasta Until It Was Steaming Hot. He Still Died.",
+      "duration_seconds": 17.9,
+      "ruleset_version": "2026-08-19-share-first-v1",
+      "beat_timings": [
+        {
+          "start_frac": 0.0,
+          "end_frac": 0.354,
+          "text": "Microwaving 5-day-old pasta until it's **steaming** hot didn't save a healthy 20-year-old from dying."
+        },
+        {
+          "start_frac": 0.354,
+          "end_frac": 0.7007,
+          "text": "The bacteria that grew while it sat release a toxin called **cereulide** -- heat never destroys it."
+        },
+        {
+          "start_frac": 0.7007,
+          "end_frac": 1.0,
+          "text": "**Steaming** hot was never the test. Follow before your leftovers get the same chance."
+        }
+      ],
+      "first_clip_tags": "cook, meal, food, carbohydrates, raw, nourishment, dough, flour, baked goods, pasta, pasta machine",
+      "holdout": false,
+      "experiment_arm": "variant",
+      "sources": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/22012017/",
+          "note": "Naranjo et al. 2011, J Clin Microbiol -- fatal case, pasta left 5 days at room temp, cereulide toxin found"
+        },
+        {
+          "url": "https://www.today.com/health/what-is-fried-rice-syndrome-rcna122986",
+          "note": "Confirms case timeline: leftover pasta, room temp storage, death after reheating and eating"
+        }
+      ]
     }
   ]
 }
