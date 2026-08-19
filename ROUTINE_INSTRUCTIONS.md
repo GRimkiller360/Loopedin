@@ -365,6 +365,19 @@ Save it as `state/pending_script.json` matching the shape documented in
      marking everything makes nothing stand out, which defeats the purpose. Not
      every beat needs one; a transitional beat with no single standout word doesn't
      need forced emphasis.
+  9. **For medium/long videos (20s+, roughly 5+ beats), give one middle beat a
+     second "hook" moment, not just the opener.** Attention doesn't stay captured for
+     free -- documented pattern-interrupt research says viewers need it re-earned
+     roughly every 15-20 seconds, not just once at the start. This is distinct from
+     rule 6's "no beat should sag" -- a beat can pass rule 6 (genuinely new
+     information, moves the story forward) and *still* be delivered at a flatter,
+     lower-energy pitch than beat 0 was. Pick whichever middle beat carries the
+     single most surprising or vivid sub-detail and write it with the same jolt as
+     the opening hook (a sharper number, a sudden reversal phrase like "but here's
+     the part that doesn't add up," a vivid concrete image) rather than letting the
+     energy taper evenly across the whole script. Short videos (under ~20s) don't
+     need this -- there isn't enough runway for attention to drift before the payoff
+     arrives anyway.
 - title: prefer a genuine curiosity gap or a concrete number/claim over a generic
   label, but <!-- PROTECTED-SECTION: START -->it must accurately reflect what the
   video actually delivers, full stop -- never loosen this even if data seems to show

@@ -71,22 +71,43 @@ def fetch_clip_for_query(query, out_path, used_ids, api_key):
     return False
 
 
+# A single unbroken shot holding for a long beat reads as static even with the zoom
+# motion applied in assemble.py -- documented pattern-interrupt research says to
+# change the actual visual every ~3-5s, not just add motion to one continuous clip.
+# Word count is the same proxy assemble.py's _beat_durations already uses for timing
+# (no exact per-beat audio duration is available at this stage either), so splitting
+# on word count keeps this consistent with how duration is estimated elsewhere.
+MAX_WORDS_PER_CLIP = 14
+MAX_CLIPS_PER_BEAT = 3
+
+
 def fetch_all(script, work_dir, api_key):
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
     used_ids = set()
-    clip_paths = []
+    beats_clips = []
 
     for i, beat in enumerate(script["beats"]):
-        out_path = work_dir / f"beat_{i:02d}.mp4"
-        found = fetch_clip_for_query(beat["broll_query"], out_path, used_ids, api_key)
-        if not found:
-            found = fetch_clip_for_query(script["topic"], out_path, used_ids, api_key)
-        if not found:
-            raise RuntimeError(f"no b-roll found for beat {i} (query={beat['broll_query']!r})")
-        clip_paths.append(str(out_path))
+        word_count = len(config.strip_emphasis_markup(beat["text"]).split())
+        num_clips = min(max(1, -(-word_count // MAX_WORDS_PER_CLIP)), MAX_CLIPS_PER_BEAT)
 
-    return clip_paths
+        sub_paths = []
+        for j in range(num_clips):
+            out_path = work_dir / f"beat_{i:02d}_{j:02d}.mp4"
+            found = fetch_clip_for_query(beat["broll_query"], out_path, used_ids, api_key)
+            if not found:
+                found = fetch_clip_for_query(script["topic"], out_path, used_ids, api_key)
+            if not found:
+                # A later sub-clip failing to find a fresh match isn't fatal -- fall
+                # back to fewer cuts for this beat rather than failing the whole video
+                # over running out of distinct matches for an already-narrow query.
+                if sub_paths:
+                    break
+                raise RuntimeError(f"no b-roll found for beat {i} (query={beat['broll_query']!r})")
+            sub_paths.append(str(out_path))
+        beats_clips.append(sub_paths)
+
+    return beats_clips
 
 
 if __name__ == "__main__":
@@ -96,5 +117,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     script = json.loads(Path(args.script).read_text(encoding="utf-8"))
-    paths = fetch_all(script, args.work_dir, config.require("PIXABAY_API_KEY"))
-    print(json.dumps(paths, indent=2))
+    beats_clips = fetch_all(script, args.work_dir, config.require("PIXABAY_API_KEY"))
+    print(json.dumps({"beats": beats_clips}, indent=2))

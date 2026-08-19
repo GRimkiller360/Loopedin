@@ -216,18 +216,27 @@ def _add_hook_sound(audio_path, narration_duration, work_dir):
     return hooked_audio
 
 
-def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir):
+def assemble(script, narration_path, beats_clips, music_dir, out_path, work_dir):
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
 
     narration_duration = min(_probe_duration(narration_path), config.MAX_SHORT_SECONDS)
     durations = _beat_durations(script["beats"], narration_duration)
 
+    # Each beat may now have multiple sub-clips (see broll.py's MAX_WORDS_PER_CLIP) --
+    # split that beat's duration evenly across however many it actually got, so a real
+    # cut happens partway through a long beat instead of one clip holding the whole
+    # time. zoom treatment stays per-beat (hook vs subtle), applied to every sub-clip
+    # within that beat -- _scale_clip's zoom ramps relative to whatever duration it's
+    # given, so a shorter sub-duration still ramps correctly across just that sub-clip.
     scaled_paths = []
-    for i, (clip, dur) in enumerate(zip(clip_paths, durations)):
-        scaled = work_dir / f"beat_{i:02d}_scaled.mp4"
-        _scale_clip(clip, scaled, dur, zoom="hook" if i == 0 else "subtle")
-        scaled_paths.append(scaled)
+    for i, (sub_clips, dur) in enumerate(zip(beats_clips, durations)):
+        sub_dur = dur / len(sub_clips)
+        zoom = "hook" if i == 0 else "subtle"
+        for j, clip in enumerate(sub_clips):
+            scaled = work_dir / f"beat_{i:02d}_{j:02d}_scaled.mp4"
+            _scale_clip(clip, scaled, sub_dur, zoom=zoom)
+            scaled_paths.append(scaled)
 
     concat_list = work_dir / "concat.txt"
     concat_list.write_text("\n".join(f"file '{p.resolve()}'" for p in scaled_paths))
@@ -293,17 +302,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--script", required=True)
     parser.add_argument("--narration", required=True)
-    parser.add_argument("--clips", required=True, help="JSON list of clip paths, inline or a file path")
+    parser.add_argument("--clips", required=True, help='JSON {"beats": [[clip,...],...]}, inline or a file path')
     parser.add_argument("--music-dir", default=str(config.ASSETS_DIR / "music"))
     parser.add_argument("--work-dir", required=True)
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
 
     script_data = json.loads(Path(args.script).read_text(encoding="utf-8"))
-    if args.clips.strip().startswith("["):
-        clip_paths = json.loads(args.clips)
+    if args.clips.strip().startswith("{"):
+        clips_data = json.loads(args.clips)
     else:
-        clip_paths = json.loads(Path(args.clips).read_text(encoding="utf-8"))
+        clips_data = json.loads(Path(args.clips).read_text(encoding="utf-8"))
+    beats_clips = clips_data["beats"]
 
-    result = assemble(script_data, args.narration, clip_paths, args.music_dir, args.out, args.work_dir)
+    result = assemble(script_data, args.narration, beats_clips, args.music_dir, args.out, args.work_dir)
     print(result)
