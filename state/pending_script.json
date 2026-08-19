@@ -1,0 +1,25 @@
+{
+  "topic": "SpaceX's rocket booster has no landing legs -- it gets caught by a tower instead",
+  "category": "space",
+  "seed_source_video_id": "2RZ-rWVSs70",
+  "seed_view_count": 104029,
+  "title": "The Rocket With Zero Landing Legs — Watch How SpaceX Actually Lands It",
+  "description": "AI-narrated commentary: SpaceX's biggest rocket booster doesn't land on legs at all -- it gets caught out of the sky by a giant tower. Here's the actual engineering reason why.",
+  "tags": ["spacex", "space", "rocket science", "starship", "engineering", "space facts", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "SpaceX's biggest rocket booster has zero landing legs — two giant metal arms catch it out of the sky instead."},
+    {"hook_type": "question", "text": "Why would you build a 20-story rocket booster with no landing legs at all?"},
+    {"hook_type": "myth_bust", "text": "Landing legs aren't what makes a rocket reusable — SpaceX proved that by removing them completely."},
+    {"hook_type": "story", "text": "In 2024, a robotic tower reached out and caught a falling rocket in midair — on the very first attempt."}
+  ],
+  "payoff_mechanism": "Landing legs are dead weight a booster has to carry to space and back for one three-second touchdown, so removing them frees up mass for extra fuel, and the tower's arms can catch it directly and prepare it to fly again within hours.",
+  "share_trigger": "Send this to the friend who insists rockets need legs like the moonlander, captioned: 'they don't anymore, look at this.'",
+  "holdout": false,
+  "experiment_arm": "control",
+  "beats": [
+    {"text": "Zero **landing legs.** That's how SpaceX's biggest rocket booster comes home.", "broll_query": "robotic arms catching falling rocket"},
+    {"text": "Instead, a giant tower reaches out and catches it **in midair**.", "broll_query": "giant tower catching rocket booster"},
+    {"text": "Losing the legs means **more fuel** — ready to fly again within hours. Follow for the next one.", "broll_query": "rocket booster launch pad night"}
+  ]
+}
