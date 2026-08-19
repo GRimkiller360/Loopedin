@@ -325,7 +325,21 @@ Save it as `state/pending_script.json` matching the shape documented in
      (no new information, no rising tension) is a place viewers drop off even after a
      great hook. Cut or rewrite any beat that fails this check rather than leaving it in
      to hit a word-count target.
-  7. **Mark the single most load-bearing word/number per beat with `**double
+  7. **Keep the hook's vivid, plain-spoken register through the explanation beats, not
+     just the opener.** Real evidence from this channel: a color-vision video hooked
+     with "your eye is **wired** to slam them together" (vivid, punchy), then beat 1
+     shifted into "they code color as **opposing pairs**, red versus green, blue
+     versus yellow" -- textbook-lecture phrasing. The average viewer watched almost
+     exactly to the end of that beat and no further, dropping off right before the
+     payoff beat that followed. A register shift from "someone telling you something
+     wild" to "a textbook explaining a mechanism" is itself a place viewers leave,
+     independent of whether the beat contains new information. When writing an
+     explanation beat, keep using the same kind of concrete, spoken-aloud phrasing as
+     the hook -- if a beat reads like it belongs in a textbook rather than something
+     you'd say out loud to a friend, rewrite it in the hook's voice before moving on,
+     don't just check that the *content* is new (rule 6 above already covers content;
+     this is about *how it's said*, a separate failure mode).
+  8. **Mark the single most load-bearing word/number per beat with `**double
      asterisks**`** for caption emphasis (bold highlight color + size bump when
      burned in -- see `pipeline/script_schema.py`). At most 1-2 marked words per
      beat, and only the specific number/claim/twist that beat exists to deliver --
