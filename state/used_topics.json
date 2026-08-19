@@ -711,6 +711,19 @@
       "title": "Some Galaxies Are Moving Away From Us Faster Than Light",
       "duration_seconds": 12.5,
       "ruleset_version": "2026-08-18-retention-overhaul-v3"
+    },
+    {
+      "topic": "gravity tunnel through Earth takes the same time to cross no matter the distance",
+      "video_id": "2BPGkd7ehxc",
+      "uploaded_at": "2026-08-19T03:56:24.244907+00:00",
+      "publish_hour_utc": 3,
+      "category": "science facts",
+      "seed_source_video_id": "EfvrgMbO3ms",
+      "seed_view_count": 181123,
+      "hook_type": "shocking_fact",
+      "title": "Every Straight Tunnel Through Earth Takes The Same 42 Minutes",
+      "duration_seconds": 13.3,
+      "ruleset_version": "2026-08-18-retention-overhaul-v3"
     }
   ]
 }
