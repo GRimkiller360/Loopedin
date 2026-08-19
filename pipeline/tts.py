@@ -33,7 +33,7 @@ def _google_access_token():
     return creds.token
 
 
-def synthesize_google(text, voice_name="en-US-Chirp3-HD-Puck"):
+def synthesize_google(text, voice_name="en-US-Chirp3-HD-Kore"):
     import urllib.request
 
     token = _google_access_token()
