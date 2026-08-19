@@ -2,8 +2,10 @@ name: Trend Seed Fetch
 
 on:
   schedule:
-    # ~10 min before each Claude routine fire, so the seed is ready when it reads it
-    - cron: "3 0,2,5,7,10,12,14,17,19,22 * * *"
+    # ~10 min before each Claude routine fire (routine is pinned to :53 past the hour
+    # by the scheduler, not :00 -- confirmed via RemoteTrigger get), so the seed is
+    # ready when it reads it
+    - cron: "43 * * * *"
   workflow_dispatch:
 
 permissions:
