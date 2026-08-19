@@ -289,7 +289,15 @@ def assemble(script, narration_path, beats_clips, music_dir, out_path, work_dir)
     #    time variable on the same filter instance is exactly the kind of collision
     #    that could resolve the expression's `t` wrong. Spelled out as `thickness=fill`
     #    instead so `t` unambiguously means the timestamp inside the expression.
+    # setpts=PTS-STARTPTS is required first -- video_track.mp4 is the result of
+    # concatenating several independently-encoded clips, which can carry forward
+    # non-zero starting timestamps. Without resetting PTS to 0 here, drawbox's `t`
+    # variable doesn't actually start at 0 either, so `t/duration` can already be
+    # near/at 1 from frame one -- which exactly matches what was seen in production
+    # twice now (a bar that's always full instead of animating). This is the standard
+    # fix for time-based filters behaving oddly on a clip with inherited timestamps.
     progress_bar_filter = (
+        f"setpts=PTS-STARTPTS,"
         f"drawbox=x=0:y=0:w=iw:h=10:color=black@0.35:thickness=fill,"
         f"drawbox=x=0:y=0:w='iw*min(t/{narration_duration},1)':h=10:color=0xFFD700@0.9:thickness=fill"
     )
