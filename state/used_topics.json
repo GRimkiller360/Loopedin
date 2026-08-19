@@ -887,6 +887,39 @@
       "first_clip_tags": "waterfall, stream, brook, forest, falls, green, rainforest, hidden, cove, water, falling, river, branch, leaves, branches, scotland, uk, highlands, relaxing, calm, peaceful, nature",
       "holdout": false,
       "experiment_arm": "control"
+    },
+    {
+      "topic": "Lake Natron in Tanzania calcifies dead animals into stone-like statues",
+      "video_id": "iYS7EOFk4MQ",
+      "uploaded_at": "2026-08-19T13:44:08.140194+00:00",
+      "publish_hour_utc": 13,
+      "category": "science facts",
+      "seed_source_video_id": "HcedT88Shrs",
+      "seed_view_count": 68024,
+      "hook_type": "shocking_fact",
+      "title": "The African Lake That Turns Animals Into Stone (It's Not Staged)",
+      "duration_seconds": 22.3,
+      "ruleset_version": "2026-08-19-share-first-v1",
+      "beat_timings": [
+        {
+          "start_frac": 0.0,
+          "end_frac": 0.273,
+          "text": "Those viral photos of animals turned to **stone**? The lake did it, nobody staged this."
+        },
+        {
+          "start_frac": 0.273,
+          "end_frac": 0.6579,
+          "text": "It's Lake Natron in Tanzania, so caustic it burns skin, filled with the same minerals Egypt used to **mummify** pharaohs."
+        },
+        {
+          "start_frac": 0.6579,
+          "end_frac": 1.0,
+          "text": "No photographer, no taxidermist, just a lake quietly turning wildlife to **stone**. Follow for the next one."
+        }
+      ],
+      "first_clip_tags": "swan, water bird, bird, animal rich, nature, lake, lake zurich",
+      "holdout": false,
+      "experiment_arm": "variant"
     }
   ]
 }
