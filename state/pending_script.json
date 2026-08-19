@@ -1,0 +1,33 @@
+{
+  "topic": "why the India-Pakistan border is bright enough to see from space (it's not a flag)",
+  "category": "space",
+  "seed_source_video_id": "FX-6iCAQSYs",
+  "seed_view_count": 205462,
+  "title": "The 'Flag Visible From Space' Photo Is Actually a 2,000km Border Fence",
+  "description": "A viral photo claims you can see India's flag glowing from space -- you can't, because flags aren't built to light up at night. What's actually visible is a nearly 2,000-kilometer stretch of floodlights India strung along its border with Pakistan, built purely to stop people crossing undetected after dark. It's one of the only international borders on Earth bright enough to trace from orbit, and nobody designed it to look like anything at all.",
+  "tags": ["space", "satellite", "border", "night lights", "science facts", "shorts", "myth busting", "astronomy"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "myth_bust", "text": "There's a 2,000-kilometer line of light across South Asia bright enough to see from the space station -- and it's not India's flag."},
+    {"hook_type": "shocking_fact", "text": "The brightest line on Earth's night side isn't a monument or a flag -- it's a border fence stretching 2,000 kilometers."},
+    {"hook_type": "question", "text": "Ever notice that glowing orange line across South Asia in satellite photos? It's not a flag -- it's 2,000 kilometers of security floodlights."},
+    {"hook_type": "story", "text": "In 2015 an astronaut on the space station photographed a glowing line across South Asia, and the internet decided it was a flag. It's a fence."}
+  ],
+  "payoff_mechanism": "India strung floodlights along nearly two-thirds of the border specifically so guards could spot people crossing on foot at night, and because that lighting runs unbroken for almost 2,000 kilometers instead of clustering around cities like normal borders do, it reads from orbit as one continuous glowing line instead of scattered dots.",
+  "share_trigger": "A viewer sends this to the friend who shared that viral 'India's flag from space' photo, because they want to be the one who corrects it with the real explanation.",
+  "contradicted_belief": "Most people assume that glowing line across South Asia is India's flag lit up to be seen from space, but it's actually a security fence.",
+  "series_label": "Things that shouldn't be true #8",
+  "holdout": true,
+  "experiment_arm": "control",
+  "sources": [
+    {"url": "https://science.nasa.gov/earth/earth-observatory/india-pakistan-borderlands-at-night-52008/", "note": "NASA's own page on the ISS night photo of the floodlit India-Pakistan border, taken Sept 23 2015"},
+    {"url": "https://www.tribuneindia.com/news/archive/nation/nasa-image-shows-india-pakistan-border-at-night-142384/", "note": "Reports the NASA image; confirms ~2,000km of the ~3,300km border is floodlit for security, not decoration"}
+  ],
+  "beats": [
+    {"text": "There's a **2,000-kilometer** line of light across South Asia bright enough to see from the space station -- and it's not India's **flag**.", "broll_query": "satellite Earth night city lights"},
+    {"text": "India's Border Security Force strung **floodlights** along nearly two-thirds of its border with Pakistan so guards could see anyone crossing on foot after dark.", "broll_query": "border fence floodlights night guard"},
+    {"text": "Almost every other border on Earth stays dark except for scattered cities -- this one runs **unbroken** for nearly 2,000 kilometers, so from orbit it reads as one continuous line, not dots.", "broll_query": "aerial night map glowing line"},
+    {"text": "An astronaut on the space station photographed it in 2015 -- and within days, people online were sharing it as proof of a **glowing** national flag, not a fence.", "broll_query": "astronaut space station window Earth"},
+    {"text": "That **line** is still burning tonight, doing its actual job -- no flag required. Follow for the next real explanation behind a viral photo.", "broll_query": "glowing border line night silhouette"}
+  ]
+}
