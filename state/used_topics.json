@@ -789,6 +789,19 @@
       "title": "The 1687 Thought Experiment That Explains Why Satellites Never Fall",
       "duration_seconds": 19.4,
       "ruleset_version": "2026-08-19-payoff-mechanism-v4"
+    },
+    {
+      "topic": "threatened egotism -- why fragile high self-esteem (not low self-esteem) explodes over small insults",
+      "video_id": "bd228UesQ6U",
+      "uploaded_at": "2026-08-19T08:16:29.928561+00:00",
+      "publish_hour_utc": 8,
+      "category": "psychology",
+      "seed_source_video_id": "eoIoCBAGtUc",
+      "seed_view_count": 181036,
+      "hook_type": "shocking_fact",
+      "title": "The Real Reason Instant Comebacks Aren't Confidence",
+      "duration_seconds": 29.0,
+      "ruleset_version": "2026-08-19-payoff-mechanism-v4"
     }
   ]
 }
