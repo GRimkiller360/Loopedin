@@ -1,0 +1,24 @@
+{
+  "topic": "the press conference mistake that brought down the Berlin Wall",
+  "category": "history",
+  "seed_source_video_id": "iXfBRN_vBew",
+  "seed_view_count": 1703205,
+  "title": "A Misread Memo Brought Down The Berlin Wall That Night",
+  "description": "The bizarre true story of how one spokesman's misread note at a 1989 press conference triggered the fall of the Berlin Wall within hours. Original AI-narrated commentary on real history -- not a summary of any source video.",
+  "tags": ["berlinwall", "coldwarhistory", "1989", "historyfacts", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "One man misread a memo -- and the Berlin Wall fell that same night."},
+    {"hook_type": "question", "text": "What if the fall of the Berlin Wall came down to one man's paperwork mistake?"},
+    {"hook_type": "story", "text": "On November 9th, 1989, a nervous East German spokesman was handed a note he'd never read -- live on TV."},
+    {"hook_type": "myth_bust", "text": "You probably think the Berlin Wall fell after a revolution. It actually fell after a scheduling mix-up."}
+  ],
+  "payoff_mechanism": "Schabowski's on-air answer was broadcast to millions as though it were official policy, so tens of thousands of East Berliners rushed the checkpoints within the hour, and the outnumbered guards -- with no new orders and no way to explain the confusion -- chose to open the gate rather than risk a violent standoff.",
+  "beats": [
+    {"text": "One man **misread** a memo -- and the Berlin Wall fell that same night.", "broll_query": "Berlin Wall crowd night"},
+    {"text": "It was 1989 -- East Germany only planned to **loosen** travel rules, not open the border.", "broll_query": "East Germany border sign"},
+    {"text": "The spokesman hadn't even read the new rules before the cameras started rolling.", "broll_query": "press conference papers microphone"},
+    {"text": "Asked when it started, he just shrugged and said **\"immediately.\"**", "broll_query": "man podium camera flash"},
+    {"text": "Crowds swarmed the checkpoints within the hour, and guards with zero new orders **opened** the gate rather than risk a riot -- one misread word brought down the Berlin Wall. Follow for more wild history.", "broll_query": "border gate crowd celebration"}
+  ]
+}
