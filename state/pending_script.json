@@ -1,0 +1,21 @@
+{
+  "topic": "the physics of a bed of nails — why 1,000 nails don't hurt but one does",
+  "category": "science facts",
+  "seed_source_video_id": "ITdQzLPGuk0",
+  "seed_view_count": 55983,
+  "title": "1,000 Nails Won't Cut You — One Will (Same Body Weight)",
+  "description": "Why a bed of a thousand nails won't hurt you but stepping on just one will — the physics of pressure, explained in under 20 seconds. AI-narrated science commentary.",
+  "tags": ["bed of nails", "physics facts", "pressure explained", "science shorts", "mind blowing science", "how it works"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "A bed of 1,000 nails won't break your skin — step on just one, same body weight, and you're bleeding."},
+    {"hook_type": "question", "text": "Why can someone lie down on hundreds of sharp nails and stand back up without a single cut?"},
+    {"hook_type": "myth_bust", "text": "The bed-of-nails trick isn't about tough skin — it's a math problem, not a stunt."}
+  ],
+  "payoff_mechanism": "Pain and puncturing both depend on pressure, which is force divided by the area it's spread over — one nail concentrates your full body weight onto a single sharp point, but a thousand nails divide that same weight across a thousand points, so the force landing on each tip drops below what's needed to break skin.",
+  "beats": [
+    {"text": "A bed of **1,000** nails won't cut you — one nail will.", "broll_query": "bed of nails demonstration"},
+    {"text": "Because pressure is about **area**: one nail puts your whole weight on one point, a thousand nails spread it so thin nothing breaks skin.", "broll_query": "nails pressure demonstration closeup"},
+    {"text": "Not the **1,000** you'd worry about — it's the one. Follow for more.", "broll_query": "person standing up unharmed"}
+  ]
+}
