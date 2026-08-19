@@ -212,7 +212,10 @@ if __name__ == "__main__":
     candidates = find_trend_seeds(
         args.used_topics, config.require("YOUTUBE_API_KEY"), performance_log_path=args.performance_log
     )
-    output = {"candidates": candidates}
+    # fetched_at lets the content routine verify this seed is actually fresh before
+    # using it, rather than trusting the two workflows' independent cron schedules to
+    # always land in the right order -- see ROUTINE_INSTRUCTIONS.md's freshness check.
+    output = {"candidates": candidates, "fetched_at": datetime.now(timezone.utc).isoformat()}
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(output, indent=2))
     print(json.dumps(output, indent=2))

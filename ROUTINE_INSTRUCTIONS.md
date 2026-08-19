@@ -34,6 +34,31 @@ destroys whatever `produce-upload.yml` was doing with it -- this has happened in
 production. Report in your summary that a script was already pending and end the run;
 don't investigate further, that's out of scope per "On failure" below.
 
+## 0.75. Trend seed freshness check -- never proceed on a stale seed
+
+`trend-fetch.yml` and this routine are two *independently scheduled* triggers, offset
+by ~10 minutes by design -- there is no hard technical guarantee trend-fetch actually
+ran, or ran recently, before you did (a delayed/failed/skipped trend-fetch fire is a
+real possible failure mode, not hypothetical). Silently using a stale
+`latest_trend_seed.json` means picking a topic seed that's hours old, which defeats
+the entire point of trend-based selection.
+
+Read `state/latest_trend_seed.json`'s `fetched_at` field (ISO timestamp) and compare
+it to the current time. If it's missing, or more than **90 minutes** old:
+
+1. First, try to force a fresh fetch yourself: dispatch `trend-fetch.yml` (e.g.
+   `gh workflow run trend-fetch.yml` if `gh` is available and authenticated, or the
+   equivalent GitHub API call with whatever git credential you have). Then wait
+   briefly (a minute or two) and re-check whether `state/latest_trend_seed.json` on
+   `origin/main` has a newer `fetched_at` than before.
+2. If that works, proceed with the fresh seed as normal.
+3. If you can't trigger a re-fetch (no permission, no `gh`, or it's still stale after
+   waiting) -- **do not proceed with a stale seed.** Stop, commit nothing, and report
+   plainly in your summary that the trend seed was stale (include its actual
+   `fetched_at` age) and that a fresh trend-fetch is needed before the next run. This
+   is the same "don't force it through" discipline as the rest of this runbook --
+   a stale seed silently used is worse than a run that visibly skips.
+
 ## 1. Read this run's inputs
 
 - `state/latest_trend_seed.json` -- `{"candidates": [...]}`, up to 3 topic seeds
