@@ -1203,6 +1203,19 @@
       "title": "The 'Flag Visible From Space' Photo Is Actually a 2,000km Border Fence",
       "duration_seconds": 43.7,
       "ruleset_version": "2026-08-19-payoff-mechanism-v4"
+    },
+    {
+      "topic": "the Earth-Moon gap is wide enough to fit all seven other planets side by side",
+      "video_id": "4PsFltMqRNw",
+      "uploaded_at": "2026-08-19T20:16:26.584374+00:00",
+      "publish_hour_utc": 20,
+      "category": "science facts",
+      "seed_source_video_id": "ZMmdQbkXmGI",
+      "seed_view_count": 23760,
+      "hook_type": "shocking_fact",
+      "title": "Seven Planets Could Fit in the Gap Between Earth and the Moon",
+      "duration_seconds": 18.1,
+      "ruleset_version": "2026-08-19-payoff-mechanism-v4"
     }
   ]
 }
