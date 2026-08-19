@@ -989,6 +989,59 @@
           "note": "Andrew King, 'How Big Can a Black Hole Grow?' -- derives the ~5x10^10 solar-mass accretion limit."
         }
       ]
+    },
+    {
+      "topic": "snake shedding isn't about growth -- adult snakes still shed for mite removal and eye-cap health",
+      "video_id": "u36H3r8439k",
+      "uploaded_at": "2026-08-19T14:48:02.509026+00:00",
+      "publish_hour_utc": 14,
+      "category": "science facts",
+      "seed_source_video_id": "xcVxpm80Jmc",
+      "seed_view_count": 67796,
+      "hook_type": "myth_bust",
+      "title": "A Fully-Grown Snake Still Sheds Its Skin \u2014 Here's Why",
+      "duration_seconds": 32.1,
+      "ruleset_version": "2026-08-19-share-first-v1",
+      "beat_timings": [
+        {
+          "start_frac": 0.0,
+          "end_frac": 0.2451,
+          "text": "Most people believe a snake sheds its skin to grow \u2014 but a fully-grown one that's basically stopped growing **still** does it every few months."
+        },
+        {
+          "start_frac": 0.2451,
+          "end_frac": 0.4145,
+          "text": "Skin can't stretch as a snake ages, so shedding it scrapes off **mites** and heals scars underneath."
+        },
+        {
+          "start_frac": 0.4145,
+          "end_frac": 0.5661,
+          "text": "Snakes have no eyelids \u2014 the eye cap sheds too, and a bad one can leave a snake **blind**."
+        },
+        {
+          "start_frac": 0.5661,
+          "end_frac": 0.7196,
+          "text": "Keepers check every shed for two intact eye caps \u2014 a missed one can cost real **eyesight**."
+        },
+        {
+          "start_frac": 0.7196,
+          "end_frac": 1.0,
+          "text": "Growth was never the reason \u2014 it's skin **maintenance**, mites and eyesight included, growth just tags along free. Follow for the one your biology teacher skipped."
+        }
+      ],
+      "first_clip_tags": "lipstick, make up, bride, woman, fashion, wedding, close up, texture",
+      "holdout": false,
+      "experiment_arm": "control",
+      "sources": [
+        {
+          "url": "https://a-z-animals.com/animals/snake/how-often-do-snakes-shed/",
+          "note": "Confirms snakes are indeterminate growers that keep shedding a few times a year even once growth slows drastically."
+        },
+        {
+          "url": "https://www.britannica.com/animal/snake/Molt",
+          "note": "Britannica's snake molting entry confirms shedding renews damaged/worn skin, not only skin outgrown by size."
+        }
+      ]
     }
   ]
 }
