@@ -201,6 +201,7 @@ jobs:
               first_clip_tags=broll_clips.get('first_clip_tags'),
               holdout=script.get('holdout'),
               experiment_arm=script.get('experiment_arm'),
+              sources=script.get('sources'),
           )
           record_success('state/routine_health.json')
 

@@ -14,7 +14,14 @@ Expected script.json shape:
                from ('science facts videos do well' is a generalizable signal; one specific
                topic's performance is not)",
   "title": "YouTube title, <=100 chars, hook + relevant keywords",
-  "description": "YouTube description; mention this is AI-narrated commentary",
+  "description": "2-3 original sentences (not a repeat of the title, not a generic
+                  genre label like 'AI-narrated commentary on X') that add real
+                  context a viewer wouldn't get from the video alone -- why this is
+                  true, what's surprising about it, or what prompted covering it.
+                  This is one of the only places a human reviewer sees actual
+                  editorial effort on an otherwise fully-automated channel; a thin
+                  or generic description reads as exactly that. sources (below) get
+                  appended automatically by upload.py -- don't duplicate them here.",
   "tags": ["...", "..."],
   "hook_type": "one of HOOK_TYPES below, describing how beat[0] opens the video. Like
                 category, this repeats across videos on purpose so the
@@ -55,6 +62,14 @@ Expected script.json shape:
                    state/series_log.json (never invented, never repeated -- see
                    ROUTINE_INSTRUCTIONS.md's series-numbering step). Burned into a
                    corner of the video for its full duration by assemble.py.",
+  "sources": "list of >=1 {'url': '...', 'note': '...'} -- at least one real,
+             independently-verifiable source for this video's central claim, found via
+             WebSearch/WebFetch (not asserted from memory -- see ROUTINE_INSTRUCTIONS.md's
+             sourcing step). 'note' is a short (<=20 words) description of what the
+             source actually confirms. upload.py appends these to the video description
+             so a reviewer (or viewer) can verify the claim in one click -- this is
+             real editorial substance for an otherwise fully-automated, unreviewed
+             channel, not decoration.",
   "seed_source_video_id": "copy trend_seed['source_video_id'] verbatim (may be null if the
                            seed had no source video) -- lets trend_source.py exclude this
                            exact video from being resurfaced as a seed on a future run,
@@ -93,8 +108,10 @@ RULESET_VERSION = "2026-08-19-share-first-v1"
 REQUIRED_TOP_LEVEL = {
     "topic", "category", "title", "description", "tags", "beats", "seed_source_video_id",
     "hook_type", "hook_candidates", "payoff_mechanism", "share_trigger",
-    "contradicted_belief", "series_label",
+    "contradicted_belief", "series_label", "sources",
 }
+MIN_SOURCES = 1
+MIN_DESCRIPTION_WORDS = 15
 REQUIRED_BEAT_KEYS = {"text", "broll_query"}
 REQUIRED_HOOK_CANDIDATE_KEYS = {"hook_type", "text"}
 MIN_BEATS, MAX_BEATS = 3, 12
@@ -190,6 +207,15 @@ def validate(script):
     if not (script.get("series_label") or "").strip():
         errors.append("series_label: missing or empty -- read from and increment state/series_log.json")
 
+    sources = script.get("sources") or []
+    if len(sources) < MIN_SOURCES:
+        errors.append(f"sources: need >={MIN_SOURCES} real, independently-verifiable source, got {len(sources)}")
+    for i, src in enumerate(sources):
+        if not isinstance(src, dict) or not src.get("url", "").strip().lower().startswith(("http://", "https://")):
+            errors.append(f"sources[{i}]: missing or invalid 'url' -- must be a real http(s) link, not asserted from memory")
+        if not isinstance(src, dict) or not (src.get("note") or "").strip():
+            errors.append(f"sources[{i}]: missing 'note' -- what does this source actually confirm")
+
     beats = script.get("beats") or []
     if not (MIN_BEATS <= len(beats) <= MAX_BEATS):
         errors.append(f"expected {MIN_BEATS}-{MAX_BEATS} beats, got {len(beats)}")
@@ -200,6 +226,13 @@ def validate(script):
 
     if len(script.get("title", "")) > MAX_TITLE_LEN:
         errors.append(f"title exceeds {MAX_TITLE_LEN} chars")
+
+    description_words = len((script.get("description") or "").split())
+    if description_words < MIN_DESCRIPTION_WORDS:
+        errors.append(
+            f"description: need >={MIN_DESCRIPTION_WORDS} words of real content (2-3 "
+            f"original sentences, not a genre label), got {description_words}"
+        )
 
     return errors
 

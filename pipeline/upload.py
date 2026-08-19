@@ -40,6 +40,21 @@ def _hashtags(script):
     return " ".join(tags)
 
 
+def _build_description(script):
+    # Sources are real editorial substance for a fully-automated, unreviewed channel
+    # -- appended mechanically here (not left to the routine to remember to type into
+    # `description` itself) so it's never accidentally dropped. One line per source,
+    # in "note -- url" order so the claim being confirmed reads before the link.
+    parts = [script["description"]]
+    sources = script.get("sources") or []
+    if sources:
+        source_lines = "\n".join(f"- {s['note']}: {s['url']}" for s in sources if s.get("url"))
+        if source_lines:
+            parts.append(f"Source{'s' if len(sources) > 1 else ''}:\n{source_lines}")
+    parts.append(_hashtags(script))
+    return "\n\n".join(parts)
+
+
 def upload_short(video_path, script, privacy_status="public"):
     from googleapiclient.http import MediaFileUpload
 
@@ -47,7 +62,7 @@ def upload_short(video_path, script, privacy_status="public"):
     body = {
         "snippet": {
             "title": script["title"][:100],
-            "description": script["description"] + "\n\n" + _hashtags(script),
+            "description": _build_description(script),
             "tags": script.get("tags", []),
             "categoryId": "22",
         },

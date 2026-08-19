@@ -362,6 +362,29 @@ may not have a natural share trigger -- consider whether a different specific an
 the same topic gives viewers something more forwardable, rather than forcing a generic
 one just to clear the word count.
 
+### 2.35. Find a real source -- before finalizing
+
+This channel is fully automated with no human review, on a public repo -- a reviewer
+(or a curious viewer) has no way to tell "researched" from "made up" except by
+checking. Give them something to check.
+
+Use `WebSearch`/`WebFetch` to find at least one real, independently-verifiable
+source for this video's central claim -- not a source for the topic in general, the
+specific number/mechanism/claim you're actually narrating. A Wikipedia article that
+happens to mention the topic doesn't count if it doesn't actually state the specific
+claim; find the source that does.
+
+**If `WebSearch`/`WebFetch` isn't available to you in this run** (tool not granted
+yet, or erroring), do not fabricate a citation from memory to fill the field --
+a plausible-sounding fake source is worse than none, actively misleading rather than
+just incomplete. Treat this the same as a stale trend seed or an in-flight script:
+stop, commit nothing, and say so plainly in your summary.
+
+Record what you found in `sources`: `[{"url": "...", "note": "what this source
+actually confirms, <=20 words"}, ...]`, at least one entry. `pipeline/upload.py`
+appends these to the video description automatically -- you don't need to write them
+into `description` yourself.
+
 ### 2.4. Series numbering
 
 Read `state/series_log.json` (`{"series_name": "...", "last_number": N}`). Set
@@ -429,6 +452,28 @@ Save it as `state/pending_script.json` matching the shape documented in
   **mystery-reveal** (withhold one concrete detail from beat 0, deliver it as the
   payoff). Whichever shape, beat 0 must *open* a specific, nameable gap -- not vague
   intrigue -- so there's something concrete left to close.
+
+  **Separately from story shape (which is about narrative framing), deliberately
+  rotate the overall structural format too -- five videos in a row that all land in
+  the same beat-count/length band reads as templated even when the writing itself is
+  original, and this is explicitly the "mass-produced content using similar
+  templates" pattern named in YouTube's own monetization policy (see the
+  structural-variety note later in this section).** Check the last ~10 entries in
+  `state/used_topics.json` (`duration_seconds` and `beats` count are both recorded)
+  before picking one of these three, and pick whichever hasn't shown up recently
+  rather than defaulting to whatever feels most natural for this topic every time:
+  - **Single-claim short**: short bucket (<=20s), 3-4 beats, hook + payoff with
+    minimal build -- the whole video is one sentence-worth of surprise, stated and
+    explained, nothing else.
+  - **List**: numbered structure (3-4 genuinely parallel points), medium/long length
+    -- only for topics that actually decompose into distinct parallel facts/reasons,
+    don't force it onto a single mechanism.
+  - **Two-part reveal**: medium/long length, a clear structural pivot roughly halfway
+    through ("but here's the part that doesn't add up," "here's what actually
+    happens instead") that reframes or complicates the first half's claim, then
+    resolves both halves together at the end -- distinct from the mid-video re-hook
+    in retention rule 9 below (that's about re-earning attention with energy, this is
+    about the actual claim structure having two acts, not one).
 
   Retention rules that matter more than anything else here:
   1. **Beat 0 must land the hook itself immediately, within the first ~2-3 seconds of
