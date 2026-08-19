@@ -111,16 +111,23 @@ discards it if it didn't win. -->
 - `state/performance_summary.md` -- refreshed once/day, timed right before the first
   fire of the day, so treat it as current for today (YouTube Analytics data itself
   only settles on a ~24-48h cycle, so it can't usefully be fresher than that anyway).
-  Your goal for this run is channel growth -- maximize views, watch-through, and
-  subscriber conversion, not just "write something." Every ranking section below shows
-  three numbers per entry, in this priority order when they disagree:
-  1. `avg_view_pct` -- retention (do people watch the whole thing). Primary signal.
-  2. `subs/1k views` -- does this actually convert viewers into subscribers. Weight
-     this seriously: monetization needs 1,000 subscribers *and* the view threshold, not
-     views alone, so a video that's merely average on retention but a strong subscriber
-     converter is genuinely valuable, not just a consolation stat.
+  Your goal for this run is channel growth. **As of 2026-08-19 the channel's real
+  numbers are: 45.7% average stayed-to-watch (fine), 6 total shares (0.019% of views),
+  16 total subscribers (0.05% of views), and no video has ever broken past ~1,500
+  views.** Retention is not the constraint -- shares and subscriber conversion are.
+  Every ranking section below shows four numbers per entry, in this priority order:
+  1. `shares/1k views` -- **primary signal.** Does this video actually leave the
+     channel's existing audience and reach someone new. This is what's flat and it's
+     what everything below should optimize for first.
+  2. `subs/1k views` -- does this convert a viewer into a subscriber. Monetization
+     needs 1,000 subscribers *and* the view threshold, not views alone.
   3. `likes+comments/1k views` -- explicit engagement signal, distinct from passive
      watch time.
+  4. `avg_view_pct` -- retention. Still worth watching as a floor (a video nobody
+     finishes can't be shared either), but **it is not a target** -- do not pick a
+     topic/angle/hook because it looks likely to retain well if it doesn't also clear
+     the stakes test and share-trigger requirement below. A well-retained video that
+     nobody forwards still doesn't grow the channel.
   Sections, in order of how much they should steer this run: **Top categories** and
   **Top hook styles** actively steer which candidate/angle and `hook_type` you pick.
   **Top video lengths** should nudge your target narration word count (you only control
@@ -166,18 +173,68 @@ specific source video is loose inspiration, not a requirement -- you are not obl
 to make a video "about" it specifically.
 <!-- PROTECTED-SECTION: END -->
 
-**Before committing to an angle, apply a genuine value bar, separate from hook
-craft.** A perfectly executed hook/payoff/pacing still fails if the underlying fact
-isn't actually worth knowing -- execution can't rescue a boring claim. Ask: would you
-personally stop and tell a friend this, unprompted? Would it surprise someone who
-already has a passing interest in this category, not just someone with zero
-knowledge? If the honest answer is "it's mildly interesting but not really surprising
-or useful," pick a different candidate or a different specific angle within the same
-category -- don't force a weak fact through strong packaging. This is a filter on
-*which* angle to commit to, applied before hook-planning below, not a substitute for
-the hook-planning process itself.
+### 2.1. The stakes test -- reject the topic before writing anything, if it fails this
 
-### 2.1. Plan the hook first -- before you write anything else
+Before drafting anything else, answer honestly: **is there a person in this story who
+did something, wanted something, paid for something, or got it wrong?**
+
+If the topic is a pure mechanism with no person in it, either find the human angle
+(who discovered it, who got it wrong, who died proving it, who it happened to) or
+discard the topic and pick a different candidate/angle. This is a hard gate, not a
+style preference.
+
+**Real channel evidence, verified twice, on two different metrics:** on raw reach,
+"Hitler's Last-Ditch Army Was 13-Year-Olds With One Grenade Each" (a named, specific
+human-stakes story) is outperforming "Every straight tunnel through Earth takes the
+same 42 minutes" (a pure abstract mechanism, same publish window, same cadence) by
+roughly 1.7x in views -- confirmed directly against `live_stats.json`, not an
+estimate. Human-stakes framing measurably reaches more people. That said, this is
+specifically a **reach** effect, not a blanket rule about retention: two abstract,
+no-named-person topics ("Earth's true shape and why it keeps changing," "what if a
+storm's rain fused into one giant drop") are among this channel's best *retention*
+performers once someone does click. Read both facts together, not selectively: a
+human-stakes angle is the stronger default because it's the thing that's actually
+been shown to move the constraint this channel currently has (reach/shares), but a
+vivid, concrete abstract mechanism isn't disqualified if there's genuinely no human
+angle to find -- it just needs to work harder on the visual/conceptual vividness the
+hook rules below already require.
+
+Separately from the stakes test, apply a genuine value bar: a perfectly executed
+hook/payoff/pacing still fails if the underlying fact isn't actually worth knowing --
+execution can't rescue a boring claim. Ask: would you personally stop and tell a
+friend this, unprompted? Would it surprise someone who already has a passing interest
+in this category, not just someone with zero knowledge? If the honest answer is "it's
+mildly interesting but not really surprising or useful," pick a different candidate or
+angle -- don't force a weak fact through strong packaging.
+
+### 2.2. Write the share trigger and the contradicted belief -- before the hook
+
+Do this before drafting hook candidates, not after. A script optimized for retention
+first and shareability second tends to stay retention-shaped even when a share_trigger
+gets bolted on at the end -- deciding what makes this forwardable first changes what
+you actually write.
+
+**Share trigger.** Complete this sentence literally: *"A viewer sends this to ______
+because they want to ______."* The first blank must name an actual relationship, not
+an audience segment.
+- BAD: "people interested in history" / "science fans" -- these describe a category,
+  not a person, and give nobody an actual reason to act.
+- GOOD: "the friend who insists cast iron needs seasoning" / "their dad, who told them
+  the opposite for 20 years" / "the coworker who always says they're too busy."
+
+If you cannot complete this sentence with a specific relationship, the topic is not
+shareable as-is -- discard it or find a sharper angle before continuing. Write the
+result into `share_trigger` (>=12 words, checked structurally by `script_schema.py`
+and for genericness by `quality_gate.py`).
+
+**Contradicted belief.** Write one sentence stating what the viewer currently believes
+that this video proves wrong -- store it in `contradicted_belief` (>=8 words). This
+belief must be **audible in the first ~3 seconds of narration** (beat 0), not saved
+for the middle of the video -- `quality_gate.py` checks it actually shows up there.
+If the video doesn't contradict anything a viewer plausibly currently believes, it's a
+fact, not a story, and facts don't get shared the way a corrected misconception does.
+
+### 2.3. Plan the hook -- before you write anything else
 
 The hook is the single highest-leverage decision in this entire run, not a formality to
 get through before the "real" work of writing the script. Most Shorts drop-off happens
@@ -193,6 +250,15 @@ instead of three phrasings of the same idea. For each candidate, actually ask: d
 land the surprise/claim/question in one sentence with zero preamble? Would a stranger
 mid-scroll stop for this specific line, not just "this topic in general"? Is it worded
 distinctly from how the last several videos opened (check `state/used_topics.json`)?
+
+**Every candidate must contain the `contradicted_belief` as an actual claim, not a
+tease of one.** A tease gestures at a secret without stating it; a claim states the
+contradiction outright and lets the specificity itself be the hook.
+- BAD (tease): "Honey has a strange secret."
+- GOOD (claim): "Honey doesn't contain preservatives. It IS one."
+Reject any candidate that could just as easily open a video on a completely different
+topic -- that's the tell that it's teasing generic mystery rather than stating this
+video's specific contradiction.
 
 **A generic pattern-observation is not the same as "no preamble," and it performs like
 preamble anyway.** Real retention data from this channel makes this concrete: two
@@ -296,6 +362,21 @@ may not have a natural share trigger -- consider whether a different specific an
 the same topic gives viewers something more forwardable, rather than forcing a generic
 one just to clear the word count.
 
+### 2.4. Series numbering
+
+Read `state/series_log.json` (`{"series_name": "...", "last_number": N}`). Set
+`series_label` to `"<series_name> #<N+1>"`, using that exact incremented number --
+never repeat a number, never invent one, never renumber from scratch. Write the
+incremented `last_number` back into `state/series_log.json` and commit it **alongside**
+`state/pending_script.json` in the same commit (this is the one exception to only
+ever touching `pending_script.json` under `state/` -- it's explicitly allowed for this
+file only). If `state/series_log.json` is missing or fails to parse as valid JSON,
+**do not guess a number** -- stop, commit nothing, and report the exact problem in
+your summary, same discipline as a stale trend seed or an in-flight script.
+`series_label` gets burned into a corner of the video for its full duration by
+`assemble.py`, so it also needs to actually be true -- don't advance the counter for a
+run that ends up not committing a script.
+
 Save it as `state/pending_script.json` matching the shape documented in
 `pipeline/script_schema.py`:
 
@@ -305,19 +386,27 @@ Save it as `state/pending_script.json` matching the shape documented in
   this exact source video from being reselected), `seed_view_count` (copied verbatim
   from that candidate's `view_count`, 0 if there was no source video), `title`
   (<=100 chars), `description`, `tags`
-- `hook_type`: the winning candidate's hook_type from step 2.1 -- whichever actually
+- `hook_type`: the winning candidate's hook_type from step 2.3 -- whichever actually
   matches how you wrote beat 0. Copy the label verbatim (don't invent a new one) so the
   performance-feedback loop can compare apples to apples across videos, same reasoning
   as `category`.
-- `hook_candidates`: every hook option you drafted in step 2.1 (>=3, spanning >=2
+- `hook_candidates`: every hook option you drafted in step 2.3 (>=3, spanning >=2
   hook_types), each `{"hook_type": "...", "text": "..."}`.
 - `payoff_mechanism`: one sentence, >=20 words, stating the real causal reason behind
   this video's claim -- written before the beats, and its content must actually appear
   in `beats[1:]`. See the payoff rule (item 3) below for why this exists and what
   "real mechanism" vs. "metaphor" actually means in practice.
-- `share_trigger`: one sentence, >=12 words, naming a specific person/relationship and
-  the literal message they'd send -- see step 2.3 above. Rejected by `quality_gate.py`
-  if it reads as a generic audience description or doesn't quote an actual message.
+- `share_trigger`: one sentence, >=12 words, completing "a viewer sends this to
+  ______ because they want to ______" with a specific relationship -- see step 2.2
+  above. Rejected by `quality_gate.py` if it reads as a generic audience description
+  instead of naming an actual person/relationship.
+- `contradicted_belief`: one sentence, >=8 words, stating what the viewer currently
+  believes that this video disproves -- see step 2.2 above. Must actually be audible
+  in beat 0; rejected by `quality_gate.py` if it isn't.
+- `series_label`: `"<series_name> #<n>"`, read from and incremented in
+  `state/series_log.json` -- see the series-numbering step near the end of this
+  section. Never invent a number or guess if the file is missing/malformed; fail the
+  run instead (see "On failure" below).
 - `holdout` and `experiment_arm`: copy verbatim from step 0.9's `pipeline/experiment_arm.py`
   output. Not creative content, not validated by schema -- just carried through so
   `used_topics.json` records which arm produced this video.
@@ -389,7 +478,7 @@ Save it as `state/pending_script.json` matching the shape documented in
      prevent this pattern from recurring. `script_schema.py` now requires a top-level
      `payoff_mechanism` field: one sentence, **>=20 words**, stating the actual causal
      reason in plain language, written *before* you draft the beats (same reasoning as
-     `hook_candidates` in step 2.1 -- force the real content to exist before it gets
+     `hook_candidates` in step 2.3 -- force the real content to exist before it gets
      compressed). `quality_gate.py` then checks that `payoff_mechanism`'s content
      actually resembles something in `beats[1:]` -- it can't just sit in the file
      unused while a beat quietly reverts to metaphor. If you genuinely cannot state the
@@ -402,6 +491,19 @@ Save it as `state/pending_script.json` matching the shape documented in
      sense beats a shorter one that doesn't; the 15-30s prior in step 1 is a mild lean
      for topics that fit it naturally, not a ceiling that justifies cutting the
      explanation itself.
+     **Delivering the payoff mechanism is not the same as phrasing the ending as a
+     tidy, resolved summary -- keep the former, drop the latter.** The mechanism
+     itself must land (that's what this whole rule enforces), but a closing SENTENCE
+     that wraps it in "and that's why..." / "so next time you..." / a satisfied
+     restatement reads as *finished* -- and a viewer who feels finished has no reason
+     to comment, share, or rewatch. Deliver the real mechanism, then land the last
+     line as the claim restated harder, a question deliberately left open, or a
+     challenge the viewer can go test themselves -- never as a bow-tied conclusion.
+     Banned closing patterns, checked by `quality_gate.py`: the final beat may not
+     start with "So", "And that's why", or "Next time". A resolved ending satisfies
+     the viewer and kills the share and the comment both; an open ending moves the
+     resolution into the comment section, which is where the engagement actually
+     happens.
   4. **The closing beat should *also* loop back to the opening, not just deliver the
      payoff and stop.** Shorts reward rewatches specifically -- someone who watches a
      15-second video twice because the ending sends them back to the start reads as
@@ -521,17 +623,9 @@ just react. Don't force this into a topic that doesn't support it -- skip it thi
 and catch it on the next one rather than manufacturing a contrarian angle for its own
 sake.
 
-**Lean toward a concrete human actor or stakes when the topic naturally supports
-one, but this is a lean, not a hard requirement.** A topic with a specific named
-person doing or risking something (Luke Aikins jumping without a parachute, 106.2%
-avg view; a roommate quietly resenting an unpaid $5, 166.0% avg view) tends to
-outperform the same information delivered as a pure abstract mechanism. But real
-counterevidence exists on this channel too -- "Earth's true shape and why it keeps
-changing" (71.8%) and "what if a storm's rain fused into one giant drop" (87.8%) are
-both abstract, no-named-person topics that performed very well, so don't force a
-fabricated human angle onto a topic that's genuinely more compelling as a pure
-mechanism. Where a topic has a natural human actor, use them; where it doesn't,
-a vivid, concrete abstract framing (per the hook rules above) still works fine.
+**The human-stakes requirement now lives in step 2.1's stakes test** (a hard gate,
+not just a lean, as of the reach-vs-retention evidence documented there) -- see that
+section for the full reasoning and both pieces of evidence.
 
 Validate it before committing:
 

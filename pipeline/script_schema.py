@@ -25,7 +25,7 @@ Expected script.json shape:
                       writing beat[0] as an afterthought while drafting the rest of the
                       script. Must span at least 2 distinct hook_types, and one entry's
                       hook_type must match the script's top-level hook_type (the winner).
-                      See ROUTINE_INSTRUCTIONS.md step 2.1.",
+                      See ROUTINE_INSTRUCTIONS.md step 2.3.",
   "payoff_mechanism": "one plain-language sentence (>=20 words) stating the actual causal
                        reason behind the video's claim -- not a metaphor, not a restatement
                        of the hook. Written before the beats, same reasoning as
@@ -33,16 +33,28 @@ Expected script.json shape:
                        compressed into short narration, instead of the compression itself
                        silently replacing the explanation with an assertion. Its content
                        must actually show up in the narration (checked by quality_gate.py),
-                       not just sit here decoratively. See ROUTINE_INSTRUCTIONS.md step 2.2.",
-  "share_trigger": "one sentence (>=12 words) naming who a specific viewer would send this
-                    to and the literal words they'd type/say when sending it -- e.g. 'Send
-                    this to the friend who still swears cracking your knuckles causes
-                    arthritis, captioned: \"we need to talk.\"' A vague audience description
-                    ('people who like history') is not a share trigger and is rejected by
-                    quality_gate.py -- it must name an actual relationship/group and quote
-                    the actual message. Retention alone doesn't grow a channel; a video only
-                    spreads past its own viewers if it gives someone a concrete reason and
-                    words to forward it. See ROUTINE_INSTRUCTIONS.md step 2.3.",
+                       not just sit here decoratively. See ROUTINE_INSTRUCTIONS.md step 2.3
+                       (the payoff rule within the retention-rules list).",
+  "share_trigger": "one sentence (>=12 words) completing 'a viewer sends this to ______
+                    because they want to ______' with a SPECIFIC relationship, not an
+                    audience segment -- e.g. 'the friend who still swears cracking your
+                    knuckles causes arthritis' or 'their dad, who told them the opposite
+                    for 20 years'. 'people who like history' is not a share trigger and is
+                    rejected by quality_gate.py -- it must name an actual person/
+                    relationship, checked against a required set of relationship keywords.
+                    Written BEFORE the hook (step 2.2) -- retention alone doesn't grow a
+                    channel; a video only spreads past its own viewers if it gives someone
+                    a concrete reason to forward it. See ROUTINE_INSTRUCTIONS.md step 2.2.",
+  "contradicted_belief": "one sentence (>=8 words) stating what the viewer currently
+                          believes that this video proves wrong. Must be audible in the
+                          first ~3 seconds of narration (beat 0), not saved for later --
+                          checked by quality_gate.py against beat 0's actual text. A video
+                          that doesn't contradict anything is a fact, not a story, and
+                          facts don't get shared. See ROUTINE_INSTRUCTIONS.md step 2.2.",
+  "series_label": "\"<series name> #<n>\", read from and incremented in
+                   state/series_log.json (never invented, never repeated -- see
+                   ROUTINE_INSTRUCTIONS.md's series-numbering step). Burned into a
+                   corner of the video for its full duration by assemble.py.",
   "seed_source_video_id": "copy trend_seed['source_video_id'] verbatim (may be null if the
                            seed had no source video) -- lets trend_source.py exclude this
                            exact video from being resurfaced as a seed on a future run,
@@ -76,15 +88,20 @@ import sys
 # produce-upload.yml (not something the agent sets itself) so a future performance
 # comparison can actually tell whether a guidance change moved retention, instead of
 # every video's history being lumped into one undifferentiated average forever.
-RULESET_VERSION = "2026-08-19-share-trigger-v5"
+RULESET_VERSION = "2026-08-19-share-first-v1"
 
-REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates", "payoff_mechanism", "share_trigger"}
+REQUIRED_TOP_LEVEL = {
+    "topic", "category", "title", "description", "tags", "beats", "seed_source_video_id",
+    "hook_type", "hook_candidates", "payoff_mechanism", "share_trigger",
+    "contradicted_belief", "series_label",
+}
 REQUIRED_BEAT_KEYS = {"text", "broll_query"}
 REQUIRED_HOOK_CANDIDATE_KEYS = {"hook_type", "text"}
 MIN_BEATS, MAX_BEATS = 3, 12
 MIN_HOOK_CANDIDATES = 3
 MIN_PAYOFF_MECHANISM_WORDS = 20
 MIN_SHARE_TRIGGER_WORDS = 12
+MIN_CONTRADICTED_BELIEF_WORDS = 8
 MAX_TITLE_LEN = 100
 
 # Fixed vocabularies -- must stay consistent across videos or the performance-feedback
@@ -160,6 +177,18 @@ def validate(script):
             f"sent to and what they'd type, got {trigger_words} -- a short phrase is almost "
             "always a vague audience description, not an actual share trigger"
         )
+
+    belief = (script.get("contradicted_belief") or "").strip()
+    belief_words = len(belief.split())
+    if belief_words < MIN_CONTRADICTED_BELIEF_WORDS:
+        errors.append(
+            f"contradicted_belief: need >={MIN_CONTRADICTED_BELIEF_WORDS} words stating "
+            f"what the viewer currently believes that this video disproves, got "
+            f"{belief_words}"
+        )
+
+    if not (script.get("series_label") or "").strip():
+        errors.append("series_label: missing or empty -- read from and increment state/series_log.json")
 
     beats = script.get("beats") or []
     if not (MIN_BEATS <= len(beats) <= MAX_BEATS):

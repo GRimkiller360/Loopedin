@@ -32,7 +32,37 @@ GENERIC_SHARE_TRIGGER_RE = re.compile(
     r"(like|love|enjoy|are into|are interested in|care about)\b",
     re.IGNORECASE,
 )
-QUOTE_CHARS_RE = re.compile(r"[\"'‘’“”]")
+
+# share_trigger must name an actual relationship, not just pass the generic-pattern
+# check by accident -- require at least one of these. Named constant, not an inline
+# literal, so it's one place to extend as real scripts surface relationship words this
+# list is missing.
+SHARE_TRIGGER_RELATIONSHIP_KEYWORDS = (
+    "friend", "dad", "mum", "mom", "partner", "coworker", "colleague", "brother",
+    "sister", "boss", "the person who", "anyone who told",
+)
+
+# A resolved-sounding opener on the final beat undoes the "don't resolve at the end"
+# rule even when the actual content is fine -- these are the tells of a tidy summary
+# rather than an open ending. Checked as a leading pattern (word boundary on "so" --
+# not a bare substring match, which would also flag "somehow"/"sole"/etc).
+BANNED_CLOSING_PATTERNS_RE = re.compile(
+    r"^(so\b|and that's why\b|next time\b)", re.IGNORECASE,
+)
+
+SERIES_LABEL_RE = re.compile(r"^.+ #\d+$")
+
+# Dropped before checking whether contradicted_belief's real content actually shows up
+# in beat 0 -- otherwise two sentences sharing only function words (the/a/is/that/...)
+# would look like they overlap when they share no actual content.
+STOPWORDS = {
+    "a", "an", "the", "is", "are", "was", "were", "be", "been", "being", "this",
+    "that", "these", "those", "it", "its", "to", "of", "in", "on", "at", "for",
+    "and", "or", "but", "not", "no", "so", "as", "by", "with", "from", "than",
+    "then", "they", "their", "you", "your", "most", "people", "actually", "really",
+    "just", "who", "what", "which", "do", "does", "did", "have", "has", "had",
+}
+MIN_BELIEF_BEAT0_OVERLAP = 0.25
 
 BANNED_OPENERS = (
     "so today", "in this video", "welcome back", "today we're talking about",
@@ -59,6 +89,31 @@ def _title_overlap(a, b):
     if not wa or not wb:
         return 0.0
     return len(wa & wb) / len(wa | wb)
+
+
+def _stem(word):
+    # Crude suffix-stripping, not a real stemmer (no NLP library in this pipeline) --
+    # just enough that "spoils"/"spoil" or "goes"/"go" aren't treated as unrelated
+    # tokens by the overlap check below, which naive exact-string matching would do.
+    for suffix in ("ing", "ies", "es", "ed", "s"):
+        if word.endswith(suffix) and len(word) - len(suffix) >= 3:
+            return word[: -len(suffix)]
+    return word
+
+
+def _content_words(text):
+    return {_stem(w) for w in _word_set(text) if w not in STOPWORDS and len(w) > 2}
+
+
+def _directional_content_overlap(source_text, target_text):
+    # Fraction of source_text's meaningful words that appear in target_text -- not
+    # symmetric Jaccard like _title_overlap, since contradicted_belief and beat 0 are
+    # never going to be similar *lengths*; what matters is whether beat 0 actually
+    # contains the belief's key words, not whether the two texts are similar overall.
+    source_words = _content_words(source_text)
+    if not source_words:
+        return 0.0
+    return len(source_words & _content_words(target_text)) / len(source_words)
 
 
 def check(script, used_topics_path):
@@ -137,24 +192,52 @@ def check(script, used_topics_path):
                     "these need to be genuinely distinct angles, not the same hook reworded"
                 )
 
-    # share_trigger must name a specific relationship/group and quote the actual message
-    # a viewer would send, not just describe who'd find the topic interesting -- see
-    # ROUTINE_INSTRUCTIONS.md step 2.3 for why this matters more than retention right now.
+    # share_trigger must name a specific relationship, not just describe who'd find the
+    # topic interesting -- see ROUTINE_INSTRUCTIONS.md step 2.2 for why this matters
+    # more than retention right now.
     trigger = (script.get("share_trigger") or "").strip()
     if trigger:
         if GENERIC_SHARE_TRIGGER_RE.search(trigger):
             errors.append(
                 f"share_trigger reads as a generic audience description ({trigger!r}) -- "
-                "name a specific relationship or group (e.g. 'the friend who...') and "
-                "quote the actual message they'd send, not just who'd find the topic "
-                "interesting"
+                "name a specific relationship (e.g. 'the friend who...'), not just who'd "
+                "find the topic interesting"
             )
-        elif not QUOTE_CHARS_RE.search(trigger):
+        elif not any(kw in trigger.lower() for kw in SHARE_TRIGGER_RELATIONSHIP_KEYWORDS):
             errors.append(
-                f"share_trigger doesn't quote what the viewer would actually type/say "
-                f"({trigger!r}) -- it needs to include the literal words, not just "
-                "describe the recipient"
+                f"share_trigger doesn't name a specific relationship ({trigger!r}) -- "
+                f"must contain one of: {', '.join(SHARE_TRIGGER_RELATIONSHIP_KEYWORDS)}"
             )
+
+    # contradicted_belief has to actually be audible in beat 0, not just exist as
+    # metadata -- same failure mode payoff_mechanism already guards against above.
+    belief = (script.get("contradicted_belief") or "").strip()
+    if belief and beats:
+        overlap = _directional_content_overlap(belief, beats[0].get("text", ""))
+        if overlap < MIN_BELIEF_BEAT0_OVERLAP:
+            errors.append(
+                f"contradicted_belief ({belief!r}) isn't audible in beat 0 (overlap="
+                f"{overlap:.2f}) -- the belief being disproved has to actually be stated "
+                "in the first ~3 seconds, not saved for later"
+            )
+
+    # A resolved-sounding final beat undoes the open-ending rule even when the actual
+    # content is fine -- see ROUTINE_INSTRUCTIONS.md's closing-beat guidance (item 3).
+    if beats:
+        closer = beats[-1].get("text", "").strip()
+        if BANNED_CLOSING_PATTERNS_RE.match(closer):
+            errors.append(
+                f"final beat opens with a banned resolved-summary pattern ({closer!r}) -- "
+                "end on the claim restated harder, an open question, or a challenge, "
+                "never a tidy wrap-up"
+            )
+
+    series_label = script.get("series_label") or ""
+    if not SERIES_LABEL_RE.match(series_label):
+        errors.append(
+            f"series_label {series_label!r} doesn't match '<series_name> #<n>' -- read "
+            "and increment state/series_log.json, don't invent a label"
+        )
 
     used = load_json(used_topics_path, {"topics": []})
     recent_titles = [t["title"] for t in used["topics"][-RECENT_TITLES_TO_CHECK:] if t.get("title")]
