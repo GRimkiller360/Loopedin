@@ -274,18 +274,22 @@ def assemble(script, narration_path, beats_clips, music_dir, out_path, work_dir)
     escaped_ass = str(ass_path).replace("\\", "/").replace(":", "\\:")
     subtitles_filter = f"subtitles='{escaped_ass}'"
 
-    # Progress bar, take 5. Four prior attempts all relied on ffmpeg evaluating a
-    # time-based expression (drawbox's w, then crop's w) -- and it turned out neither
-    # drawbox nor crop even has an `eval` option on this ffmpeg build ("Option not
-    # found" both times), and without it the first attempt's expression just rendered
-    # as a solid full-width bar in production. Done guessing at filter internals: this
-    # generates the bar with zero expressions of any kind. Every step's width is a
-    # literal number computed in Python, rendered as its own tiny fixed-width segment,
-    # then concatenated -- the exact same concat pattern already used for beat clips
-    # elsewhere in this file. A ~20-step "staircase" fill is imperceptible as discrete
-    # steps at normal viewing speed and can't depend on any filter's expression-
-    # evaluation behavior, because there is no expression anywhere in it.
-    BAR_STEPS = 20
+    # Progress bar, take 5 (and a size tweak after confirming take 5 actually
+    # animates in production, just too coarsely). Four prior attempts all relied on
+    # ffmpeg evaluating a time-based expression (drawbox's w, then crop's w) -- neither
+    # filter even has an `eval` option on this ffmpeg build ("Option not found" both
+    # times), and without it the first attempt's expression rendered as a solid
+    # full-width bar. This generates the bar with zero expressions at all: every
+    # step's width is a literal number computed in Python, rendered as its own tiny
+    # fixed-width segment, then concatenated (same pattern already used for beat
+    # clips elsewhere in this file). Step duration is targeted at a fixed ~0.15s
+    # (roughly 6-7 updates/sec) rather than a fixed step *count* -- a fixed count of
+    # 20 was confirmed visibly "ticking" in production on a normal-length video (each
+    # step lasting 1-3s is obviously discrete); a fixed short step duration keeps the
+    # motion looking continuous regardless of the video's actual length, at the cost
+    # of more (very cheap, tiny-resolution) ffmpeg calls for longer videos.
+    TARGET_STEP_SECONDS = 0.15
+    BAR_STEPS = max(10, min(round(narration_duration / TARGET_STEP_SECONDS), 250))
     step_dur = narration_duration / BAR_STEPS
     bar_step_paths = []
     for i in range(BAR_STEPS):
