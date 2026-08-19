@@ -222,6 +222,21 @@ def assemble(script, narration_path, beats_clips, music_dir, out_path, work_dir)
     narration_duration = min(_probe_duration(narration_path), config.MAX_SHORT_SECONDS)
     durations = _beat_durations(script["beats"], narration_duration)
 
+    # Cumulative start/end per beat, as a fraction of total duration -- persisted so
+    # analytics_feedback.py can later map a YouTube Analytics retention-curve drop-off
+    # point (also a 0-1 fraction of video length) back to which specific beat it lands
+    # in. Fraction, not raw seconds, because it stays valid even though the retention
+    # curve is reported in fractional terms regardless of this video's actual length.
+    beat_timings = []
+    cursor = 0.0
+    for beat, dur in zip(script["beats"], durations):
+        beat_timings.append({
+            "start_frac": round(cursor / narration_duration, 4),
+            "end_frac": round(min(cursor + dur, narration_duration) / narration_duration, 4),
+            "text": beat["text"],
+        })
+        cursor += dur
+
     # Each beat may now have multiple sub-clips (see broll.py's MAX_WORDS_PER_CLIP) --
     # split that beat's duration evenly across however many it actually got, so a real
     # cut happens partway through a long beat instead of one clip holding the whole
@@ -323,7 +338,7 @@ def assemble(script, narration_path, beats_clips, music_dir, out_path, work_dir)
         "-t", str(narration_duration), str(out_path),
     ], check=True)
 
-    return str(out_path)
+    return str(out_path), beat_timings
 
 
 if __name__ == "__main__":
@@ -343,5 +358,7 @@ if __name__ == "__main__":
         clips_data = json.loads(Path(args.clips).read_text(encoding="utf-8"))
     beats_clips = clips_data["beats"]
 
-    result = assemble(script_data, args.narration, beats_clips, args.music_dir, args.out, args.work_dir)
-    print(result)
+    out_path, beat_timings = assemble(script_data, args.narration, beats_clips, args.music_dir, args.out, args.work_dir)
+    timings_path = Path(args.work_dir) / "beat_timings.json"
+    timings_path.write_text(json.dumps(beat_timings, indent=2), encoding="utf-8")
+    print(json.dumps({"out_path": out_path, "beat_timings_path": str(timings_path)}))

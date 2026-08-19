@@ -34,6 +34,15 @@ Expected script.json shape:
                        silently replacing the explanation with an assertion. Its content
                        must actually show up in the narration (checked by quality_gate.py),
                        not just sit here decoratively. See ROUTINE_INSTRUCTIONS.md step 2.2.",
+  "share_trigger": "one sentence (>=12 words) naming who a specific viewer would send this
+                    to and the literal words they'd type/say when sending it -- e.g. 'Send
+                    this to the friend who still swears cracking your knuckles causes
+                    arthritis, captioned: \"we need to talk.\"' A vague audience description
+                    ('people who like history') is not a share trigger and is rejected by
+                    quality_gate.py -- it must name an actual relationship/group and quote
+                    the actual message. Retention alone doesn't grow a channel; a video only
+                    spreads past its own viewers if it gives someone a concrete reason and
+                    words to forward it. See ROUTINE_INSTRUCTIONS.md step 2.3.",
   "seed_source_video_id": "copy trend_seed['source_video_id'] verbatim (may be null if the
                            seed had no source video) -- lets trend_source.py exclude this
                            exact video from being resurfaced as a seed on a future run,
@@ -67,14 +76,15 @@ import sys
 # produce-upload.yml (not something the agent sets itself) so a future performance
 # comparison can actually tell whether a guidance change moved retention, instead of
 # every video's history being lumped into one undifferentiated average forever.
-RULESET_VERSION = "2026-08-19-payoff-mechanism-v4"
+RULESET_VERSION = "2026-08-19-share-trigger-v5"
 
-REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates", "payoff_mechanism"}
+REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates", "payoff_mechanism", "share_trigger"}
 REQUIRED_BEAT_KEYS = {"text", "broll_query"}
 REQUIRED_HOOK_CANDIDATE_KEYS = {"hook_type", "text"}
 MIN_BEATS, MAX_BEATS = 3, 12
 MIN_HOOK_CANDIDATES = 3
 MIN_PAYOFF_MECHANISM_WORDS = 20
+MIN_SHARE_TRIGGER_WORDS = 12
 MAX_TITLE_LEN = 100
 
 # Fixed vocabularies -- must stay consistent across videos or the performance-feedback
@@ -140,6 +150,15 @@ def validate(script):
             f"payoff_mechanism: need >={MIN_PAYOFF_MECHANISM_WORDS} words of actual causal "
             f"explanation, got {mechanism_words} -- a short phrase is almost always a metaphor "
             "or restatement standing in for a real mechanism, not the mechanism itself"
+        )
+
+    trigger = (script.get("share_trigger") or "").strip()
+    trigger_words = len(trigger.split())
+    if trigger_words < MIN_SHARE_TRIGGER_WORDS:
+        errors.append(
+            f"share_trigger: need >={MIN_SHARE_TRIGGER_WORDS} words naming who this gets "
+            f"sent to and what they'd type, got {trigger_words} -- a short phrase is almost "
+            "always a vague audience description, not an actual share trigger"
         )
 
     beats = script.get("beats") or []

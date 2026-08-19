@@ -59,6 +59,39 @@ it to the current time. If it's missing, or more than **90 minutes** old:
    is the same "don't force it through" discipline as the rest of this runbook --
    a stale seed silently used is worse than a run that visibly skips.
 
+## 0.9. Determine this run's experiment arm -- before picking a topic
+
+Run `python pipeline/experiment_arm.py --used-topics state/used_topics.json` and read
+its output. This is a **deterministic, code-computed assignment** based on the current
+video count -- not a judgment call, don't second-guess or override it. It returns two
+independent flags:
+
+- `"holdout": true` (~1 in 10 runs): for this run only, **ignore every
+  performance-steered choice** -- don't weight category, hook_type, length, or CTA
+  mix by `performance_summary.md`'s rankings. Still follow every structural
+  requirement (hook planning, payoff mechanism, share trigger, genuine-value bar,
+  register consistency, etc. -- those are quality floors, not steering). Pick the
+  topic/angle/hook purely on your own judgment of what's genuinely interesting. This
+  exists so the self-improvement routine can eventually tell whether its tuning is
+  actually beating an unsteered baseline, not just exploiting a pattern it already
+  found -- record `"holdout": true` in `pending_script.json` either way so it's
+  tracked.
+- `"experiment_arm": "control"` or `"variant"`: only relevant when this file
+  currently defines an active **VARIANT ARM** block below (search for that heading).
+  If no such block exists right now, both arms behave identically -- just record
+  whichever value the script returned in `pending_script.json`'s `experiment_arm`
+  field and proceed normally. If an active block *does* exist and you drew
+  `"variant"`, follow its instructions in place of (or in addition to, as it
+  specifies) the corresponding control guidance for this run only.
+
+<!-- VARIANT ARM: none currently active. When the self-improvement routine wants to
+test a specific rule change without confounding it with everything else that changes
+over time, it adds a clearly-scoped block here (what changes, for which specific
+guidance section) instead of editing the control guidance directly, lets it run
+concurrently until there's enough data per arm (n>=8), then either promotes the
+winning version into the permanent control guidance and removes this block, or
+discards it if it didn't win. -->
+
 ## 1. Read this run's inputs
 
 - `state/latest_trend_seed.json` -- `{"candidates": [...]}`, up to 3 topic seeds
@@ -233,6 +266,36 @@ failure" below) if you genuinely cannot find any distinct angle at all across ev
 candidate -- that should be very rare; treat it as a last resort, not the default
 response to a duplicate seed.
 
+### 2.3. Plan the share trigger -- this is the actual growth bottleneck right now
+
+Retention is already clearing well across most of this channel's videos -- that's not
+where the channel is stuck. Subscriber and reach growth are. A video that holds
+attention for its own existing viewers still doesn't grow the channel if nobody ever
+forwards it to someone who doesn't already watch -- shares are the one lever that
+reaches people the algorithm and the existing audience never would have surfaced it to
+on their own. `share_rate_per_1k_views` in `performance_summary.md` is now tracked
+per category/hook/length for exactly this reason -- once there's real data (n>=8),
+weight choices by it, not just `avg_view_pct`.
+
+`share_trigger` is required and gets checked structurally (`script_schema.py`,
+>=12 words) and for genericness (`quality_gate.py`). It has to name an actual, specific
+relationship or group -- not a topic-affinity category -- and quote the literal words
+that person would type when sending the video. "People who like history" describes an
+audience; it gives nobody an actual reason or script to act on. A real share trigger
+reads like something you'd actually type into a chat: **"Send this to the friend who
+still swears cracking your knuckles causes arthritis, captioned: 'we need to talk.'"**
+-- a specific person (someone you know who holds that exact belief), and the literal
+caption they'd use.
+
+Plan this deliberately, the same way as the hook and payoff -- don't write it as an
+afterthought once the beats are done. Ask: who, specifically (not a demographic, an
+actual relationship -- "your group chat," "the friend who always...", "whoever sent you
+that one article"), would see this and immediately think of one specific other person?
+What would they actually type? If you can't answer both concretely, the topic or angle
+may not have a natural share trigger -- consider whether a different specific angle on
+the same topic gives viewers something more forwardable, rather than forcing a generic
+one just to clear the word count.
+
 Save it as `state/pending_script.json` matching the shape documented in
 `pipeline/script_schema.py`:
 
@@ -252,6 +315,12 @@ Save it as `state/pending_script.json` matching the shape documented in
   this video's claim -- written before the beats, and its content must actually appear
   in `beats[1:]`. See the payoff rule (item 3) below for why this exists and what
   "real mechanism" vs. "metaphor" actually means in practice.
+- `share_trigger`: one sentence, >=12 words, naming a specific person/relationship and
+  the literal message they'd send -- see step 2.3 above. Rejected by `quality_gate.py`
+  if it reads as a generic audience description or doesn't quote an actual message.
+- `holdout` and `experiment_arm`: copy verbatim from step 0.9's `pipeline/experiment_arm.py`
+  output. Not creative content, not validated by schema -- just carried through so
+  `used_topics.json` records which arm produced this video.
 - `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`. Every
   `broll_query` must be a **short, literal keyword phrase -- 3-6 concrete nouns/
   adjectives, not a cinematic sentence** (e.g. `"person wearing black mask"`, not
@@ -415,16 +484,54 @@ Save it as `state/pending_script.json` matching the shape documented in
 **Structural variety matters, not just topic variety.** This pipeline is fully
 automated and produces videos on a fixed cadence -- that alone puts it at risk of
 looking like the kind of formulaic, mass-produced content YouTube's Partner Program
-explicitly excludes from monetization regardless of view count. Guard against that
-actively: don't let beat 0 fall into the same handful of opening phrasings run after
-run (rotate genuinely between a blunt claim, a direct question, a "most people think X,
-but..." reversal, a concrete number, etc. -- whichever fits `hook_type`, but vary the
-actual wording), don't let every video's beat count or pacing feel identical, and don't
-let the CTA in the closing beat repeat verbatim across videos. If you notice (from
-`state/used_topics.json` or your own recent runs) that the last several videos all
-opened the same way, treat that as a reason to deliberately open differently this time,
-even if the top-performing hook_type says otherwise -- looking hand-crafted is worth
-more here than micro-optimizing one metric.
+explicitly excludes from monetization regardless of view count. This is not a
+hypothetical: YouTube's own monetization policy (confirmed against
+support.google.com, 2026-08-19) renamed "repetitious content" to **"inauthentic
+content"** and explicitly disqualifies "mass-produced content using similar
+templates across multiple videos" -- this channel's identical voice, color grade,
+progress bar, and beat structure on every video is a real match for that pattern,
+not a false alarm. Guard against that actively: don't let beat 0 fall into the same
+handful of opening phrasings run after run (rotate genuinely between a blunt claim, a
+direct question, a "most people think X, but..." reversal, a concrete number, etc. --
+whichever fits `hook_type`, but vary the actual wording), don't let every video's beat
+count or pacing feel identical, and don't let the CTA in the closing beat repeat
+verbatim across videos. If you notice (from `state/used_topics.json` or your own
+recent runs) that the last several videos all opened the same way, treat that as a
+reason to deliberately open differently this time, even if the top-performing
+hook_type says otherwise -- looking hand-crafted is worth more here than
+micro-optimizing one metric.
+
+**On roughly 1 in 10 runs, deliberately break the format instead of just varying
+wording within it.** Micro-variety (rotating hook phrasing) isn't enough on its own --
+if every video is still the same length, same beat count, same measured tone, the
+channel still reads as templated even with different words each time, and the
+algorithm/audience can't discover anything about this channel it couldn't already
+predict from the last 10 videos. Roughly every 10th run (check
+`state/used_topics.json` -- if none of the last 10 entries were a deliberate-break
+video, this is a good run to make one), do something structurally different on
+purpose: a noticeably different length (much shorter or, up to the cap, longer than
+usual), a different beat count/pacing than the recent norm, or a claim written to
+genuinely provoke disagreement or debate rather than simple surprise (a real,
+defensible but contestable position, not misinformation or engagement-bait for its
+own sake -- it still has to clear the genuine-value bar above). Real evidence this
+works: this channel's two videos about a controversial artist (Damien Hirst -- animal
+preservation as art) generated more real comment engagement than anything else on
+the channel, specifically because the claims invited people to take a position, not
+just react. Don't force this into a topic that doesn't support it -- skip it this run
+and catch it on the next one rather than manufacturing a contrarian angle for its own
+sake.
+
+**Lean toward a concrete human actor or stakes when the topic naturally supports
+one, but this is a lean, not a hard requirement.** A topic with a specific named
+person doing or risking something (Luke Aikins jumping without a parachute, 106.2%
+avg view; a roommate quietly resenting an unpaid $5, 166.0% avg view) tends to
+outperform the same information delivered as a pure abstract mechanism. But real
+counterevidence exists on this channel too -- "Earth's true shape and why it keeps
+changing" (71.8%) and "what if a storm's rain fused into one giant drop" (87.8%) are
+both abstract, no-named-person topics that performed very well, so don't force a
+fabricated human angle onto a topic that's genuinely more compelling as a pure
+mechanism. Where a topic has a natural human actor, use them; where it doesn't,
+a vivid, concrete abstract framing (per the hook rules above) still works fine.
 
 Validate it before committing:
 

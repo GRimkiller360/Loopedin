@@ -41,22 +41,94 @@ def pull_stats(video_ids, days_back=28):
         ids="channel==MINE",
         startDate=start,
         endDate=end,
-        metrics="views,likes,comments,averageViewPercentage,subscribersGained",
+        metrics="views,likes,comments,shares,averageViewPercentage,subscribersGained",
         dimensions="video",
         filters=f"video=={','.join(video_ids)}",
     ).execute()
 
     stats = {}
     for row in response.get("rows", []):
-        video_id, views, likes, comments, avg_view_pct, subs_gained = row
+        video_id, views, likes, comments, shares, avg_view_pct, subs_gained = row
         stats[video_id] = {
             "views": views,
             "likes": likes,
             "comments": comments,
+            "shares": shares,
             "avg_view_pct": avg_view_pct,
             "subscribers_gained": subs_gained,
         }
     return stats
+
+
+def pull_retention_curve(video_id, days_back=90):
+    """Per-video audience-retention curve: elapsedVideoTimeRatio (0-1, fraction of
+    video length) vs audienceWatchRatio (fraction of viewers still watching at that
+    point). Unlike pull_stats' batched metrics, this dimension is only queryable
+    scoped to a single video filter -- one API call per video, not batchable."""
+    analytics = _analytics_client()
+    start = (date.today() - timedelta(days=days_back)).isoformat()
+    end = date.today().isoformat()
+
+    response = analytics.reports().query(
+        ids="channel==MINE",
+        startDate=start,
+        endDate=end,
+        metrics="audienceWatchRatio",
+        dimensions="elapsedVideoTimeRatio",
+        filters=f"video=={video_id}",
+    ).execute()
+    return sorted((row[0], row[1]) for row in response.get("rows", []))
+
+
+def beat_dropoff(retention_curve, beat_timings):
+    """For each beat, how much audienceWatchRatio falls from its start to its end --
+    the actionable per-beat signal a single averaged avg_view_pct can't give: 'beat 2
+    loses 18 points when it's phrased as a definition' is something a writing rule can
+    act on directly."""
+    if not retention_curve or not beat_timings:
+        return []
+
+    def _ratio_at(frac):
+        at_or_before = [r for r in retention_curve if r[0] <= frac]
+        return at_or_before[-1][1] if at_or_before else retention_curve[0][1]
+
+    drops = []
+    for i, bt in enumerate(beat_timings):
+        start_ratio = _ratio_at(bt["start_frac"])
+        end_ratio = _ratio_at(bt["end_frac"])
+        drops.append({
+            "beat_index": i,
+            "text": bt.get("text"),
+            "start_pct": round(start_ratio * 100, 1),
+            "end_pct": round(end_ratio * 100, 1),
+            "drop_pct_points": round((start_ratio - end_ratio) * 100, 1),
+        })
+    return drops
+
+
+def pull_beat_dropoff(video_id, beat_timings):
+    return beat_dropoff(pull_retention_curve(video_id), beat_timings)
+
+
+def worst_beat_dropoffs(performance, limit=10):
+    """Flattened, ranked per-beat drop-offs across every video with curve data --
+    which specific beat *content* loses viewers, not just which video. Only counts
+    real drops (a negative value means retention rose through that beat -- a rewatch
+    loop or a strong beat, not something to flag)."""
+    rows = []
+    for v in performance["videos"]:
+        for d in v.get("beat_dropoff") or []:
+            if d.get("drop_pct_points", 0) > 0:
+                rows.append({
+                    "topic": v.get("topic"),
+                    "beat_index": d["beat_index"],
+                    "text": d.get("text"),
+                    "drop_pct_points": d["drop_pct_points"],
+                    "start_pct": d.get("start_pct"),
+                    "end_pct": d.get("end_pct"),
+                })
+    rows.sort(key=lambda r: r["drop_pct_points"], reverse=True)
+    return rows[:limit]
 
 
 def pull_traffic_sources(days_back=28):
@@ -98,18 +170,39 @@ def update_performance_log(performance_log_path, used_topics_path):
             "duration_seconds": t.get("duration_seconds"),
             "seed_view_count": t.get("seed_view_count"),
             "ruleset_version": t.get("ruleset_version"),
+            "beat_timings": t.get("beat_timings"),
+            "first_clip_tags": t.get("first_clip_tags"),
+            "holdout": t.get("holdout"),
+            "experiment_arm": t.get("experiment_arm"),
         }
         for t in used["topics"] if t.get("video_id")
     }
     stats = pull_stats(list(meta_by_video.keys()))
+    existing_by_id = {v["video_id"]: v for v in performance["videos"]}
 
     for video_id, s in stats.items():
-        existing = next((v for v in performance["videos"] if v["video_id"] == video_id), None)
+        existing = existing_by_id.get(video_id)
         record = {"video_id": video_id, **meta_by_video.get(video_id, {}), **s}
         if existing:
             existing.update(record)
+            record = existing
         else:
             performance["videos"].append(record)
+            existing_by_id[video_id] = record
+
+        # Retention curve settles on the same ~24-48h lag as avg_view_pct, and doesn't
+        # meaningfully change once settled -- only worth the extra per-video API call
+        # once real data exists, and only once per video (cached via "beat_dropoff" in
+        # record), not re-fetched every daily run forever.
+        beat_timings = record.get("beat_timings")
+        if record.get("avg_view_pct") is not None and beat_timings and "beat_dropoff" not in record:
+            try:
+                record["beat_dropoff"] = pull_beat_dropoff(video_id, beat_timings)
+            except Exception as e:
+                # Don't let one video's extra retention-curve call break the whole
+                # daily run -- the core metrics above already succeeded and are worth
+                # keeping even if this enrichment call fails.
+                record["beat_dropoff_error"] = str(e)
 
     save_json(performance_log_path, performance)
     return performance
@@ -121,6 +214,30 @@ def _length_bucket(seconds):
     if seconds <= 40:
         return "medium (20-40s)"
     return "long (40-58s)"
+
+
+# Rough keyword buckets for Pixabay's free-text tags on beat 0's first clip -- the
+# only visual-opening signal available without real computer vision (nothing in this
+# pipeline analyzes actual pixels; this is a proxy based on what the clip's uploader
+# tagged it as, not ground truth). Priority order matters: a clip tagged both "woman"
+# and "screen" counts as faces/people first, since a visible person is the stronger
+# visual signal. Read this data with that caveat, not as a precise classification.
+FACE_KEYWORDS = {"man", "woman", "person", "people", "face", "portrait", "boy", "girl", "child", "kid", "hand", "hands"}
+TEXT_SCREEN_KEYWORDS = {"text", "words", "typography", "sign", "screen", "computer", "chart", "graph", "map", "book"}
+MOTION_KEYWORDS = {"motion", "action", "running", "flying", "explosion", "fast", "speed", "moving", "wave", "fire", "storm"}
+
+
+def _first_clip_type_bucket(tags):
+    if not tags:
+        return None
+    words = {w.strip().lower() for w in tags.split(",")}
+    if words & FACE_KEYWORDS:
+        return "faces/people"
+    if words & TEXT_SCREEN_KEYWORDS:
+        return "text/screen"
+    if words & MOTION_KEYWORDS:
+        return "motion/action"
+    return "other/scenic"
 
 
 def _seed_momentum_bucket(view_count):
@@ -230,11 +347,17 @@ def summarize(performance):
     # Category, hook_type, length, publish hour, and seed momentum are the
     # generalizable signals -- unlike an exact topic, all of them repeat across videos,
     # so they're what's actually safe to steer future choices by. Per-topic detail is
-    # kept too, but only as reference. Each bucket tracks three metrics: avg_view_pct
+    # kept too, but only as reference. Each bucket tracks four metrics: avg_view_pct
     # (retention), sub_rate_per_1k_views (does this convert viewers to subscribers --
     # directly relevant to the 1,000-subscriber monetization gate, not just the view
-    # count gate), and engagement_rate_per_1k_views (likes+comments -- an explicit
-    # algorithm signal, distinct from passive watch time).
+    # count gate), engagement_rate_per_1k_views (likes+comments -- an explicit
+    # algorithm signal, distinct from passive watch time), and share_rate_per_1k_views
+    # (does this actually leave the channel's existing audience -- distinct from all
+    # three of the above, which only measure what people who already saw it did with
+    # it, not whether it reached anyone new. Retention has consistently cleared well
+    # while subscriber growth has lagged; shares are the more direct lever for that gap
+    # than more retention tuning, since a video someone forwards reaches viewers the
+    # algorithm/existing audience never would have surfaced it to on their own).
     dimensions = {
         "by_category": defaultdict(list),
         "by_hook_type": defaultdict(list),
@@ -243,6 +366,9 @@ def summarize(performance):
         "by_seed_momentum": defaultdict(list),
         "by_topic": defaultdict(list),
         "by_ruleset_version": defaultdict(list),
+        "by_first_clip_type": defaultdict(list),
+        "by_holdout": defaultdict(list),
+        "by_experiment_arm": defaultdict(list),
     }
     for v in performance["videos"]:
         views = v.get("views") or 0
@@ -250,6 +376,7 @@ def summarize(performance):
             "avg_view_pct": v.get("avg_view_pct") or 0,
             "sub_rate": _rate_per_1k(v.get("subscribers_gained") or 0, views),
             "eng_rate": _rate_per_1k((v.get("likes") or 0) + (v.get("comments") or 0), views),
+            "share_rate": _rate_per_1k(v.get("shares") or 0, views),
         }
         if v.get("category"):
             dimensions["by_category"][v["category"]].append(entry)
@@ -265,6 +392,13 @@ def summarize(performance):
             dimensions["by_topic"][v["topic"]].append(entry)
         if v.get("ruleset_version"):
             dimensions["by_ruleset_version"][v["ruleset_version"]].append(entry)
+        first_clip_type = _first_clip_type_bucket(v.get("first_clip_tags"))
+        if first_clip_type:
+            dimensions["by_first_clip_type"][first_clip_type].append(entry)
+        if v.get("holdout") is not None:
+            dimensions["by_holdout"]["holdout (unsteered)" if v["holdout"] else "steered"].append(entry)
+        if v.get("experiment_arm"):
+            dimensions["by_experiment_arm"][v["experiment_arm"]].append(entry)
 
     def _avg(key, entries):
         return sum(e[key] for e in entries) / len(entries)
@@ -277,6 +411,7 @@ def summarize(performance):
                 "avg_view_pct": _avg("avg_view_pct", entries),
                 "sub_rate_per_1k_views": _avg("sub_rate", entries),
                 "engagement_rate_per_1k_views": _avg("eng_rate", entries),
+                "share_rate_per_1k_views": _avg("share_rate", entries),
                 "sample_size": len(entries),
             }
             for name, entries in ranked[:limit]
@@ -315,15 +450,63 @@ def recent_uploads(used_topics_path, live_stats_path, hours=48):
     return sorted(recent, key=lambda v: v.get("views", 0), reverse=True)
 
 
-def render_summary_markdown(summary, recent, traffic_sources):
-    lines = ["# Performance summary (auto-generated, read this before writing a script)", ""]
+def _iso_week(dt_str):
+    dt = datetime.fromisoformat(dt_str)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    iso = dt.isocalendar()
+    return f"{iso[0]}-W{iso[1]:02d}"
+
+
+def weekly_variance(video_list, weeks_back=8):
+    """Median and max views per calendar week -- a ruleset that produces one 3,000-view
+    video and nine 200s beats one that produces ten 500s, because only the outlier
+    changes the channel's distribution/reach, not the median. Optimizing on averages
+    alone can't see this and pushes toward reliable mediocrity (a flat, narrow
+    distribution) instead of toward whatever produces real outliers. Track both so a
+    ruleset decision doesn't get made on the wrong number."""
+    by_week = defaultdict(list)
+    for v in video_list:
+        views, uploaded_at = v.get("views"), v.get("uploaded_at")
+        if views is None or not uploaded_at:
+            continue
+        try:
+            by_week[_iso_week(uploaded_at)].append(views)
+        except ValueError:
+            continue
+
+    weeks = []
+    for week, views_list in sorted(by_week.items()):
+        views_list.sort()
+        n = len(views_list)
+        median = views_list[n // 2] if n % 2 == 1 else (views_list[n // 2 - 1] + views_list[n // 2]) / 2
+        weeks.append({"week": week, "median_views": median, "max_views": max(views_list), "video_count": n})
+    return weeks[-weeks_back:]
+
+
+def render_summary_markdown(summary, recent, traffic_sources, weekly=None, beat_drops=None):
+    lines = [
+        "# Performance summary (auto-generated, read this before writing a script)",
+        "",
+        "**shares/1k views is the metric to prioritize right now.** Retention "
+        "(avg_view_pct) is already clearing well across the board -- shares and "
+        "subscriber growth are the actual gating metrics. A high-retention video that "
+        "nobody forwards still doesn't grow the channel; shares are the more direct "
+        "lever, since a forwarded video reaches people the algorithm/existing audience "
+        "never would have. Every script now requires a `share_trigger` (see "
+        "`pipeline/script_schema.py`) -- once there's enough data (n>=8 per bucket), "
+        "weight topic/hook/style choices by share_rate_per_1k_views below, not just "
+        "avg_view_pct.",
+        "",
+    ]
 
     if recent:
         lines.append("## Recent uploads (last 48h) -- early velocity signal, near-real-time (not the retention ranking below)")
         lines.append("")
         for r in recent:
             hook = r.get("hook_type", "n/a")
-            lines.append(f"- {r['topic']} ({r.get('category', 'n/a')}/{hook}): {r.get('views', 0)} views, {r.get('likes', 0)} likes, {r.get('comments', 0)} comments")
+            velocity = f", {r['views_at_2h']} views@2h" if r.get("views_at_2h") is not None else ""
+            lines.append(f"- {r['topic']} ({r.get('category', 'n/a')}/{hook}): {r.get('views', 0)} views, {r.get('likes', 0)} likes, {r.get('comments', 0)} comments{velocity}")
         lines.append("")
 
     if not summary["by_category"]:
@@ -343,7 +526,8 @@ def render_summary_markdown(summary, recent, traffic_sources):
             lines.append(
                 f"- {r['name']}: {r['avg_view_pct']:.1f}% avg view, "
                 f"{r['sub_rate_per_1k_views']:.2f} subs/1k views, "
-                f"{r['engagement_rate_per_1k_views']:.2f} likes+comments/1k views (n={r['sample_size']})"
+                f"{r['engagement_rate_per_1k_views']:.2f} likes+comments/1k views, "
+                f"{r['share_rate_per_1k_views']:.2f} shares/1k views (n={r['sample_size']})"
             )
         lines.append("")
 
@@ -368,12 +552,53 @@ def render_summary_markdown(summary, recent, traffic_sources):
     _section("Top video lengths (steer target narration length by this)", "by_length")
     _section("Top publish hours (UTC) -- reference only, needs more spread of upload times before it means anything", "by_publish_hour")
     _section("Top seed momentum tiers -- does a higher-view-count trend seed actually predict this channel's own performance?", "by_seed_momentum")
+    _section(
+        "Opening clip type (beat 0's first visual, proxied from Pixabay's own tags -- "
+        "not real computer vision, read as a rough signal only)",
+        "by_first_clip_type",
+    )
+    _section(
+        "Steered vs. holdout -- is tuning actually beating an unsteered baseline?",
+        "by_holdout",
+    )
+    _section(
+        "Active experiment arm (control vs. variant) -- only meaningful while a VARIANT "
+        "ARM block is active in ROUTINE_INSTRUCTIONS.md",
+        "by_experiment_arm",
+    )
 
     lines.append("## Top individual topics (reference only -- these exact topics are already used)")
     lines.append("")
     for r in summary["by_topic"]:
         lines.append(f"- {r['name']}: {r['avg_view_pct']:.1f}% avg view")
     lines.append("")
+
+    if beat_drops:
+        lines.append(
+            "## Where viewers actually leave, beat by beat (per-beat retention drop, "
+            "most actionable signal here)"
+        )
+        lines.append("")
+        for d in beat_drops:
+            lines.append(
+                f"- -{d['drop_pct_points']:.1f} points at beat {d['beat_index']} "
+                f"(\"{d['text']}\") in \"{d['topic']}\" ({d['start_pct']:.0f}% -> "
+                f"{d['end_pct']:.0f}%)"
+            )
+        lines.append("")
+
+    if weekly:
+        lines.append(
+            "## Weekly reach: median vs. max views -- a wide gap means the ceiling is "
+            "real, not the median"
+        )
+        lines.append("")
+        for w in weekly:
+            lines.append(
+                f"- {w['week']}: median {w['median_views']:.0f}, max {w['max_views']} "
+                f"(n={w['video_count']} videos)"
+            )
+        lines.append("")
 
     if traffic_sources:
         lines.append("## Where views are coming from (last 28 days, channel-wide, reference only -- not a per-video lever)")
@@ -407,8 +632,13 @@ if __name__ == "__main__":
     output["traffic_sources"] = traffic
     print(json.dumps(output, indent=2))
 
+    weekly = weekly_variance(videos)
+    beat_drops = worst_beat_dropoffs(perf)
+
     if args.summary_out:
-        Path(args.summary_out).write_text(render_summary_markdown(summary, recent, traffic), encoding="utf-8")
+        Path(args.summary_out).write_text(
+            render_summary_markdown(summary, recent, traffic, weekly, beat_drops), encoding="utf-8"
+        )
 
     if args.dashboard_out:
         dashboard_payload = dict(summary)
@@ -416,5 +646,6 @@ if __name__ == "__main__":
         dashboard_payload["channel_totals"] = channel_totals(videos)
         dashboard_payload["recent_uploads"] = recent
         dashboard_payload["traffic_sources"] = traffic
+        dashboard_payload["weekly_variance"] = weekly
         dashboard_payload["videos"] = videos
         Path(args.dashboard_out).write_text(json.dumps(dashboard_payload, indent=2), encoding="utf-8")

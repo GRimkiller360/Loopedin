@@ -9,6 +9,7 @@ counts toward auto-pause, leaves state/pending_script.json in place for a human 
 inspect (see ROUTINE_INSTRUCTIONS.md step 0.5).
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -21,6 +22,17 @@ RECENT_TITLES_TO_CHECK = 15
 TITLE_OVERLAP_THRESHOLD = 0.7
 MIN_HOOK_WINNER_OVERLAP = 0.15
 HOOK_CANDIDATE_OVERLAP_THRESHOLD = 0.75
+
+# "people who like history" is an audience description, not a share trigger -- it names
+# a topic-affinity category, not an actual person/relationship, and gives no message to
+# send. Catches that whole family of generic phrasing regardless of which topic word
+# fills in the blank.
+GENERIC_SHARE_TRIGGER_RE = re.compile(
+    r"\b(people|anyone|folks|those|fans|viewers|users)\s+(who|that)\s+"
+    r"(like|love|enjoy|are into|are interested in|care about)\b",
+    re.IGNORECASE,
+)
+QUOTE_CHARS_RE = re.compile(r"[\"'‘’“”]")
 
 BANNED_OPENERS = (
     "so today", "in this video", "welcome back", "today we're talking about",
@@ -124,6 +136,25 @@ def check(script, used_topics_path):
                     f"hook_candidates[{i}] and [{j}] are too similar (overlap={overlap:.2f}) -- "
                     "these need to be genuinely distinct angles, not the same hook reworded"
                 )
+
+    # share_trigger must name a specific relationship/group and quote the actual message
+    # a viewer would send, not just describe who'd find the topic interesting -- see
+    # ROUTINE_INSTRUCTIONS.md step 2.3 for why this matters more than retention right now.
+    trigger = (script.get("share_trigger") or "").strip()
+    if trigger:
+        if GENERIC_SHARE_TRIGGER_RE.search(trigger):
+            errors.append(
+                f"share_trigger reads as a generic audience description ({trigger!r}) -- "
+                "name a specific relationship or group (e.g. 'the friend who...') and "
+                "quote the actual message they'd send, not just who'd find the topic "
+                "interesting"
+            )
+        elif not QUOTE_CHARS_RE.search(trigger):
+            errors.append(
+                f"share_trigger doesn't quote what the viewer would actually type/say "
+                f"({trigger!r}) -- it needs to include the literal words, not just "
+                "describe the recipient"
+            )
 
     used = load_json(used_topics_path, {"topics": []})
     recent_titles = [t["title"] for t in used["topics"][-RECENT_TITLES_TO_CHECK:] if t.get("title")]

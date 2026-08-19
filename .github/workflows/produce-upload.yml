@@ -144,6 +144,8 @@ jobs:
 
           script = json.load(open('state/pending_script.json', encoding='utf-8'))
           result = json.load(open('work/upload_result.json', encoding='utf-8'))
+          beat_timings = json.load(open('work/assemble/beat_timings.json', encoding='utf-8'))
+          broll_clips = json.load(open('work/broll_clips.json', encoding='utf-8'))
 
           # Measured from the actual assembled file, not estimated from word count --
           # more accurate, and doesn't depend on the routine's narration pace guess.
@@ -162,6 +164,10 @@ jobs:
               duration_seconds=round(duration, 1),
               # Stamped by code, not the agent -- see script_schema.py's comment.
               ruleset_version=RULESET_VERSION,
+              beat_timings=beat_timings,
+              first_clip_tags=broll_clips.get('first_clip_tags'),
+              holdout=script.get('holdout'),
+              experiment_arm=script.get('experiment_arm'),
           )
           record_success('state/routine_health.json')
 

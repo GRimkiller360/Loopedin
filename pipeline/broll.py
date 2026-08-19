@@ -34,6 +34,13 @@ def _best_video_file(hit):
 
 
 def fetch_clip_for_query(query, out_path, used_ids, api_key):
+    # Always returns (found, tags) -- tags is the matched Pixabay hit's own "tags"
+    # field, already present in the search response at no extra API cost. This is the
+    # only visual-content signal available without real computer vision (nothing in
+    # this pipeline analyzes actual pixels) -- a proxy (what the clip's uploader
+    # tagged it as), not ground truth about what's visible on screen. fetch_all only
+    # persists it for beat 0's first sub-clip (what's on screen during the opening
+    # 2-3s), but every call returns it for a uniform signature.
     # Pixabay hard-rejects (400) any q over 100 chars -- the routine writes deliberately
     # descriptive broll_query text (see ROUTINE_INSTRUCTIONS.md's "visually arresting"
     # guidance for beat 0 especially), which routinely exceeds that. Truncate at a word
@@ -67,8 +74,8 @@ def fetch_clip_for_query(query, out_path, used_ids, api_key):
 
         config.retry_transient(_do_download, is_retryable=config.is_retryable_urllib_error)
         used_ids.add(hit["id"])
-        return True
-    return False
+        return True, hit.get("tags")
+    return False, None
 
 
 # A single unbroken shot holding for a long beat reads as static even with the zoom
@@ -86,6 +93,12 @@ def fetch_all(script, work_dir, api_key):
     work_dir.mkdir(parents=True, exist_ok=True)
     used_ids = set()
     beats_clips = []
+    # Pixabay's own tags for whatever clip actually plays first -- the closest
+    # available proxy for "what kind of visual opens this video" (motion/faces/
+    # text-on-screen/etc.) without any real computer vision in this pipeline. Only
+    # captured for beat 0's very first sub-clip, since that's what's on screen during
+    # the opening 2-3s that most drop-off happens in.
+    first_clip_tags = None
 
     for i, beat in enumerate(script["beats"]):
         word_count = len(config.strip_emphasis_markup(beat["text"]).split())
@@ -94,9 +107,10 @@ def fetch_all(script, work_dir, api_key):
         sub_paths = []
         for j in range(num_clips):
             out_path = work_dir / f"beat_{i:02d}_{j:02d}.mp4"
-            found = fetch_clip_for_query(beat["broll_query"], out_path, used_ids, api_key)
+            want_tags = i == 0 and j == 0
+            found, tags = fetch_clip_for_query(beat["broll_query"], out_path, used_ids, api_key)
             if not found:
-                found = fetch_clip_for_query(script["topic"], out_path, used_ids, api_key)
+                found, tags = fetch_clip_for_query(script["topic"], out_path, used_ids, api_key)
             if not found:
                 # A later sub-clip failing to find a fresh match isn't fatal -- fall
                 # back to fewer cuts for this beat rather than failing the whole video
@@ -104,10 +118,12 @@ def fetch_all(script, work_dir, api_key):
                 if sub_paths:
                     break
                 raise RuntimeError(f"no b-roll found for beat {i} (query={beat['broll_query']!r})")
+            if want_tags:
+                first_clip_tags = tags
             sub_paths.append(str(out_path))
         beats_clips.append(sub_paths)
 
-    return beats_clips
+    return beats_clips, first_clip_tags
 
 
 if __name__ == "__main__":
@@ -117,5 +133,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     script = json.loads(Path(args.script).read_text(encoding="utf-8"))
-    beats_clips = fetch_all(script, args.work_dir, config.require("PIXABAY_API_KEY"))
-    print(json.dumps({"beats": beats_clips}, indent=2))
+    beats_clips, first_clip_tags = fetch_all(script, args.work_dir, config.require("PIXABAY_API_KEY"))
+    print(json.dumps({"beats": beats_clips, "first_clip_tags": first_clip_tags}, indent=2))
