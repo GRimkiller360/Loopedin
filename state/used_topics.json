@@ -841,6 +841,19 @@
       "title": "1,000 Nails Won't Cut You \u2014 One Will (Same Body Weight)",
       "duration_seconds": 16.6,
       "ruleset_version": "2026-08-19-payoff-mechanism-v4"
+    },
+    {
+      "topic": "why Hypatia of Alexandria was really murdered (not for science)",
+      "video_id": "L4sNNxWQK_E",
+      "uploaded_at": "2026-08-19T11:57:39.941133+00:00",
+      "publish_hour_utc": 11,
+      "category": "history",
+      "seed_source_video_id": "fbvKIv42OWU",
+      "seed_view_count": 607012,
+      "hook_type": "myth_bust",
+      "title": "Hypatia's Murder Wasn't About Science \u2014 Here's The Real Reason",
+      "duration_seconds": 29.6,
+      "ruleset_version": "2026-08-19-payoff-mechanism-v4"
     }
   ]
 }
