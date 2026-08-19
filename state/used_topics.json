@@ -724,6 +724,19 @@
       "title": "Every Straight Tunnel Through Earth Takes The Same 42 Minutes",
       "duration_seconds": 13.3,
       "ruleset_version": "2026-08-18-retention-overhaul-v3"
+    },
+    {
+      "topic": "opponent-process color vision - why some outfit color combos visually 'pop'",
+      "video_id": "retyhoK5Lcc",
+      "uploaded_at": "2026-08-19T05:25:08.600730+00:00",
+      "publish_hour_utc": 5,
+      "category": "psychology",
+      "seed_source_video_id": "PxgcY-rihkU",
+      "seed_view_count": 155470,
+      "hook_type": "shocking_fact",
+      "title": "Why Complementary Colors Make Outfits 'Pop' (It's Not Taste)",
+      "duration_seconds": 33.8,
+      "ruleset_version": "2026-08-19-payoff-mechanism-v4"
     }
   ]
 }
