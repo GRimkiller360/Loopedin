@@ -31,10 +31,17 @@ retry() {
 
 # Check ffprobe too, not just ffmpeg -- some base images ship one without the other.
 if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; then
-    if command -v sudo >/dev/null 2>&1; then
-        retry sudo apt-get update -qq && retry sudo apt-get install -y -qq ffmpeg
-    else
-        retry apt-get update -qq && retry apt-get install -y -qq ffmpeg
+    SUDO=""
+    command -v sudo >/dev/null 2>&1 && SUDO="sudo"
+
+    # `apt-get update` refetches the index for every repo configured on the runner
+    # image (GitHub-hosted images have several), and that refetch -- not the actual
+    # ffmpeg download -- is what was taking minutes on a bad mirror day. The image's
+    # baked-in index is usually current enough to install ffmpeg without refreshing
+    # it at all, so try that first and only pay for `update` if it's genuinely stale.
+    if ! retry $SUDO apt-get install -y -qq ffmpeg; then
+        retry $SUDO apt-get update -qq
+        retry $SUDO apt-get install -y -qq ffmpeg
     fi
 fi
 
