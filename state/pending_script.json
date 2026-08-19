@@ -1,0 +1,74 @@
+{
+  "topic": "the 22-meter robot arm built so no human ever has to touch Fukushima's melted nuclear fuel",
+  "category": "science facts",
+  "seed_source_video_id": "d6AFuheOGvU",
+  "seed_view_count": 30039,
+  "title": "The Robot Arm Built So No Human Ever Touches Fukushima's Melted Fuel",
+  "description": "Fukushima Daiichi's reactor cores are still radioactive enough to kill a person in under a minute, so every gram of melted fuel removed from them has to be handled by machine, never by hand. This breaks down the actual engineering reason a simple long pole wouldn't work, and why the arm needed 18 separate joints instead. Sources for the radiation reading and the arm's specs are linked below.",
+  "tags": ["fukushima", "nuclearenergy", "engineering", "robotics", "radiation", "sciencefacts", "shorts"],
+  "hook_type": "story",
+  "hook_candidates": [
+    {
+      "hook_type": "shocking_fact",
+      "text": "Fukushima's melted nuclear fuel is radioactive enough to kill a person in under 30 seconds -- so no human has ever touched it, not once, in 13 years."
+    },
+    {
+      "hook_type": "story",
+      "text": "No human has ever touched Fukushima's melted nuclear fuel -- the radiation would kill you in under 30 seconds, so engineers built a robot arm to do it instead."
+    },
+    {
+      "hook_type": "myth_bust",
+      "text": "Nuclear disaster cleanup isn't people in hazmat suits with shovels -- Fukushima's fuel is so radioactive a robot arm has to do the entire job instead."
+    },
+    {
+      "hook_type": "question",
+      "text": "Why has no human ever touched Fukushima's melted nuclear fuel in 13 years? Because the radiation would kill them in under 30 seconds -- so a robot arm does it instead."
+    }
+  ],
+  "payoff_mechanism": "The arm needs 18 separate joints instead of one rigid rod because it must snake through narrow reactor openings and bend around obstacles no human can approach to guide it by hand, so operators steer each joint remotely by camera from a shielded control room instead.",
+  "share_trigger": "Send this to the friend who thinks nuclear cleanup means guys in hazmat suits with shovels, captioned: 'nope, it's a 22-meter robot arm.'",
+  "contradicted_belief": "Most people assume humans physically touch and remove nuclear fuel debris by hand.",
+  "series_label": "Things that shouldn't be true #5",
+  "sources": [
+    {
+      "url": "https://www.forbes.com/sites/williampentland/2017/02/03/extreme-radiation-levels-detected-at-fukushima-reactor-highest-since-2011/",
+      "note": "Confirms 2017 reading of 530 sieverts/hour inside reactor 2, lethal within about 30 seconds."
+    },
+    {
+      "url": "https://interestingengineering.com/innovation/fukushima-reactor-nuclear-fuel-removal-robot",
+      "note": "Confirms the 22-meter, 18-joint robot arm deployed in 2024 to retrieve Fukushima's melted fuel."
+    },
+    {
+      "url": "https://www.world-nuclear-news.org/articles/Fuel-debris-sample-extracted-from-damaged-Japanese-reactor",
+      "note": "Confirms first fuel debris sample retrieved November 2024, roughly 0.7 grams."
+    }
+  ],
+  "holdout": false,
+  "experiment_arm": "variant",
+  "beats": [
+    {
+      "text": "No human has ever touched Fukushima's melted nuclear fuel -- the radiation would kill you in under **30 seconds**, so engineers built a robot arm to do it instead.",
+      "broll_query": "robotic arm radiation warning sign"
+    },
+    {
+      "text": "In 2017, probes measured **530 sieverts** an hour inside the reactor -- fatal in seconds.",
+      "broll_query": "radiation meter geiger counter warning"
+    },
+    {
+      "text": "That arm is **22 meters** long, built from 18 separate joints instead of one rigid rod.",
+      "broll_query": "long mechanical arm industrial pipe"
+    },
+    {
+      "text": "Those joints let it snake through narrow openings and bend around corners no person can walk up to and guide by hand -- an operator steers it by camera instead, from a shielded room.",
+      "broll_query": "remote control operator camera screen"
+    },
+    {
+      "text": "After 13 years, its first retrieval in 2024 pulled out less than **a gram**. 880 tons remain.",
+      "broll_query": "nuclear reactor rubble debris interior"
+    },
+    {
+      "text": "Somewhere right now, a machine is doing a job specifically because no person could survive it. Follow for the next one.",
+      "broll_query": "robotic arm silhouette dark facility"
+    }
+  ]
+}
