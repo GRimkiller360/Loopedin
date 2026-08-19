@@ -89,6 +89,34 @@ jobs:
         if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
         run: python pipeline/quality_gate.py state/pending_script.json state/used_topics.json
 
+      - name: Determine render style
+        # Alternates on the parity of the series number (see ROUTINE_INSTRUCTIONS.md's
+        # series-numbering step) -- a deterministic, code-computed 50/50 A/B, not left
+        # to agent judgment, same reasoning as pipeline/experiment_arm.py's holdout/arm
+        # assignment. vars.RENDER_STYLE overrides this entirely when set (manual
+        # testing, e.g. forcing one style for a one-off run) -- unset by default so the
+        # alternation actually runs.
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
+        id: render_style
+        env:
+          RENDER_STYLE_OVERRIDE: ${{ vars.RENDER_STYLE }}
+        run: |
+          python -c "
+          import json, os, re
+
+          override = os.environ.get('RENDER_STYLE_OVERRIDE', '').strip()
+          if override:
+              style = override
+          else:
+              script = json.load(open('state/pending_script.json', encoding='utf-8'))
+              m = re.search(r'#(\d+)\$', script.get('series_label', '') or '')
+              style = 'typographic' if m and int(m.group(1)) % 2 == 1 else 'stock'
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'style={style}\n')
+          print(f'render style: {style}')
+          "
+
       - name: Narration
         if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
         env:
@@ -96,7 +124,10 @@ jobs:
         run: python pipeline/tts.py --script state/pending_script.json --out work/narration.mp3
 
       - name: B-roll
-        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
+        # Skipped entirely for the typographic style -- it doesn't use stock footage
+        # at all (see assemble.py's assemble_typographic), so fetching it would just
+        # waste Pixabay API calls and bandwidth on clips nothing will ever use.
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && steps.render_style.outputs.style != 'typographic'
         env:
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
         run: python pipeline/broll.py --script state/pending_script.json --work-dir work/broll > work/broll_clips.json
@@ -104,7 +135,7 @@ jobs:
       - name: Assemble
         if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
         env:
-          RENDER_STYLE: ${{ vars.RENDER_STYLE || 'stock' }}
+          RENDER_STYLE: ${{ steps.render_style.outputs.style }}
         run: |
           python pipeline/assemble.py --script state/pending_script.json \
             --narration work/narration.mp3 --clips work/broll_clips.json \

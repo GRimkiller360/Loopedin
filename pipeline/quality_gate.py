@@ -18,10 +18,28 @@ from pipeline.state_utils import load_json
 
 MIN_WORDS, MAX_WORDS = 25, 160
 MAX_BROLL_QUERY_WORDS = 8
-RECENT_TITLES_TO_CHECK = 15
 TITLE_OVERLAP_THRESHOLD = 0.7
 MIN_HOOK_WINNER_OVERLAP = 0.15
 HOOK_CANDIDATE_OVERLAP_THRESHOLD = 0.75
+# Checked against every historical title/topic, not just the recent window -- the
+# channel has real near-duplicates further back than any recency window would catch
+# (the same "leafing behavior" paint mechanism covered 3 times, phone-downgrade
+# covered twice, the animal-art-preservation pair, the peripheral-vision-staring
+# pair). Two separate thresholds: title (unstemmed, near-identical wording -- 0.7 is
+# deliberately strict, this is just a formatting-difference catch) and topic (stemmed
+# content words). 0.32 was reached by actually scoring every real pair in this
+# channel's 73-video history, not guessed: short topic strings produce a real noise
+# floor around 0.20-0.22 from one or two incidentally-shared common words (confirmed
+# against confirmed-non-duplicate pairs), while genuine duplicates (the animal-art
+# pair, the two peripheral-vision-staring videos, the Hypatia/comebacks pair) score
+# 0.33-0.57. 0.32 sits just above the noise floor -- deliberately conservative, since
+# a false positive here blocks a legitimate future topic outright, while a false
+# negative (a slightly-too-different-worded duplicate slipping through, e.g. two of
+# the three "leafing" paint videos only score 0.25 against each other) is a milder,
+# recoverable miss. Paraphrased duplicates worded very differently (two
+# no-parachute-skydiving videos score 0.0 even stemmed) won't be caught by either
+# threshold -- an honest limitation of word-overlap without real NLP/embeddings.
+TOPIC_OVERLAP_THRESHOLD = 0.32
 
 # "people who like history" is an audience description, not a share trigger -- it names
 # a topic-affinity category, not an actual person/relationship, and gives no message to
@@ -240,13 +258,28 @@ def check(script, used_topics_path):
         )
 
     used = load_json(used_topics_path, {"topics": []})
-    recent_titles = [t["title"] for t in used["topics"][-RECENT_TITLES_TO_CHECK:] if t.get("title")]
     title = script.get("title", "")
-    for recent in recent_titles:
-        overlap = _title_overlap(title, recent)
-        if overlap >= TITLE_OVERLAP_THRESHOLD:
-            errors.append(f"title too similar (overlap={overlap:.2f}) to a recent title: {recent!r}")
-            break
+    for entry in used["topics"]:
+        past_title = entry.get("title")
+        if past_title:
+            overlap = _title_overlap(title, past_title)
+            if overlap >= TITLE_OVERLAP_THRESHOLD:
+                errors.append(f"title too similar (overlap={overlap:.2f}) to a past title: {past_title!r}")
+                break
+
+    topic = script.get("topic", "")
+    for entry in used["topics"]:
+        past_topic = entry.get("topic")
+        if past_topic:
+            overlap = _directional_content_overlap(topic, past_topic)
+            reverse_overlap = _directional_content_overlap(past_topic, topic)
+            if max(overlap, reverse_overlap) >= TOPIC_OVERLAP_THRESHOLD:
+                errors.append(
+                    f"topic too similar (overlap={max(overlap, reverse_overlap):.2f}) to a "
+                    f"past topic: {past_topic!r} -- same underlying subject already covered, "
+                    "even if worded differently"
+                )
+                break
 
     return errors
 

@@ -497,12 +497,18 @@ def _add_cold_open(main_video_path, contradicted_belief, bg_color, out_path, wor
         str(cold_open_video),
     ], check=True)
 
-    concat_list = work_dir / "cold_open_concat.txt"
-    concat_list.write_text(
-        f"file '{cold_open_video.resolve()}'\nfile '{Path(main_video_path).resolve()}'"
-    )
+    # The concat FILTER, not the concat demuxer -- the demuxer assumes its inputs are
+    # already stream-compatible (same sample rate/frame size/timestamps) and can
+    # produce audible crackling when that's not quite true, which it isn't here:
+    # cold_open_video's audio comes from anullsrc at a fixed 44100Hz, while
+    # main_video_path's narration audio (Google TTS) and the hook-sound mix it went
+    # through upstream aren't guaranteed to land on the same rate. The filter properly
+    # decodes both inputs and re-encodes a single coherent output instead of just
+    # splicing container-level packets together.
     subprocess.run([
-        "ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(concat_list),
+        "ffmpeg", "-y", "-i", str(cold_open_video), "-i", str(main_video_path),
+        "-filter_complex", "[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[vout][aout]",
+        "-map", "[vout]", "-map", "[aout]",
         "-c:v", "libx264", "-preset", "veryfast", "-c:a", "aac", "-pix_fmt", "yuv420p",
         str(out_path),
     ], check=True)
