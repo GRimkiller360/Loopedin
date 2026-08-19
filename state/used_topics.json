@@ -750,6 +750,19 @@
       "title": "The WWI Study That Accidentally Won The 8-Hour Workday",
       "duration_seconds": 15.7,
       "ruleset_version": "2026-08-19-payoff-mechanism-v4"
+    },
+    {
+      "topic": "Volkssturm - Nazi Germany's teenage-and-grandfather home defense force",
+      "video_id": "HBiwYopxnic",
+      "uploaded_at": "2026-08-19T06:35:31.204006+00:00",
+      "publish_hour_utc": 6,
+      "category": "history",
+      "seed_source_video_id": "8AhU8-VGBoo",
+      "seed_view_count": 1590459,
+      "hook_type": "shocking_fact",
+      "title": "Hitler's Last-Ditch Army Was 13-Year-Olds With One Grenade Each",
+      "duration_seconds": 39.7,
+      "ruleset_version": "2026-08-19-payoff-mechanism-v4"
     }
   ]
 }
