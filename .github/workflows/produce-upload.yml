@@ -103,6 +103,8 @@ jobs:
 
       - name: Assemble
         if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
+        env:
+          RENDER_STYLE: ${{ vars.RENDER_STYLE || 'stock' }}
         run: |
           python pipeline/assemble.py --script state/pending_script.json \
             --narration work/narration.mp3 --clips work/broll_clips.json \
