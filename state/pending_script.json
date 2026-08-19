@@ -1,0 +1,22 @@
+{
+  "topic": "the Earth-Moon gap is wide enough to fit all seven other planets side by side",
+  "category": "science facts",
+  "seed_source_video_id": "ZMmdQbkXmGI",
+  "seed_view_count": 23760,
+  "title": "Seven Planets Could Fit in the Gap Between Earth and the Moon",
+  "description": "The real distance between Earth and the Moon is so much bigger than textbook diagrams show it -- big enough to line up every other planet in the solar system side by side. Original AI-narrated commentary exploring why those diagrams get the scale wrong.",
+  "tags": ["space facts", "moon", "earth", "solar system", "astronomy", "science shorts", "did you know", "space"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Seven planets could fit side-by-side in the gap between Earth and the Moon."},
+    {"hook_type": "question", "text": "What if I told you seven planets could fit inside the empty space between Earth and the Moon?"},
+    {"hook_type": "myth_bust", "text": "That textbook picture of Earth and the Moon sitting close together? It's not simplified, it's wrong."}
+  ],
+  "payoff_mechanism": "Diagram makers shrink the distance far more than the planets themselves because printing it to true scale would shrink the Moon down to an invisible dot, so they sacrifice accurate spacing for a readable picture, leaving viewers with a permanently wrong sense of scale.",
+  "beats": [
+    {"text": "Seven planets fit **side-by-side** in the Earth-Moon gap.", "broll_query": "solar system planets row"},
+    {"text": "That's **384,400** kilometers of pure empty space.", "broll_query": "earth moon distance space"},
+    {"text": "Textbooks **shrink** that gap, not the planets, so the Moon doesn't vanish to a dot.", "broll_query": "textbook diagram earth moon"},
+    {"text": "The real gap fits **seven** planets -- follow for the next one.", "broll_query": "moon earth night sky"}
+  ]
+}
