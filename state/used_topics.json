@@ -1190,6 +1190,19 @@
           "note": "Confirms case timeline: leftover pasta, room temp storage, death after reheating and eating"
         }
       ]
+    },
+    {
+      "topic": "why the India-Pakistan border is bright enough to see from space (it's not a flag)",
+      "video_id": "924WTGrZ2Ss",
+      "uploaded_at": "2026-08-19T18:58:53.033774+00:00",
+      "publish_hour_utc": 18,
+      "category": "space",
+      "seed_source_video_id": "FX-6iCAQSYs",
+      "seed_view_count": 205462,
+      "hook_type": "myth_bust",
+      "title": "The 'Flag Visible From Space' Photo Is Actually a 2,000km Border Fence",
+      "duration_seconds": 43.7,
+      "ruleset_version": "2026-08-19-payoff-mechanism-v4"
     }
   ]
 }
