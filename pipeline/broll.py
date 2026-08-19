@@ -21,6 +21,164 @@ from pipeline import config
 SEARCH_URL = "https://pixabay.com/api/videos/"
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 
+# --- Archival stills (RENDER_STYLE=typographic, history/space categories) -----------
+#
+# Real photographs of real people/events are the actual visual differentiator this
+# content has over generic stock footage that appears identically on thousands of
+# other channels -- see the phase-2 brief. Two sources, in priority order: Wikimedia
+# Commons (best coverage, structured license metadata, works for any topic) and NASA's
+# image library (space topics only, effectively all public domain as US government
+# work). Library of Congress was scoped out for now -- not implemented, flagged
+# explicitly rather than silently skipped.
+#
+# Licence filtering is mandatory, not a nice-to-have: the repo is public and every
+# video is unreviewed before publish, so an unlicensed image reaching upload would be
+# a real, auditable problem, not just a style miss. Reject anything that isn't
+# public domain, CC0, or plain CC-BY -- share-alike/non-commercial/no-derivatives
+# variants carry obligations this pipeline has no mechanism to honor (attribution
+# text isn't even shown on-screen), so they're excluded even though some of them
+# would otherwise be usable with more work.
+WIKIMEDIA_SEARCH_URL = "https://commons.wikimedia.org/w/api.php"
+NASA_IMAGES_SEARCH_URL = "https://images-api.nasa.gov/search"
+ARCHIVAL_API_TIMEOUT = 15
+
+
+def _license_is_compliant(license_text):
+    t = (license_text or "").strip().lower().replace(" ", "").replace("-", "").replace("_", "")
+    if not t:
+        return False
+    if "cc" in t and "sa" in t:
+        return False  # share-alike -- different obligations than plain CC-BY
+    if "cc" in t and "nc" in t:
+        return False  # non-commercial
+    if "cc" in t and "nd" in t:
+        return False  # no-derivatives -- this pipeline crops/composites, so exclude
+    return "publicdomain" in t or "cc0" in t or "ccby" in t or t == "pd"
+
+
+def _wikimedia_best_image(query, used_ids):
+    params = urllib.parse.urlencode({
+        "action": "query", "list": "search", "srsearch": query, "srnamespace": 6,
+        "format": "json", "srlimit": 8,
+    })
+    req = urllib.request.Request(f"{WIKIMEDIA_SEARCH_URL}?{params}", headers={"User-Agent": USER_AGENT})
+
+    def _do_search():
+        with urllib.request.urlopen(req, timeout=ARCHIVAL_API_TIMEOUT) as resp:
+            return json.loads(resp.read())
+
+    try:
+        result = config.retry_transient(_do_search, is_retryable=config.is_retryable_urllib_error)
+    except Exception:
+        return None  # a dead/erroring source must not break production -- caller falls back
+
+    titles = [
+        hit["title"] for hit in result.get("query", {}).get("search", [])
+        if hit["title"] not in used_ids
+    ]
+    if not titles:
+        return None
+
+    info_params = urllib.parse.urlencode({
+        "action": "query", "titles": "|".join(titles), "prop": "imageinfo",
+        "iiprop": "url|extmetadata|mime", "format": "json",
+    })
+    info_req = urllib.request.Request(f"{WIKIMEDIA_SEARCH_URL}?{info_params}", headers={"User-Agent": USER_AGENT})
+
+    def _do_info():
+        with urllib.request.urlopen(info_req, timeout=ARCHIVAL_API_TIMEOUT) as resp:
+            return json.loads(resp.read())
+
+    try:
+        info = config.retry_transient(_do_info, is_retryable=config.is_retryable_urllib_error)
+    except Exception:
+        return None
+
+    for page in info.get("query", {}).get("pages", {}).values():
+        imageinfo = (page.get("imageinfo") or [None])[0]
+        if not imageinfo:
+            continue
+        # File: namespace search also matches PDFs/audio/video -- only an actual raster
+        # image is usable as a composited background.
+        if imageinfo.get("mime") not in ("image/jpeg", "image/png", "image/tiff", "image/webp"):
+            continue
+        meta = imageinfo.get("extmetadata", {})
+        license_text = meta.get("LicenseShortName", {}).get("value") or meta.get("UsageTerms", {}).get("value")
+        if not _license_is_compliant(license_text):
+            continue
+        return {
+            "id": page.get("title"),
+            "image_url": imageinfo["url"],
+            "source_url": imageinfo.get("descriptionurl", imageinfo["url"]),
+            "license": license_text,
+            "artist": meta.get("Artist", {}).get("value", "unknown"),
+        }
+    return None  # results existed but none had a compliant license -- caller falls back
+
+
+def _nasa_best_image(query, used_ids):
+    params = urllib.parse.urlencode({"q": query, "media_type": "image"})
+    req = urllib.request.Request(f"{NASA_IMAGES_SEARCH_URL}?{params}", headers={"User-Agent": USER_AGENT})
+
+    def _do_search():
+        with urllib.request.urlopen(req, timeout=ARCHIVAL_API_TIMEOUT) as resp:
+            return json.loads(resp.read())
+
+    try:
+        result = config.retry_transient(_do_search, is_retryable=config.is_retryable_urllib_error)
+    except Exception:
+        return None
+
+    for item in result.get("collection", {}).get("items", []):
+        nasa_id = (item.get("data") or [{}])[0].get("nasa_id")
+        if not nasa_id or nasa_id in used_ids:
+            continue
+        large = next(
+            (l["href"] for l in item.get("links", []) if l.get("render") == "image" and "large" in l["href"]),
+            None,
+        )
+        if not large:
+            continue
+        return {
+            "id": nasa_id,
+            "image_url": large,
+            "source_url": f"https://images.nasa.gov/details-{nasa_id}",
+            # NASA media is public domain as US government work (17 U.S.C. SS105) with
+            # rare contractor-owned exceptions this doesn't specifically detect --
+            # acceptable simplification given NASA's own blanket media usage guidance,
+            # but flagged here rather than silently assumed.
+            "license": "NASA (US Government Work, presumed public domain)",
+            "artist": (item.get("data") or [{}])[0].get("photographer", "NASA"),
+        }
+    return None
+
+
+def fetch_archival_still(query, category, out_path, used_ids=None):
+    """Tries Wikimedia Commons first (any topic), then NASA's image library (space
+    only) as a fallback. Returns a provenance dict on success, None if nothing
+    licence-compliant was found anywhere -- callers must fall back to typographic-only
+    (no archival image) rather than ever using an unlicensed result."""
+    used_ids = used_ids if used_ids is not None else set()
+
+    candidate = _wikimedia_best_image(query, used_ids)
+    if not candidate and category == "space":
+        candidate = _nasa_best_image(query, used_ids)
+    if not candidate:
+        return None
+
+    dl_req = urllib.request.Request(candidate["image_url"], headers={"User-Agent": USER_AGENT})
+    try:
+        def _do_download():
+            with urllib.request.urlopen(dl_req, timeout=ARCHIVAL_API_TIMEOUT) as resp, open(out_path, "wb") as f:
+                f.write(resp.read())
+
+        config.retry_transient(_do_download, is_retryable=config.is_retryable_urllib_error)
+    except Exception:
+        return None  # download failed -- treat exactly like "nothing found"
+
+    used_ids.add(candidate["id"])
+    return candidate
+
 
 def _best_video_file(hit):
     # Pixabay has no orientation filter (unlike Pexels) and most stock footage is
