@@ -155,7 +155,6 @@ CATEGORY_MOODS = {
     "science facts": ("curious", "upbeat"),
     "space": ("awe", "calm", "epic"),
     "history": ("mysterious", "dramatic", "epic"),
-    "geography": ("awe", "curious", "calm"),
 }
 
 

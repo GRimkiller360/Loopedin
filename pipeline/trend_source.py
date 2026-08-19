@@ -38,9 +38,9 @@ VIDEOS_URL = "https://www.googleapis.com/youtube/v3/videos"
 # Kept in sync with pipeline/script_schema.py's CATEGORIES -- see that file's comment
 # for why this was narrowed from the original 10 to one coherent niche, why
 # psychology was later dropped from that narrowed set too, and why geography was
-# added back in (all 2026-08-19, user decisions).
+# added then removed again (all 2026-08-19, user decisions).
 SEED_CATEGORIES = [
-    "science facts", "space", "history", "geography",
+    "science facts", "space", "history",
 ]
 
 # search.list costs 100 quota units/call -- cap categories tried per run so a bad-luck
