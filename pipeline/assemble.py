@@ -271,9 +271,13 @@ def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir):
     # anxiety device, not a retention-through-interest one -- distinct from
     # everything else in this pipeline, which is about making people *want* to keep
     # watching rather than making the remaining distance visible.
+    # eval=frame is required -- drawbox only evaluates x/y/w/h expressions once at
+    # filter init by default, not per-frame, so a t-dependent width without this
+    # renders as a single static bar for the whole video instead of actually filling
+    # (confirmed in production: the bar showed but never progressed).
     progress_bar_filter = (
         f"drawbox=x=0:y=0:w=iw:h=10:color=black@0.35:t=fill,"
-        f"drawbox=x=0:y=0:w='iw*min(t/{narration_duration},1)':h=10:color=0xFFD700@0.9:t=fill"
+        f"drawbox=x=0:y=0:w='iw*min(t/{narration_duration},1)':h=10:color=0xFFD700@0.9:t=fill:eval=frame"
     )
     subprocess.run([
         "ffmpeg", "-y", "-i", str(video_track), "-i", str(mixed_audio),
