@@ -776,6 +776,19 @@
       "title": "A Misread Memo Brought Down The Berlin Wall That Night",
       "duration_seconds": 29.2,
       "ruleset_version": "2026-08-19-payoff-mechanism-v4"
+    },
+    {
+      "topic": "why satellites don't actually float -- they're in constant freefall (Newton's cannonball)",
+      "video_id": "ewSVoIB7xcA",
+      "uploaded_at": "2026-08-19T07:25:27.987882+00:00",
+      "publish_hour_utc": 7,
+      "category": "space",
+      "seed_source_video_id": "DzK_8iRvfgc",
+      "seed_view_count": 149159,
+      "hook_type": "story",
+      "title": "The 1687 Thought Experiment That Explains Why Satellites Never Fall",
+      "duration_seconds": 19.4,
+      "ruleset_version": "2026-08-19-payoff-mechanism-v4"
     }
   ]
 }
