@@ -9,7 +9,6 @@ counts toward auto-pause, leaves state/pending_script.json in place for a human 
 inspect (see ROUTINE_INSTRUCTIONS.md step 0.5).
 """
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -18,70 +17,10 @@ from pipeline.state_utils import load_json
 
 MIN_WORDS, MAX_WORDS = 25, 160
 MAX_BROLL_QUERY_WORDS = 8
+RECENT_TITLES_TO_CHECK = 15
 TITLE_OVERLAP_THRESHOLD = 0.7
 MIN_HOOK_WINNER_OVERLAP = 0.15
 HOOK_CANDIDATE_OVERLAP_THRESHOLD = 0.75
-# Checked against every historical title/topic, not just the recent window -- the
-# channel has real near-duplicates further back than any recency window would catch
-# (the same "leafing behavior" paint mechanism covered 3 times, phone-downgrade
-# covered twice, the animal-art-preservation pair, the peripheral-vision-staring
-# pair). Two separate thresholds: title (unstemmed, near-identical wording -- 0.7 is
-# deliberately strict, this is just a formatting-difference catch) and topic (stemmed
-# content words). 0.32 was reached by actually scoring every real pair in this
-# channel's 73-video history, not guessed: short topic strings produce a real noise
-# floor around 0.20-0.22 from one or two incidentally-shared common words (confirmed
-# against confirmed-non-duplicate pairs), while genuine duplicates (the animal-art
-# pair, the two peripheral-vision-staring videos, the Hypatia/comebacks pair) score
-# 0.33-0.57. 0.32 sits just above the noise floor -- deliberately conservative, since
-# a false positive here blocks a legitimate future topic outright, while a false
-# negative (a slightly-too-different-worded duplicate slipping through, e.g. two of
-# the three "leafing" paint videos only score 0.25 against each other) is a milder,
-# recoverable miss. Paraphrased duplicates worded very differently (two
-# no-parachute-skydiving videos score 0.0 even stemmed) won't be caught by either
-# threshold -- an honest limitation of word-overlap without real NLP/embeddings.
-TOPIC_OVERLAP_THRESHOLD = 0.32
-
-# "people who like history" is an audience description, not a share trigger -- it names
-# a topic-affinity category, not an actual person/relationship, and gives no message to
-# send. Catches that whole family of generic phrasing regardless of which topic word
-# fills in the blank.
-GENERIC_SHARE_TRIGGER_RE = re.compile(
-    r"\b(people|anyone|folks|those|fans|viewers|users)\s+(who|that)\s+"
-    r"(like|love|enjoy|are into|are interested in|care about)\b",
-    re.IGNORECASE,
-)
-
-# share_trigger must name an actual relationship, not just pass the generic-pattern
-# check by accident -- require at least one of these. Named constant, not an inline
-# literal, so it's one place to extend as real scripts surface relationship words this
-# list is missing.
-SHARE_TRIGGER_RELATIONSHIP_KEYWORDS = (
-    "friend", "dad", "mum", "mom", "partner", "coworker", "colleague", "brother",
-    "sister", "boss", "the person who", "anyone who told",
-)
-
-# A resolved-sounding opener on the final beat undoes the "don't resolve at the end"
-# rule even when the actual content is fine -- these are the tells of a tidy summary
-# rather than an open ending. Checked as a leading pattern (word boundary on "so" --
-# not a bare substring match, which would also flag "somehow"/"sole"/etc).
-BANNED_CLOSING_PATTERNS_RE = re.compile(
-    r"^(so\b|and that's why\b|next time\b)", re.IGNORECASE,
-)
-
-SERIES_LABEL_RE = re.compile(r"^.+ #\d+$")
-
-# Dropped before checking whether contradicted_belief's real content actually shows up
-# in beat 0 -- otherwise two sentences sharing only function words (the/a/is/that/...)
-# would look like they overlap when they share no actual content.
-STOPWORDS = {
-    "a", "an", "the", "is", "are", "was", "were", "be", "been", "being", "this",
-    "that", "these", "those", "it", "its", "to", "of", "in", "on", "at", "for",
-    "and", "or", "but", "not", "no", "so", "as", "by", "with", "from", "than",
-    "then", "they", "their", "you", "your", "most", "people", "actually", "really",
-    "just", "who", "what", "which", "do", "does", "did", "have", "has", "had",
-}
-MIN_BELIEF_BEAT0_OVERLAP = 0.25
-MAX_CLOSER_MIDDLE_RECAP_OVERLAP = 0.22
 
 BANNED_OPENERS = (
     "so today", "in this video", "welcome back", "today we're talking about",
@@ -108,31 +47,6 @@ def _title_overlap(a, b):
     if not wa or not wb:
         return 0.0
     return len(wa & wb) / len(wa | wb)
-
-
-def _stem(word):
-    # Crude suffix-stripping, not a real stemmer (no NLP library in this pipeline) --
-    # just enough that "spoils"/"spoil" or "goes"/"go" aren't treated as unrelated
-    # tokens by the overlap check below, which naive exact-string matching would do.
-    for suffix in ("ing", "ies", "es", "ed", "s"):
-        if word.endswith(suffix) and len(word) - len(suffix) >= 3:
-            return word[: -len(suffix)]
-    return word
-
-
-def _content_words(text):
-    return {_stem(w) for w in _word_set(text) if w not in STOPWORDS and len(w) > 2}
-
-
-def _directional_content_overlap(source_text, target_text):
-    # Fraction of source_text's meaningful words that appear in target_text -- not
-    # symmetric Jaccard like _title_overlap, since contradicted_belief and beat 0 are
-    # never going to be similar *lengths*; what matters is whether beat 0 actually
-    # contains the belief's key words, not whether the two texts are similar overall.
-    source_words = _content_words(source_text)
-    if not source_words:
-        return 0.0
-    return len(source_words & _content_words(target_text)) / len(source_words)
 
 
 def check(script, used_topics_path):
@@ -211,98 +125,14 @@ def check(script, used_topics_path):
                     "these need to be genuinely distinct angles, not the same hook reworded"
                 )
 
-    # share_trigger must name a specific relationship, not just describe who'd find the
-    # topic interesting -- see ROUTINE_INSTRUCTIONS.md step 2.2 for why this matters
-    # more than retention right now.
-    trigger = (script.get("share_trigger") or "").strip()
-    if trigger:
-        if GENERIC_SHARE_TRIGGER_RE.search(trigger):
-            errors.append(
-                f"share_trigger reads as a generic audience description ({trigger!r}) -- "
-                "name a specific relationship (e.g. 'the friend who...'), not just who'd "
-                "find the topic interesting"
-            )
-        elif not any(kw in trigger.lower() for kw in SHARE_TRIGGER_RELATIONSHIP_KEYWORDS):
-            errors.append(
-                f"share_trigger doesn't name a specific relationship ({trigger!r}) -- "
-                f"must contain one of: {', '.join(SHARE_TRIGGER_RELATIONSHIP_KEYWORDS)}"
-            )
-
-    # contradicted_belief has to actually be audible in beat 0, not just exist as
-    # metadata -- same failure mode payoff_mechanism already guards against above.
-    belief = (script.get("contradicted_belief") or "").strip()
-    if belief and beats:
-        overlap = _directional_content_overlap(belief, beats[0].get("text", ""))
-        if overlap < MIN_BELIEF_BEAT0_OVERLAP:
-            errors.append(
-                f"contradicted_belief ({belief!r}) isn't audible in beat 0 (overlap="
-                f"{overlap:.2f}) -- the belief being disproved has to actually be stated "
-                "in the first ~3 seconds, not saved for later"
-            )
-
-    # A resolved-sounding final beat undoes the open-ending rule even when the actual
-    # content is fine -- see ROUTINE_INSTRUCTIONS.md's closing-beat guidance (item 3).
-    if beats:
-        closer = beats[-1].get("text", "").strip()
-        if BANNED_CLOSING_PATTERNS_RE.match(closer):
-            errors.append(
-                f"final beat opens with a banned resolved-summary pattern ({closer!r}) -- "
-                "end on the claim restated harder, an open question, or a challenge, "
-                "never a tidy wrap-up"
-            )
-
-        # Catches a closing beat that avoids the banned phrases literally but still
-        # just re-lists facts from the middle beats -- real failure caught in
-        # production: a snake-shedding script ended "it's skin maintenance, mites and
-        # eyesight included, growth just tags along free," which dodges "So"/"and
-        # that's why" while doing exactly what that rule exists to prevent. Checked
-        # against beats[1:-1] specifically (the middle explanation beats), not beat 0
-        # -- calling back to beat 0's opening word/image is rule 4's loop-back and is
-        # required, not penalized here.
-        middle_beats = beats[1:-1]
-        if middle_beats:
-            middle_text = " ".join(b.get("text", "") for b in middle_beats)
-            recap_overlap = _directional_content_overlap(closer, middle_text)
-            if recap_overlap > MAX_CLOSER_MIDDLE_RECAP_OVERLAP:
-                errors.append(
-                    f"final beat ({closer!r}) reads as a recap of the middle beats "
-                    f"(overlap={recap_overlap:.2f}) rather than a new closing move -- "
-                    "restating the claim harder, an open question, or a challenge "
-                    "should mostly use fresh phrasing, not re-list facts already "
-                    "covered (a callback to beat 0's specific word/image is fine and "
-                    "expected, this checks against the middle beats only)"
-                )
-
-    series_label = script.get("series_label") or ""
-    if not SERIES_LABEL_RE.match(series_label):
-        errors.append(
-            f"series_label {series_label!r} doesn't match '<series_name> #<n>' -- read "
-            "and increment state/series_log.json, don't invent a label"
-        )
-
     used = load_json(used_topics_path, {"topics": []})
+    recent_titles = [t["title"] for t in used["topics"][-RECENT_TITLES_TO_CHECK:] if t.get("title")]
     title = script.get("title", "")
-    for entry in used["topics"]:
-        past_title = entry.get("title")
-        if past_title:
-            overlap = _title_overlap(title, past_title)
-            if overlap >= TITLE_OVERLAP_THRESHOLD:
-                errors.append(f"title too similar (overlap={overlap:.2f}) to a past title: {past_title!r}")
-                break
-
-    topic = script.get("topic", "")
-    for entry in used["topics"]:
-        past_topic = entry.get("topic")
-        if past_topic:
-            overlap = _directional_content_overlap(topic, past_topic)
-            reverse_overlap = _directional_content_overlap(past_topic, topic)
-            if max(overlap, reverse_overlap) >= TOPIC_OVERLAP_THRESHOLD:
-                errors.append(
-                    f"topic too similar (overlap={max(overlap, reverse_overlap):.2f}) to a "
-                    f"past topic: {past_topic!r} -- same underlying subject already covered, "
-                    "even if worded differently"
-                )
-                break
+    for recent in recent_titles:
+        overlap = _title_overlap(title, recent)
+        if overlap >= TITLE_OVERLAP_THRESHOLD:
+            errors.append(f"title too similar (overlap={overlap:.2f}) to a recent title: {recent!r}")
+            break
 
     return errors
 

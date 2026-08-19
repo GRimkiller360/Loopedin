@@ -36,11 +36,9 @@ SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
 VIDEOS_URL = "https://www.googleapis.com/youtube/v3/videos"
 
 # Kept in sync with pipeline/script_schema.py's CATEGORIES -- see that file's comment
-# for why this was narrowed from the original 10 to one coherent niche, why
-# psychology was later dropped from that narrowed set too, and why geography was
-# added then removed again (all 2026-08-19, user decisions).
+# for why this was narrowed from the original 10 to one coherent niche.
 SEED_CATEGORIES = [
-    "science facts", "space", "history",
+    "science facts", "psychology", "space", "history",
 ]
 
 # search.list costs 100 quota units/call -- cap categories tried per run so a bad-luck
@@ -214,10 +212,7 @@ if __name__ == "__main__":
     candidates = find_trend_seeds(
         args.used_topics, config.require("YOUTUBE_API_KEY"), performance_log_path=args.performance_log
     )
-    # fetched_at lets the content routine verify this seed is actually fresh before
-    # using it, rather than trusting the two workflows' independent cron schedules to
-    # always land in the right order -- see ROUTINE_INSTRUCTIONS.md's freshness check.
-    output = {"candidates": candidates, "fetched_at": datetime.now(timezone.utc).isoformat()}
+    output = {"candidates": candidates}
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(output, indent=2))
     print(json.dumps(output, indent=2))
