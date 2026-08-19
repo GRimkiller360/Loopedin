@@ -1042,6 +1042,68 @@
           "note": "Britannica's snake molting entry confirms shedding renews damaged/worn skin, not only skin outgrown by size."
         }
       ]
+    },
+    {
+      "topic": "the 22-meter robot arm built so no human ever has to touch Fukushima's melted nuclear fuel",
+      "video_id": "RyZyP4q30lE",
+      "uploaded_at": "2026-08-19T15:04:40.542752+00:00",
+      "publish_hour_utc": 15,
+      "category": "science facts",
+      "seed_source_video_id": "d6AFuheOGvU",
+      "seed_view_count": 30039,
+      "hook_type": "story",
+      "title": "The Robot Arm Built So No Human Ever Touches Fukushima's Melted Fuel",
+      "duration_seconds": 47.4,
+      "ruleset_version": "2026-08-19-share-first-v1",
+      "beat_timings": [
+        {
+          "start_frac": 0.0,
+          "end_frac": 0.2218,
+          "text": "No human has ever touched Fukushima's melted nuclear fuel -- the radiation would kill you in under **30 seconds**, so engineers built a robot arm to do it instead."
+        },
+        {
+          "start_frac": 0.2218,
+          "end_frac": 0.3403,
+          "text": "In 2017, probes measured **530 sieverts** an hour inside the reactor -- fatal in seconds."
+        },
+        {
+          "start_frac": 0.3403,
+          "end_frac": 0.4561,
+          "text": "That arm is **22 meters** long, built from 18 separate joints instead of one rigid rod."
+        },
+        {
+          "start_frac": 0.4561,
+          "end_frac": 0.7099,
+          "text": "Those joints let it snake through narrow openings and bend around corners no person can walk up to and guide by hand -- an operator steers it by camera instead, from a shielded room."
+        },
+        {
+          "start_frac": 0.7099,
+          "end_frac": 0.834,
+          "text": "After 13 years, its first retrieval in 2024 pulled out less than **a gram**. 880 tons remain."
+        },
+        {
+          "start_frac": 0.834,
+          "end_frac": 1.0,
+          "text": "Somewhere right now, a machine is doing a job specifically because no person could survive it. Follow for the next one."
+        }
+      ],
+      "first_clip_tags": "attorney, law, judge, legal, entrepreneur, sign, warning, contract, agreement, firm, business",
+      "holdout": false,
+      "experiment_arm": "variant",
+      "sources": [
+        {
+          "url": "https://www.forbes.com/sites/williampentland/2017/02/03/extreme-radiation-levels-detected-at-fukushima-reactor-highest-since-2011/",
+          "note": "Confirms 2017 reading of 530 sieverts/hour inside reactor 2, lethal within about 30 seconds."
+        },
+        {
+          "url": "https://interestingengineering.com/innovation/fukushima-reactor-nuclear-fuel-removal-robot",
+          "note": "Confirms the 22-meter, 18-joint robot arm deployed in 2024 to retrieve Fukushima's melted fuel."
+        },
+        {
+          "url": "https://www.world-nuclear-news.org/articles/Fuel-debris-sample-extracted-from-damaged-Japanese-reactor",
+          "note": "Confirms first fuel debris sample retrieved November 2024, roughly 0.7 grams."
+        }
+      ]
     }
   ]
 }
