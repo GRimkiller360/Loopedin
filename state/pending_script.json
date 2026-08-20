@@ -1,0 +1,29 @@
+{
+  "topic": "the medieval screaming mandrake ritual -- why they used a dog to harvest it",
+  "category": "history",
+  "seed_source_video_id": "ghOpOnEDcKM",
+  "seed_view_count": 1160351,
+  "title": "The 'Screaming Mandrake' Was Real -- Medieval Europe Used Dogs to Harvest It",
+  "description": "AI-narrated commentary. Medieval Europeans believed pulling a mandrake root from the ground made it scream loud enough to kill anyone nearby who heard it -- so they tied the root to a starving dog and let the dog take the fatal risk instead. This is the real mechanism behind one of medieval herbalism's strangest safety rituals.",
+  "tags": ["history", "medieval history", "mandrake", "folklore", "shorts", "historyfacts", "medievaleurope"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "question", "text": "Why did medieval herbalists send a hungry dog to pull one plant out of the ground instead of doing it themselves?"},
+    {"hook_type": "shocking_fact", "text": "Medieval Europeans tied a starving dog to a plant, expecting the dog to die from it so a person wouldn't have to."},
+    {"hook_type": "myth_bust", "text": "The 'screaming mandrake' isn't a fantasy invention -- medieval Europeans genuinely killed dogs trying to harvest it safely."},
+    {"hook_type": "story", "text": "A starving dog, a root shaped like a tiny person, and a length of rope -- that's how medieval Europe harvested its most feared plant."}
+  ],
+  "payoff_mechanism": "According to the medieval myth, uprooting a mandrake made it scream, and anyone close enough to hear that scream would die, so people tied the root to a starving dog lured by food just out of reach, let the dog do the pulling and absorb the fatal risk, and stayed far enough back themselves to never hear it.",
+  "share_trigger": "A viewer sends this to the friend who has a dog and instantly feels bad for it, because they want to show dogs got the worst end of medieval superstition too.",
+  "contradicted_belief": "Most people assume the screaming mandrake is a fantasy invention with no real historical basis, but medieval Europeans genuinely killed dogs trying to harvest it safely.",
+  "sources": [
+    {"url": "https://www.medievalists.net/2025/05/how-to-harvest-a-mandrake-medieval-medicine-and-magic-in-the-old-english-herbarium/", "note": "Describes the medieval belief that mandrake screamed when uprooted and the dog-harvesting method used to avoid it."}
+  ],
+  "beats": [
+    {"text": "The **'screaming mandrake'** isn't a fantasy invention. Medieval Europeans genuinely killed **dogs** trying to harvest it safely.", "broll_query": "mandrake root humanoid shape"},
+    {"text": "Legend said the moment you pulled a mandrake from the ground, it **screamed** -- and anyone close enough to hear it died.", "broll_query": "person kneeling garden soil"},
+    {"text": "So nobody pulled it themselves. They tied the root to a **starving** dog and threw food just out of its reach.", "broll_query": "hungry dog tied rope"},
+    {"text": "The dog lunged, yanked the root free, and took the fatal risk instead of a **person**, who stayed far enough back to survive.", "broll_query": "dog lunging forward outdoors"},
+    {"text": "That dog never got a say in the job. Next time someone calls their pet's life easy, bring up the mandrake. **Follow** for the next one of these.", "broll_query": "dog looking up person"}
+  ]
+}
