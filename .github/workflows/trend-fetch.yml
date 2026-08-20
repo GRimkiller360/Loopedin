@@ -2,16 +2,18 @@ name: Trend Seed Fetch
 
 on:
   schedule:
-    # ~10 min before each Claude routine fire (routine fires at :53 past 1/5/9/13/17/21
-    # UTC -- 6x/day, every 4h), so the seed is ready when it reads it. Cut from 10x/day
-    # to 6x/day 2026-08-20: raw upload volume wasn't what this channel's own data showed
-    # was the constraint (shares/subs stayed flat regardless of cadence), and near-hourly
-    # uploads risk both YouTube's "mass-produced/inauthentic content" monetization
-    # policy and overwhelming a still-tiny subscriber base's feed. Matched 1:1 to the
-    # routine's cadence deliberately -- firing more often than the routine consumes
-    # seeds just burns YouTube Data API quota (search.list is 100 units/call x up to 5
-    # categories) on fetches nothing reads.
-    - cron: "43 1,5,9,13,17,21 * * *"
+    # ~10 min before each Claude routine fire (routine fires at :53 past 3/6/9/12/15/18
+    # UTC -- 6x/day, every 3h, 05:00-20:00 Africa/Johannesburg (channel owner's active
+    # hours) -- confirmed via RemoteTrigger get). Cut from 10x/day spread across all 24h
+    # to 6x/day within this window 2026-08-20: raw upload volume wasn't what this
+    # channel's own data showed was the constraint (shares/subs stayed flat regardless
+    # of cadence), and near-hourly/round-the-clock uploads risk both YouTube's
+    # "mass-produced/inauthentic content" monetization policy and overwhelming a
+    # still-tiny subscriber base's feed. Matched 1:1 to the routine's cadence
+    # deliberately -- firing more often than the routine consumes seeds just burns
+    # YouTube Data API quota (search.list is 100 units/call x up to 5 categories) on
+    # fetches nothing reads.
+    - cron: "43 3,6,9,12,15,18 * * *"
   workflow_dispatch:
 
 permissions:
