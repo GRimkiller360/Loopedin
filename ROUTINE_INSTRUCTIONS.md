@@ -24,15 +24,18 @@ the run. A human needs to reset it manually.
 ## 0.5. In-flight check -- do this before touching anything else
 
 Check whether `state/pending_script.json` already exists. **If it does, STOP -- do not
-write or overwrite it, do not commit anything.** Its existence means a previous script
-hasn't been cleared yet, which means one of two things: `produce-upload.yml` is still
-actively processing it (narration/b-roll/assembly/upload takes a few minutes), or a real
-production failure left it there for a human to look at. Either way, overwriting it out
-from under an in-flight or unresolved run causes an actual git conflict (a real
-modify/delete conflict, not just a rejected push retryable by fetch+rebase) and silently
-destroys whatever `produce-upload.yml` was doing with it -- this has happened in
-production. Report in your summary that a script was already pending and end the run;
-don't investigate further, that's out of scope per "On failure" below.
+write or overwrite it, do not commit anything.** Its existence should mean only one
+thing now: `produce-upload.yml` is still actively processing it (narration/b-roll/
+assembly/upload takes a few minutes). Every failure path (quality-gate/validation
+failure, quota exhaustion, an outright crash) clears this file itself before the run
+ends, so a stale one sitting here for more than a few minutes past a scheduled fire
+means something's actually stuck, not a routine in-progress state -- that's worth
+noting in your summary, but still don't overwrite it: overwriting it out from under a
+genuinely in-flight run causes an actual git conflict (a real modify/delete conflict,
+not just a rejected push retryable by fetch+rebase) and silently destroys whatever
+`produce-upload.yml` was doing with it -- this has happened in production. Report in
+your summary that a script was already pending and end the run; don't investigate
+further, that's out of scope per "On failure" below.
 
 ## 1. Read this run's inputs
 

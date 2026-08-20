@@ -203,6 +203,12 @@ jobs:
           paused = record_failure('state/routine_health.json', 'produce-upload workflow failed, see run log', c.CONSECUTIVE_FAILURES_TO_PAUSE)
           print('routine auto-paused' if paused else 'failure recorded, not yet paused')
           "
+          # Clear it so the next hourly fire can try a fresh script instead of
+          # silently no-op'ing forever behind an unresolved in-flight file -- the
+          # failed script itself is never lost, it's still in this commit's git
+          # history. A single bad script used to block production for hours with
+          # no alert until this was cleared by hand (2026-08-20 incident).
+          rm -f state/pending_script.json
 
       - name: Commit state
         if: always() && steps.health.outputs.paused != 'true'
