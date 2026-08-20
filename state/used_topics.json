@@ -1229,6 +1229,22 @@
       "title": "A Year on Venus Ends Before a Single Day Does",
       "duration_seconds": 32.4,
       "ruleset_version": "2026-08-19-payoff-mechanism-v4"
+    },
+    {
+      "topic": "Napoleon wasn't actually short -- the myth came from British propaganda cartoons and a unit mix-up",
+      "video_id": "ptKXqb3nJzE",
+      "uploaded_at": "2026-08-20T08:49:40.288772+00:00",
+      "publish_hour_utc": 8,
+      "category": "history",
+      "seed_source_video_id": null,
+      "seed_view_count": 0,
+      "hook_type": "shocking_fact",
+      "title": "Napoleon Wasn't Short. That Part Is a 200-Year-Old Joke",
+      "duration_seconds": 33.6,
+      "ruleset_version": "2026-08-20-share-trigger-v5",
+      "share_trigger": "A viewer sends this to the friend who always calls short guys a 'Napoleon complex' because they want to prove that joke doesn't even hold up.",
+      "contradicted_belief": "Most people assume Napoleon was unusually short for his time, but he wasn't.",
+      "has_sources": false
     }
   ]
 }
