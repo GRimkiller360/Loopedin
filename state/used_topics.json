@@ -1245,6 +1245,22 @@
       "share_trigger": "A viewer sends this to the friend who always calls short guys a 'Napoleon complex' because they want to prove that joke doesn't even hold up.",
       "contradicted_belief": "Most people assume Napoleon was unusually short for his time, but he wasn't.",
       "has_sources": false
+    },
+    {
+      "topic": "the medieval screaming mandrake ritual -- why they used a dog to harvest it",
+      "video_id": "qu8YNg5nqKs",
+      "uploaded_at": "2026-08-20T13:37:08.983687+00:00",
+      "publish_hour_utc": 13,
+      "category": "history",
+      "seed_source_video_id": "ghOpOnEDcKM",
+      "seed_view_count": 1160351,
+      "hook_type": "myth_bust",
+      "title": "The 'Screaming Mandrake' Was Real -- Medieval Europe Used Dogs to Harvest It",
+      "duration_seconds": 38.1,
+      "ruleset_version": "2026-08-20-share-trigger-v5",
+      "share_trigger": "A viewer sends this to the friend who has a dog and instantly feels bad for it, because they want to show dogs got the worst end of medieval superstition too.",
+      "contradicted_belief": "Most people assume the screaming mandrake is a fantasy invention with no real historical basis, but medieval Europeans genuinely killed dogs trying to harvest it safely.",
+      "has_sources": true
     }
   ]
 }
