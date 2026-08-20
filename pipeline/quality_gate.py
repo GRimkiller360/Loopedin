@@ -34,6 +34,17 @@ BANNED_OPENERS = (
     "every year", "every few months", "every time",
 )
 
+# share_trigger must name an actual relationship, not a category of viewer -- these
+# phrases are the tell that it's describing an audience segment instead ("people who
+# like history") rather than a specific person a viewer would actually think of and
+# send the video to. See ROUTINE_INSTRUCTIONS.md's share-trigger step.
+GENERIC_SHARE_TRIGGER_PHRASES = (
+    "people who like", "people who are into", "people who enjoy", "fans of",
+    "anyone interested in", "anyone who likes", "those who love", "those who like",
+    "people interested in", "history buffs", "science lovers", "space enthusiasts",
+    "people into", "audience who",
+)
+
 
 def _word_set(text):
     # Strip ** too -- beat text carries **emphasis** caption markup (see
@@ -111,6 +122,30 @@ def check(script, used_topics_path):
                 f"payoff_mechanism doesn't resemble any beat after the hook (best overlap="
                 f"{best_overlap:.2f}) -- the explanation written in payoff_mechanism has to "
                 "actually be narrated, not just exist as metadata"
+            )
+
+    # share_trigger's real growth value depends on naming an actual person/relationship,
+    # not a demographic -- script_schema.py already enforces the >=12 word floor, this
+    # catches the genericness a word count alone can't.
+    trigger = (script.get("share_trigger") or "").lower()
+    for phrase in GENERIC_SHARE_TRIGGER_PHRASES:
+        if phrase in trigger:
+            errors.append(
+                f"share_trigger reads as a generic audience description ({phrase!r}) -- "
+                "name an actual relationship (a specific person/group), not a category of viewer"
+            )
+            break
+
+    # contradicted_belief must actually be audible in beat 0, not just exist as
+    # metadata -- same low-bar overlap check as payoff_mechanism's beats[1:] check above,
+    # just anchored to the opening beat instead since that's where it has to land.
+    belief = script.get("contradicted_belief", "")
+    if belief and beats:
+        overlap = _title_overlap(belief, beats[0].get("text", ""))
+        if overlap < MIN_HOOK_WINNER_OVERLAP:
+            errors.append(
+                f"contradicted_belief doesn't resemble beat 0 (overlap={overlap:.2f}) -- it "
+                "must be audible in the opening beat, not just exist as metadata"
             )
 
     # Candidates need to be genuinely different options, not the same idea reworded --

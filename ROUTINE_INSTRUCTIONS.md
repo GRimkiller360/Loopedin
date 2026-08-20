@@ -56,15 +56,23 @@ further, that's out of scope per "On failure" below.
 - `state/performance_summary.md` -- refreshed once/day, timed right before the first
   fire of the day, so treat it as current for today (YouTube Analytics data itself
   only settles on a ~24-48h cycle, so it can't usefully be fresher than that anyway).
-  Your goal for this run is channel growth -- maximize views, watch-through, and
+  Your goal for this run is channel growth -- maximize reach, watch-through, and
   subscriber conversion, not just "write something." Every ranking section below shows
-  three numbers per entry, in this priority order when they disagree:
-  1. `avg_view_pct` -- retention (do people watch the whole thing). Primary signal.
-  2. `subs/1k views` -- does this actually convert viewers into subscribers. Weight
+  four numbers per entry, in this priority order when they disagree:
+  1. `shares/1k views` -- **primary signal.** Does this video actually leave the
+     channel's existing audience and reach someone new -- the one lever that reaches
+     people the algorithm and the existing subscriber base never would have surfaced it
+     to on their own. This is what `share_trigger` (step 2, before the hook) is written
+     to move.
+  2. `avg_view_pct` -- retention (do people watch the whole thing). Still worth watching
+     as a floor (a video nobody finishes can't be shared either), but not the primary
+     target -- don't pick a topic/angle/hook because it looks likely to retain well if
+     it doesn't also give viewers a real reason to forward it.
+  3. `subs/1k views` -- does this actually convert viewers into subscribers. Weight
      this seriously: monetization needs 1,000 subscribers *and* the view threshold, not
      views alone, so a video that's merely average on retention but a strong subscriber
      converter is genuinely valuable, not just a consolation stat.
-  3. `likes+comments/1k views` -- explicit engagement signal, distinct from passive
+  4. `likes+comments/1k views` -- explicit engagement signal, distinct from passive
      watch time.
   Sections, in order of how much they should steer this run: **Top categories** and
   **Top hook styles** actively steer which candidate/angle and `hook_type` you pick.
@@ -121,6 +129,44 @@ or useful," pick a different candidate or a different specific angle within the 
 category -- don't force a weak fact through strong packaging. This is a filter on
 *which* angle to commit to, applied before hook-planning below, not a substitute for
 the hook-planning process itself.
+
+**Where a topic naturally has one, lean toward the angle with a real person in it --
+someone who did something, wanted something, or got it wrong -- over a pure abstract
+mechanism.** This is a lean, not a hard requirement: don't force a human angle onto a
+topic that genuinely doesn't have one, and an abstract mechanism can still win on its
+own vividness. But when the choice is close, the human-stakes angle is the better
+default -- real channel evidence: a named, specific human-stakes story ("Hitler's
+Last-Ditch Army Was 13-Year-Olds With One Grenade Each") measurably out-reached an
+abstract-mechanism video from the same window ("Every straight tunnel through Earth
+takes the same 42 minutes") by roughly 1.7x in views, confirmed directly against this
+channel's own numbers.
+
+### Write the share trigger and the contradicted belief -- before the hook
+
+Do this before drafting hook candidates, not after. A script optimized for retention
+first and shareability second tends to stay retention-shaped even when a share_trigger
+gets bolted on at the end -- deciding what makes this forwardable first changes what
+you actually write.
+
+**Share trigger.** Complete this sentence literally: *"A viewer sends this to ______
+because they want to ______."* The first blank must name an actual relationship, not
+an audience segment.
+- BAD: "people interested in history" / "science fans" -- these describe a category,
+  not a person, and give nobody an actual reason to act.
+- GOOD: "the friend who insists cast iron needs seasoning" / "their dad, who told them
+  the opposite for 20 years" / "the coworker who always says they're too busy."
+
+If you cannot complete this sentence with a specific relationship, the topic is not
+shareable as-is -- pick a sharper angle before continuing. Write the result into
+`share_trigger` (>=12 words, checked structurally by `script_schema.py` and for
+genericness by `quality_gate.py`).
+
+**Contradicted belief.** Write one sentence stating what the viewer currently believes
+that this video proves wrong -- store it in `contradicted_belief` (>=8 words). This
+belief must be **audible in the first ~3 seconds of narration** (beat 0), not saved
+for the middle of the video -- `quality_gate.py` checks it actually shows up there. If
+the video doesn't contradict anything a viewer plausibly currently believes, it's a
+fact, not a story, and facts don't get shared the way a corrected misconception does.
 
 ### 2.1. Plan the hook first -- before you write anything else
 
@@ -211,6 +257,22 @@ Save it as `state/pending_script.json` matching the shape documented in
   this video's claim -- written before the beats, and its content must actually appear
   in `beats[1:]`. See the payoff rule (item 3) below for why this exists and what
   "real mechanism" vs. "metaphor" actually means in practice.
+- `share_trigger`: one sentence, >=12 words, completing "a viewer sends this to
+  ______ because they want to ______" with a specific relationship -- see the
+  share-trigger step above. Rejected by `quality_gate.py` if it reads as a generic
+  audience description instead of naming an actual person/relationship.
+- `contradicted_belief`: one sentence, >=8 words, stating what the viewer currently
+  believes that this video disproves -- see the share-trigger step above. Must
+  actually be audible in beat 0; rejected by `quality_gate.py` if it isn't.
+- `sources` (optional but strongly preferred): use `WebSearch`/`WebFetch` to find at
+  least one real, independently-verifiable source for this video's central claim --
+  not a source for the topic in general, the specific number/mechanism/claim you're
+  actually narrating. Record what you found as `[{"url": "...", "note": "what this
+  source actually confirms, <=20 words"}, ...]`. `pipeline/upload.py` appends these to
+  the video description automatically -- you don't need to write them into
+  `description` yourself. If `WebSearch`/`WebFetch` isn't available to you this run,
+  omit the field entirely rather than fabricating a citation from memory -- a
+  plausible-sounding fake source is worse than none.
 - `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`. Every
   `broll_query` must be a **short, literal keyword phrase -- 3-6 concrete nouns/
   adjectives, not a cinematic sentence** (e.g. `"person wearing black mask"`, not

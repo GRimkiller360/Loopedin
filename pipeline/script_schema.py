@@ -34,6 +34,25 @@ Expected script.json shape:
                        silently replacing the explanation with an assertion. Its content
                        must actually show up in the narration (checked by quality_gate.py),
                        not just sit here decoratively. See ROUTINE_INSTRUCTIONS.md step 2.2.",
+  "share_trigger": "one sentence (>=12 words) completing 'a viewer sends this to ___ because
+                    they want to ___' with a real, specific relationship (e.g. 'the friend
+                    who still swears cracking your knuckles causes arthritis'), not a generic
+                    audience description (e.g. 'people who like history'). This is the actual
+                    growth bottleneck this field targets -- shares reach people the existing
+                    audience and algorithm never would have surfaced the video to on their
+                    own. Checked structurally here (word count) and for genericness by
+                    quality_gate.py. See ROUTINE_INSTRUCTIONS.md's share-trigger step.",
+  "contradicted_belief": "one sentence (>=8 words) stating what the viewer currently believes
+                          that this video disproves. Must actually be audible in beat 0 --
+                          quality_gate.py checks it resembles the opening beat, not just sits
+                          here as unused metadata. See ROUTINE_INSTRUCTIONS.md's share-trigger
+                          step.",
+  "sources": "optional list of {'url': '...', 'note': 'what this source actually confirms,
+              <=20 words'} entries -- at least one real, independently-verifiable source for
+              this video's central claim, found via WebSearch/WebFetch. pipeline/upload.py
+              appends these to the video description automatically. Do not fabricate a
+              citation if search tools aren't available this run -- omit the field entirely
+              rather than invent a plausible-sounding fake source.",
   "seed_source_video_id": "copy trend_seed['source_video_id'] verbatim (may be null if the
                            seed had no source video) -- lets trend_source.py exclude this
                            exact video from being resurfaced as a seed on a future run,
@@ -69,12 +88,14 @@ import sys
 # every video's history being lumped into one undifferentiated average forever.
 RULESET_VERSION = "2026-08-19-payoff-mechanism-v4"
 
-REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates", "payoff_mechanism"}
+REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates", "payoff_mechanism", "share_trigger", "contradicted_belief"}
 REQUIRED_BEAT_KEYS = {"text", "broll_query"}
 REQUIRED_HOOK_CANDIDATE_KEYS = {"hook_type", "text"}
 MIN_BEATS, MAX_BEATS = 3, 12
 MIN_HOOK_CANDIDATES = 3
 MIN_PAYOFF_MECHANISM_WORDS = 20
+MIN_SHARE_TRIGGER_WORDS = 12
+MIN_CONTRADICTED_BELIEF_WORDS = 8
 MAX_TITLE_LEN = 100
 
 # Fixed vocabularies -- must stay consistent across videos or the performance-feedback
@@ -140,6 +161,31 @@ def validate(script):
             f"explanation, got {mechanism_words} -- a short phrase is almost always a metaphor "
             "or restatement standing in for a real mechanism, not the mechanism itself"
         )
+
+    trigger = (script.get("share_trigger") or "").strip()
+    trigger_words = len(trigger.split())
+    if trigger_words < MIN_SHARE_TRIGGER_WORDS:
+        errors.append(
+            f"share_trigger: need >={MIN_SHARE_TRIGGER_WORDS} words completing 'a viewer sends "
+            f"this to ___ because they want to ___' with a real relationship, got {trigger_words}"
+        )
+
+    belief = (script.get("contradicted_belief") or "").strip()
+    belief_words = len(belief.split())
+    if belief_words < MIN_CONTRADICTED_BELIEF_WORDS:
+        errors.append(
+            f"contradicted_belief: need >={MIN_CONTRADICTED_BELIEF_WORDS} words stating what "
+            f"the viewer currently believes that this video disproves, got {belief_words}"
+        )
+
+    sources = script.get("sources")
+    if sources is not None:
+        if not isinstance(sources, list):
+            errors.append("sources must be a list of {'url', 'note'} entries if present")
+        else:
+            for i, s in enumerate(sources):
+                if not isinstance(s, dict) or not s.get("url"):
+                    errors.append(f"sources[{i}] missing a non-empty 'url' key")
 
     beats = script.get("beats") or []
     if not (MIN_BEATS <= len(beats) <= MAX_BEATS):

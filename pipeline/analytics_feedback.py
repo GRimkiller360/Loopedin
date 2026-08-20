@@ -41,18 +41,19 @@ def pull_stats(video_ids, days_back=28):
         ids="channel==MINE",
         startDate=start,
         endDate=end,
-        metrics="views,likes,comments,averageViewPercentage,subscribersGained",
+        metrics="views,likes,comments,shares,averageViewPercentage,subscribersGained",
         dimensions="video",
         filters=f"video=={','.join(video_ids)}",
     ).execute()
 
     stats = {}
     for row in response.get("rows", []):
-        video_id, views, likes, comments, avg_view_pct, subs_gained = row
+        video_id, views, likes, comments, shares, avg_view_pct, subs_gained = row
         stats[video_id] = {
             "views": views,
             "likes": likes,
             "comments": comments,
+            "shares": shares,
             "avg_view_pct": avg_view_pct,
             "subscribers_gained": subs_gained,
         }
@@ -140,17 +141,19 @@ def _rate_per_1k(count, views):
 
 
 # Composite per-video score, 0-100, for the dashboard's "how is this video doing"
-# column. Weighted toward retention since that's the primary growth signal (see
-# ROUTINE_INSTRUCTIONS.md's priority order), with subscriber conversion and
-# engagement rate normalized against a ceiling and blended in. The ceilings
-# (SUB_RATE_CEILING / ENG_RATE_CEILING) are initial guesses for "what a strong
-# per-1k-views rate looks like," not measured benchmarks -- there isn't enough
-# channel history yet to derive real ones. Revisit once there's a real
-# distribution of videos to calibrate against; until then this is a deliberately
+# column. share_rate is weighted alongside retention now -- shares are the channel's
+# actual growth bottleneck (the one lever that reaches people the existing audience
+# and algorithm never would have surfaced the video to on their own), not just a
+# secondary engagement stat, so it's no longer folded into eng_rate's weight. The
+# ceilings (SUB_RATE_CEILING / ENG_RATE_CEILING / SHARE_RATE_CEILING) are initial
+# guesses for "what a strong per-1k-views rate looks like," not measured benchmarks --
+# there isn't enough channel history yet to derive real ones. Revisit once there's a
+# real distribution of videos to calibrate against; until then this is a deliberately
 # transparent heuristic, not a black box.
-SCORE_WEIGHTS = {"avg_view_pct": 0.6, "sub_rate": 0.25, "eng_rate": 0.15}
-SUB_RATE_CEILING = 20.0   # subs per 1k views -> treated as a "perfect" 100 on this sub-score
-ENG_RATE_CEILING = 200.0  # likes+comments per 1k views -> treated as a "perfect" 100 on this sub-score
+SCORE_WEIGHTS = {"avg_view_pct": 0.4, "share_rate": 0.25, "sub_rate": 0.2, "eng_rate": 0.15}
+SUB_RATE_CEILING = 20.0    # subs per 1k views -> treated as a "perfect" 100 on this sub-score
+ENG_RATE_CEILING = 200.0   # likes+comments per 1k views -> treated as a "perfect" 100 on this sub-score
+SHARE_RATE_CEILING = 5.0   # shares per 1k views -> treated as a "perfect" 100 on this sub-score
 
 
 def _normalize_to_100(value, ceiling):
@@ -168,8 +171,10 @@ def score_video(v):
     views = v.get("views") or 0
     sub_rate = _rate_per_1k(v.get("subscribers_gained") or 0, views)
     eng_rate = _rate_per_1k((v.get("likes") or 0) + (v.get("comments") or 0), views)
+    share_rate = _rate_per_1k(v.get("shares") or 0, views)
     score = (
         SCORE_WEIGHTS["avg_view_pct"] * (v.get("avg_view_pct") or 0)
+        + SCORE_WEIGHTS["share_rate"] * _normalize_to_100(share_rate, SHARE_RATE_CEILING)
         + SCORE_WEIGHTS["sub_rate"] * _normalize_to_100(sub_rate, SUB_RATE_CEILING)
         + SCORE_WEIGHTS["eng_rate"] * _normalize_to_100(eng_rate, ENG_RATE_CEILING)
     )
@@ -207,6 +212,7 @@ def build_video_list(used_topics_path, performance, live_stats_path):
             "views": (analytics or {}).get("views", fallback.get("views")),
             "likes": (analytics or {}).get("likes", fallback.get("likes")),
             "comments": (analytics or {}).get("comments", fallback.get("comments")),
+            "shares": (analytics or {}).get("shares"),
             "avg_view_pct": (analytics or {}).get("avg_view_pct"),
             "subscribers_gained": (analytics or {}).get("subscribers_gained"),
             "score_pct": score_video(analytics) if analytics else None,
@@ -221,6 +227,7 @@ def channel_totals(video_list):
         "total_videos": len(video_list),
         "total_views": sum(v.get("views") or 0 for v in video_list),
         "total_subscribers_gained": sum(v.get("subscribers_gained") or 0 for v in video_list),
+        "total_shares": sum(v.get("shares") or 0 for v in video_list),
         "avg_view_pct": (sum(v["avg_view_pct"] for v in scored) / len(scored)) if scored else None,
         "avg_score_pct": (sum(v["score_pct"] for v in scored) / len(scored)) if scored else None,
     }
@@ -230,11 +237,15 @@ def summarize(performance):
     # Category, hook_type, length, publish hour, and seed momentum are the
     # generalizable signals -- unlike an exact topic, all of them repeat across videos,
     # so they're what's actually safe to steer future choices by. Per-topic detail is
-    # kept too, but only as reference. Each bucket tracks three metrics: avg_view_pct
-    # (retention), sub_rate_per_1k_views (does this convert viewers to subscribers --
-    # directly relevant to the 1,000-subscriber monetization gate, not just the view
-    # count gate), and engagement_rate_per_1k_views (likes+comments -- an explicit
-    # algorithm signal, distinct from passive watch time).
+    # kept too, but only as reference. Each bucket tracks four metrics, share_rate_per_1k
+    # first: shares/1k views (does this actually leave the existing audience and reach
+    # someone new -- the channel's real growth bottleneck), avg_view_pct (retention),
+    # sub_rate_per_1k_views (does this convert viewers to subscribers -- directly
+    # relevant to the 1,000-subscriber monetization gate, not just the view count gate),
+    # and engagement_rate_per_1k_views (likes+comments -- an explicit algorithm signal,
+    # distinct from passive watch time). Rankings below are sorted by share_rate, not
+    # avg_view_pct, since a well-retained video that nobody forwards still doesn't grow
+    # the channel -- see ROUTINE_INSTRUCTIONS.md's priority order.
     dimensions = {
         "by_category": defaultdict(list),
         "by_hook_type": defaultdict(list),
@@ -248,6 +259,7 @@ def summarize(performance):
         views = v.get("views") or 0
         entry = {
             "avg_view_pct": v.get("avg_view_pct") or 0,
+            "share_rate": _rate_per_1k(v.get("shares") or 0, views),
             "sub_rate": _rate_per_1k(v.get("subscribers_gained") or 0, views),
             "eng_rate": _rate_per_1k((v.get("likes") or 0) + (v.get("comments") or 0), views),
         }
@@ -270,10 +282,11 @@ def summarize(performance):
         return sum(e[key] for e in entries) / len(entries)
 
     def _rank(bucket, limit):
-        ranked = sorted(bucket.items(), key=lambda kv: _avg("avg_view_pct", kv[1]), reverse=True)
+        ranked = sorted(bucket.items(), key=lambda kv: _avg("share_rate", kv[1]), reverse=True)
         return [
             {
                 "name": name,
+                "share_rate_per_1k_views": _avg("share_rate", entries),
                 "avg_view_pct": _avg("avg_view_pct", entries),
                 "sub_rate_per_1k_views": _avg("sub_rate", entries),
                 "engagement_rate_per_1k_views": _avg("eng_rate", entries),
@@ -341,7 +354,8 @@ def render_summary_markdown(summary, recent, traffic_sources):
             lines.append("")
         for r in rows:
             lines.append(
-                f"- {r['name']}: {r['avg_view_pct']:.1f}% avg view, "
+                f"- {r['name']}: {r['share_rate_per_1k_views']:.3f} shares/1k views, "
+                f"{r['avg_view_pct']:.1f}% avg view, "
                 f"{r['sub_rate_per_1k_views']:.2f} subs/1k views, "
                 f"{r['engagement_rate_per_1k_views']:.2f} likes+comments/1k views (n={r['sample_size']})"
             )

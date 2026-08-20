@@ -40,6 +40,21 @@ def _hashtags(script):
     return " ".join(tags)
 
 
+def _sources_footer(script):
+    # Appended to the description, not narrated -- gives a reviewer (or a curious
+    # viewer) something to check on a fully automated, unreviewed channel. Absent
+    # entirely if the script has no sources rather than than printing an empty
+    # "Sources:" header.
+    sources = script.get("sources") or []
+    if not sources:
+        return ""
+    lines = ["", "Sources:"]
+    for s in sources:
+        url, note = s.get("url", ""), s.get("note", "")
+        lines.append(f"- {url}" + (f" ({note})" if note else ""))
+    return "\n".join(lines)
+
+
 def upload_short(video_path, script, privacy_status="public"):
     from googleapiclient.http import MediaFileUpload
 
@@ -47,7 +62,7 @@ def upload_short(video_path, script, privacy_status="public"):
     body = {
         "snippet": {
             "title": script["title"][:100],
-            "description": script["description"] + "\n\n" + _hashtags(script),
+            "description": script["description"] + _sources_footer(script) + "\n\n" + _hashtags(script),
             "tags": script.get("tags", []),
             "categoryId": "22",
         },

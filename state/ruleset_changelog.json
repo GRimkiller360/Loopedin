@@ -59,6 +59,23 @@
         "Removed the now-unreachable 'psychology' entry from pipeline/assemble.py's CATEGORY_MOODS and assets/music/README.md's example",
         "Deliberately did NOT touch state/performance_summary.md or state/used_topics.json -- past psychology videos remain real production history, just no longer a category new scripts can pick"
       ]
+    },
+    {
+      "date": "2026-08-20",
+      "changed_by": "human-guided (Ethan) -- explicit instruction, no diagnosis attached",
+      "from_version": "2026-08-19-payoff-mechanism-v4",
+      "to_version": "2026-08-19-payoff-mechanism-v4",
+      "diagnosis": "Channel owner asked to selectively re-add specific pieces of the reverted 'share-first' work that target shares/subscriber growth and monetization credibility, explicitly excluding anything that changes how a video is rendered (typographic path, cold opens, render-style alternation, holdout/experiment-arm mechanism all deliberately left out). RULESET_VERSION left unchanged since assemble.py/tts.py/broll.py are untouched -- this only changes script-writing requirements, description text, and analytics reporting.",
+      "evidence": "Explicit instruction in a live session (\"what can be added... without changing how the videos are produced\", confirmed \"yes pls\" on the specific 5-item list proposed).",
+      "changes": [
+        "Added required share_trigger field (script_schema.py: >=12 words; quality_gate.py: rejects generic audience-description phrasing) -- forces 'a viewer sends this to ___ because they want to ___' with a real relationship",
+        "Added required contradicted_belief field (script_schema.py: >=8 words; quality_gate.py: must overlap beats[0], same low-bar check payoff_mechanism already uses against beats[1:])",
+        "Added a soft (non-gating) lean in ROUTINE_INSTRUCTIONS.md toward a real-person angle when a topic naturally supports one, citing the Hitler/Volkssturm vs. gravity-tunnel 1.7x reach comparison as evidence -- explicitly not the old hard stakes-test gate",
+        "Added optional sources field (script_schema.py: shape-validated if present) plus pipeline/upload.py's _sources_footer() appending them to the video description -- narration/visuals untouched, description text only",
+        "Re-added shares tracking to pipeline/analytics_feedback.py: pulls the shares metric from the Analytics API, computes share_rate_per_1k_views per category/hook/length, sorts performance_summary.md's rankings by it (was avg_view_pct), and folds it into the dashboard composite score (SCORE_WEIGHTS rebalanced to avg_view_pct 0.4 / share_rate 0.25 / sub_rate 0.2 / eng_rate 0.15)",
+        "Updated ROUTINE_INSTRUCTIONS.md's priority-order list in step 1 to put shares/1k views first, ahead of avg_view_pct",
+        "Deliberately did NOT reintroduce: typographic render path, cold-open restructuring, render-style A/B alternation (all actual production/rendering changes), or the holdout/experiment-arm mechanism (only useful paired with an active variant-arm test, dead weight on its own)"
+      ]
     }
   ]
 }
