@@ -172,6 +172,13 @@ jobs:
               duration_seconds=round(duration, 1),
               # Stamped by code, not the agent -- see script_schema.py's comment.
               ruleset_version=RULESET_VERSION,
+              # Recorded (not just validated) so a post-hoc review can actually compare
+              # specific share_trigger/contradicted_belief wording against real
+              # shares/subs, not just know the fields existed -- see
+              # state/ruleset_changelog.json's 2026-08-20 share-trigger entry.
+              share_trigger=script.get('share_trigger'),
+              contradicted_belief=script.get('contradicted_belief'),
+              has_sources=bool(script.get('sources')),
           )
           record_success('state/routine_health.json')
 

@@ -76,6 +76,21 @@
         "Updated ROUTINE_INSTRUCTIONS.md's priority-order list in step 1 to put shares/1k views first, ahead of avg_view_pct",
         "Deliberately did NOT reintroduce: typographic render path, cold-open restructuring, render-style A/B alternation (all actual production/rendering changes), or the holdout/experiment-arm mechanism (only useful paired with an active variant-arm test, dead weight on its own)"
       ]
+    },
+    {
+      "date": "2026-08-20",
+      "changed_by": "human-guided (Ethan) -- explicit instruction (\"not going to make any more changes for the next 2 weeks... anything else that will help or give insight into performance after\")",
+      "from_version": "2026-08-19-payoff-mechanism-v4",
+      "to_version": "2026-08-20-share-trigger-v5",
+      "diagnosis": "Prepping for a 2-week unattended stretch with no human checking in shifted priority from more content tweaks to reliability and measurability: (1) RULESET_VERSION was still 2026-08-19-payoff-mechanism-v4 even after today's share_trigger/contradicted_belief/shares-tracking additions, which would have made the by_ruleset_version comparison in performance_summary.md unable to tell 'before' from 'after' apart after 2 weeks of mixed data; (2) CONSECUTIVE_FAILURES_TO_PAUSE=3 with zero alerting means 3 one-off transient failures (not a real break) could silently pause the channel for the whole 2 weeks with nobody finding out; (3) record_used_topic() wasn't capturing the actual share_trigger/contradicted_belief text or whether sources were cited, losing the ability to later review which specific ones correlated with real shares; (4) upload.py's containsSyntheticMedia disclosure field had an unresolved 'not verified against docs' warning sitting in the codebase since the project's early days.",
+      "evidence": "Direct review of config.py, produce-upload.yml, and upload.py's docstring during this session; confirmed containsSyntheticMedia via WebSearch against developers.google.com/youtube/v3/docs/videos (Data API added this field 2024-10-30).",
+      "changes": [
+        "Bumped RULESET_VERSION to 2026-08-20-share-trigger-v5 to mark the schema boundary cleanly for post-2-week analysis",
+        "Raised CONSECUTIVE_FAILURES_TO_PAUSE from 3 to 6 in pipeline/config.py -- still auto-pauses within about a day of genuinely broken state at 6 fires/day, just survives a couple of one-off flukes instead of losing the whole 2 weeks to them",
+        "produce-upload.yml's Record state on success step now passes share_trigger, contradicted_belief, and has_sources into record_used_topic() so used_topics.json actually captures what was written, not just that the fields existed",
+        "Removed the stale 'field name not verified' warning from pipeline/upload.py's docstring after confirming status.containsSyntheticMedia is correct against current API docs -- no code change needed, the risk was already resolved and just never confirmed",
+        "Did NOT change: quota margin (6 uploads/day x 1600 units + trend-fetch's ~1,800/day is right at the default 10,000-unit YouTube Data API ceiling) and OAuth consent screen publishing status (Testing vs In production, which controls whether the refresh token expires after 7 days) -- both need the channel owner's own Google Cloud Console access to check/fix, flagged directly rather than guessed at or silently left alone"
+      ]
     }
   ]
 }

@@ -1,10 +1,8 @@
 """Upload the finished short to YouTube.
 
-NOTE: the exact API field name for the "altered/synthetic content" disclosure toggle
-below (`containsSyntheticMedia`) has NOT been verified against current YouTube Data API
-docs -- confirm the real field name before relying on this for the disclosure safety
-rail. If the field is wrong, the upload will likely still succeed but silently without
-the disclosure set, which defeats that safety rail without any visible error.
+`status.containsSyntheticMedia` (added to the Data API 2024-10-30) is confirmed
+correct against current docs (developers.google.com/youtube/v3/docs/videos,
+2026-08-20) -- this is the real "how this content was made" disclosure field.
 """
 import argparse
 import json
