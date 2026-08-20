@@ -23,8 +23,8 @@ Add a `tags.json` file here mapping each filename to mood tags, e.g.:
 ```
 
 `assemble.py`'s `CATEGORY_MOODS` maps each content category to preferred tags
-(science facts -> curious/upbeat, psychology -> curious/calm/mysterious, space ->
-awe/calm/epic, history -> mysterious/dramatic/epic). A track matching one of the
+(science facts -> curious/upbeat, space -> awe/calm/epic, history ->
+mysterious/dramatic/epic). A track matching one of the
 current script's category's preferred tags gets picked over a plain random choice.
 Without `tags.json`, or for any file it doesn't mention, selection just falls back to
 fully random -- this is additive, not required.

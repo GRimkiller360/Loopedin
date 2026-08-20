@@ -45,6 +45,20 @@
         "Deliberately did NOT touch any state/*.json file (used_topics.json, live_stats.json, pending_script.json, latest_trend_seed.json, quota_usage.json, routine_health.json, series_log.json) -- these are real accumulated production history/in-flight state, not code, and must never be rolled back",
         "Verified the currently in-flight state/pending_script.json (written under share-first rules, contains fields like share_trigger/series_label the reverted schema no longer requires) still validates cleanly against the reverted script_schema.py/quality_gate.py -- extra unused fields are harmless, so the in-flight video will still produce correctly under the restored (stock b-roll, no cold-open) pipeline"
       ]
+    },
+    {
+      "date": "2026-08-20",
+      "changed_by": "human-guided (Ethan) -- explicit instruction, no diagnosis attached",
+      "from_version": "2026-08-19-payoff-mechanism-v4",
+      "to_version": "2026-08-19-payoff-mechanism-v4",
+      "diagnosis": "Channel owner asked to drop psychology as a covered niche. No specific defect cited -- a direct scope instruction, not a performance-driven change. RULESET_VERSION left unchanged since this only affects the covered-category set, not hook/pacing/writing guidance.",
+      "evidence": "Explicit instruction in a live session (\"remove psychology\").",
+      "changes": [
+        "Removed 'psychology' from CATEGORIES in pipeline/script_schema.py and SEED_CATEGORIES in pipeline/trend_source.py -- covered niches are now science facts, space, history",
+        "Updated ROUTINE_INSTRUCTIONS.md's category list and its 'psychology covers far more than one clip' example (swapped to 'history')",
+        "Removed the now-unreachable 'psychology' entry from pipeline/assemble.py's CATEGORY_MOODS and assets/music/README.md's example",
+        "Deliberately did NOT touch state/performance_summary.md or state/used_topics.json -- past psychology videos remain real production history, just no longer a category new scripts can pick"
+      ]
     }
   ]
 }

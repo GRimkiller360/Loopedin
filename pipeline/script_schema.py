@@ -85,15 +85,16 @@ MAX_TITLE_LEN = 100
 # Narrowed from the original 10 to a single coherent niche -- subscriber conversion
 # was flat 0.00/1k views across every category with the full spread, and a channel
 # that jumps between tractors, sharks, and Albanian law gives neither viewers nor the
-# algorithm a reason to expect what's next. These four share the same content
+# algorithm a reason to expect what's next. These three share the same content
 # mechanic that's already proven to drive retention here (a specific, checkable,
 # counter-intuitive claim), and carry lower factual-liability risk for a fully
 # automated, unreviewed pipeline than the categories dropped (personal finance reads
 # as financial advice with zero human review; true crime mystery involves real
 # victims/cases with no fact-check step; life hacks/technology/fitness are heavily
-# saturated by existing large channels).
+# saturated by existing large channels). Psychology dropped 2026-08-20 per explicit
+# user instruction (no diagnosed defect cited -- see state/ruleset_changelog.json).
 CATEGORIES = {
-    "science facts", "psychology", "space", "history",
+    "science facts", "space", "history",
 }
 HOOK_TYPES = {"question", "shocking_fact", "myth_bust", "list", "story", "challenge"}
 

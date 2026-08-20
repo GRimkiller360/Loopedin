@@ -44,9 +44,10 @@ further, that's out of scope per "On failure" below.
   against `used_topics.json` by source video ID. Never the source video's actual
   content. Pick whichever candidate gives the best distinct angle -- you don't have to
   use `candidates[0]`. Each `seed_category` is one of a fixed set (**science facts,
-  psychology, space, history** -- deliberately narrowed from a broader original list
-  to build a coherent channel identity; see `pipeline/script_schema.py`'s `CATEGORIES`
-  comment for the full reasoning) -- copy the one you pick verbatim into your script's
+  space, history** -- deliberately narrowed from a broader original list to build a
+  coherent channel identity, psychology later dropped 2026-08-20 per explicit user
+  instruction; see `pipeline/script_schema.py`'s `CATEGORIES` comment for the full
+  reasoning) -- copy the one you pick verbatim into your script's
   `category` field (see step 2). Don't invent a new category string even if it feels
   more precise; the performance-feedback loop only works if categories stay consistent
   across videos.
@@ -184,7 +185,7 @@ and that candidates aren't near-duplicates of each other.
 **If every candidate still seems too close to something in `used_topics.json` (same
 underlying trend, published recently -- should be rare now that candidates are
 pre-deduped by source video ID), do NOT skip the run.** Each `seed_category` is broad
-(e.g. "psychology" covers far more than one viral clip) -- pick a different specific
+(e.g. "history" covers far more than one viral clip) -- pick a different specific
 topic or angle within one of the candidates' categories (or a clearly related one)
 that hasn't been covered, and write about that instead. Only skip entirely (see "On
 failure" below) if you genuinely cannot find any distinct angle at all across every
