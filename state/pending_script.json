@@ -1,0 +1,37 @@
+{
+  "topic": "Napoleon wasn't actually short -- the myth came from British propaganda cartoons and a unit mix-up",
+  "category": "history",
+  "seed_source_video_id": null,
+  "seed_view_count": 0,
+  "title": "Napoleon Wasn't Short. That Part Is a 200-Year-Old Joke",
+  "description": "Napoleon Bonaparte stood about average height for a Frenchman of his era -- the 'short' myth traces back to British political cartoons and a unit mix-up between French and English inches. AI-narrated commentary, part of an ongoing series on strange facts about space, science, and history.",
+  "tags": ["napoleon", "history facts", "myth busted", "napoleon complex", "history", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Everyone assumes Napoleon was short, but he stood about 5'7 -- taller than the average Frenchman of his era."},
+    {"hook_type": "myth_bust", "text": "The 'short Napoleon' myth isn't history. It's a 200-year-old political cartoon that stuck."},
+    {"hook_type": "question", "text": "If Napoleon wasn't actually short, why does literally everyone still think he was?"},
+    {"hook_type": "story", "text": "A British cartoonist drew Napoleon as a tiny screaming child for years during the war -- and the caricature outlived the war itself."}
+  ],
+  "payoff_mechanism": "Napoleon actually stood around five foot seven, but British satirists like James Gillray deliberately drew him as tiny in political cartoons to mock him, and confusion between the longer French inch and the shorter English inch also inflated the height gap in early biographies.",
+  "share_trigger": "A viewer sends this to the friend who always calls short guys a 'Napoleon complex' because they want to prove that joke doesn't even hold up.",
+  "contradicted_belief": "Most people assume Napoleon was unusually short for his time, but he wasn't.",
+  "beats": [
+    {
+      "text": "Everyone assumes Napoleon was short, but he stood about **5'7** -- taller than the average Frenchman of his era.",
+      "broll_query": "Napoleon Bonaparte portrait painting"
+    },
+    {
+      "text": "The myth actually comes from British cartoonists like **James Gillray**, who drew him as a tiny screaming child during the war to mock him.",
+      "broll_query": "old political cartoon caricature"
+    },
+    {
+      "text": "On top of that, early biographers mixed up the longer French inch with the shorter English inch, which quietly inflated how short he sounded on paper.",
+      "broll_query": "old ruler measuring tool"
+    },
+    {
+      "text": "So the 'short' joke isn't really about Napoleon's height -- it's a **200-year-old** cartoon that never got corrected. Follow for more history everyone gets wrong.",
+      "broll_query": "vintage newspaper propaganda print"
+    }
+  ]
+}
