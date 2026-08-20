@@ -1216,6 +1216,19 @@
       "title": "Seven Planets Could Fit in the Gap Between Earth and the Moon",
       "duration_seconds": 18.1,
       "ruleset_version": "2026-08-19-payoff-mechanism-v4"
+    },
+    {
+      "topic": "Venus's rotation is so slow its day outlasts its year",
+      "video_id": "iZG5ORSOnlA",
+      "uploaded_at": "2026-08-20T05:33:33.465035+00:00",
+      "publish_hour_utc": 5,
+      "category": "space",
+      "seed_source_video_id": "nlN6A43zKIc",
+      "seed_view_count": 445184,
+      "hook_type": "shocking_fact",
+      "title": "A Year on Venus Ends Before a Single Day Does",
+      "duration_seconds": 32.4,
+      "ruleset_version": "2026-08-19-payoff-mechanism-v4"
     }
   ]
 }
