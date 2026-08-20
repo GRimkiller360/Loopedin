@@ -1277,6 +1277,22 @@
       "share_trigger": "A viewer sends this to the friend who just took someone's word for something big without double-checking it first, because they want to show even a legendary pharaoh got played by a well-timed lie.",
       "contradicted_belief": "Most people assume getting captured by the enemy is a spy's worst-case failure, but for these two men, getting captured on purpose was the entire winning strategy.",
       "has_sources": true
+    },
+    {
+      "topic": "space-based solar power satellites already beam real electricity down from orbit",
+      "video_id": "PmVQ0XjTMk4",
+      "uploaded_at": "2026-08-20T16:54:07.606526+00:00",
+      "publish_hour_utc": 16,
+      "category": "space",
+      "seed_source_video_id": "kT1Q7NmcjaI",
+      "seed_view_count": 657351,
+      "hook_type": "question",
+      "title": "The 3km Solar Panel That's Already Beaming Real Power Down From Space",
+      "duration_seconds": 41.8,
+      "ruleset_version": "2026-08-20-share-trigger-v5",
+      "share_trigger": "A viewer sends this to the friend who's always complaining their rooftop solar panels barely work on a cloudy day, because they want to show there's already a version of solar that never has that problem.",
+      "contradicted_belief": "Most people assume a solar panel would work about the same whether it's on the ground or in orbit, but a space-based one can generate roughly twice the power with no clouds, night, or weather ever getting in the way.",
+      "has_sources": true
     }
   ]
 }
