@@ -252,6 +252,23 @@
         "pipeline/assemble.py: removed _add_hook_sound() (the two-tone chirp previously mixed under the very start of beat 0) entirely, per explicit follow-up instruction -- now that the sentence-loop technique is mandatory, that chirp would play right at the loop seam (ending audio -> hook audio) and audibly interrupt the 'one continuous sentence' illusion the whole technique depends on. The beat-0 visual zoom-punch (HOOK_ZOOM_END) is unaffected, it's a separate, purely visual pattern-interrupt with no audio component",
         "Not verified with a real render or listen in this session (no ffmpeg/TTS credentials available locally) -- the silenceremove and ambient-bed filter chains are standard, well-documented ffmpeg constructs reasoned through carefully, but genuinely unheard. Recommend an actual listen on the next real upload specifically for pause length and whether the ambient bed is audible without being distracting"
       ]
+    },
+    {
+      "date": "2026-08-21",
+      "changed_by": "human-guided (Ethan) -- watermark removal explicitly confirmed via AskUserQuestion after a real conflict with an earlier instruction; image-generation model swap based on real Cloudflare Neurons pricing the owner supplied",
+      "from_version": "2026-08-21-no-dash-connector-v9",
+      "to_version": "2026-08-21-no-dash-connector-v9",
+      "diagnosis": "Two follow-ups from the same measured-feedback batch. (1) The reference-video breakdown said the persistent corner watermark 'costs attention and buys nothing' on a format this short -- directly conflicted with an earlier explicit instruction to keep it after the intro bumper was dropped, so this was surfaced back to the owner as a real decision rather than silently picked either way; owner chose removal. (2) The owner supplied Cloudflare's actual documented flux-1-schnell pricing (tiles x 4.80 Neurons + 4 fixed steps x 9.60), which is far more predictable than SDXL's Beta/undocumented real-world cost -- and this matters now specifically because the still-pending shot-count fix (biggest gap flagged in the same feedback batch: ~8 shots used for a 36s video vs. ~25 needed) will need substantially more images/video than DAILY_IMAGE_CAP=60 could support.",
+      "evidence": "AskUserQuestion response: 'Remove it' (watermark). Owner-supplied Cloudflare pricing breakdown for flux-1-schnell at 1024x1024 (4 tiles, 57.6 Neurons/image, ~173/day free) and 512x512 (1 tile, 43.2 Neurons/image, ~231/day free), from which this module's actual 512x1024 resolution computes to 2 tiles / 48 Neurons/image / ~208/day. Not verified against a live Cloudflare account this session (no credentials available locally) -- the tile-rounding formula and per-step cost are taken directly from the owner-supplied numbers, not independently re-derived.",
+      "changes": [
+        "pipeline/assemble.py: removed the corner mascot watermark entirely -- deleted MASCOT_VARIANTS/WATERMARK_MASCOT_PX/WATERMARK_MARGIN/_render_mascot_png and the overlay filter-graph step; captions now burn in directly onto the video track with no watermark composite. assets/branding/ SVGs left in place, unused, in case this gets revisited",
+        "pipeline/assemble.py + CLI: dropped the now-unused --mascot-dir argument and mascot_dir parameter from assemble()",
+        "setup_env.sh: removed the librsvg2-bin/rsvg-convert install step -- was only ever needed to rasterize the mascot SVGs for the watermark",
+        "pipeline/ai_broll.py: switched MODEL from SDXL (@cf/stabilityai/stable-diffusion-xl-base-1.0) to flux-1-schnell (@cf/black-forest-labs/flux-1-schnell) for documented, predictable Neuron pricing",
+        "pipeline/ai_broll.py: IMAGE_WIDTH/IMAGE_HEIGHT changed from the exact-aspect 576x1024 (4 tiles, same cost as a full 1024x1024 image) to 512x1024 (2 tiles, half the cost) -- a small extra crop in assemble.py's existing scale+crop step in exchange for roughly double the images/day headroom",
+        "pipeline/ai_broll.py: DAILY_IMAGE_CAP raised from 60 to 150 -- computed ceiling at full free budget is ~208/day at this resolution/model, capped well under that for real headroom, while now supporting 6 videos/day x ~25 images/video once the shot-count fix ships",
+        "Not verified with a real render or a live Cloudflare account in this session -- flux-1-schnell's JSON+base64 response shape was already defensively handled by the existing dual-path parsing in generate_image(), but that path has not actually been exercised against this model live. Recommend confirming the very next AI-image generation succeeds and looks reasonable before trusting the new cap"
+      ]
     }
   ]
 }

@@ -15,7 +15,7 @@ from pipeline import config
 
 # A frame from the hook beat, used as the custom thumbnail -- grabbed from the final
 # rendered video itself (not a separate render) so it's exactly what the video already
-# shows: captions, watermark, and whichever b-roll source (AI image or Pixabay) beat 0
+# shows: captions and whichever b-roll source (AI image or Pixabay) beat 0
 # actually used, with zero extra plumbing between pipeline stages. 0.4s is safely past
 # the caption pop-in (120ms) and any beat-0 zoom-punch settling, and well within beat 0
 # for any realistic script (a hook needs several spoken words to land, which takes

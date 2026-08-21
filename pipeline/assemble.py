@@ -329,24 +329,6 @@ CATEGORY_MOODS = {
 MUSIC_ENABLED = False  # disabled per user request (2026-08-18) -- re-enable by flipping this back
 
 
-# Channel mascot (assets/branding/) -- added 2026-08-21 per explicit channel-owner
-# instruction, watermark-only now (the intro bumper was removed the same day after a
-# real test run -- see state/ruleset_changelog.json). One expression is picked per
-# video (not fixed) so the channel doesn't show the exact same static image on every
-# upload -- same "structural variety matters" reasoning ROUTINE_INSTRUCTIONS.md
-# already applies to hooks/CTAs.
-MASCOT_VARIANTS = ("mascot_surprised.svg", "mascot_winking.svg", "mascot_thinking.svg")
-WATERMARK_MASCOT_PX = 150
-WATERMARK_MARGIN = 40
-
-
-def _render_mascot_png(svg_path, out_png, size_px):
-    subprocess.run([
-        "rsvg-convert", "-w", str(size_px), "-h", str(size_px),
-        str(svg_path), "-o", str(out_png),
-    ], check=True)
-
-
 def _pick_music_track(music_dir, category):
     if not MUSIC_ENABLED:
         return None
@@ -429,10 +411,9 @@ def _build_ambient_bed(work_dir, duration_seconds):
     return bed
 
 
-def assemble(script, narration_path, clips, music_dir, out_path, work_dir, mascot_dir=None):
+def assemble(script, narration_path, clips, music_dir, out_path, work_dir):
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
-    mascot_dir = Path(mascot_dir) if mascot_dir else config.ASSETS_DIR / "branding"
 
     # Trimmed BEFORE probing duration -- everything downstream (beat timing, caption
     # timing) should reflect the actual, post-trim audio length, not the original.
@@ -494,21 +475,17 @@ def assemble(script, narration_path, clips, music_dir, out_path, work_dir, masco
     ], check=True)
     mixed_audio = bedded_audio
 
-    mascot_variant = random.choice(MASCOT_VARIANTS)
-    mascot_svg = mascot_dir / mascot_variant
-    watermark_png = work_dir / "mascot_watermark.png"
-    _render_mascot_png(mascot_svg, watermark_png, WATERMARK_MASCOT_PX)
-
     # No force_style override needed -- the .ass file's own [V4+ Styles] section
     # carries the base look, and per-word emphasis overrides live inline in the text.
-    # Watermark is composited in the same filter graph as the caption burn-in (rather
-    # than a separate pass) so there's only one video re-encode for this step.
+    # No corner watermark as of 2026-08-21 -- removed per measured feedback on a real
+    # published video ("costs attention and buys nothing" on a format this short);
+    # reverses the earlier explicit "keep it in the corner" call, confirmed with the
+    # channel owner before making the change. assets/branding/ mascot SVGs are unused
+    # now but left in place rather than deleted, in case that decision gets revisited.
     escaped_ass = str(ass_path).replace("\\", "/").replace(":", "\\:")
     subprocess.run([
-        "ffmpeg", "-y", "-i", str(video_track), "-i", str(mixed_audio), "-loop", "1", "-i", str(watermark_png),
-        "-filter_complex",
-        f"[0:v]subtitles='{escaped_ass}'[capped];"
-        f"[capped][2:v]overlay=W-w-{WATERMARK_MARGIN}:H-h-{WATERMARK_MARGIN}:shortest=1[outv]",
+        "ffmpeg", "-y", "-i", str(video_track), "-i", str(mixed_audio),
+        "-filter_complex", f"[0:v]subtitles='{escaped_ass}'[outv]",
         "-map", "[outv]", "-map", "1:a",
         "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p",
         "-c:a", "aac", "-ar", "44100", "-ac", "2",
@@ -524,7 +501,6 @@ if __name__ == "__main__":
     parser.add_argument("--narration", required=True)
     parser.add_argument("--clips", required=True, help="JSON list of {path, source} clip entries, inline or a file path")
     parser.add_argument("--music-dir", default=str(config.ASSETS_DIR / "music"))
-    parser.add_argument("--mascot-dir", default=str(config.ASSETS_DIR / "branding"))
     parser.add_argument("--work-dir", required=True)
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
@@ -537,6 +513,5 @@ if __name__ == "__main__":
 
     result = assemble(
         script_data, args.narration, clips, args.music_dir, args.out, args.work_dir,
-        mascot_dir=args.mascot_dir,
     )
     print(result)

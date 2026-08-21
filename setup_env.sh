@@ -45,17 +45,5 @@ if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; 
     fi
 fi
 
-# rsvg-convert rasterizes the mascot SVGs (assets/branding/) to PNG for the intro
-# bumper/watermark in assemble.py -- same lazy-install pattern as ffmpeg above.
-if ! command -v rsvg-convert >/dev/null 2>&1; then
-    SUDO=""
-    command -v sudo >/dev/null 2>&1 && SUDO="sudo"
-
-    if ! retry $SUDO apt-get install -y -qq librsvg2-bin; then
-        retry $SUDO apt-get update -qq
-        retry $SUDO apt-get install -y -qq librsvg2-bin
-    fi
-fi
-
 retry pip install --quiet -r requirements.txt
 mkdir -p work
