@@ -1309,6 +1309,22 @@
       "share_trigger": "A viewer sends this to the friend who jokes that snail mail was safer than email, because they want to prove even sealed eighteenth-century letters were secretly read by the government.",
       "contradicted_belief": "People assume a wax seal on a letter proves nobody secretly read it.",
       "has_sources": true
+    },
+    {
+      "topic": "Thrinaxodon and Broomistega -- predator and injured amphibian shared a burrow, fossilized together by a flash flood",
+      "video_id": "WyOnTI2CB8Y",
+      "uploaded_at": "2026-08-21T07:00:26.500043+00:00",
+      "publish_hour_utc": 7,
+      "category": "history",
+      "seed_source_video_id": "xtsn24qTz6g",
+      "seed_view_count": 478358,
+      "hook_type": "story",
+      "title": "A Predator Shared Its Den With Injured Prey -- 250M-Year-Old Proof",
+      "duration_seconds": 44.4,
+      "ruleset_version": "2026-08-20-share-trigger-v5",
+      "share_trigger": "A viewer sends this to the friend who's obsessed with true crime documentaries, because they want to show them a 250-million-year-old case that isn't actually a murder.",
+      "contradicted_belief": "People assume finding a predator fossilized right next to its prey means the predator attacked and killed it.",
+      "has_sources": true
     }
   ]
 }
