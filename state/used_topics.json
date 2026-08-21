@@ -1325,6 +1325,22 @@
       "share_trigger": "A viewer sends this to the friend who's obsessed with true crime documentaries, because they want to show them a 250-million-year-old case that isn't actually a murder.",
       "contradicted_belief": "People assume finding a predator fossilized right next to its prey means the predator attacked and killed it.",
       "has_sources": true
+    },
+    {
+      "topic": "the Thyiades -- real Delphi women who performed Dionysian rituals on Mount Parnassus, once stranded by a blizzard",
+      "video_id": "EaD40JgXk1Y",
+      "uploaded_at": "2026-08-21T08:01:06.530601+00:00",
+      "publish_hour_utc": 8,
+      "category": "history",
+      "seed_source_video_id": "XRT3Q7OMkLU",
+      "seed_view_count": 542323,
+      "hook_type": "shocking_fact",
+      "title": "Real Women Once Got Stranded Performing a 'Mythical' Greek Ritual",
+      "duration_seconds": 28.6,
+      "ruleset_version": "2026-08-20-share-trigger-v5",
+      "share_trigger": "A viewer sends this to the friend who insists all Greek myths are pure fiction, because they want to prove real women actually performed the maenads' ritual.",
+      "contradicted_belief": "Most people assume the maenads from Greek myth are purely fictional stories, but real women actually got stranded on a mountain performing that same ritual.",
+      "has_sources": true
     }
   ]
 }
