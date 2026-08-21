@@ -37,6 +37,29 @@ HOOK_CANDIDATE_OVERLAP_THRESHOLD = 0.75
 # whitespace on both sides, i.e. used as a standalone connector between clauses.
 DASH_CONNECTOR_RE = re.compile(r"--|(?<=\s)-(?=\s)")
 
+# ROUTINE_INSTRUCTIONS.md already says jokes land "roughly every ~10 seconds" and
+# "most of this format's claims should have one," but that was prose-only and a real
+# published video (2026-08-21) shipped with exactly one joke in 36s where the target
+# structure calls for 2-4 claims each getting one -- advisory text alone wasn't
+# holding here any more than it did for payoff_mechanism before that became a hard
+# schema field. MIN_JOKES only applies once a script is long enough to plausibly fit
+# multiple claim/evidence/joke cycles -- a short, tight script with one or two claims
+# genuinely doesn't have room for 2 jokes without forcing one.
+MIN_JOKES = 2
+MIN_BEATS_FOR_JOKE_FLOOR = 8
+
+# The sentence-loop technique (ROUTINE_INSTRUCTIONS.md) is mandatory 2026-08-21 per
+# explicit channel-owner instruction ("loop-technique encouragement must not be
+# optional it be constant") -- checked structurally because prose alone already failed
+# once (a real published video closed on a flat, complete sentence despite the
+# now-strengthened guidance already existing). The `ending` beat's final word must be
+# a genuine dangling connector, not a closed sentence.
+DANGLING_ENDING_WORDS = {
+    "some", "to", "of", "the", "a", "an", "and", "but", "so", "which", "that",
+    "because", "with", "from", "about", "in", "on", "at", "for", "one", "another",
+    "other", "or", "than", "as", "not",
+}
+
 BANNED_OPENERS = (
     "so today", "in this video", "welcome back", "today we're talking about",
     "today we are talking about", "let's talk about", "in today's video",
@@ -103,6 +126,31 @@ def check(script, used_topics_path):
                 "stray dash on screen and desyncing every caption after it in this beat. "
                 "Rewrite with an actual connecting word (and, but, so, though, because) "
                 "or split into two beats instead."
+            )
+
+    joke_count = sum(1 for b in beats if b.get("beat_role") == "joke")
+    if len(beats) >= MIN_BEATS_FOR_JOKE_FLOOR and joke_count < MIN_JOKES:
+        errors.append(
+            f"only {joke_count} joke beat(s) in a {len(beats)}-beat script -- this format "
+            f"needs >={MIN_JOKES}, roughly one per claim, or the density/rhythm the whole "
+            "structure is built on doesn't actually land. Add a genuinely fresh one for "
+            "another claim rather than forcing a flat one onto whichever beat is easiest."
+        )
+
+    # See DANGLING_ENDING_WORDS's comment -- the sentence-loop technique is mandatory,
+    # not situational, and prose guidance alone already failed to hold once.
+    ending_beat = next((b for b in beats if b.get("beat_role") == "ending"), None)
+    if ending_beat is not None:
+        stripped = ending_beat.get("text", "").strip().rstrip(".!?,;:\"'")
+        while stripped.endswith("."):
+            stripped = stripped[:-1]
+        last_word = stripped.split()[-1].lower() if stripped.split() else ""
+        if last_word not in DANGLING_ENDING_WORDS:
+            errors.append(
+                f"ending beat doesn't close on a dangling connector (last word: "
+                f"{last_word!r}) -- the sentence-loop technique requires the final beat "
+                f"to end on a word like 'some', 'to', 'and', 'which', not a complete "
+                "sentence. Rewrite the hook+ending as one sentence, then split it."
             )
 
     # Pixabay (the b-roll provider) does keyword-OR matching with no scene understanding

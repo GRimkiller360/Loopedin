@@ -322,16 +322,23 @@ Save it as `state/pending_script.json` matching the shape documented in
      >=3 hook candidates, spanning >=2 hook_types, picked for specificity over
      genre-fit.
 
-     **Sentence-loop technique, optional but worth using when it fits naturally:**
-     write the hook and the `ending` beat as one continuous sentence, then split it in
-     two -- the back half becomes the video's opening, the front half becomes its
-     close. E.g. draft "So here are some facts about [topic] that sound made up" as one
-     line, then use "FACTS ABOUT [TOPIC]..." as beat 0 and "SO HERE ARE SOME..." as the
-     final beat. On loop, the ending's dangling words grammatically complete into the
-     hook's opening words, so the cut between them reads as continuous speech, not a
-     restart -- the ear carries continuity the picture doesn't have to. This is why
-     `ending` (below) bans a spoken CTA: any closing remark after the sentence breaks
-     the loop.
+     **Sentence-loop technique -- mandatory, every video, not situational.** Write the
+     hook and the `ending` beat as one continuous sentence, then split it in two -- the
+     back half becomes the video's opening, the front half becomes its close. E.g.
+     draft "So here are some facts about [topic] that sound made up" as one line, then
+     use "FACTS ABOUT [TOPIC]..." as beat 0 and "SO HERE ARE SOME..." as the final
+     beat. On loop, the ending's dangling words grammatically complete into the hook's
+     opening words, so the cut between them reads as continuous speech, not a restart
+     -- the ear carries continuity the picture doesn't have to. This is why `ending`
+     (below) bans a spoken CTA: any closing remark after the sentence breaks the loop.
+     The `ending` beat's final word must be a genuine dangling connector -- a
+     determiner, preposition, or conjunction like "some," "to," "one of," "and," "so,"
+     "which," "the" -- not a complete, closed sentence. `quality_gate.py` checks this
+     structurally (`DANGLING_ENDING_WORDS`) because a real published video (2026-08-21)
+     skipped the technique entirely and closed on a flat, complete sentence, despite
+     this section already existing -- prose alone didn't hold, same as several other
+     rules in this document that only started working once they were also enforced in
+     code.
   2. **`claim` beats: state one surprising fact with zero support, before proving it.**
      The claim should contradict something a viewer plausibly assumes -- let it sit
      unproven for the following `evidence` beat(s) rather than justifying it

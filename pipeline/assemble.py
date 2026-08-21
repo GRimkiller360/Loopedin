@@ -72,13 +72,14 @@ def _ass_escape(text):
     return text.replace("\\", r"\\").replace("{", r"\{").replace("}", r"\}")
 
 
-# TikTok-style dynamic captions: 1-2 words on screen at a time instead of the whole
-# beat sentence at once -- the eye can't skim ahead of a caption that keeps changing,
-# which is exactly this channel's own top lever (avg_view_pct/retention). 2 rather than
-# 1 -- literal one-word-at-a-time reads choppy for short words at normal speaking pace;
-# 2 is the common sweet spot in TikTok/CapCut-style caption tools. Drop to 1 for an
-# even punchier feel.
-WORDS_PER_CAPTION = 2
+# TikTok-style dynamic captions: 1 word on screen at a time instead of the whole beat
+# sentence at once -- the eye can't skim ahead of a caption that keeps changing, which
+# is exactly this channel's own top lever (avg_view_pct/retention). Dropped from 2->1
+# 2026-08-21 after direct measurement against a real published video: 2-word chunks
+# averaged 0.76s on screen (47 chunks in 36s) against a reference's ~0.42s (~105
+# chunks in 44.65s), and occasionally line-wrapped to two lines at this font size,
+# which never happens with true one-word chunks.
+WORDS_PER_CAPTION = 1
 
 
 def _tokenize_beat(text):
@@ -372,32 +373,60 @@ def _pick_music_track(music_dir, category):
     return random.choice(tracks)
 
 
-# Short synthesized (not sourced -- no copyright question) two-tone attention cue,
-# mixed under the very start of beat 0 as an audio pattern-interrupt to go with the
-# visual zoom-punch -- alongside a sudden motion/zoom change, a brief distinct sound
-# at hook time is a documented technique for cutting through autoplay-muted scrolling.
-def _add_hook_sound(audio_path, narration_duration, work_dir):
-    hook_sound = work_dir / "hook_sound.mp3"
+# Caps any internal silence in the narration at MAX_PAUSE_SECONDS instead of leaving
+# whatever gap Cloud TTS naturally inserts at each sentence boundary -- a real
+# published video (2026-08-21) measured 13 pauses totaling 6.4s (18% of runtime),
+# longest 0.96s, against a healthy reference's 2.78s/6%. Deliberately NOT done via
+# SSML <break> tags: Chirp3-HD's SSML tag support is genuinely unclear/inconsistently
+# documented as of this session (no way to verify locally, and a malformed/unsupported
+# tag risks breaking synthesis entirely for every video, a far worse failure than the
+# pause issue itself). silenceremove operates on the already-synthesized audio file
+# with a well-documented, stable ffmpeg filter instead -- stop_periods=-1 targets every
+# internal silence (not just leading/trailing), and stop_duration caps each one at
+# MAX_PAUSE_SECONDS by dropping only the excess beyond that point, not the whole gap --
+# still reads as a natural sentence pause, just not a stall.
+MAX_PAUSE_SECONDS = 0.25
+SILENCE_THRESHOLD_DB = "-40dB"  # narration's dead air measured -57 to -60+ dBFS --
+                                # comfortably below any actual quiet speech, low risk
+                                # of clipping a real quiet word as "silence"
+
+
+def _trim_long_pauses(narration_path, work_dir):
+    trimmed = work_dir / "narration_trimmed.mp3"
+    subprocess.run([
+        "ffmpeg", "-y", "-i", str(narration_path),
+        "-af", f"silenceremove=stop_periods=-1:stop_duration={MAX_PAUSE_SECONDS}:stop_threshold={SILENCE_THRESHOLD_DB}",
+        "-ar", "44100", "-ac", "2", str(trimmed),
+    ], check=True)
+    return trimmed
+
+
+# A quiet, non-rhythmic ambient bed under the narration -- a real published video
+# measured as pure mono with dead silence between words (no independent low end at
+# all), while a healthy reference video ran a continuous stereo bed ~16dB under the
+# voice with no detectable beat (autocorrelation peak 0.06). Synthesized rather than a
+# sourced track, same reasoning as the hook chirp/mascot chime already in this file --
+# zero licensing/copyright question, and it sidesteps MUSIC_ENABLED's file-based system
+# entirely (assets/music/ has no files in it, and that flag was about actual music
+# tracks specifically, not this kind of textureless room-tone bed). Three detuned low
+# sine tones with independent slow tremolo -- deliberately non-musical/non-rhythmic so
+# it can't create the "is there a beat" impression the reference explicitly lacked.
+def _build_ambient_bed(work_dir, duration_seconds):
+    bed = work_dir / "ambient_bed.mp3"
     subprocess.run([
         "ffmpeg", "-y",
-        "-f", "lavfi", "-i", "sine=frequency=700:duration=0.06",
-        "-f", "lavfi", "-i", "sine=frequency=1400:duration=0.09",
+        "-f", "lavfi", "-i", f"sine=frequency=80:duration={duration_seconds}",
+        "-f", "lavfi", "-i", f"sine=frequency=121:duration={duration_seconds}",
+        "-f", "lavfi", "-i", f"sine=frequency=163:duration={duration_seconds}",
         "-filter_complex",
-        "[0:a][1:a]concat=n=2:v=0:a=1,afade=t=in:st=0:d=0.01,afade=t=out:st=0.12:d=0.03,volume=0.4[out]",
-        "-map", "[out]", str(hook_sound),
+        "[0:a]tremolo=f=0.07:d=0.3[a0];"
+        "[1:a]tremolo=f=0.11:d=0.3[a1];"
+        "[2:a]tremolo=f=0.05:d=0.25[a2];"
+        "[a0][a1][a2]amix=inputs=3:duration=first:normalize=0,"
+        "highpass=f=50,lowpass=f=400,volume=0.05[out]",
+        "-map", "[out]", "-ar", "44100", "-ac", "2", str(bed),
     ], check=True)
-
-    hooked_audio = work_dir / "hooked_audio.mp3"
-    subprocess.run([
-        "ffmpeg", "-y", "-i", str(audio_path), "-i", str(hook_sound),
-        # normalize=0 -- amix's default auto-normalization would quietly halve the
-        # narration's volume for the *entire* clip just because of a 150ms sound
-        # effect layered at the start; the hook tone is already pre-scaled quiet
-        # enough (volume=0.4 above) not to need it.
-        "-filter_complex", "[0:a][1:a]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[aout]",
-        "-map", "[aout]", "-t", str(narration_duration), str(hooked_audio),
-    ], check=True)
-    return hooked_audio
+    return bed
 
 
 def assemble(script, narration_path, clips, music_dir, out_path, work_dir, mascot_dir=None):
@@ -405,6 +434,9 @@ def assemble(script, narration_path, clips, music_dir, out_path, work_dir, masco
     work_dir.mkdir(parents=True, exist_ok=True)
     mascot_dir = Path(mascot_dir) if mascot_dir else config.ASSETS_DIR / "branding"
 
+    # Trimmed BEFORE probing duration -- everything downstream (beat timing, caption
+    # timing) should reflect the actual, post-trim audio length, not the original.
+    narration_path = _trim_long_pauses(narration_path, work_dir)
     narration_duration = min(_probe_duration(narration_path), config.MAX_SHORT_SECONDS)
     durations = _beat_durations(script["beats"], narration_duration)
 
@@ -450,7 +482,17 @@ def assemble(script, narration_path, clips, music_dir, out_path, work_dir, masco
             "-map", "[aout]", "-t", str(narration_duration), str(mixed_audio),
         ], check=True)
 
-    mixed_audio = _add_hook_sound(mixed_audio, narration_duration, work_dir)
+    # Ambient bed layers in regardless of whether a music track was found above --
+    # it's a room-tone texture, not music (see _build_ambient_bed's comment), so it
+    # doesn't compete with or substitute for MUSIC_ENABLED's file-based track system.
+    ambient_bed = _build_ambient_bed(work_dir, narration_duration)
+    bedded_audio = work_dir / "bedded_audio.mp3"
+    subprocess.run([
+        "ffmpeg", "-y", "-i", str(mixed_audio), "-i", str(ambient_bed),
+        "-filter_complex", "[0:a][1:a]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[aout]",
+        "-map", "[aout]", "-t", str(narration_duration), str(bedded_audio),
+    ], check=True)
+    mixed_audio = bedded_audio
 
     mascot_variant = random.choice(MASCOT_VARIANTS)
     mascot_svg = mascot_dir / mascot_variant

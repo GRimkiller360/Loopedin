@@ -49,8 +49,13 @@ IMAGE_WIDTH, IMAGE_HEIGHT = 576, 1024
 # A fixed style suffix appended to every prompt (broll_query text is written for
 # Pixabay's keyword-OR search, not tuned for image generation specifically) -- biases
 # SDXL toward a consistent, higher-quality look without requiring any change to how
-# the routine writes broll_query in the first place.
-STYLE_SUFFIX = ", cinematic lighting, high detail, vertical portrait photo"
+# the routine writes broll_query in the first place. "cinematic lighting" (the
+# original suffix) measurably biased toward moody/dark images -- a real published
+# video measured at 24% mean brightness against a healthy reference's 54%, with the
+# top third of frame near-black through most of it. Swapped for wording that keeps
+# quality/detail but pushes toward a brighter, higher-key look that actually reads on
+# a phone screen in daylight.
+STYLE_SUFFIX = ", bright natural lighting, vivid colors, high detail, vertical portrait photo"
 
 # Conservative, well under the ~100-200/day estimated free budget -- see module
 # docstring. This channel's actual need is ~30-70 images/day at current volume.
