@@ -318,19 +318,12 @@ MUSIC_ENABLED = False  # disabled per user request (2026-08-18) -- re-enable by 
 
 
 # Channel mascot (assets/branding/) -- added 2026-08-21 per explicit channel-owner
-# instruction: a short intro bumper before beat 0, plus a small persistent corner
-# watermark for the rest of the video. One expression is picked per video (not fixed)
-# so the channel doesn't show the exact same static image on every upload -- same
-# "structural variety matters" reasoning ROUTINE_INSTRUCTIONS.md already applies to
-# hooks/CTAs.
+# instruction, watermark-only now (the intro bumper was removed the same day after a
+# real test run -- see state/ruleset_changelog.json). One expression is picked per
+# video (not fixed) so the channel doesn't show the exact same static image on every
+# upload -- same "structural variety matters" reasoning ROUTINE_INSTRUCTIONS.md
+# already applies to hooks/CTAs.
 MASCOT_VARIANTS = ("mascot_surprised.svg", "mascot_winking.svg", "mascot_thinking.svg")
-MASCOT_BODY_COLOR = "#181F55"  # matches the SVG's own navy body fill
-BUMPER_DURATION = 1.2
-BUMPER_MASCOT_PX = 640
-BUMPER_ZOOM_END = 1.12  # same magnitude/technique as HOOK_ZOOM_END below, applied to
-                        # the whole composited bumper frame rather than the mascot PNG
-                        # alone -- reuses the already-proven zoompan pattern instead of
-                        # risking alpha-channel loss animating the transparent PNG by itself
 WATERMARK_MASCOT_PX = 150
 WATERMARK_MARGIN = 40
 
@@ -339,53 +332,6 @@ def _render_mascot_png(svg_path, out_png, size_px):
     subprocess.run([
         "rsvg-convert", "-w", str(size_px), "-h", str(size_px),
         str(svg_path), "-o", str(out_png),
-    ], check=True)
-
-
-# Three ascending synthesized tones (D5-F#5-A5, a bright major triad) as the mascot's
-# reveal chime -- deliberately distinct from _add_hook_sound's two-tone beat-0 cue
-# below so the two pattern-interrupts don't sound identical. Synthesized rather than a
-# sourced sample for the same reason as the hook chirp: no copyright/licensing question.
-def _build_mascot_sound(work_dir, out_duration):
-    chime = work_dir / "mascot_chime.mp3"
-    subprocess.run([
-        "ffmpeg", "-y",
-        "-f", "lavfi", "-i", "sine=frequency=587:duration=0.10",
-        "-f", "lavfi", "-i", "sine=frequency=740:duration=0.10",
-        "-f", "lavfi", "-i", "sine=frequency=880:duration=0.22",
-        "-filter_complex",
-        "[0:a]afade=t=out:st=0.06:d=0.04,volume=0.5[a0];"
-        "[1:a]afade=t=out:st=0.06:d=0.04,volume=0.55[a1];"
-        "[2:a]afade=t=out:st=0.10:d=0.12,volume=0.6[a2];"
-        "[a0][a1][a2]concat=n=3:v=0:a=1,apad[out]",
-        "-map", "[out]", "-t", str(out_duration), "-ar", "44100", "-ac", "2", str(chime),
-    ], check=True)
-    return chime
-
-
-def _build_bumper_clip(mascot_png, out_path, work_dir):
-    """Short solid-color splash of the mascot before beat 0 -- the channel's "display
-    before the video". Rendered as its own fully independent mp4 (matching fps/pix_fmt/
-    audio params of the content clip) so it can be concatenated the same proven way
-    beat clips already are in `assemble()` below, rather than needing exactly-matching
-    encoder state for a stream-copy concat."""
-    chime = _build_mascot_sound(work_dir, BUMPER_DURATION)
-
-    total_frames = max(int(round(BUMPER_DURATION * OUTPUT_FPS)), 1)
-    zoom_step = (BUMPER_ZOOM_END - 1.0) / total_frames
-    subprocess.run([
-        "ffmpeg", "-y",
-        "-f", "lavfi", "-i", f"color=c={MASCOT_BODY_COLOR}:s={WIDTH}x{HEIGHT}:d={BUMPER_DURATION}:r={OUTPUT_FPS}",
-        "-loop", "1", "-i", str(mascot_png),
-        "-i", str(chime),
-        "-filter_complex",
-        f"[0:v][1:v]overlay=(W-w)/2:(H-h)/2[ov];"
-        f"[ov]fade=t=in:st=0:d=0.25[faded];"
-        f"[faded]zoompan=z='min(zoom+{zoom_step},{BUMPER_ZOOM_END})':d=1:"
-        f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={WIDTH}x{HEIGHT}:fps={OUTPUT_FPS}[outv]",
-        "-map", "[outv]", "-map", "2:a",
-        "-t", str(BUMPER_DURATION), "-r", str(OUTPUT_FPS), "-c:v", "libx264", "-preset", "veryfast",
-        "-c:a", "aac", "-ar", "44100", "-ac", "2", "-pix_fmt", "yuv420p", str(out_path),
     ], check=True)
 
 
@@ -448,10 +394,7 @@ def assemble(script, narration_path, clips, music_dir, out_path, work_dir, masco
     work_dir.mkdir(parents=True, exist_ok=True)
     mascot_dir = Path(mascot_dir) if mascot_dir else config.ASSETS_DIR / "branding"
 
-    # Bumper duration comes out of the existing cap rather than adding to it -- the cap
-    # exists to keep the final upload safely under YouTube's 60s Shorts threshold, and
-    # the bumper is part of that same final upload now.
-    narration_duration = min(_probe_duration(narration_path), config.MAX_SHORT_SECONDS - BUMPER_DURATION)
+    narration_duration = min(_probe_duration(narration_path), config.MAX_SHORT_SECONDS)
     durations = _beat_durations(script["beats"], narration_duration)
 
     # Each clip is rendered TRANSITION_DURATION longer than it needs to be for its own
@@ -508,7 +451,6 @@ def assemble(script, narration_path, clips, music_dir, out_path, work_dir, masco
     # Watermark is composited in the same filter graph as the caption burn-in (rather
     # than a separate pass) so there's only one video re-encode for this step.
     escaped_ass = str(ass_path).replace("\\", "/").replace(":", "\\:")
-    content_path = work_dir / "content.mp4"
     subprocess.run([
         "ffmpeg", "-y", "-i", str(video_track), "-i", str(mixed_audio), "-loop", "1", "-i", str(watermark_png),
         "-filter_complex",
@@ -517,25 +459,7 @@ def assemble(script, narration_path, clips, music_dir, out_path, work_dir, masco
         "-map", "[outv]", "-map", "1:a",
         "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p",
         "-c:a", "aac", "-ar", "44100", "-ac", "2",
-        "-t", str(narration_duration), str(content_path),
-    ], check=True)
-
-    bumper_png = work_dir / "mascot_bumper.png"
-    _render_mascot_png(mascot_svg, bumper_png, BUMPER_MASCOT_PX)
-    bumper_path = work_dir / "bumper.mp4"
-    _build_bumper_clip(bumper_png, bumper_path, work_dir)
-
-    # Same re-encode-on-concat approach as video_track above: bumper.mp4 and
-    # content.mp4 were encoded by two independent ffmpeg invocations, so stream-copy
-    # concat risks the same keyframe/timestamp misalignment already documented there.
-    final_concat_list = work_dir / "final_concat.txt"
-    final_concat_list.write_text(
-        "\n".join(f"file '{p.resolve()}'" for p in (bumper_path, content_path))
-    )
-    subprocess.run([
-        "ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(final_concat_list),
-        "-c:v", "libx264", "-preset", "veryfast", "-r", str(OUTPUT_FPS), "-pix_fmt", "yuv420p",
-        "-c:a", "aac", "-ar", "44100", "-ac", "2", str(out_path),
+        "-t", str(narration_duration), str(out_path),
     ], check=True)
 
     return str(out_path)

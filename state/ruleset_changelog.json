@@ -162,6 +162,19 @@
         "pipeline/assemble.py: (1) caption emphasis now rotates through 6 accent colors by beat index instead of always gold; (2) transitions are now a short whip-blur (hblur, 0.16s) on structurally important cuts (beat_role in joke/hedge/ending, or the beat right after a joke) vs. a near-instant hard cut (fade, 0.06s) otherwise, replacing the previous uniform 0.35s crossfade on every cut; (3) 'ending' beats now get the same (larger) zoom rate as the hook, specifically to support the sentence-loop technique reading smoothly on replay; (4) Ken Burns pan (previously AI-image-only) now also applies to joke/hedge beats regardless of source, so motion itself varies by beat role instead of every non-AI beat using the identical center-zoom",
         "Not verified with a real render in this session (no ffmpeg on the local dev machine) -- the timing/schema logic was verified directly (see 'evidence' above), but the actual whip-blur transition, rotating caption colors, and matched end-zoom have not been seen rendered. Recommend a workflow_dispatch test run (unlisted) before trusting this on a real scheduled fire, same as every other unrenderable change today"
       ]
+    },
+    {
+      "date": "2026-08-21",
+      "changed_by": "human-guided (Ethan) -- explicit instruction, no diagnosis attached",
+      "from_version": "2026-08-21-claim-evidence-joke-v7",
+      "to_version": "2026-08-21-claim-evidence-joke-v7",
+      "diagnosis": "Real production test of the claim-evidence-joke-v7 format (video -b1trrZg0fA, 'Things Astronauts Genuinely Can't Do In Space') succeeded end-to-end -- all 14 beats generated AI images successfully, every pipeline step passed, consecutive_failures reset to 0. After watching the published result, channel owner asked to drop the mascot intro bumper entirely and keep only the corner watermark.",
+      "evidence": "Direct instruction after reviewing the live test video.",
+      "changes": [
+        "pipeline/assemble.py: removed _build_bumper_clip, _build_mascot_sound, and the bumper/content concat step entirely -- content.mp4's own ffmpeg output is now written directly to out_path, no second re-encode/concat pass needed. Removed now-unused BUMPER_DURATION/BUMPER_MASCOT_PX/BUMPER_ZOOM_END/MASCOT_BODY_COLOR constants. narration_duration no longer subtracts a bumper allowance from config.MAX_SHORT_SECONDS, since there's no bumper eating into that budget anymore",
+        "Mascot watermark (bottom-right corner, one of the 3 expressions picked per video) is unchanged and still runs every video",
+        "RULESET_VERSION left unchanged -- this only affects rendering, not script-writing guidance"
+      ]
     }
   ]
 }
