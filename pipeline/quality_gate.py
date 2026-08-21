@@ -17,7 +17,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from pipeline.state_utils import load_json
 
 MIN_WORDS, MAX_WORDS = 25, 160
-MAX_BROLL_QUERY_WORDS = 8
+MAX_BROLL_QUERY_WORDS = 20  # sanity ceiling against a runaway prompt, not a keyword-
+                            # search dilution limit -- see the check's own comment below
 RECENT_TITLES_TO_CHECK = 15
 TITLE_OVERLAP_THRESHOLD = 0.7
 MIN_HOOK_WINNER_OVERLAP = 0.15
@@ -153,18 +154,18 @@ def check(script, used_topics_path):
                 "sentence. Rewrite the hook+ending as one sentence, then split it."
             )
 
-    # Pixabay (the b-roll provider) does keyword-OR matching with no scene understanding
-    # -- a long cinematic broll_query dilutes the match and returns unrelated footage
-    # matched on one stray word (verified in production: a full-sentence mask query
-    # returned an ocean wave and a CPU socket). Catch it here, before wasting a
-    # narration/b-roll/assembly run on a query that was never going to match well.
+    # broll_query is the image-generation prompt (pipeline/ai_broll.py, the sole b-roll
+    # source as of 2026-08-21 -- no Pixabay keyword-search fallback any more, so the old
+    # dilution concern that justified a tight word cap here no longer applies). This is
+    # now just a sanity ceiling against a genuinely runaway prompt, not a quality bar --
+    # the real specificity requirement lives in ROUTINE_INSTRUCTIONS.md's guidance.
     for i, beat in enumerate(beats):
         query = beat.get("broll_query", "")
         word_count = len(query.split())
         if word_count > MAX_BROLL_QUERY_WORDS:
             errors.append(
                 f"beat {i}'s broll_query is {word_count} words (max {MAX_BROLL_QUERY_WORDS}) -- "
-                "must be a short literal keyword phrase, not a cinematic sentence"
+                "describe one concrete scene, not a sprawling paragraph"
             )
 
     # The winning hook_candidate must actually be the one used -- catches "planning

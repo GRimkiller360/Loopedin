@@ -73,7 +73,9 @@ Expected script.json shape:
              weighting (pipeline/config.py strip_emphasis_markup) so it never affects
              narration audio or timing -- this is caption-only styling. Use it on the
              one specific surprising word or number in a beat, not decoratively.",
-     "broll_query": "stock-footage/AI-image search phrase for this beat",
+     "broll_query": "AI image-generation prompt for this beat -- a concrete scene
+                   description, not a stock-footage search phrase (no stock-footage
+                   source exists any more, see pipeline/ai_broll.py)",
      "beat_role": "one of BEAT_ROLES below -- what this beat's job is, not just its
                   text. Drives production decisions in pipeline/assemble.py (which
                   transitions get a whip-blur vs. a hard cut, which beats get a pan vs.

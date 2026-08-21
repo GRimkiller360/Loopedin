@@ -213,21 +213,17 @@ SUBTLE_ZOOM_END = 1.20
 SIGNATURE_LOOK_FILTER = "eq=contrast=1.08:saturation=1.18:brightness=0.01,vignette=PI/4"
 
 # Real Ken Burns pan targets (fractional focal point the crop window drifts toward as
-# it zooms) -- used for AI-generated image clips specifically (see ai_broll.py), not
-# Pixabay footage. A static AI image has no motion of its own, so pairing zoom with a
-# genuine directional drift (not just zooming on the dead center) is what keeps it from
-# reading as "a photo with a zoom filter" -- real stock clips already have their own
-# camera/subject motion, so they keep the plain center-zoom below unchanged.
+# it zooms), applied to every clip -- every clip is now an AI-generated held image
+# (see ai_broll.py) with no motion of its own, so pairing zoom with a genuine
+# directional drift (not just zooming on the dead center) is what keeps it from
+# reading as "a photo with a zoom filter."
 PAN_TARGETS = [(0.15, 0.25), (0.85, 0.25), (0.15, 0.75), (0.85, 0.75), (0.5, 0.15), (0.5, 0.85)]
 
-
 def _scale_clip(src, dst, target, zoom=None, pan_target=None):
-    clip_len = _probe_duration(src)
-    loop_count = max(math.ceil(target / clip_len), 1) if clip_len > 0 else 1
-    # fps filter forces a real, constant frame rate -- Pexels source clips come in
-    # at whatever fps the original was shot at, and concatenating segments with
-    # different/variable frame rates causes a stutter at each cut point even though
-    # the audio/captions stay on schedule.
+    # fps filter forces a real, constant frame rate on the AI-generated held-image
+    # clip's own encode -- concatenating segments with different/variable frame rates
+    # causes a stutter at each cut point even though the audio/captions stay on
+    # schedule.
     vf = (
         f"fps={OUTPUT_FPS},scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,"
         f"crop={WIDTH}:{HEIGHT},{SIGNATURE_LOOK_FILTER}"
@@ -267,6 +263,8 @@ def _scale_clip(src, dst, target, zoom=None, pan_target=None):
             f",zoompan=z='if(eq(on,1),1,min(zoom+{zoom_step},{zoom_end}))':d=1:"
             f"x='{x_expr}':y='{y_expr}':s={WIDTH}x{HEIGHT}:fps={OUTPUT_FPS}"
         )
+    clip_len = _probe_duration(src)
+    loop_count = max(math.ceil(target / clip_len), 1) if clip_len > 0 else 1
     subprocess.run([
         "ffmpeg", "-y", "-stream_loop", str(loop_count - 1), "-i", str(src),
         "-t", str(target), "-vf", vf, "-an", "-c:v", "libx264", "-preset", "veryfast",
@@ -274,13 +272,15 @@ def _scale_clip(src, dst, target, zoom=None, pan_target=None):
     ], check=True)
 
 
-def _build_video_track(scaled_paths, clip_targets, beats, out_path):
-    """Crossfades consecutive beat clips into video_track.mp4 instead of hard-cutting
+def _build_video_track(scaled_paths, clip_targets, transition_durations, out_path):
+    """Crossfades consecutive shot clips into video_track.mp4 instead of hard-cutting
     between them -- chains ffmpeg's xfade filter across all N clips in one pass, rather
     than the old concat-demuxer approach (concat can't overlap two streams at once, only
     play them back to back, so a real crossfade needs every clip as a live filter-graph
-    input instead). Each transition is either a short whip-blur or a near-instant hard
-    cut depending on beat_role -- see WHIP_ROLES/_transition_duration."""
+    input instead). transition_durations[i] is the duration of the cut INTO shot i
+    (index 0 is unused -- the first shot has nothing to transition from); the caller
+    (assemble()) decides per-shot whether that's a real beat-boundary whip/hard-cut
+    (see WHIP_ROLES/_transition_duration) or an ordinary within-beat sub-shot cut."""
     n = len(scaled_paths)
     inputs = []
     for p in scaled_paths:
@@ -293,7 +293,7 @@ def _build_video_track(scaled_paths, clip_targets, beats, out_path):
         cumulative = clip_targets[0]
         prev_label = "0:v"
         for i in range(1, n):
-            duration = _transition_duration(beats, i)
+            duration = transition_durations[i]
             transition = "hblur" if duration == WHIP_TRANSITION_DURATION else "fade"
             offset = max(cumulative - duration, 0.0)
             out_label = f"v{i}"
@@ -421,32 +421,61 @@ def assemble(script, narration_path, clips, music_dir, out_path, work_dir):
     narration_duration = min(_probe_duration(narration_path), config.MAX_SHORT_SECONDS)
     durations = _beat_durations(script["beats"], narration_duration)
 
-    # Each clip is rendered TRANSITION_DURATION longer than it needs to be for its own
-    # beat -- see TRANSITION_DURATION's comment -- so the crossfade below has real
-    # overlap material to consume instead of eating into CLIP_DURATION_BUFFER's own
+    # broll.py already generated one DISTINCT image per visual shot and tagged each
+    # clip with which beat it belongs to (pipeline/shot_planning.py decided the shot
+    # count there, from its own narration-duration estimate) -- group by beat_index and
+    # lay out whatever images actually exist for beat i evenly across that beat's FINAL
+    # duration (computed just above, from the actual trimmed narration). The two stages
+    # deliberately don't need to agree on an exact shot count: assemble.py just adapts
+    # to whatever broll.py produced, so a small drift between broll.py's duration
+    # estimate and this one can never desync captions/timing from the video track.
+    shots_by_beat = {}
+    for clip in clips:
+        shots_by_beat.setdefault(clip["beat_index"], []).append(clip)
+    for beat_clips in shots_by_beat.values():
+        beat_clips.sort(key=lambda c: c["shot_index"])
+
+    # Each sub-shot clip is rendered TRANSITION_DURATION longer than it needs to be --
+    # see TRANSITION_DURATION's comment -- so the crossfade below has real overlap
+    # material to consume instead of eating into CLIP_DURATION_BUFFER's own
     # frame-rounding safety margin.
-    clip_targets = [d + CLIP_DURATION_BUFFER + TRANSITION_DURATION for d in durations]
     scaled_paths = []
-    for i, (clip, target) in enumerate(zip(clips, clip_targets)):
-        scaled = work_dir / f"beat_{i:02d}_scaled.mp4"
+    clip_targets = []
+    transition_durations = [0.0]  # index 0 unused -- the first shot has nothing to transition from
+    for i, duration in enumerate(durations):
         role = script["beats"][i].get("beat_role")
         # 'ending' matches the hook's own zoom rate (not the subtle everyday rate) --
         # when the routine uses the sentence-loop technique (ROUTINE_INSTRUCTIONS.md),
         # matching motion across the loop point is part of what makes the cut back to
         # beat 0 read as continuous rather than a hard restart.
         zoom = "hook" if role in ("hook", "ending") else "subtle"
-        # Real Ken Burns pan on AI-generated image clips (no motion of their own -- see
-        # PAN_TARGETS' comment) and on joke/hedge beats specifically, so the motion
-        # itself varies across the video instead of every beat zooming dead-center the
-        # same way -- a joke or a tonal shift reads as a distinct beat partly because
-        # the camera moves differently through it, not just because of the words.
-        wants_pan = clip.get("source") == "ai_image" or role in ("joke", "hedge")
-        pan_target = random.choice(PAN_TARGETS) if wants_pan else None
-        _scale_clip(clip["path"], scaled, target, zoom=zoom, pan_target=pan_target)
-        scaled_paths.append(scaled)
+
+        beat_clips = shots_by_beat[i]
+        sub_duration = duration / len(beat_clips)
+        sub_target = sub_duration + CLIP_DURATION_BUFFER + TRANSITION_DURATION
+
+        for s, clip in enumerate(beat_clips):
+            scaled = work_dir / f"beat_{i:02d}_shot_{s:02d}_scaled.mp4"
+            # Every clip is a distinct AI-generated image with no motion of its own
+            # (see PAN_TARGETS' comment), so every sub-shot gets a real Ken Burns pan
+            # on top of its own already-distinct content.
+            pan_target = random.choice(PAN_TARGETS)
+            _scale_clip(clip["path"], scaled, sub_target, zoom=zoom, pan_target=pan_target)
+            scaled_paths.append(scaled)
+            clip_targets.append(sub_target)
+
+            if i == 0 and s == 0:
+                continue  # the video's very first shot -- nothing to transition from
+            if s == 0:
+                # A real beat boundary -- carries the existing whip/hard-cut meaning.
+                transition_durations.append(_transition_duration(script["beats"], i))
+            else:
+                # A within-beat sub-shot cut -- not a structural boundary, always a
+                # fast hard cut so it reads as pace, not punctuation.
+                transition_durations.append(HARD_CUT_DURATION)
 
     video_track = work_dir / "video_track.mp4"
-    _build_video_track(scaled_paths, clip_targets, script["beats"], video_track)
+    _build_video_track(scaled_paths, clip_targets, transition_durations, video_track)
 
     ass_path = work_dir / "captions.ass"
     _write_ass(script["beats"], durations, ass_path)
@@ -499,7 +528,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--script", required=True)
     parser.add_argument("--narration", required=True)
-    parser.add_argument("--clips", required=True, help="JSON list of {path, source} clip entries, inline or a file path")
+    parser.add_argument("--clips", required=True, help="JSON list of {path, source, beat_index, shot_index} shot entries (see broll.py), inline or a file path")
     parser.add_argument("--music-dir", default=str(config.ASSETS_DIR / "music"))
     parser.add_argument("--work-dir", required=True)
     parser.add_argument("--out", required=True)

@@ -282,19 +282,17 @@ Save it as `state/pending_script.json` matching the shape documented in
   omit the field entirely rather than fabricating a citation from memory -- a
   plausible-sounding fake source is worse than none.
 - `beats`: 3-16 entries, each `{"text": "...", "broll_query": "...", "beat_role": "..."}`.
-  Every `broll_query` must be a **short, literal keyword phrase -- 3-6 concrete nouns/
-  adjectives, not a cinematic sentence** (e.g. `"person wearing black mask"`, not
-  `"close-up hand slowly putting on a plain black mask, dramatic side lighting, slow
-  motion"`). This is a hard technical constraint, not a style preference: the Pixabay
-  fallback does simple keyword-OR matching across the whole query string with no scene
-  understanding, so a long descriptive sentence dilutes the match and returns unrelated
-  footage matched on a single stray word (verified in production: a mask query worded
-  as a full sentence returned an ocean wave, a tiger, and a CPU socket instead of
-  anything mask-related; the same concept as a short phrase returned entirely on-topic
-  results). The same text also becomes the AI-image prompt (`pipeline/ai_broll.py`)
-  when that's available -- a short concrete phrase works well for both, so there's no
-  need to write it differently for one path or the other. Keep every beat's query this
-  short, not just beat 0. `beat_role` must be one of `hook`, `claim`, `evidence`,
+  Every `broll_query` is the image-generation prompt for that beat (`pipeline/ai_broll.py`,
+  the sole b-roll source as of 2026-08-21 -- there is no Pixabay/keyword-search fallback
+  any more). Write it as a **concrete, visually specific description of a single scene --
+  subject, setting, and what's visibly happening**, roughly 5-15 words (e.g. `"a hand in
+  black leather glove slowly pulling on a plain black mask, dim room, side light"`, not
+  the bare noun phrase `"black mask"` and not an overlong paragraph). Specificity is what
+  produces a good image here, not brevity -- a vague or generic prompt reliably produces
+  a vague or generic image, and this channel's own measured feedback has flagged AI
+  images as "too conceptual" before. A fixed style suffix (lighting/quality/aspect terms)
+  is appended automatically -- don't write those into `broll_query` yourself, just
+  describe the scene's actual content. `beat_role` must be one of `hook`, `claim`, `evidence`,
   `joke`, `hedge`, `ending` (`pipeline/script_schema.py`'s `BEAT_ROLES`) -- see the
   format below for what each one means and when to use it; `pipeline/assemble.py` uses
   this field (not beat position) to decide which cuts get a whip-blur transition vs. a

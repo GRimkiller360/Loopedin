@@ -16,7 +16,7 @@ MAX_SHORT_SECONDS = 58
 VARIETY_LOOKBACK = 40
 # Raised from 3 to 6 (2026-08-20) for the 2-week hands-off stretch: there's no
 # alerting if this pauses the channel (produce-upload.yml has no way to notify
-# anyone), so a couple of one-off transient failures (a Pixabay hiccup, a TTS
+# anyone), so a couple of one-off transient failures (a Cloudflare hiccup, a TTS
 # timeout) auto-pausing the whole channel for the rest of those 2 weeks would be
 # far worse than letting it ride out a bad day. At 6 fires/day this still auto-pauses
 # within about a day of genuinely broken state (e.g. an expired credential), not two

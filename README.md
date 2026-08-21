@@ -27,9 +27,10 @@ credential ever needs to live anywhere but GitHub's secrets store.
    `state/used_topics.json`, writes an **original** `state/pending_script.json`,
    commits and pushes it. Needs no credentials at all.
 3. **`.github/workflows/produce-upload.yml`** — triggered by that push. Uses
-   `GOOGLE_TTS_CREDENTIALS_JSON`, `PIXABAY_API_KEY`, `YOUTUBE_CLIENT_ID`,
-   `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN` secrets to run narration → b-roll →
-   assembly → upload, then records the result and clears the pending script.
+   `GOOGLE_TTS_CREDENTIALS_JSON`, `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN`,
+   `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN` secrets to run
+   narration → b-roll → assembly → upload, then records the result and clears the
+   pending script.
 4. **`.github/workflows/analytics-feedback.yml`** — once/day, timed to finish just
    before the first `trend-fetch.yml`/routine cycle of the day (23:55 UTC), pulls
    performance stats (`YOUTUBE_CLIENT_ID`/`SECRET`/`REFRESH_TOKEN` again) and writes
@@ -55,9 +56,8 @@ repository secret**. Add these exact names:
 | `YOUTUBE_CLIENT_SECRET` | OAuth client secret |
 | `YOUTUBE_REFRESH_TOKEN` | from `scripts/get_refresh_token.py` |
 | `GOOGLE_TTS_CREDENTIALS_JSON` | Cloud TTS service-account JSON, full contents |
-| `PIXABAY_API_KEY` | Pixabay API key |
-| `CLOUDFLARE_ACCOUNT_ID` | *(optional)* Cloudflare account ID -- enables AI-generated background images (`pipeline/ai_broll.py`) as the primary b-roll source, with Pixabay as the automatic fallback. Safe to leave unset; the pipeline just keeps using Pixabay exclusively until both this and the token below exist. |
-| `CLOUDFLARE_API_TOKEN` | *(optional)* Cloudflare API token with Workers AI access -- see `CLOUDFLARE_ACCOUNT_ID` above. |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID -- required as of 2026-08-21. AI-generated images (`pipeline/ai_broll.py`, flux-1-schnell) are the sole b-roll source; there is no stock-footage fallback any more, so the B-roll step fails outright without this and the token below. |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare API token with Workers AI access -- see `CLOUDFLARE_ACCOUNT_ID` above. |
 | `DASHBOARD_URL` | The car-loan-dashboard Worker's base URL (same value the `bracketly` repo's `DASHBOARD_URL` secret uses) |
 | `LOOPEDIN_INGEST_SECRET` | A long random string — set the identical value as a `wrangler secret put LOOPEDIN_INGEST_SECRET` on the dashboard Worker. Distinct from bracketly's `BRACKETLY_INGEST_SECRET`, so either app's ingest can be rotated independently. |
 

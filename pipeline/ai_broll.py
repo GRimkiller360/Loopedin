@@ -1,9 +1,12 @@
-"""AI-generated background images via Cloudflare Workers AI (Stable Diffusion XL) --
-an alternative b-roll source to Pixabay stock footage (see broll.py), added 2026-08-21
-per explicit channel-owner instruction. Generates an image matching each beat's content
-directly instead of searching for a pre-existing clip that may or may not match --
-sidesteps the keyword-OR mismatch problem documented in broll.py/ROUTINE_INSTRUCTIONS.md
-(a full-sentence query once returned an ocean wave for a "mask" search).
+"""AI-generated background images via Cloudflare Workers AI (flux-1-schnell) -- the
+sole b-roll source (see broll.py) as of 2026-08-21, when the Pixabay stock-footage
+fallback that originally backed this up was removed entirely per explicit
+channel-owner instruction ("only use AI images"). Generates an image matching each
+beat's content directly instead of searching for a pre-existing clip that may or may
+not match -- also sidesteps the keyword-OR mismatch problem Pixabay had (documented in
+git history/ROUTINE_INSTRUCTIONS.md: a full-sentence query once returned an ocean wave
+for a "mask" search), though that's no longer the primary reason to prefer this path
+now that it's the only path.
 
 Free budget: Cloudflare gives every account 10,000 free Neurons/day (resets 00:00 UTC).
 Uses flux-1-schnell (switched from SDXL 2026-08-21) specifically because its pricing is
@@ -21,13 +24,11 @@ Two independent safety nets still keep this from depending on that math being ex
    the rest of today immediately. Same reactive pattern pipeline/quota_guard.py already
    uses for YouTube's own quota: react to the provider's own rejection, don't just trust
    a self-computed number.
-Either trigger raises AIImageUnavailable, which broll.py catches to fall back to
-Pixabay for that beat -- this is never allowed to fail a whole production run.
-
-Also treats missing CLOUDFLARE_ACCOUNT_ID/CLOUDFLARE_API_TOKEN as "not configured yet"
-rather than an error -- this module can ship and run before those secrets exist, and
-the pipeline just keeps using Pixabay exclusively (today's actual behavior) until
-they're added.
+Either trigger raises AIImageUnavailable. With no fallback source left, broll.py no
+longer catches this -- it propagates and fails that beat's b-roll step outright, the
+same way script_schema.py/quality_gate.py already fail a run rather than silently
+shipping something degraded. This makes CLOUDFLARE_ACCOUNT_ID/CLOUDFLARE_API_TOKEN
+required secrets in practice, not optional ones -- see credentials_configured().
 """
 import base64
 import json
@@ -44,42 +45,45 @@ from pipeline.state_utils import load_json, save_json
 
 MODEL = "@cf/black-forest-labs/flux-1-schnell"
 
-# 512x1024 -- not the exact 1080x1920 (9:16, 0.5625) aspect ratio, but close (0.5),
-# so assemble.py's existing scale+crop pipeline only takes a small extra crop versus
-# Pixabay's mostly-landscape source footage, which it already crops far more from.
-# Chosen over the exact-ratio 576x1024 specifically for tile cost: Cloudflare bills
-# flux-1-schnell by 512x512 tiles rounded up, and 576 crosses into a second tile
-# column for zero visual benefit over 512 at this width. 512x1024 = 1x2 = 2 tiles;
-# 576x1024 = 2x2 = 4 tiles, the same cost as a full 1024x1024 image. Halving the
-# tile cost is what pushes the free daily image budget from ~173/day to ~208/day --
-# see module docstring -- which matters because upcoming multi-shot-per-beat editing
-# needs far more images per video than the current one-per-beat approach.
+# 512x1024 -- not the exact 1080x1920 (9:16, 0.5625) aspect ratio, but close (0.5), so
+# assemble.py's existing scale+crop pipeline only takes a small extra crop. Chosen over
+# the exact-ratio 576x1024 specifically for tile cost: Cloudflare bills flux-1-schnell
+# by 512x512 tiles rounded up, and 576 crosses into a second tile column for zero
+# visual benefit over 512 at this width. 512x1024 = 1x2 = 2 tiles; 576x1024 = 2x2 = 4
+# tiles, the same cost as a full 1024x1024 image. Halving the tile cost pushes the free
+# daily image budget from ~173/day to ~208/day -- see module docstring -- which matters
+# now that AI images are the only b-roll source, with no fallback if the budget runs out.
 IMAGE_WIDTH, IMAGE_HEIGHT = 512, 1024
 
-# A fixed style suffix appended to every prompt (broll_query text is written for
-# Pixabay's keyword-OR search, not tuned for image generation specifically) -- biases
-# SDXL toward a consistent, higher-quality look without requiring any change to how
-# the routine writes broll_query in the first place. "cinematic lighting" (the
-# original suffix) measurably biased toward moody/dark images -- a real published
+# A fixed style suffix appended to every prompt (broll_query is a scene description --
+# see ROUTINE_INSTRUCTIONS.md -- not pre-tuned for image generation specifically) --
+# biases the model toward a consistent, higher-quality look without requiring any
+# change to how the routine writes broll_query in the first place. "cinematic
+# lighting" (the original suffix, written for the SDXL era) measurably biased toward
+# moody/dark images -- a real published
 # video measured at 24% mean brightness against a healthy reference's 54%, with the
 # top third of frame near-black through most of it. Swapped for wording that keeps
 # quality/detail but pushes toward a brighter, higher-key look that actually reads on
 # a phone screen in daylight.
 STYLE_SUFFIX = ", bright natural lighting, vivid colors, high detail, vertical portrait photo"
 
-# ~208/day is the computed ceiling at full free budget (see module docstring) --
-# capped here at 150 to leave real headroom for Cloudflare's own pricing/rounding not
-# matching this module's math exactly, while still giving 6 videos/day room for ~25
-# images each once multi-shot-per-beat editing ships (this channel's current volume:
-# 6 videos/day at 6 fires, cron `0 5,7,10,13,16,18 * * *`).
-DAILY_IMAGE_CAP = 150
+# ~208/day is the computed ceiling at full free budget (see module docstring).
+# broll.py (2026-08-21) generates one DISTINCT image per visual shot, not per beat --
+# real demand at this channel's volume (6 videos/day, ~25 shots/video per
+# pipeline/shot_planning.py's constants) is roughly 150/day. Capped at 190, not right
+# up against the 208 ceiling: with Pixabay removed there's no fallback left at all, so
+# real headroom against Cloudflare's own pricing/rounding not matching this module's
+# math exactly, plus the occasional longer-than-usual script, matters more than
+# squeezing out every last free image.
+DAILY_IMAGE_CAP = 190
 
 QUOTA_PATH = config.STATE_DIR / "image_quota.json"
 
 
 class AIImageUnavailable(Exception):
-    """Not configured, quota exhausted, or a real API failure -- broll.py treats all
-    of these identically: fall back to Pixabay for this beat, never fail the run."""
+    """Not configured, quota exhausted, or a real API failure -- broll.py no longer
+    catches this (no fallback source exists any more), so it propagates and fails
+    that production run outright."""
 
 
 def _today():
@@ -151,8 +155,10 @@ def generate_image(prompt, out_path):
             raise AIImageUnavailable(f"Cloudflare rejected as quota/rate-limit ({e.code}): {detail}") from e
         raise AIImageUnavailable(f"Cloudflare Workers AI request failed ({e.code}): {detail}") from e
     except Exception as e:
-        # Any other transport/parsing failure -- never let an image-generation problem
-        # take down the whole production run, Pixabay is always the safety net.
+        # Any other transport/parsing failure -- wrapped as AIImageUnavailable so every
+        # failure mode (not configured, quota, a real API error, this) is one distinct,
+        # identifiable exception type in the logs, rather than a grab-bag of different
+        # underlying exceptions all reaching the same "this run failed" outcome.
         raise AIImageUnavailable(f"Cloudflare Workers AI request failed: {e}") from e
 
     # flux-1-schnell's documented response is a JSON envelope with a base64-encoded
