@@ -1389,6 +1389,22 @@
       "share_trigger": "A viewer sends this to the friend who complains about being 'the new guy' at work, because they want to show it could have been so much worse.",
       "contradicted_belief": "Most people assume a hazed new recruit and the actual enemy would never share the same nickname, but the Soviet army gave them one.",
       "has_sources": true
+    },
+    {
+      "topic": "Portugal's 1966 World Cup squad's colonial-Africa-born stars (Coluna, Eus\u00e9bio), the same year Africa boycotted the tournament entirely",
+      "video_id": "ulVCT_wmFjY",
+      "uploaded_at": "2026-08-21T11:37:01.286396+00:00",
+      "publish_hour_utc": 11,
+      "category": "history",
+      "seed_source_video_id": "XywjyJ_Rzpw",
+      "seed_view_count": 452169,
+      "hook_type": "shocking_fact",
+      "title": "Portugal's 1966 World Cup Captain Wasn't Born In Portugal",
+      "duration_seconds": 35.9,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who insists national teams only pick players actually born there.",
+      "contradicted_belief": "Most people assume a national team's captain was actually born in that country, in this case Portugal.",
+      "has_sources": true
     }
   ]
 }
