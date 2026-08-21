@@ -220,6 +220,19 @@
         "RULESET_VERSION -> 2026-08-21-no-dash-connector-v9",
         "Not verified with a real render or real audio playback in this session -- the voice choice is Google's documented characteristic tag, not a listened-to sample; the zoom/pan increase was verified mathematically (clamp safety, achievable-range growth) but not seen rendered; the dash regex was verified against synthetic test strings, not a real script. Recommend watching the next real upload specifically for voice tone, visible motion on the AI images, and a clean caption/narration match before considering all three fully confirmed"
       ]
+    },
+    {
+      "date": "2026-08-21",
+      "changed_by": "human-guided (Ethan) -- explicit instruction, no diagnosis attached",
+      "from_version": "2026-08-21-no-dash-connector-v9",
+      "to_version": "2026-08-21-no-dash-connector-v9",
+      "diagnosis": "Channel owner asked for a hook-based custom thumbnail instead of relying on YouTube's own auto-picked frame. Pure production/upload-side change -- no script-writing impact, RULESET_VERSION unchanged.",
+      "evidence": "Explicit instruction in a live session.",
+      "changes": [
+        "pipeline/upload.py: after a successful upload, grabs a frame at t=0.4s from the already-finished video itself (not a separate render) and sets it as the custom thumbnail via youtube.thumbnails().set(). Uses the final video directly rather than plumbing a beat-0 image path through broll.py/assemble.py -- works identically regardless of whether beat 0 used an AI image or Pixabay footage, and the frame already includes captions/watermark exactly as viewers see them",
+        "Best-effort, non-fatal -- custom thumbnails via the API require the channel be eligible (phone-verified, in good standing), which can't be confirmed from this session; a failure here falls back to YouTube's own auto-picked thumbnail and never affects upload success or auto-pause",
+        "Not verified against the live API in this session (no credentials available) -- specifically unconfirmed whether the channel's stored OAuth token has sufficient scope for thumbnails.set (videos.insert and commentThreads.insert already work, which likely but not certainly implies broad-enough scope). Recommend checking the next real upload for whether the custom thumbnail actually took"
+      ]
     }
   ]
 }

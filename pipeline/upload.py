@@ -6,11 +6,37 @@ correct against current docs (developers.google.com/youtube/v3/docs/videos,
 """
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from pipeline import config
+
+# A frame from the hook beat, used as the custom thumbnail -- grabbed from the final
+# rendered video itself (not a separate render) so it's exactly what the video already
+# shows: captions, watermark, and whichever b-roll source (AI image or Pixabay) beat 0
+# actually used, with zero extra plumbing between pipeline stages. 0.4s is safely past
+# the caption pop-in (120ms) and any beat-0 zoom-punch settling, and well within beat 0
+# for any realistic script (a hook needs several spoken words to land, which takes
+# noticeably longer than 0.4s even at this channel's brisk pace).
+THUMBNAIL_TIMESTAMP_SECONDS = 0.4
+
+
+def _extract_thumbnail(video_path, out_path):
+    subprocess.run([
+        "ffmpeg", "-y", "-ss", str(THUMBNAIL_TIMESTAMP_SECONDS), "-i", str(video_path),
+        "-frames:v", "1", "-q:v", "2", str(out_path),
+    ], check=True)
+
+
+def _set_thumbnail(youtube, video_id, thumb_path):
+    from googleapiclient.http import MediaFileUpload
+
+    youtube.thumbnails().set(
+        videoId=video_id,
+        media_body=MediaFileUpload(str(thumb_path), mimetype="image/jpeg"),
+    ).execute()
 
 
 # Posted as a top-level comment from the channel right after upload -- NOT pinned,
@@ -118,6 +144,18 @@ def upload_short(video_path, script, privacy_status="public"):
         _post_cta_comment(youtube, video_id, response["snippet"]["channelId"], script)
     except Exception as e:
         print(f"warning: CTA comment failed (non-fatal): {e}", file=sys.stderr)
+
+    # Also best-effort -- custom thumbnails via the API require the channel be
+    # eligible (phone-verified, in good standing), which this session has no way to
+    # confirm, so a 403 here is expected-possible, not a bug. The video already
+    # published fine either way; YouTube's own auto-generated thumbnail is the
+    # fallback if this doesn't go through.
+    try:
+        thumb_path = Path(video_path).with_name("thumbnail.jpg")
+        _extract_thumbnail(video_path, thumb_path)
+        _set_thumbnail(youtube, video_id, thumb_path)
+    except Exception as e:
+        print(f"warning: custom thumbnail failed (non-fatal): {e}", file=sys.stderr)
 
     return video_id
 
