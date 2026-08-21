@@ -1,0 +1,35 @@
+{
+  "topic": "the 1932 Emu War, where Australia's own army sent machine guns after emus and lost",
+  "category": "history",
+  "seed_source_video_id": "sVsEfNeGXxM",
+  "seed_view_count": 630773,
+  "title": "Australia Sent Machine Guns to War Against Emus. The Birds Won.",
+  "description": "The true story of the 1932 Emu War, where Australia's own army sent real machine guns after emus destroying wheat crops in Western Australia, and lost. AI-narrated historical commentary.",
+  "tags": ["emu war", "history", "weird history", "australia history", "great emu war 1932", "military history", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "The strangest wars a real army ever fought, and actually lost."},
+    {"hook_type": "question", "text": "What happens when a government sends real machine guns after a bird, and loses?"},
+    {"hook_type": "myth_bust", "text": "The Emu War is not an internet joke. It was a real military operation, and the birds won."},
+    {"hook_type": "story", "text": "In 1932 a decorated Australian army major was sent to defeat a few thousand birds, and radioed home defeated."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who insists no army could ever lose to animals, because they want to prove Australia's real government machine-gunned emus and still lost.",
+  "contradicted_belief": "Most people believe a real army with modern weapons could never actually lose a war to animals.",
+  "closing_comment": "Major Meredith really told the Australian army that emus could face machine guns with the invulnerability of tanks, wild that this made it into an official 1932 report.",
+  "sources": [
+    {"url": "https://www.themeateater.com/conservation/wildlife-management/the-great-emu-war-of-1932", "note": "Confirms Major Meredith's 1932 deployment, machine gun details, and his 'invulnerability of tanks' quote."},
+    {"url": "https://boingboing.net/2026/01/13/in-1932-australia-went-to-war-against-emus-the-emus-won.html", "note": "Confirms parliamentary mockery, ornithologist criticism, and the bounty system that replaced the military cull."}
+  ],
+  "beats": [
+    {"text": "The strangest wars a real army ever fought, and actually **lost**.", "broll_query": "machine-gun-mounted truck stalled in a golden wheat field, dust cloud, low angle", "beat_role": "hook"},
+    {"text": "In 1932 Australia sent machine guns after **emus**.", "broll_query": "soldiers loading a Lewis machine gun onto a flatbed truck, dusty 1930s outback", "beat_role": "claim"},
+    {"text": "Six days, thousands of rounds, only about **fifty** birds down.", "broll_query": "wide shot of emus stampeding through a wheat field at dawn, dust and feathers", "beat_role": "evidence"},
+    {"text": "Emus one, army zero.", "broll_query": "close-up of a soldier's puzzled face staring down empty gun sights at open field", "beat_role": "joke"},
+    {"text": "The commanding officer compared the emus to **tanks**.", "broll_query": "stern 1930s military officer speaking, ghostly transparent tank silhouette over marching emus", "beat_role": "claim"},
+    {"text": "He said their bullet **resistance** could beat any modern force.", "broll_query": "vintage sepia-toned portrait of a stern military major with war medals", "beat_role": "evidence"},
+    {"text": "History's only army beaten by poultry.", "broll_query": "a single emu standing on top of an abandoned military truck at sunset", "beat_role": "joke"},
+    {"text": "Parliament got so embarrassed it nicknamed him the **Minister** of the Emu War.", "broll_query": "old Australian parliament chamber, wooden benches, dim historic lighting, sepia tone", "beat_role": "claim"},
+    {"text": "Historians still **debate** the exact toll.", "broll_query": "an old newspaper clipping with a magnifying glass over a smudged number", "beat_role": "hedge"},
+    {"text": "So they gave up, and started paying farmers instead, in what's still **one** of", "broll_query": "a single emu standing calmly in a wheat field at golden hour, truck driving away", "beat_role": "ending"}
+  ]
+}
