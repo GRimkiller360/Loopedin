@@ -9,10 +9,10 @@ Expected script.json shape:
 {
   "topic": "short human-readable topic label, used for variety tracking",
   "category": "the broader bucket this topic falls under (copy trend_seed['seed_category']
-               verbatim, e.g. 'science facts', 'life hacks') -- unlike topic, this repeats
-               across videos, so it's what the performance-feedback loop can actually learn
-               from ('science facts videos do well' is a generalizable signal; one specific
-               topic's performance is not)",
+               verbatim -- currently always 'history', see CATEGORIES below) -- unlike
+               topic, this repeats across videos, so it's what the performance-feedback
+               loop can actually learn from ('history videos do well' is a generalizable
+               signal; one specific topic's performance is not)",
   "title": "YouTube title, <=100 chars, hook + relevant keywords",
   "description": "YouTube description; mention this is AI-narrated commentary",
   "tags": ["...", "..."],
@@ -111,19 +111,17 @@ BEAT_ROLES = {"hook", "claim", "evidence", "joke", "hedge", "ending"}
 # pipeline/trend_source.py's SEED_CATEGORIES and the list documented in
 # ROUTINE_INSTRUCTIONS.md.
 #
-# Narrowed from the original 10 to a single coherent niche -- subscriber conversion
-# was flat 0.00/1k views across every category with the full spread, and a channel
-# that jumps between tractors, sharks, and Albanian law gives neither viewers nor the
-# algorithm a reason to expect what's next. These three share the same content
-# mechanic that's already proven to drive retention here (a specific, checkable,
-# counter-intuitive claim), and carry lower factual-liability risk for a fully
-# automated, unreviewed pipeline than the categories dropped (personal finance reads
-# as financial advice with zero human review; true crime mystery involves real
-# victims/cases with no fact-check step; life hacks/technology/fitness are heavily
-# saturated by existing large channels). Psychology dropped 2026-08-20 per explicit
-# user instruction (no diagnosed defect cited -- see state/ruleset_changelog.json).
+# Narrowed to history alone 2026-08-21 per explicit channel-owner instruction (no
+# diagnosed defect cited -- see state/ruleset_changelog.json). Was science
+# facts/space/history from 2026-08-20 (that narrowing's own reasoning, now superseded:
+# subscriber conversion was flat across a wider 10-category spread, and these three
+# shared a proven content mechanic + lower factual-liability risk than the categories
+# dropped then). History alone was also the standout performer of the three once
+# avg_view_pct started breaking share_rate ties in the analytics ranking (2026-08-21) --
+# ~223% avg view vs. ~58-60% for space/science facts, see state/ruleset_changelog.json's
+# analytics_feedback.py entry.
 CATEGORIES = {
-    "science facts", "space", "history",
+    "history",
 }
 HOOK_TYPES = {"question", "shocking_fact", "myth_bust", "list", "story", "challenge"}
 

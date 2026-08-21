@@ -43,14 +43,12 @@ further, that's out of scope per "On failure" below.
   (title/category/view-count signal each), fetched moments ago and already deduped
   against `used_topics.json` by source video ID. Never the source video's actual
   content. Pick whichever candidate gives the best distinct angle -- you don't have to
-  use `candidates[0]`. Each `seed_category` is one of a fixed set (**science facts,
-  space, history** -- deliberately narrowed from a broader original list to build a
-  coherent channel identity, psychology later dropped 2026-08-20 per explicit user
-  instruction; see `pipeline/script_schema.py`'s `CATEGORIES` comment for the full
-  reasoning) -- copy the one you pick verbatim into your script's
-  `category` field (see step 2). Don't invent a new category string even if it feels
-  more precise; the performance-feedback loop only works if categories stay consistent
-  across videos.
+  use `candidates[0]`. Each `seed_category` is one of a fixed set (**history alone**
+  as of 2026-08-21, narrowed down from a wider original list in stages -- see
+  `pipeline/script_schema.py`'s `CATEGORIES` comment for the full reasoning) -- copy
+  the one you pick verbatim into your script's `category` field (see step 2). Don't
+  invent a new category string even if it feels more precise; the performance-feedback
+  loop only works if categories stay consistent across videos.
   If the list is short (1-2 entries, or entries with `source_video_id: null`), that
   means nothing fresh turned up this run -- see step 2 for what to do about that.
 - `state/performance_summary.md` -- refreshed once/day, timed right before the first

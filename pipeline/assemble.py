@@ -308,8 +308,6 @@ def _build_video_track(scaled_paths, clip_targets, beats, out_path):
 # category is preferred over a fully random pick. Inert and harmless until tagged
 # files actually exist -- falls straight back to random, same as before this existed.
 CATEGORY_MOODS = {
-    "science facts": ("curious", "upbeat"),
-    "space": ("awe", "calm", "epic"),
     "history": ("mysterious", "dramatic", "epic"),
 }
 

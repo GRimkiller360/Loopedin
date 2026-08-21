@@ -175,6 +175,21 @@
         "Mascot watermark (bottom-right corner, one of the 3 expressions picked per video) is unchanged and still runs every video",
         "RULESET_VERSION left unchanged -- this only affects rendering, not script-writing guidance"
       ]
+    },
+    {
+      "date": "2026-08-21",
+      "changed_by": "human-guided (Ethan) -- explicit instruction, no diagnosis attached",
+      "from_version": "2026-08-21-claim-evidence-joke-v7",
+      "to_version": "2026-08-21-claim-evidence-joke-v7",
+      "diagnosis": "Channel owner asked to drop space and science facts, leaving history as the only active category. No specific defect cited -- a direct scope instruction, consistent with history already being the clear standout once avg_view_pct started breaking share_rate ties in the analytics ranking earlier the same day (~223% avg view vs. ~58-60% for the other two).",
+      "evidence": "Explicit instruction in a live session (\"remove all the niches except history\").",
+      "changes": [
+        "Removed 'science facts' and 'space' from CATEGORIES in pipeline/script_schema.py and SEED_CATEGORIES in pipeline/trend_source.py -- history is now the only category new scripts can pick",
+        "Updated ROUTINE_INSTRUCTIONS.md's category description and script_schema.py's own category-field docstring example",
+        "Removed the now-unreachable 'science facts'/'space' entries from pipeline/assemble.py's CATEGORY_MOODS and assets/music/README.md's example",
+        "RULESET_VERSION left unchanged -- this only affects the covered-category set, not hook/pacing/writing guidance",
+        "Deliberately did NOT touch state/performance_summary.md or state/used_topics.json -- past space/science-facts videos remain real production history, just no longer a category new scripts can pick"
+      ]
     }
   ]
 }
