@@ -49,7 +49,8 @@ GENERIC_SHARE_TRIGGER_PHRASES = (
 def _word_set(text):
     # Strip ** too -- beat text carries **emphasis** caption markup (see
     # script_schema.py) that overlap checks against non-beat text (hook_candidates,
-    # payoff_mechanism) would otherwise silently mismatch on (e.g. "**same**" != "same").
+    # share_trigger, contradicted_belief) would otherwise silently mismatch on (e.g.
+    # "**same**" != "same").
     return {w.strip(".,!?:;\"'*").lower() for w in text.split() if w.strip(".,!?:;\"'*")}
 
 
@@ -106,24 +107,6 @@ def check(script, used_topics_path):
                 "the drafted hook that matched hook_type must actually be the one used, not ignored"
             )
 
-    # payoff_mechanism must actually show up in the narration, not just satisfy
-    # script_schema.py's word-count check as an unused field. Checked against beats[1:]
-    # (not beat 0, which is the hook, not the explanation) with the same low bar as the
-    # hook-winner check -- light polish is fine, zero resemblance means the explanation
-    # written in payoff_mechanism never actually made it into the video.
-    mechanism = script.get("payoff_mechanism", "")
-    if mechanism and len(beats) > 1:
-        best_overlap = max(
-            (_title_overlap(mechanism, b.get("text", "")) for b in beats[1:]),
-            default=0.0,
-        )
-        if best_overlap < MIN_HOOK_WINNER_OVERLAP:
-            errors.append(
-                f"payoff_mechanism doesn't resemble any beat after the hook (best overlap="
-                f"{best_overlap:.2f}) -- the explanation written in payoff_mechanism has to "
-                "actually be narrated, not just exist as metadata"
-            )
-
     # share_trigger's real growth value depends on naming an actual person/relationship,
     # not a demographic -- script_schema.py already enforces the >=12 word floor, this
     # catches the genericness a word count alone can't.
@@ -137,8 +120,8 @@ def check(script, used_topics_path):
             break
 
     # contradicted_belief must actually be audible in beat 0, not just exist as
-    # metadata -- same low-bar overlap check as payoff_mechanism's beats[1:] check above,
-    # just anchored to the opening beat instead since that's where it has to land.
+    # metadata -- same low-bar overlap approach as the hook-winner check above, just
+    # anchored to the opening beat instead since that's where it has to land.
     belief = script.get("contradicted_belief", "")
     if belief and beats:
         overlap = _title_overlap(belief, beats[0].get("text", ""))

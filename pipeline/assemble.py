@@ -19,12 +19,20 @@ from pipeline import config
 
 WIDTH, HEIGHT = 1080, 1920
 
-# Gold/highlight color for **word**-marked emphasis, ASS inline &HBBGGRR& order
-# (RGB 255,215,0 -> BBGGRR 00D7FF). Base caption style is already bold, so emphasis
-# is color + a slight size bump rather than bold-on-bold, which wouldn't read as
-# distinct.
-EMPHASIS_OVERRIDE = r"{\c&H00D7FF&\fscx115\fscy115}"
+# One accent color per beat (not always gold) for **word**-marked emphasis, ASS inline
+# &HBBGGRR& order -- rotates through EMPHASIS_COLORS below, picked per beat rather than
+# fixed, so the highlighted keyword actually reads as "the one word that matters in
+# this sentence" instead of a static style element the eye tunes out after a few
+# repeats. Base caption style is already bold, so emphasis is color + a slight size
+# bump rather than bold-on-bold, which wouldn't read as distinct.
+# RGB -> BBGGRR: white FFFFFF, yellow FFFF00->00FFFF, green 33CC66->66CC33,
+# red FF3B30->303BFF, magenta FF2D95->952DFF, cyan 30D5F2->F2D530.
+EMPHASIS_COLORS = ["FFFFFF", "00FFFF", "66CC33", "303BFF", "952DFF", "F2D530"]
 EMPHASIS_RESET = r"{\r}"
+
+
+def _emphasis_override(color_hex):
+    return rf"{{\c&H{color_hex}&\fscx115\fscy115}}"
 
 # Every caption chunk pops in (scales up from 70% to 100%) over 120ms instead of just
 # appearing statically -- with captions now switching every 1-2 words (WORDS_PER_CAPTION),
@@ -88,11 +96,11 @@ def _tokenize_beat(text):
     return tokens
 
 
-def _chunk_to_ass(chunk):
+def _chunk_to_ass(chunk, emphasis_color):
     words = []
     for word, is_emphasized in chunk:
         escaped = _ass_escape(word)
-        words.append(f"{EMPHASIS_OVERRIDE}{escaped}{EMPHASIS_RESET}" if is_emphasized else escaped)
+        words.append(f"{_emphasis_override(emphasis_color)}{escaped}{EMPHASIS_RESET}" if is_emphasized else escaped)
     return POP_IN_TAG + " ".join(words)
 
 
@@ -118,11 +126,15 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 def _write_ass(beats, durations, out_path):
     lines = [ASS_HEADER]
     t = 0.0
-    for beat, beat_duration in zip(beats, durations):
+    for beat_index, (beat, beat_duration) in enumerate(zip(beats, durations)):
         tokens = _tokenize_beat(beat["text"])
         if not tokens:
             t += beat_duration  # keep later beats' timing aligned even on empty text
             continue
+
+        # One color per beat/sentence, not one fixed color for the whole video --
+        # rotates by beat index so consecutive beats don't repeat.
+        emphasis_color = EMPHASIS_COLORS[beat_index % len(EMPHASIS_COLORS)]
 
         chunks = [tokens[i:i + WORDS_PER_CAPTION] for i in range(0, len(tokens), WORDS_PER_CAPTION)]
         # No real per-word timestamps from the TTS step (see module docstring) -- each
@@ -134,7 +146,7 @@ def _write_ass(beats, durations, out_path):
             chunk_weight = sum(max(len(word), 1) for word, _ in chunk)
             chunk_duration = beat_duration * chunk_weight / total_weight
             start, end = t, t + chunk_duration
-            ass_text = _chunk_to_ass(chunk)
+            ass_text = _chunk_to_ass(chunk, emphasis_color)
             lines.append(f"Dialogue: 0,{_format_ass_timestamp(start)},{_format_ass_timestamp(end)},Default,,0,0,0,,{ass_text}")
             t = end
     Path(out_path).write_text("\n".join(lines), encoding="utf-8")
@@ -144,14 +156,31 @@ CLIP_DURATION_BUFFER = 0.35  # each segment overshoots slightly so frame-roundin
                               # across N clips can never leave the concatenated
                               # video shorter than the narration audio
 
-TRANSITION_DURATION = 0.35  # crossfade between consecutive b-roll clips instead of a
-                            # hard cut, so beats flow into each other rather than
-                            # bumping straight to the next scene. Each clip is rendered
-                            # this much longer too (see _scale_clip's target) --
-                            # otherwise the overlap xfade consumes to build the
-                            # crossfade would eat into CLIP_DURATION_BUFFER's own
-                            # safety margin and risk the video_track coming out shorter
-                            # than the narration again.
+# Transition type as punctuation, not decoration -- a whip-blur transition marks a
+# structurally important cut (into/out of a joke, into the hedge, into the ending),
+# while an ordinary claim/evidence beat gets a near-instant hard cut. Using the same
+# transition everywhere (what this pipeline did before) makes every cut feel equally
+# weighted; varying it signals which moments actually matter. Both still go through the
+# same xfade chain in _build_video_track -- WHIP_TRANSITION_DURATION is also the
+# padding basis for every clip (see clip_targets in assemble()), a safe upper bound
+# since HARD_CUT_DURATION is always smaller.
+WHIP_TRANSITION_DURATION = 0.16
+HARD_CUT_DURATION = 0.06
+TRANSITION_DURATION = WHIP_TRANSITION_DURATION  # padding basis, see comment above
+
+# beat_role values (script_schema.py's BEAT_ROLES) whose transition IN is a whip --
+# matches the structural pattern found in a reference video's own edit: whip lands on
+# joke entries/exits and tonal shifts, hard cut carries ordinary fact-to-fact moves.
+WHIP_ROLES = {"joke", "hedge", "ending"}
+
+
+def _transition_duration(beats, i):
+    """Duration for the transition INTO beat i (i.e. between beat i-1 and beat i) --
+    whip if beat i is entering a structurally important role, or beat i-1 was a joke
+    (so the joke gets punctuated on both entry and exit)."""
+    if beats[i].get("beat_role") in WHIP_ROLES or beats[i - 1].get("beat_role") == "joke":
+        return WHIP_TRANSITION_DURATION
+    return HARD_CUT_DURATION
 
 
 OUTPUT_FPS = 30
@@ -231,12 +260,13 @@ def _scale_clip(src, dst, target, zoom=None, pan_target=None):
     ], check=True)
 
 
-def _build_video_track(scaled_paths, clip_targets, out_path):
+def _build_video_track(scaled_paths, clip_targets, beats, out_path):
     """Crossfades consecutive beat clips into video_track.mp4 instead of hard-cutting
     between them -- chains ffmpeg's xfade filter across all N clips in one pass, rather
     than the old concat-demuxer approach (concat can't overlap two streams at once, only
     play them back to back, so a real crossfade needs every clip as a live filter-graph
-    input instead)."""
+    input instead). Each transition is either a short whip-blur or a near-instant hard
+    cut depending on beat_role -- see WHIP_ROLES/_transition_duration."""
     n = len(scaled_paths)
     inputs = []
     for p in scaled_paths:
@@ -249,13 +279,15 @@ def _build_video_track(scaled_paths, clip_targets, out_path):
         cumulative = clip_targets[0]
         prev_label = "0:v"
         for i in range(1, n):
-            offset = max(cumulative - TRANSITION_DURATION, 0.0)
+            duration = _transition_duration(beats, i)
+            transition = "hblur" if duration == WHIP_TRANSITION_DURATION else "fade"
+            offset = max(cumulative - duration, 0.0)
             out_label = f"v{i}"
             parts.append(
-                f"[{prev_label}][{i}:v]xfade=transition=fade:"
-                f"duration={TRANSITION_DURATION}:offset={offset:.3f}[{out_label}]"
+                f"[{prev_label}][{i}:v]xfade=transition={transition}:"
+                f"duration={duration}:offset={offset:.3f}[{out_label}]"
             )
-            cumulative = cumulative + clip_targets[i] - TRANSITION_DURATION
+            cumulative = cumulative + clip_targets[i] - duration
             prev_label = out_label
         filter_complex, final_label = ";".join(parts), prev_label
 
@@ -430,14 +462,24 @@ def assemble(script, narration_path, clips, music_dir, out_path, work_dir, masco
     scaled_paths = []
     for i, (clip, target) in enumerate(zip(clips, clip_targets)):
         scaled = work_dir / f"beat_{i:02d}_scaled.mp4"
-        # Real Ken Burns pan only for AI-generated image clips (no motion of their own)
-        # -- see PAN_TARGETS' comment. Pixabay footage keeps the plain center-zoom.
-        pan_target = random.choice(PAN_TARGETS) if clip.get("source") == "ai_image" else None
-        _scale_clip(clip["path"], scaled, target, zoom="hook" if i == 0 else "subtle", pan_target=pan_target)
+        role = script["beats"][i].get("beat_role")
+        # 'ending' matches the hook's own zoom rate (not the subtle everyday rate) --
+        # when the routine uses the sentence-loop technique (ROUTINE_INSTRUCTIONS.md),
+        # matching motion across the loop point is part of what makes the cut back to
+        # beat 0 read as continuous rather than a hard restart.
+        zoom = "hook" if role in ("hook", "ending") else "subtle"
+        # Real Ken Burns pan on AI-generated image clips (no motion of their own -- see
+        # PAN_TARGETS' comment) and on joke/hedge beats specifically, so the motion
+        # itself varies across the video instead of every beat zooming dead-center the
+        # same way -- a joke or a tonal shift reads as a distinct beat partly because
+        # the camera moves differently through it, not just because of the words.
+        wants_pan = clip.get("source") == "ai_image" or role in ("joke", "hedge")
+        pan_target = random.choice(PAN_TARGETS) if wants_pan else None
+        _scale_clip(clip["path"], scaled, target, zoom=zoom, pan_target=pan_target)
         scaled_paths.append(scaled)
 
     video_track = work_dir / "video_track.mp4"
-    _build_video_track(scaled_paths, clip_targets, video_track)
+    _build_video_track(scaled_paths, clip_targets, script["beats"], video_track)
 
     ass_path = work_dir / "captions.ass"
     _write_ass(script["beats"], durations, ass_path)

@@ -253,10 +253,6 @@ Save it as `state/pending_script.json` matching the shape documented in
   as `category`.
 - `hook_candidates`: every hook option you drafted in step 2.1 (>=3, spanning >=2
   hook_types), each `{"hook_type": "...", "text": "..."}`.
-- `payoff_mechanism`: one sentence, >=20 words, stating the real causal reason behind
-  this video's claim -- written before the beats, and its content must actually appear
-  in `beats[1:]`. See the payoff rule (item 3) below for why this exists and what
-  "real mechanism" vs. "metaphor" actually means in practice.
 - `share_trigger`: one sentence, >=12 words, completing "a viewer sends this to
   ______ because they want to ______" with a specific relationship -- see the
   share-trigger step above. Rejected by `quality_gate.py` if it reads as a generic
@@ -273,129 +269,118 @@ Save it as `state/pending_script.json` matching the shape documented in
   `description` yourself. If `WebSearch`/`WebFetch` isn't available to you this run,
   omit the field entirely rather than fabricating a citation from memory -- a
   plausible-sounding fake source is worse than none.
-- `beats`: 3-12 entries, each `{"text": "...", "broll_query": "..."}`. Every
-  `broll_query` must be a **short, literal keyword phrase -- 3-6 concrete nouns/
+- `beats`: 3-16 entries, each `{"text": "...", "broll_query": "...", "beat_role": "..."}`.
+  Every `broll_query` must be a **short, literal keyword phrase -- 3-6 concrete nouns/
   adjectives, not a cinematic sentence** (e.g. `"person wearing black mask"`, not
   `"close-up hand slowly putting on a plain black mask, dramatic side lighting, slow
-  motion"`). This is a hard technical constraint, not a style preference: the b-roll
-  provider (Pixabay) does simple keyword-OR matching across the whole query string with
-  no scene understanding, so a long descriptive sentence dilutes the match and returns
-  unrelated footage matched on a single stray word (verified in production: a mask
-  query worded as a full sentence returned an ocean wave, a tiger, and a CPU socket
-  instead of anything mask-related; the same concept as a short phrase returned
-  entirely on-topic results). Keep every beat's query this short, not just beat 0.
-  Before drafting beats, pick a deliberate **story shape** for this topic rather than
-  defaulting to a flat list of facts -- research on faceless/narrated short-form
-  consistently finds the gap is story structure, not editing polish. Choose whichever
-  genuinely fits: **curiosity-gap** (open a specific unanswered question, resolve it at
-  the end), **problem-solution** (a real friction/mistake, then the fix), or
-  **mystery-reveal** (withhold one concrete detail from beat 0, deliver it as the
-  payoff). Whichever shape, beat 0 must *open* a specific, nameable gap -- not vague
-  intrigue -- so there's something concrete left to close.
+  motion"`). This is a hard technical constraint, not a style preference: the Pixabay
+  fallback does simple keyword-OR matching across the whole query string with no scene
+  understanding, so a long descriptive sentence dilutes the match and returns unrelated
+  footage matched on a single stray word (verified in production: a mask query worded
+  as a full sentence returned an ocean wave, a tiger, and a CPU socket instead of
+  anything mask-related; the same concept as a short phrase returned entirely on-topic
+  results). The same text also becomes the AI-image prompt (`pipeline/ai_broll.py`)
+  when that's available -- a short concrete phrase works well for both, so there's no
+  need to write it differently for one path or the other. Keep every beat's query this
+  short, not just beat 0. `beat_role` must be one of `hook`, `claim`, `evidence`,
+  `joke`, `hedge`, `ending` (`pipeline/script_schema.py`'s `BEAT_ROLES`) -- see the
+  format below for what each one means and when to use it; `pipeline/assemble.py` uses
+  this field (not beat position) to decide which cuts get a whip-blur transition vs. a
+  hard cut, and which beats get a lateral pan vs. a zoom, so getting it right actually
+  changes how the video looks, not just organizational bookkeeping.
 
-  Retention rules that matter more than anything else here:
-  1. **Beat 0 must land the hook itself immediately, within the first ~2-3 seconds of
-     spoken narration (roughly the first 6-8 words at this channel's ~2.2 words/sec
-     pace)** -- the surprising claim, question, or premise, with zero throat-clearing
-     preamble like "so today we're talking about." This isn't a vibe, it's a real
-     documented threshold -- short-form attention spans have compressed to ~2 seconds,
-     and hooks under 2 seconds measurably outperform longer intros. Never open on
-     setup, context, or scene-framing; open on the payoff, the claim itself, or the
-     single most visually/conceptually striking moment of the whole topic.
-  2. **Beat 0's `broll_query` needs the same bar as its text, within the short-phrase
-     constraint above.** Every other beat can use a straightforwardly descriptive
-     query, but a generic/calm stock clip on beat 0 undercuts a strong hook -- the
-     viewer processes the visual before they've processed a single word of narration.
-     Pick the 3-6 keywords that point at something visually arresting or surprising
-     matching the claim (motion, an unexpected image, the specific concrete thing the
-     hook is about) rather than a generic establishing shot of the general topic.
-  3. **The closing beat must actually deliver the payoff the hook promised, not just
-     conclude.** This is distinct from the loop-back rule below -- payoff means the
-     specific gap/question/tension opened in beat 0 gets a real, concrete answer or
-     resolution by the end (the mechanism, the number, the twist -- whatever beat 0
-     implicitly promised). A video that ends on a vague summary or a restated claim
-     without actually resolving what beat 0 opened will lose viewers right before the
-     end, which is the single worst place to lose them -- they were one beat away from
-     a satisfying close. If you can't point to the exact sentence that pays off beat
-     0's specific promise, the script isn't done.
-     **A metaphor or poetic restatement of the phenomenon is NOT a payoff, even though
-     it can look like one.** Real, evidence-backed failure from this channel: a
-     Zeigarnik-effect video hooked on "why do you remember an unpaid bill perfectly,
-     but forget it the moment it's paid?" (a genuine why-question), named the effect
-     and re-described the same observation in beat 1, then closed with "your brain is
-     refusing to close the tab -- what's still open in yours?" That final line *sounds*
-     like a payoff (it's vivid, it callbacks) but never actually answers *why* --
-     it restates the phenomenon in different words instead of explaining the mechanism
-     behind it. A real payoff for that exact hook would name the actual reason (e.g.
-     unfinished tasks stay loaded in working memory as an active, unresolved goal,
-     which is *why* closing them relieves the mental tension) -- something a viewer
-     couldn't have already guessed from the hook alone. Before finalizing, ask: does
-     the closing beat teach the viewer something they didn't already know from beat 0,
-     or does it just say the same thing more evocatively? Only the former is a payoff.
-     **This rule failed to hold as prose alone -- it's now also enforced structurally.**
-     Despite the Zeigarnik example above already being documented, a later video (the
-     gravity-tunnel-through-Earth script) made the identical mistake: its entire
-     explanation was "gravity inside pulls like a spring, not a straight drop" -- a
-     metaphor asserted with zero elaboration on *why* that produces equal travel times
-     regardless of tunnel length. Advisory text alone clearly isn't sufficient to
-     prevent this pattern from recurring. `script_schema.py` now requires a top-level
-     `payoff_mechanism` field: one sentence, **>=20 words**, stating the actual causal
-     reason in plain language, written *before* you draft the beats (same reasoning as
-     `hook_candidates` in step 2.1 -- force the real content to exist before it gets
-     compressed). `quality_gate.py` then checks that `payoff_mechanism`'s content
-     actually resembles something in `beats[1:]` -- it can't just sit in the file
-     unused while a beat quietly reverts to metaphor. If you genuinely cannot state the
-     mechanism in >=20 real words, that is itself a signal the angle was picked before
-     you understood it well enough to explain it -- go back and either research the
-     actual reason or pick a different angle, don't pad with filler to clear the count.
-     **If a real mechanism needs more room than an ultra-short video allows, let the
-     video run longer (up to the existing ~58s/130-word cap) rather than compressing
-     the explanation into an assertion** -- a slightly longer video that actually makes
-     sense beats a shorter one that doesn't; the 15-30s prior in step 1 is a mild lean
-     for topics that fit it naturally, not a ceiling that justifies cutting the
-     explanation itself.
-  4. **The closing beat should *also* loop back to the opening, not just deliver the
-     payoff and stop.** Shorts reward rewatches specifically -- someone who watches a
-     15-second video twice because the ending sends them back to the start reads as
-     retention over 100%, which is a stronger algorithmic signal than a single
-     high-retention watch. Write the last beat so it calls back to a specific word,
-     image, or claim from beat 0 (a twist on it, a callback phrase, an answer that
-     recontextualizes the opening question) so replaying from the top feels rewarding,
-     not repetitive. This is concrete, not just "make it good" -- if you can't point to
-     which specific word or image in beat 0 the ending calls back to, it isn't looping
-     yet. Payoff and loop-back should coexist in the same closing beat, not compete for
-     space -- the payoff line often *is* the callback, recontextualized.
-  5. **The last beat must close with both a subscribe/follow ask and a comment ask
-     together, every video -- explicit channel-owner instruction (2026-08-21), not a
-     data-driven lean like the rest of this section.** Something to the effect of "if
-     you liked this, subscribe and leave a comment" -- both asks present, every time,
-     not alternating between them. Vary the exact phrasing video to video (e.g. "if
-     this surprised you, follow for more and tell me what you think," "liked this?
-     subscribe, and let me know in the comments," "follow for more [topic] breakdowns
-     -- what's your take?") so it doesn't read as copy-pasted spam, but the substance
-     -- both a subscribe/follow ask and a comment ask in the closing beat -- is fixed,
-     not optional. This supersedes the earlier ~50/50 mixed-CTA guidance (see
-     `state/ruleset_changelog.json`'s 2026-08-21 entry for why: prior data showed
-     comment-only CTAs dominating and subscriber conversion flat, but the fix the
-     owner wants is combining both asks rather than continuing to alternate). This can
-     still coexist with the loop-back (a callback line immediately followed by the
-     combined CTA).
-  6. **Before finalizing, check the middle, not just the opener -- each beat is a
-     micro-reveal, not a restatement.** A strong hook still loses viewers if beats 1
-     through N-1 sag; re-read beats 1 through the second-to-last and ask: does each one
-     add a genuinely new specific detail that moves the story shape forward (per the
-     curiosity-gap/problem-solution/mystery-reveal choice above), or does any beat just
-     restate/pad what the previous one already said? A beat that doesn't earn its place
-     (no new information, no rising tension) is a place viewers drop off even after a
-     great hook. Cut or rewrite any beat that fails this check rather than leaving it in
-     to hit a word-count target.
-  7. **Mark the single most load-bearing word/number per beat with `**double
-     asterisks**`** for caption emphasis (bold highlight color + size bump when
-     burned in -- see `pipeline/script_schema.py`). At most 1-2 marked words per
-     beat, and only the specific number/claim/twist that beat exists to deliver --
-     marking everything makes nothing stand out, which defeats the purpose. Not
-     every beat needs one; a transitional beat with no single standout word doesn't
-     need forced emphasis.
+  **Format: claim / evidence / joke, replacing the old single-deep-payoff structure
+  (2026-08-21, explicit channel-owner instruction, informed by a structural analysis of
+  a genuinely well-performing history-facts Short -- see
+  `state/ruleset_changelog.json`).** This channel's format was a single topic explained
+  deeply with one payoff. The new format is one topic carrying **3-4 separate
+  surprising claims**, each proven, each released with a joke, building to one stronger
+  claim at the end -- density and rhythm over depth. Pick a topic that genuinely
+  supports 3-4 distinct, verifiable, surprising claims about it, not one claim
+  stretched thin or artificially split.
+
+  Structure (adapt to how many genuinely strong claims you actually found -- don't pad
+  weak filler in to hit a beat count):
+  1. **`hook` (beat 0), landing within ~2-3 seconds of spoken narration.** A reliable
+     shape for this: name the *category* of what's coming before naming the *subject*
+     itself, and hold the subject's name or first strong claim noticeably longer on
+     screen than anything that follows it -- a viewer's attention is caught by the open
+     question ("what is this about?") and rewarded by how deliberately the answer
+     lands, not just by the answer's content. Step 2.1 above still applies in full --
+     >=3 hook candidates, spanning >=2 hook_types, picked for specificity over
+     genre-fit.
+
+     **Sentence-loop technique, optional but worth using when it fits naturally:**
+     write the hook and the `ending` beat as one continuous sentence, then split it in
+     two -- the back half becomes the video's opening, the front half becomes its
+     close. E.g. draft "So here are some facts about [topic] that sound made up" as one
+     line, then use "FACTS ABOUT [TOPIC]..." as beat 0 and "SO HERE ARE SOME..." as the
+     final beat. On loop, the ending's dangling words grammatically complete into the
+     hook's opening words, so the cut between them reads as continuous speech, not a
+     restart -- the ear carries continuity the picture doesn't have to. This is why
+     `ending` (below) bans a spoken CTA: any closing remark after the sentence breaks
+     the loop.
+  2. **`claim` beats: state one surprising fact with zero support, before proving it.**
+     The claim should contradict something a viewer plausibly assumes -- let it sit
+     unproven for the following `evidence` beat(s) rather than justifying it
+     immediately in the same breath. That gap (stated, not yet proven) is what holds
+     attention through the explanation.
+  3. **`evidence` beats: the proof, immediately after its claim.** This can run longer
+     than other beats (up to ~19 words is fine here specifically) since it's carrying
+     the actual substantiation -- but still one continuous thought, not padded.
+  4. **`joke` beats: a short, genuinely original aside, not on every claim.** 4-6
+     words, phrased as an appended clause (dry editorializing on what was just said),
+     never a setup-with-a-separate-punchline. Write a fresh one for each specific claim
+     -- a generic aside that could bolt onto any fact in any video is filler with
+     punctuation, not a joke. If nothing genuinely funny comes to mind for a given
+     claim, skip the joke there rather than forcing a flat one; not every claim needs
+     one, but most of this format's claims should have one.
+  5. **Repeat claim -> evidence -> joke 2-4 times, then close on one stronger claim
+     without a joke** (the "dark turn" -- your single best, most surprising, or most
+     serious claim, saved for last rather than opened with).
+  6. **`hedge`: one short beat qualifying the strongest claim's certainty** (e.g.
+     acknowledging it's debated, contested, or not fully confirmed), where that's
+     honestly true -- this is a credibility move, not decoration, and it must only be
+     used where the claim's certainty is genuinely in question. Never invent a hedge
+     for a claim that's actually well-established just for the rhythm; that would be
+     manufacturing false uncertainty about something true, the opposite of what this
+     beat is for.
+  7. **`ending`: no summary, no spoken subscribe/comment ask, no goodbye.** End on
+     momentum -- a trailing thought, a final specific detail, or (per the sentence-loop
+     technique above, when you used it) the dangling front half of the hook's sentence,
+     ending on a determiner/preposition like "some," "to," or "one of" so it reads as
+     grammatically unfinished, not a conclusion. Do not put a subscribe or
+     comment CTA in the narration; that reverses this same day's earlier mandatory-CTA
+     rule (see both 2026-08-21 entries in `state/ruleset_changelog.json` for why the
+     later one supersedes the first). The subscribe/comment nudge is handled entirely
+     by the comment `pipeline/upload.py` posts automatically after every upload, so the
+     narration is free to end on pure momentum instead of splitting its last seconds
+     between a hook and a housekeeping ask.
+
+  **Sentence length: mostly 6-19 words**, shorter for `joke` beats (4-6). Break a
+  longer thought into two beats rather than one long compound sentence -- short,
+  declarative sentences are what keeps this pace legible instead of exhausting.
+
+  Whichever specific claims you use, beat 0 must *open* a specific, nameable gap -- not
+  vague intrigue -- so there's something concrete left to close by the final claim.
+
+  Two rules that matter more than anything else here:
+  - **Beat 0's `broll_query`/image prompt needs the same bar as its text.** A
+    generic/calm visual on beat 0 undercuts a strong hook -- the viewer processes the
+    image before they've processed a single word of narration. Pick keywords pointing
+    at something visually striking matching the claim, not a generic establishing shot.
+  - **Before finalizing, check the middle, not just the opener -- each claim/evidence
+    beat is a micro-reveal, not a restatement.** Re-read every beat and ask: does it
+    add a genuinely new, specific, checkable detail, or does it restate/pad what the
+    previous one already said? A format built on density has zero room for a beat that
+    doesn't earn its place.
+
+  **Mark the single most load-bearing word/number per beat with `**double
+  asterisks**`** for caption emphasis (color highlight + size bump when burned in --
+  see `pipeline/script_schema.py`). At most 1-2 marked words per beat, and only the
+  specific number/claim/twist that beat exists to deliver -- marking everything makes
+  nothing stand out. Not every beat needs one; a transitional beat with no single
+  standout word doesn't need forced emphasis.
 - title: prefer a genuine curiosity gap or a concrete number/claim over a generic
   label, but <!-- PROTECTED-SECTION: START -->it must accurately reflect what the
   video actually delivers, full stop -- never loosen this even if data seems to show
@@ -412,7 +397,7 @@ actively: don't let beat 0 fall into the same handful of opening phrasings run a
 run (rotate genuinely between a blunt claim, a direct question, a "most people think X,
 but..." reversal, a concrete number, etc. -- whichever fits `hook_type`, but vary the
 actual wording), don't let every video's beat count or pacing feel identical, and don't
-let the CTA in the closing beat repeat verbatim across videos. If you notice (from
+let the `ending` beat's final line repeat verbatim across videos. If you notice (from
 `state/used_topics.json` or your own recent runs) that the last several videos all
 opened the same way, treat that as a reason to deliberately open differently this time,
 even if the top-performing hook_type says otherwise -- looking hand-crafted is worth

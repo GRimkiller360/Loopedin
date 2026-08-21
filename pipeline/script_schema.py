@@ -26,14 +26,6 @@ Expected script.json shape:
                       script. Must span at least 2 distinct hook_types, and one entry's
                       hook_type must match the script's top-level hook_type (the winner).
                       See ROUTINE_INSTRUCTIONS.md step 2.1.",
-  "payoff_mechanism": "one plain-language sentence (>=20 words) stating the actual causal
-                       reason behind the video's claim -- not a metaphor, not a restatement
-                       of the hook. Written before the beats, same reasoning as
-                       hook_candidates: forces genuine explanation to exist before it gets
-                       compressed into short narration, instead of the compression itself
-                       silently replacing the explanation with an assertion. Its content
-                       must actually show up in the narration (checked by quality_gate.py),
-                       not just sit here decoratively. See ROUTINE_INSTRUCTIONS.md step 2.2.",
   "share_trigger": "one sentence (>=12 words) completing 'a viewer sends this to ___ because
                     they want to ___' with a real, specific relationship (e.g. 'the friend
                     who still swears cracking your knuckles causes arthritis'), not a generic
@@ -64,16 +56,21 @@ Expected script.json shape:
                       higher-momentum seed actually correlates with this channel's own
                       video performance, or whether it doesn't matter.",
   "beats": [
-    {"text": "one narration sentence/clause -- wrap AT MOST 1-2 words per beat in "
-             "**double asterisks** to mark them for burned-in caption emphasis "
-             "(bold color highlight + size bump). Stripped automatically before TTS "
-             "synthesis and beat-duration weighting (pipeline/config.py "
-             "strip_emphasis_markup) so it never affects narration audio or timing --"
-             "this is caption-only styling. Use it on the specific surprising word or "
-             "number in a beat, not decoratively; marking most/every beat defeats the "
-             "purpose since nothing stands out if everything does. See "
-             "ROUTINE_INSTRUCTIONS.md step 2 for when to use it.",
-     "broll_query": "stock-footage search phrase for this beat"},
+    {"text": "one short narration sentence/clause (mostly 6-19 words -- see
+             ROUTINE_INSTRUCTIONS.md's format) -- wrap AT MOST 1-2 words per beat in
+             **double asterisks** to mark them for burned-in caption emphasis (color
+             highlight + size bump, one color per sentence -- see EMPHASIS_COLORS
+             below). Stripped automatically before TTS synthesis and beat-duration
+             weighting (pipeline/config.py strip_emphasis_markup) so it never affects
+             narration audio or timing -- this is caption-only styling. Use it on the
+             one specific surprising word or number in a beat, not decoratively.",
+     "broll_query": "stock-footage/AI-image search phrase for this beat",
+     "beat_role": "one of BEAT_ROLES below -- what this beat's job is, not just its
+                  text. Drives production decisions in pipeline/assemble.py (which
+                  transitions get a whip-blur vs. a hard cut, which beats get a pan vs.
+                  a zoom) that only make sense with real structural intent behind them,
+                  not guessed from beat position alone. See ROUTINE_INSTRUCTIONS.md
+                  step 2 for what each role means and when to use it."},
     ...
   ]
 }
@@ -86,17 +83,28 @@ import sys
 # produce-upload.yml (not something the agent sets itself) so a future performance
 # comparison can actually tell whether a guidance change moved retention, instead of
 # every video's history being lumped into one undifferentiated average forever.
-RULESET_VERSION = "2026-08-20-share-trigger-v5"
+#
+# 2026-08-21-claim-evidence-joke-v7: replaced the single-deep-payoff format with a
+# claim/evidence/joke structure (hook -> 3x[claim, evidence, joke] -> dark claim ->
+# hedge -> no-CTA ending) -- see ROUTINE_INSTRUCTIONS.md step 2 and
+# state/ruleset_changelog.json for the full reasoning. payoff_mechanism is gone (no
+# single deep mechanism in this format); beats now carry a required beat_role so
+# assemble.py's transition/motion choices reflect real structural intent.
+RULESET_VERSION = "2026-08-21-claim-evidence-joke-v7"
 
-REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates", "payoff_mechanism", "share_trigger", "contradicted_belief"}
-REQUIRED_BEAT_KEYS = {"text", "broll_query"}
+REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates", "share_trigger", "contradicted_belief"}
+REQUIRED_BEAT_KEYS = {"text", "broll_query", "beat_role"}
 REQUIRED_HOOK_CANDIDATE_KEYS = {"hook_type", "text"}
-MIN_BEATS, MAX_BEATS = 3, 12
+MIN_BEATS, MAX_BEATS = 3, 16
 MIN_HOOK_CANDIDATES = 3
-MIN_PAYOFF_MECHANISM_WORDS = 20
 MIN_SHARE_TRIGGER_WORDS = 12
 MIN_CONTRADICTED_BELIEF_WORDS = 8
 MAX_TITLE_LEN = 100
+
+# What job each beat does -- see ROUTINE_INSTRUCTIONS.md step 2 for the full structure.
+# assemble.py uses this (not beat position) to decide which transitions get a whip-blur
+# vs. a hard cut, and which beats get a lateral pan vs. a zoom.
+BEAT_ROLES = {"hook", "claim", "evidence", "joke", "hedge", "ending"}
 
 # Fixed vocabularies -- must stay consistent across videos or the performance-feedback
 # loop (pipeline/analytics_feedback.py) can't compare like with like. Keep in sync with
@@ -153,15 +161,6 @@ def validate(script):
     if script.get("hook_type") is not None and candidates and script["hook_type"] not in seen_hook_types:
         errors.append("hook_type must match one of the drafted hook_candidates -- the winning hook has to actually be one of the options considered")
 
-    mechanism = (script.get("payoff_mechanism") or "").strip()
-    mechanism_words = len(mechanism.split())
-    if mechanism_words < MIN_PAYOFF_MECHANISM_WORDS:
-        errors.append(
-            f"payoff_mechanism: need >={MIN_PAYOFF_MECHANISM_WORDS} words of actual causal "
-            f"explanation, got {mechanism_words} -- a short phrase is almost always a metaphor "
-            "or restatement standing in for a real mechanism, not the mechanism itself"
-        )
-
     trigger = (script.get("share_trigger") or "").strip()
     trigger_words = len(trigger.split())
     if trigger_words < MIN_SHARE_TRIGGER_WORDS:
@@ -194,6 +193,15 @@ def validate(script):
         missing_beat = REQUIRED_BEAT_KEYS - beat.keys()
         if missing_beat:
             errors.append(f"beat {i} missing keys: {sorted(missing_beat)}")
+            continue
+        role = beat["beat_role"]
+        if role not in BEAT_ROLES:
+            errors.append(f"beat {i}.beat_role {role!r} not in fixed set {sorted(BEAT_ROLES)}")
+        if role == "hook" and i != 0:
+            errors.append(f"beat {i} has beat_role 'hook' -- only beat 0 can be the hook")
+
+    if beats and beats[0].get("beat_role") != "hook":
+        errors.append("beat 0 must have beat_role 'hook'")
 
     if len(script.get("title", "")) > MAX_TITLE_LEN:
         errors.append(f"title exceeds {MAX_TITLE_LEN} chars")
