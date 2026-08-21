@@ -33,13 +33,22 @@ def _google_access_token():
     return creds.token
 
 
-def synthesize_google(text, voice_name="en-US-Chirp3-HD-Despina"):
+# Switched from en-US-Chirp3-HD-Despina (female) to a male, British-English voice
+# 2026-08-21 per explicit channel-owner request for a deeper, more classic
+# documentary-narrator feel for this history channel. Picked from Google's own
+# published voice-characteristics table (ai.google.dev/gemini-api/docs/speech-
+# generation), not by ear -- "Charon" is officially tagged "Informative", the right
+# register for factual narration; the closest realistic mature-male alternative on
+# that table was "Sadaltager" (Knowledgeable). This selects an existing catalog voice
+# by its documented style, not any attempt to reproduce a specific real narrator's
+# voice. en-GB rather than en-US for the more classic-documentary accent.
+def synthesize_google(text, voice_name="en-GB-Chirp3-HD-Charon"):
     import urllib.request
 
     token = _google_access_token()
     body = json.dumps({
         "input": {"text": text},
-        "voice": {"languageCode": "en-US", "name": voice_name},
+        "voice": {"languageCode": "en-GB", "name": voice_name},
         "audioConfig": {"audioEncoding": "MP3", "speakingRate": 1.05},
     }).encode()
 

@@ -204,6 +204,22 @@
         "pipeline/upload.py: _post_cta_comment now posts script['closing_comment'] directly instead of randomly picking from CTA_COMMENT_TEMPLATES (removed, along with the now-unused random import) -- script_schema.py already gates pending_script.json before this stage runs, so the field is guaranteed present, same guarantee title already relies on",
         "ROUTINE_INSTRUCTIONS.md step 2: added the closing_comment field description with a worked good-vs-bad example (a specific historical-parallel comment vs. \"Let me know your thoughts below!\")"
       ]
+    },
+    {
+      "date": "2026-08-21",
+      "changed_by": "human-guided (Ethan) -- explicit instruction, following real feedback from the -b1trrZg0fA test video",
+      "from_version": "2026-08-21-closing-comment-v8",
+      "to_version": "2026-08-21-no-dash-connector-v9",
+      "diagnosis": "Three issues reported after watching the astronaut-facts test video: (1) wanted a male, deeper, more classic-documentary-narrator voice for a history channel; (2) AI-generated background images read as static/boring despite the Ken Burns zoom+pan already built; (3) narration and captions didn't match, and a literal '--'/'-' was visibly showing up on screen. (2) and (3) share a root cause with (3) specifically: this project's own prose style (including ROUTINE_INSTRUCTIONS.md's own writing and this session's example beat text) uses ' -- ' as a clause connector constantly, and that habit leaked into actual beat text -- TTS silently skips a bare dash as non-verbal, spending zero audio time on it, while the caption pipeline (no real per-word timestamps, estimates each chunk's duration from character length) still gave it a full display slot, producing both the visible stray dash and the cascading caption/timing drift for the rest of that beat.",
+      "evidence": "Explicit instructions plus direct viewing feedback (\"very static and there is no annamation\", \"the Ai as ---- or - it must be remove and just be words\", \"the Text and the narrations also dont match\"). Verified the new DASH_CONNECTOR_RE check against real examples: correctly flags a genuine '--' connector and a standalone ' - ', correctly leaves a real compound word like 'long-term' alone (no false positive). Verified the increased zoom values (1.15->1.35 hook, 1.06->1.20 subtle) don't break the pan-target clamping math added earlier the same day -- recomputed the achievable pan range at the new zoom levels, still safely clamped, and roughly doubled/tripled versus the old values (more zoom headroom means more room for the crop window to actually travel toward a pan target).",
+      "changes": [
+        "pipeline/tts.py: default voice en-US-Chirp3-HD-Despina (female) -> en-GB-Chirp3-HD-Charon (male) -- picked from Google's own published voice-characteristics table (ai.google.dev/gemini-api/docs/speech-generation) by its documented 'Informative' tag, not by ear (no audio playback available in this session); en-GB rather than en-US for a more classic-documentary accent. This selects an existing catalog voice by its documented style, not any attempt to reproduce a specific real narrator's voice",
+        "pipeline/assemble.py: HOOK_ZOOM_END 1.15->1.35, SUBTLE_ZOOM_END 1.06->1.20 -- the previous values were close to imperceptible (a 6% zoom over a couple seconds) at normal viewing speed",
+        "pipeline/quality_gate.py: added DASH_CONNECTOR_RE, a hard structural check rejecting any beat text using '--' or a whitespace-padded '-' as a clause connector (compound words like 'long-term' are unaffected -- only a dash with whitespace on both sides is flagged)",
+        "ROUTINE_INSTRUCTIONS.md step 2: added an explicit rule banning the dash-connector habit in beat text, with the mechanism explained (TTS skips it, captions don't) so the reasoning carries forward, not just the rule",
+        "RULESET_VERSION -> 2026-08-21-no-dash-connector-v9",
+        "Not verified with a real render or real audio playback in this session -- the voice choice is Google's documented characteristic tag, not a listened-to sample; the zoom/pan increase was verified mathematically (clamp safety, achievable-range growth) but not seen rendered; the dash regex was verified against synthetic test strings, not a real script. Recommend watching the next real upload specifically for voice tone, visible motion on the AI images, and a clean caption/narration match before considering all three fully confirmed"
+      ]
     }
   ]
 }

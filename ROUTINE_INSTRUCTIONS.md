@@ -373,6 +373,20 @@ Save it as `state/pending_script.json` matching the shape documented in
   longer thought into two beats rather than one long compound sentence -- short,
   declarative sentences are what keeps this pace legible instead of exhausting.
 
+  **Never write "--" or a standalone " - " as a clause connector in beat text** (this
+  document's own prose style uses it constantly -- do not copy that habit into
+  narration). This is a hard technical constraint, not a style note, enforced by
+  `quality_gate.py`: Google Cloud TTS treats a bare dash as non-verbal and skips it
+  silently, spending zero audio time on it, while the caption pipeline still allocates
+  it an on-screen slot sized to its character length -- that produces a stray "--" or
+  "-" floating on screen where nothing was actually said, and throws off every
+  caption's estimated timing for the rest of that beat (verified in production, 2026-
+  08-21: exactly this desync was reported by the channel owner). Use a real connecting
+  word instead (and, but, so, though, because, which) or just split into two beats --
+  both read more naturally out loud anyway. A hyphen inside an actual compound word
+  (e.g. "long-term") is fine; it's only the whitespace-padded dash-as-connector that's
+  banned.
+
   Whichever specific claims you use, beat 0 must *open* a specific, nameable gap -- not
   vague intrigue -- so there's something concrete left to close by the final claim.
 

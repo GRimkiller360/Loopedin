@@ -190,12 +190,17 @@ OUTPUT_FPS = 30
 # easily-automated visual pattern-interrupt/pacing device that doesn't need to know
 # *where* the interesting thing in frame is, unlike a pointer/circle overlay would --
 # it just scales toward center, so it can't end up pointing at nothing. Beat 0 gets a
-# dramatic punch (distinct treatment on the hook); every other beat gets a much
-# subtler version -- static, unmoving stock footage reads as low-effort and gives the
-# eye nothing to track, so keep constant gentle motion through the whole video, not
-# just the opening.
-HOOK_ZOOM_END = 1.15
-SUBTLE_ZOOM_END = 1.06
+# dramatic punch (distinct treatment on the hook); every other beat gets a lighter
+# version -- static, unmoving stock footage/AI images read as low-effort and give the
+# eye nothing to track, so keep constant motion through the whole video, not just the
+# opening. Raised sharply 2026-08-21 (1.15->1.35 hook, 1.06->1.20 subtle) after
+# feedback that the previous values read as static/boring on real AI-generated images
+# -- a 6% zoom over a couple seconds is genuinely close to imperceptible at normal
+# viewing speed. Bigger zoom_end also gives PAN_TARGETS below more actual room to
+# drift toward (the crop window's available travel is proportional to how far zoom_end
+# is above 1.0), so this also makes the Ken Burns pan more visible, not just the zoom.
+HOOK_ZOOM_END = 1.35
+SUBTLE_ZOOM_END = 1.20
 
 # Applied to every clip in every video -- a consistent color grade + vignette is a
 # visual signature: raw unfiltered stock footage looks like raw unfiltered stock

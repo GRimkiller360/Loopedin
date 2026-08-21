@@ -9,6 +9,7 @@ counts toward auto-pause, leaves state/pending_script.json in place for a human 
 inspect (see ROUTINE_INSTRUCTIONS.md step 0.5).
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -21,6 +22,20 @@ RECENT_TITLES_TO_CHECK = 15
 TITLE_OVERLAP_THRESHOLD = 0.7
 MIN_HOOK_WINNER_OVERLAP = 0.15
 HOOK_CANDIDATE_OVERLAP_THRESHOLD = 0.75
+
+# " -- " / " - " as a written clause connector (this file's own prose style, and this
+# project's earlier beat-text examples, used it constantly) turns into a real problem
+# once it's actually narrated: Google Cloud TTS treats a bare "--"/"-" as non-verbal
+# and skips it, spending zero audio time on it, while the caption pipeline (no real
+# per-word timestamps -- see assemble.py's module docstring) still allocates it a
+# display slot based on its character length. That single mismatch both puts a stray
+# "--" on screen where nothing was actually said (2026-08-21 channel-owner report:
+# "the AI as ---- or - it must be remove and just be words") AND throws off every
+# caption's estimated timing after it in the same beat, compounding for the rest of
+# the video (same report: "the text and the narrations also dont match"). Doesn't flag
+# a hyphen inside an actual compound word (e.g. "long-term") -- only a hyphen with
+# whitespace on both sides, i.e. used as a standalone connector between clauses.
+DASH_CONNECTOR_RE = re.compile(r"--|(?<=\s)-(?=\s)")
 
 BANNED_OPENERS = (
     "so today", "in this video", "welcome back", "today we're talking about",
@@ -75,6 +90,20 @@ def check(script, used_topics_path):
             if opener.startswith(banned):
                 errors.append(f"beat 0 opens with a banned filler phrase: {banned!r}")
                 break
+
+    # See DASH_CONNECTOR_RE's comment -- a bare "--"/"-" connector is silently skipped
+    # by TTS but still gets a caption slot, producing a visible stray dash and
+    # cascading caption/narration desync for the rest of the beat.
+    for i, beat in enumerate(beats):
+        text = beat.get("text", "")
+        if DASH_CONNECTOR_RE.search(text):
+            errors.append(
+                f"beat {i}'s text uses '--' or ' - ' as a connector ({text!r}) -- TTS "
+                "skips it silently while captions still allocate it a slot, causing a "
+                "stray dash on screen and desyncing every caption after it in this beat. "
+                "Rewrite with an actual connecting word (and, but, so, though, because) "
+                "or split into two beats instead."
+            )
 
     # Pixabay (the b-roll provider) does keyword-OR matching with no scene understanding
     # -- a long cinematic broll_query dilutes the match and returns unrelated footage

@@ -105,7 +105,13 @@ import sys
 # small fixed template pool, which was producing exact-duplicate comments across
 # videos once category stopped varying (history-only). See
 # state/ruleset_changelog.json.
-RULESET_VERSION = "2026-08-21-closing-comment-v8"
+#
+# 2026-08-21-no-dash-connector-v9: banned "--"/" - " as a beat-text clause connector
+# (quality_gate.py's DASH_CONNECTOR_RE) after real production evidence that TTS
+# silently skips a bare dash while captions still gave it a display slot, producing a
+# stray dash on screen and desyncing caption timing for the rest of that beat. See
+# state/ruleset_changelog.json.
+RULESET_VERSION = "2026-08-21-no-dash-connector-v9"
 
 REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates", "share_trigger", "contradicted_belief", "closing_comment"}
 REQUIRED_BEAT_KEYS = {"text", "broll_query", "beat_role"}
