@@ -9,6 +9,7 @@ retrying).
 """
 import argparse
 import json
+import subprocess
 import sys
 import urllib.error
 import urllib.parse
@@ -16,7 +17,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from pipeline import config
+from pipeline import ai_broll, config
 
 SEARCH_URL = "https://pixabay.com/api/videos/"
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
@@ -71,22 +72,59 @@ def fetch_clip_for_query(query, out_path, used_ids, api_key):
     return False
 
 
+AI_HELD_IMAGE_SECONDS = 3  # arbitrary and short -- assemble.py's _scale_clip already
+                           # loops/trims any source clip to whatever the beat actually
+                           # needs, exactly like it does for short Pixabay clips today
+
+
+def _image_to_held_clip(image_path, out_path):
+    """Turns a single static image into a short, motionless mp4 -- no scale/crop/zoom
+    applied here, that's all handled uniformly downstream by assemble.py's _scale_clip,
+    same as every Pixabay clip. Keeps broll.py's output contract simple: every beat
+    gets a valid short mp4 regardless of which source produced it."""
+    subprocess.run([
+        "ffmpeg", "-y", "-loop", "1", "-i", str(image_path), "-t", str(AI_HELD_IMAGE_SECONDS),
+        "-pix_fmt", "yuv420p", str(out_path),
+    ], check=True)
+
+
+def _fetch_ai_beat(beat, out_path, work_dir, index):
+    image_path = work_dir / f"beat_{index:02d}_ai.png"
+    ai_broll.generate_image(beat["broll_query"], image_path)
+    _image_to_held_clip(image_path, out_path)
+
+
 def fetch_all(script, work_dir, api_key):
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
     used_ids = set()
-    clip_paths = []
+    clips = []
 
     for i, beat in enumerate(script["beats"]):
         out_path = work_dir / f"beat_{i:02d}.mp4"
+
+        # AI-generated image first -- matches the beat's actual content directly
+        # instead of searching for a pre-existing clip that may or may not match (see
+        # module docstring). Falls back to Pixabay on ANY failure (not configured,
+        # today's quota cap reached, a real API error) -- this can never fail a run on
+        # its own, ai_broll.AIImageUnavailable covers all of those cases uniformly.
+        try:
+            _fetch_ai_beat(beat, out_path, work_dir, i)
+            clips.append({"path": str(out_path), "source": "ai_image"})
+            continue
+        except ai_broll.AIImageUnavailable as e:
+            print(f"beat {i}: AI image unavailable ({e}), falling back to Pixabay", file=sys.stderr)
+        except Exception as e:
+            print(f"beat {i}: AI image generation failed ({e}), falling back to Pixabay", file=sys.stderr)
+
         found = fetch_clip_for_query(beat["broll_query"], out_path, used_ids, api_key)
         if not found:
             found = fetch_clip_for_query(script["topic"], out_path, used_ids, api_key)
         if not found:
             raise RuntimeError(f"no b-roll found for beat {i} (query={beat['broll_query']!r})")
-        clip_paths.append(str(out_path))
+        clips.append({"path": str(out_path), "source": "pixabay"})
 
-    return clip_paths
+    return clips
 
 
 if __name__ == "__main__":
@@ -96,5 +134,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     script = json.loads(Path(args.script).read_text(encoding="utf-8"))
-    paths = fetch_all(script, args.work_dir, config.require("PIXABAY_API_KEY"))
-    print(json.dumps(paths, indent=2))
+    clips = fetch_all(script, args.work_dir, config.require("PIXABAY_API_KEY"))
+    print(json.dumps(clips, indent=2))

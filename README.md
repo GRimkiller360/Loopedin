@@ -56,6 +56,8 @@ repository secret**. Add these exact names:
 | `YOUTUBE_REFRESH_TOKEN` | from `scripts/get_refresh_token.py` |
 | `GOOGLE_TTS_CREDENTIALS_JSON` | Cloud TTS service-account JSON, full contents |
 | `PIXABAY_API_KEY` | Pixabay API key |
+| `CLOUDFLARE_ACCOUNT_ID` | *(optional)* Cloudflare account ID -- enables AI-generated background images (`pipeline/ai_broll.py`) as the primary b-roll source, with Pixabay as the automatic fallback. Safe to leave unset; the pipeline just keeps using Pixabay exclusively until both this and the token below exist. |
+| `CLOUDFLARE_API_TOKEN` | *(optional)* Cloudflare API token with Workers AI access -- see `CLOUDFLARE_ACCOUNT_ID` above. |
 | `DASHBOARD_URL` | The car-loan-dashboard Worker's base URL (same value the `bracketly` repo's `DASHBOARD_URL` secret uses) |
 | `LOOPEDIN_INGEST_SECRET` | A long random string — set the identical value as a `wrangler secret put LOOPEDIN_INGEST_SECRET` on the dashboard Worker. Distinct from bracketly's `BRACKETLY_INGEST_SECRET`, so either app's ingest can be rotated independently. |
 

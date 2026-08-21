@@ -26,6 +26,17 @@ WIDTH, HEIGHT = 1080, 1920
 EMPHASIS_OVERRIDE = r"{\c&H00D7FF&\fscx115\fscy115}"
 EMPHASIS_RESET = r"{\r}"
 
+# Every caption chunk pops in (scales up from 70% to 100%) over 120ms instead of just
+# appearing statically -- with captions now switching every 1-2 words (WORDS_PER_CAPTION),
+# that little burst of motion on each change is what actually keeps the eye locked to a
+# constantly-refreshing caption instead of tuning it out, not just the bigger/centered
+# static style. If a chunk's first word is also **emphasis**-marked, the emphasis
+# override's own hard-set \fscx115 supersedes the pop transform for that word (ASS
+# override tags on the same property don't blend) -- a rare, cosmetically minor
+# interaction, not a bug, since emphasis marks are sparse (>=1-2 per beat, not per chunk).
+POP_IN_DURATION_MS = 120
+POP_IN_TAG = rf"{{\fscx70\fscy70\t(0,{POP_IN_DURATION_MS},\fscx100\fscy100)}}"
+
 
 def _probe_duration(path):
     out = subprocess.check_output([
@@ -82,7 +93,7 @@ def _chunk_to_ass(chunk):
     for word, is_emphasized in chunk:
         escaped = _ass_escape(word)
         words.append(f"{EMPHASIS_OVERRIDE}{escaped}{EMPHASIS_RESET}" if is_emphasized else escaped)
-    return " ".join(words)
+    return POP_IN_TAG + " ".join(words)
 
 
 ASS_HEADER = f"""[Script Info]
@@ -93,7 +104,11 @@ WrapStyle: 0
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,Arial,90,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,1,0,0,0,100,100,0,0,1,6,0,2,60,60,300,1
+; Fontsize 90->130, Outline 6->8, Shadow 0->3, Alignment 2 (bottom-center) -> 5
+; (middle-center), MarginV 300->0 -- moved dead-center per explicit request
+; (2026-08-21) and sized up now that each caption is only 1-2 words (WORDS_PER_CAPTION)
+; instead of a full sentence, so there's plenty of room without wrapping.
+Style: Default,Arial,130,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,1,0,0,0,100,100,0,0,1,8,3,5,60,60,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -162,8 +177,16 @@ SUBTLE_ZOOM_END = 1.06
 # conservative, not stylized enough to fight the footage or look artificial.
 SIGNATURE_LOOK_FILTER = "eq=contrast=1.08:saturation=1.18:brightness=0.01,vignette=PI/4"
 
+# Real Ken Burns pan targets (fractional focal point the crop window drifts toward as
+# it zooms) -- used for AI-generated image clips specifically (see ai_broll.py), not
+# Pixabay footage. A static AI image has no motion of its own, so pairing zoom with a
+# genuine directional drift (not just zooming on the dead center) is what keeps it from
+# reading as "a photo with a zoom filter" -- real stock clips already have their own
+# camera/subject motion, so they keep the plain center-zoom below unchanged.
+PAN_TARGETS = [(0.15, 0.25), (0.85, 0.25), (0.15, 0.75), (0.85, 0.75), (0.5, 0.15), (0.5, 0.85)]
 
-def _scale_clip(src, dst, target, zoom=None):
+
+def _scale_clip(src, dst, target, zoom=None, pan_target=None):
     clip_len = _probe_duration(src)
     loop_count = max(math.ceil(target / clip_len), 1) if clip_len > 0 else 1
     # fps filter forces a real, constant frame rate -- Pexels source clips come in
@@ -178,9 +201,28 @@ def _scale_clip(src, dst, target, zoom=None):
     if zoom_end:
         total_frames = max(int(round(target * OUTPUT_FPS)), 1)
         zoom_step = (zoom_end - 1.0) / total_frames
+        if pan_target:
+            fx, fy = pan_target
+            # Drift the crop window's center from frame-center toward (fx,fy) as zoom
+            # progresses from 1.0 to zoom_end, instead of staying centered -- e.g. at
+            # x: cx = 0.5 + progress*(fx-0.5), then x = iw*cx - (iw/zoom)/2 (the crop
+            # window's half-width at the current zoom level).
+            # Clamped to the valid crop range [0, iw-iw/zoom] -- at this pipeline's
+            # modest zoom_end values (1.06-1.15), the crop window only has a few
+            # percent of the frame to actually move within, so an uncomputed pan
+            # target like 0.85 would put x_expr's raw value far outside the frame
+            # (verified: at zoom_end=1.15, fx=0.85 needs x_frac=0.415 but the valid
+            # range tops out at 0.130). Clamping means the pan drifts as far toward
+            # the target as the zoom level actually allows, rather than producing an
+            # invalid crop -- still a real, visible directional drift, just bounded.
+            x_expr = f"max(0,min(iw-iw/zoom,(iw*(0.5+((zoom-1)/({zoom_end}-1))*({fx}-0.5)))-(iw/zoom/2)))"
+            y_expr = f"max(0,min(ih-ih/zoom,(ih*(0.5+((zoom-1)/({zoom_end}-1))*({fy}-0.5)))-(ih/zoom/2)))"
+        else:
+            x_expr = "iw/2-(iw/zoom/2)"
+            y_expr = "ih/2-(ih/zoom/2)"
         vf += (
             f",zoompan=z='min(zoom+{zoom_step},{zoom_end})':d=1:"
-            f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={WIDTH}x{HEIGHT}:fps={OUTPUT_FPS}"
+            f"x='{x_expr}':y='{y_expr}':s={WIDTH}x{HEIGHT}:fps={OUTPUT_FPS}"
         )
     subprocess.run([
         "ffmpeg", "-y", "-stream_loop", str(loop_count - 1), "-i", str(src),
@@ -369,7 +411,7 @@ def _add_hook_sound(audio_path, narration_duration, work_dir):
     return hooked_audio
 
 
-def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir, mascot_dir=None):
+def assemble(script, narration_path, clips, music_dir, out_path, work_dir, mascot_dir=None):
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
     mascot_dir = Path(mascot_dir) if mascot_dir else config.ASSETS_DIR / "branding"
@@ -386,9 +428,12 @@ def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir, 
     # frame-rounding safety margin.
     clip_targets = [d + CLIP_DURATION_BUFFER + TRANSITION_DURATION for d in durations]
     scaled_paths = []
-    for i, (clip, target) in enumerate(zip(clip_paths, clip_targets)):
+    for i, (clip, target) in enumerate(zip(clips, clip_targets)):
         scaled = work_dir / f"beat_{i:02d}_scaled.mp4"
-        _scale_clip(clip, scaled, target, zoom="hook" if i == 0 else "subtle")
+        # Real Ken Burns pan only for AI-generated image clips (no motion of their own)
+        # -- see PAN_TARGETS' comment. Pixabay footage keeps the plain center-zoom.
+        pan_target = random.choice(PAN_TARGETS) if clip.get("source") == "ai_image" else None
+        _scale_clip(clip["path"], scaled, target, zoom="hook" if i == 0 else "subtle", pan_target=pan_target)
         scaled_paths.append(scaled)
 
     video_track = work_dir / "video_track.mp4"
@@ -458,7 +503,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--script", required=True)
     parser.add_argument("--narration", required=True)
-    parser.add_argument("--clips", required=True, help="JSON list of clip paths, inline or a file path")
+    parser.add_argument("--clips", required=True, help="JSON list of {path, source} clip entries, inline or a file path")
     parser.add_argument("--music-dir", default=str(config.ASSETS_DIR / "music"))
     parser.add_argument("--mascot-dir", default=str(config.ASSETS_DIR / "branding"))
     parser.add_argument("--work-dir", required=True)
@@ -467,12 +512,12 @@ if __name__ == "__main__":
 
     script_data = json.loads(Path(args.script).read_text(encoding="utf-8"))
     if args.clips.strip().startswith("["):
-        clip_paths = json.loads(args.clips)
+        clips = json.loads(args.clips)
     else:
-        clip_paths = json.loads(Path(args.clips).read_text(encoding="utf-8"))
+        clips = json.loads(Path(args.clips).read_text(encoding="utf-8"))
 
     result = assemble(
-        script_data, args.narration, clip_paths, args.music_dir, args.out, args.work_dir,
+        script_data, args.narration, clips, args.music_dir, args.out, args.work_dir,
         mascot_dir=args.mascot_dir,
     )
     print(result)
