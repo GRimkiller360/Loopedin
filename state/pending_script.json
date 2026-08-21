@@ -1,0 +1,30 @@
+{
+  "topic": "18th-century 'black chambers' secretly opening and resealing sealed government mail",
+  "category": "history",
+  "seed_source_video_id": "J8m8vCiVjsE",
+  "seed_view_count": 794256,
+  "title": "A Government Could Read Your 'Sealed' Letter — In Under 3 Hours",
+  "description": "AI-narrated history commentary: how 18th-century 'black chambers' secretly steamed open, copied, and perfectly resealed government mail — sometimes in under three hours flat. #history #Shorts",
+  "tags": ["history", "espionage history", "cabinet noir", "black chamber", "18th century history", "spy history", "postal history", "shorts"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "myth_bust", "text": "A wax seal on a letter never proved nobody had read it — an 18th-century office could open it, read it, and reseal it perfectly in under three hours."},
+    {"hook_type": "shocking_fact", "text": "In 1700s Vienna, a secret government office could open your sealed letter, copy every word, and have it resealed and back in the mail within three hours."},
+    {"hook_type": "question", "text": "How did an 18th-century secret office read your locked, wax-sealed letter, then hand it back looking untouched — in under three hours?"},
+    {"hook_type": "story", "text": "Every morning in 1700s Vienna, a mailbag of 'sealed' letters got quietly opened, copied, and resealed by government clerks before anyone woke up to notice."}
+  ],
+  "payoff_mechanism": "Clerks softened the wax without cracking it by gently steaming it loose, secretly copied the letter's contents, then pressed a duplicate seal stamp cast from the original into fresh matching wax so the reseal looked exactly the same.",
+  "share_trigger": "A viewer sends this to the friend who jokes that snail mail was safer than email, because they want to prove even sealed eighteenth-century letters were secretly read by the government.",
+  "contradicted_belief": "People assume a wax seal on a letter proves nobody secretly read it.",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Cabinet_noir", "note": "Confirms cabinets noirs steamed open sealed letters, copied contents, and resealed them with duplicate stamps undetected."},
+    {"url": "https://spyscape.com/article/spy-secrets-tales-from-the-black-chambers", "note": "Describes Vienna's black chamber routing embassy mail through each morning and resealing it before delivery."}
+  ],
+  "beats": [
+    {"text": "A wax seal on a letter never proved nobody had read it — an 18th-century office could open it, read it, and reseal it perfectly in under **three hours**.", "broll_query": "hand pressing red wax seal"},
+    {"text": "These secret 'black chambers' sat inside royal post offices — Vienna's ran mail through at **7 a.m.** daily.", "broll_query": "candlelit desk old letters"},
+    {"text": "Clerks steamed the wax loose without cracking it, copied the letter, then pressed a **duplicate stamp** into fresh wax to remake the seal exactly.", "broll_query": "steam melting red wax seal"},
+    {"text": "No cracked wax, no smudged ink — the recipient **never knew**.", "broll_query": "sealed envelope close up hand"},
+    {"text": "So next time someone calls old mail private, remember: a government beat that in under **three hours** — follow for the next one.", "broll_query": "wax seal stamp red candle"}
+  ]
+}
