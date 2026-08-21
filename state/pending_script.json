@@ -1,0 +1,29 @@
+{
+  "topic": "the 1518 dancing plague in Strasbourg -- why hundreds of people danced themselves to exhaustion and death",
+  "category": "history",
+  "seed_source_video_id": "XRT3Q7OMkLU",
+  "seed_view_count": 542323,
+  "title": "The 1518 'Plague' That Made 400 People Dance Until Some Died",
+  "description": "AI-narrated commentary. In 1518, hundreds of people in Strasbourg danced uncontrollably for weeks -- some until they died. It wasn't poison. Historians now think it was a real stress response, triggered by years of famine and fear.",
+  "tags": ["history", "dancing plague", "1518", "medieval history", "mass hysteria", "shorts", "historyfacts"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "myth_bust", "text": "In 1518, hundreds of people caught the 'Dancing Plague' in one German city -- and it wasn't a disease or poison at all."},
+    {"hook_type": "shocking_fact", "text": "In July 1518, one woman started dancing in a Strasbourg street -- and by the end of the month, 400 people couldn't stop."},
+    {"hook_type": "question", "text": "Why did 400 people in one city dance nonstop for weeks in 1518, some of them until they died?"},
+    {"hook_type": "story", "text": "On July 14, 1518, a woman named Frau Troffea stepped into a Strasbourg street and began to dance -- and by week's end, thirty more had joined her."}
+  ],
+  "payoff_mechanism": "The dancing wasn't caused by poison or infection at all -- three straight years of famine, disease, and religious fear left people so psychologically overwhelmed that their bodies expressed that trauma as involuntary, uncontrollable movement, a real stress response historians now call mass psychogenic illness.",
+  "share_trigger": "A viewer sends this to the friend who thinks anything called a 'plague' has to be a literal disease, because they want to show it was actually a mass stress reaction, not an infection.",
+  "contradicted_belief": "Most people assume a historical 'dancing plague' must have been caused by a literal disease or poison, not a psychological reaction.",
+  "sources": [
+    {"url": "https://www.nationalgeographic.com/history/article/dancing-plague-of-1518-strasbourg-choreomania", "note": "Confirms Frau Troffea's July 1518 outbreak grew to ~400 dancers within a month, with daily deaths from exhaustion."}
+  ],
+  "beats": [
+    {"text": "In **1518**, hundreds of people caught the 'Dancing Plague' in one German city -- and it wasn't a disease or poison at all.", "broll_query": "medieval crowd dancing frenzy"},
+    {"text": "It started with one woman, Frau Troffea, dancing alone in a Strasbourg street -- within a week, **thirty** more had joined her.", "broll_query": "woman dancing alone street"},
+    {"text": "Doctors at the time -- and for centuries after -- blamed poisoned rye bread, a fungus called **ergot** that causes convulsions.", "broll_query": "moldy rye bread grain"},
+    {"text": "But ergot can't explain hundreds of people dancing for weeks straight -- historians now say three years of **famine**, disease, and religious fear pushed people into a genuine stress reaction their own bodies expressed as uncontrollable dancing.", "broll_query": "starving medieval village famine"},
+    {"text": "Some dancers collapsed from **exhaustion** before it finally stopped -- so next time something's called a plague, remember: sometimes the real cause is the mind, not the body. Follow for more history like this, and let me know what you'd have believed back then.", "broll_query": "exhausted collapse medieval street"}
+  ]
+}
