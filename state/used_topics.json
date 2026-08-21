@@ -1293,6 +1293,22 @@
       "share_trigger": "A viewer sends this to the friend who's always complaining their rooftop solar panels barely work on a cloudy day, because they want to show there's already a version of solar that never has that problem.",
       "contradicted_belief": "Most people assume a solar panel would work about the same whether it's on the ground or in orbit, but a space-based one can generate roughly twice the power with no clouds, night, or weather ever getting in the way.",
       "has_sources": true
+    },
+    {
+      "topic": "18th-century 'black chambers' secretly opening and resealing sealed government mail",
+      "video_id": "7kE7IBezDBM",
+      "uploaded_at": "2026-08-21T06:08:10.649860+00:00",
+      "publish_hour_utc": 6,
+      "category": "history",
+      "seed_source_video_id": "J8m8vCiVjsE",
+      "seed_view_count": 794256,
+      "hook_type": "myth_bust",
+      "title": "A Government Could Read Your 'Sealed' Letter \u2014 In Under 3 Hours",
+      "duration_seconds": 35.7,
+      "ruleset_version": "2026-08-20-share-trigger-v5",
+      "share_trigger": "A viewer sends this to the friend who jokes that snail mail was safer than email, because they want to prove even sealed eighteenth-century letters were secretly read by the government.",
+      "contradicted_belief": "People assume a wax seal on a letter proves nobody secretly read it.",
+      "has_sources": true
     }
   ]
 }
