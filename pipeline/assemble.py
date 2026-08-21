@@ -254,8 +254,16 @@ def _scale_clip(src, dst, target, zoom=None, pan_target=None):
         else:
             x_expr = "iw/2-(iw/zoom/2)"
             y_expr = "ih/2-(ih/zoom/2)"
+        # if(eq(on,1),1,...) forces the first output frame's zoom to exactly 1.0 --
+        # without it, zoompan's "zoom" accumulator is unreliable on frame 1 in several
+        # ffmpeg builds (can start undefined or snap straight to zoom_end), which would
+        # render the entire clip at one constant zoom level: visually indistinguishable
+        # from a static shot despite the animation math being otherwise correct. This
+        # was the real bug behind "images have no animation, it's just static" even
+        # after HOOK_ZOOM_END/SUBTLE_ZOOM_END were raised substantially -- a magnitude
+        # increase can't fix an animation that never actually progresses past frame 1.
         vf += (
-            f",zoompan=z='min(zoom+{zoom_step},{zoom_end})':d=1:"
+            f",zoompan=z='if(eq(on,1),1,min(zoom+{zoom_step},{zoom_end}))':d=1:"
             f"x='{x_expr}':y='{y_expr}':s={WIDTH}x{HEIGHT}:fps={OUTPUT_FPS}"
         )
     subprocess.run([
