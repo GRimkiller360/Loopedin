@@ -1,0 +1,31 @@
+{
+  "topic": "why Soviet Army recruits in Afghanistan were nicknamed 'ghosts' -- the same slang word used for the mujahideen enemy",
+  "category": "history",
+  "seed_source_video_id": "AQOwShthoYE",
+  "seed_view_count": 919230,
+  "title": "Soviet Recruits Were Called 'Ghosts' — Same Word Used for the Enemy",
+  "description": "AI-narrated history commentary: Soviet Army recruits in Afghanistan were nicknamed 'ghosts' — the exact same word used for the mujahideen fighting them. Here's the real reason why. #history #shorts #coldwar",
+  "tags": ["soviet army", "history", "afghanistan war", "dedovshchina", "military history", "shorts", "history facts", "cold war"],
+  "hook_type": "question",
+  "hook_candidates": [
+    {"hook_type": "question", "text": "Why did Soviet troops in Afghanistan give brand-new recruits the same nickname as the enemy?"},
+    {"hook_type": "shocking_fact", "text": "Soviet soldiers in Afghanistan called their own rookie recruits 'ghosts' — the exact same word they used for the enemy."},
+    {"hook_type": "myth_bust", "text": "Being 'the new guy' in the Soviet Army didn't just mean less experience — for six months, you officially weren't treated as a real soldier at all."},
+    {"hook_type": "story", "text": "A Soviet recruit's first six months in Afghanistan came with an unofficial rank: ghost — because nothing he did counted yet."}
+  ],
+  "payoff_mechanism": "The Soviet Army had almost no professional sergeant corps, so it informally handed day-to-day discipline to whichever conscripts had served the longest, making time-in-service -- not rank or skill -- the only currency that mattered, and untested newcomers who hadn't yet proven anything were treated as functionally invisible until they had.",
+  "share_trigger": "A viewer sends this to the friend who thinks military hazing stories are exaggerated for movies, because they want to prove the 'ghost' nickname was real slang, not fiction.",
+  "contradicted_belief": "Most people think being the new recruit just means less experience, not literally being nicknamed like the enemy you're fighting.",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Dedovshchina", "note": "Confirms dukhi/dukh as the term for first-six-month conscripts in the Soviet Army's informal time-served hierarchy."},
+    {"url": "https://www.globalsecurity.org/military/world/para/mujahideen.htm", "note": "Confirms Soviet troops called mujahideen 'dukhi' (spirits), derived from Dari 'dushman' (enemy)."}
+  ],
+  "beats": [
+    {"text": "Why did Soviet troops in Afghanistan give brand-new recruits the same nickname as the enemy?", "broll_query": "soldiers marching desert dust"},
+    {"text": "That word was **dukh** — Russian for 'ghost' — the name for guerrilla fighters no one saw coming.", "broll_query": "mountain fighters silhouette rifles"},
+    {"text": "New conscripts got it too: ghosts for their first six months, invisible and unproven.", "broll_query": "young soldier alone barracks"},
+    {"text": "Here's why: the Army had almost no professional sergeants, so **time served**, not rank, decided who actually ran things.", "broll_query": "military rank insignia stripes"},
+    {"text": "A 'ghost' did the worst chores unexplained, until enough months surviving earned him a real name.", "broll_query": "soldier scrubbing floor bucket"},
+    {"text": "Same word marked an enemy you couldn't see and a rookie nobody would look at — **survive**, and the ghost disappears. If that surprised you, subscribe and drop a comment with what you'd have called it.", "broll_query": "soldier sunrise silhouette hopeful"}
+  ]
+}
