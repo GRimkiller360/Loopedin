@@ -1341,6 +1341,22 @@
       "share_trigger": "A viewer sends this to the friend who insists all Greek myths are pure fiction, because they want to prove real women actually performed the maenads' ritual.",
       "contradicted_belief": "Most people assume the maenads from Greek myth are purely fictional stories, but real women actually got stranded on a mountain performing that same ritual.",
       "has_sources": true
+    },
+    {
+      "topic": "the 1518 dancing plague in Strasbourg -- why hundreds of people danced themselves to exhaustion and death",
+      "video_id": "uVLAGGBgbaM",
+      "uploaded_at": "2026-08-21T09:19:53.139073+00:00",
+      "publish_hour_utc": 9,
+      "category": "history",
+      "seed_source_video_id": "XRT3Q7OMkLU",
+      "seed_view_count": 542323,
+      "hook_type": "myth_bust",
+      "title": "The 1518 'Plague' That Made 400 People Dance Until Some Died",
+      "duration_seconds": 48.1,
+      "ruleset_version": "2026-08-20-share-trigger-v5",
+      "share_trigger": "A viewer sends this to the friend who thinks anything called a 'plague' has to be a literal disease, because they want to show it was actually a mass stress reaction, not an infection.",
+      "contradicted_belief": "Most people assume a historical 'dancing plague' must have been caused by a literal disease or poison, not a psychological reaction.",
+      "has_sources": true
     }
   ]
 }
