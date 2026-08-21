@@ -91,6 +91,47 @@
         "Removed the stale 'field name not verified' warning from pipeline/upload.py's docstring after confirming status.containsSyntheticMedia is correct against current API docs -- no code change needed, the risk was already resolved and just never confirmed",
         "Did NOT change: quota margin (6 uploads/day x 1600 units + trend-fetch's ~1,800/day is right at the default 10,000-unit YouTube Data API ceiling) and OAuth consent screen publishing status (Testing vs In production, which controls whether the refresh token expires after 7 days) -- both need the channel owner's own Google Cloud Console access to check/fix, flagged directly rather than guessed at or silently left alone"
       ]
+    },
+    {
+      "date": "2026-08-21",
+      "changed_by": "human-guided (Ethan) -- explicit instruction, no diagnosis attached",
+      "from_version": "2026-08-20-share-trigger-v5",
+      "to_version": "2026-08-20-share-trigger-v5",
+      "diagnosis": "Channel owner asked that narration always close with a subscribe ask and a comment ask together. This overrides the prior ~50/50 mixed-CTA guidance (added because comment-only CTAs dominated 8/9 videos and subscriber conversion stayed flat at 0.00/1k) -- the owner's fix is to combine both asks every time rather than continuing to alternate between them. RULESET_VERSION left unchanged since this doesn't change hook/pacing/structural guidance, only the closing-beat CTA requirement.",
+      "evidence": "Explicit instruction in a live session (\"the narration must say at the end if you like this content pls Subscribe and leave a comment\").",
+      "changes": [
+        "ROUTINE_INSTRUCTIONS.md step 2 retention rule 5: closing beat must now include both a subscribe/follow ask and a comment ask together, every video, with only the exact phrasing varied to avoid verbatim repetition -- no longer alternating between comment-only and subscribe-only closes"
+      ]
+    },
+    {
+      "date": "2026-08-21",
+      "changed_by": "human-guided (Ethan) -- explicit instruction, no diagnosis attached",
+      "from_version": "2026-08-20-share-trigger-v5",
+      "to_version": "2026-08-20-share-trigger-v5",
+      "diagnosis": "Channel owner commissioned a channel mascot (three ChatGPT-generated SVG expressions: surprised/winking/thinking) and asked for it to appear before the video, with a sound and animation on reveal. This is a pure rendering/production change, not a script-writing guidance change -- RULESET_VERSION and ROUTINE_INSTRUCTIONS.md untouched.",
+      "evidence": "Explicit instruction in a live session, including the three supplied SVG files (assets/branding/mascot_{surprised,winking,thinking}.svg) and a follow-up request for sound + animation on the reveal.",
+      "changes": [
+        "Added assets/branding/mascot_{surprised,winking,thinking}.svg -- one is picked at random per video (pipeline/assemble.py) and used consistently for both the bumper and the watermark within that video",
+        "pipeline/assemble.py: prepends a ~1.2s intro bumper before beat 0 -- solid brand-navy background, the chosen mascot rendered via rsvg-convert, a fade-in, a zoompan punch-in (same technique as the existing beat-0 HOOK_ZOOM_END, applied to the whole composited bumper frame rather than the transparent PNG alone to avoid alpha-channel risk in zoompan), and a synthesized 3-tone reveal chime (distinct from the existing beat-0 hook chirp)",
+        "pipeline/assemble.py: also composites a small persistent mascot watermark into the bottom-right corner of the main content for its whole duration",
+        "config.MAX_SHORT_SECONDS budget is now split between narration and the bumper (narration capped at MAX_SHORT_SECONDS - BUMPER_DURATION) so the added bumper doesn't push the final upload closer to YouTube's 60s Shorts threshold than before",
+        "setup_env.sh now also lazily installs librsvg2-bin (rsvg-convert) alongside ffmpeg -- required to rasterize the mascot SVGs on the GitHub Actions runner",
+        "Not verified with a real render in this session -- no ffmpeg/rsvg-convert available on the local dev machine used to write this change; recommended a manual workflow_dispatch test run (defaults to unlisted, see README) before relying on the next real scheduled fire"
+      ]
+    },
+    {
+      "date": "2026-08-21",
+      "changed_by": "human-guided (Ethan) -- explicit instruction, following a data pull he asked for",
+      "from_version": "2026-08-20-share-trigger-v5",
+      "to_version": "2026-08-20-share-trigger-v5",
+      "diagnosis": "A 3-day performance pull (done at the owner's request to look for monetization/growth improvements) found that all 6 shares this channel has ever recorded belong to categories dropped on 2026-08-20 (life hacks x5, psychology x1) -- science facts/space/history (the current lineup) have zero recorded shares between them. Since share_rate is the primary sort key in analytics_feedback.py's category/hook/length/etc. rankings, this left every currently-active category tied at 0.000 and sorted in arbitrary dict-insertion order in performance_summary.md -- hiding a real, already-visible signal: history's 223% avg_view_pct vastly outperforms space (58.5%) and science facts (59.6%) in the raw per-video data (n=8/7/8), but that gap was invisible in the ranked list the routine actually reads each run.",
+      "evidence": "Direct inspection of state/performance_log.json (64 scored videos) and state/performance_summary.md's 'Top categories' section; confirmed the sort in pipeline/analytics_feedback.py's _rank() used share_rate as its only key.",
+      "changes": [
+        "pipeline/analytics_feedback.py's _rank(): sort key is now (share_rate, avg_view_pct) instead of share_rate alone -- avg_view_pct now breaks ties instead of leaving them in arbitrary order. Verified against the real logged data: history now ranks 3rd overall (right behind the two dropped categories that still hold the only real share data), clearly above space and science facts, instead of being lost in a 3-way 0.000 tie",
+        "No change to ROUTINE_INSTRUCTIONS.md -- it already says 'Top categories... actively steer which candidate/angle... you pick'; the ranking math was the actual bug, not the guidance text",
+        "pipeline/upload.py: posts a top-level comment (randomly chosen from 4 templates, same variety reasoning as the closing-beat CTA) reinforcing the subscribe/comment ask right after a successful upload. NOT pinned -- verified against current YouTube Data API docs that commentThreads.insert has no pin capability at all (Studio-UI-only); wrapped in try/except so a comment-API failure can never be mistaken for an upload failure or count toward auto-pause",
+        "Not run against the live API in this session (no credentials on the local dev machine) -- logic verified by unit-testing analytics_feedback.summarize() directly against state/performance_log.json, and upload.py compiles clean, but the comment-posting path itself is unverified until the next real upload"
+      ]
     }
   ]
 }

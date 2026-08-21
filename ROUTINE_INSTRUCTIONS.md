@@ -365,23 +365,21 @@ Save it as `state/pending_script.json` matching the shape documented in
      which specific word or image in beat 0 the ending calls back to, it isn't looping
      yet. Payoff and loop-back should coexist in the same closing beat, not compete for
      space -- the payoff line often *is* the callback, recontextualized.
-  5. **The last beat should also close with a light, natural call-to-action -- and a
-     subscribe/follow ask specifically needs to show up far more than it has been.**
-     Real evidence from this channel: across the last 9 videos, 8 closed with a
-     comment-inviting CTA ("what's yours?", "comment below", "sound familiar?") and
-     only 1 actually asked people to follow/subscribe -- and subscriber conversion has
-     been flat at 0.00/1k views in every category the whole time. That's not a
-     coincidence to keep repeating: a comment ask and a subscribe ask are not
-     interchangeable, and defaulting to "comment" almost every time means the video is
-     essentially never asking for the thing that actually grows the channel. **Aim for
-     genuinely mixing both across videos, not picking whichever feels more natural for
-     this specific topic every time** -- roughly half of videos should close with an
-     explicit subscribe/follow nudge (varied phrasing: "follow for more [topic]
-     breakdowns," "there's a new one of these every few hours, follow if you want the
-     next one," "follow before you forget this," etc.), not just a comment prompt.
-     This can still coexist with the loop-back (a callback line immediately followed
-     by the CTA). Don't force identical CTA phrasing every time either way; vary it so
-     it doesn't read as copy-pasted spam.
+  5. **The last beat must close with both a subscribe/follow ask and a comment ask
+     together, every video -- explicit channel-owner instruction (2026-08-21), not a
+     data-driven lean like the rest of this section.** Something to the effect of "if
+     you liked this, subscribe and leave a comment" -- both asks present, every time,
+     not alternating between them. Vary the exact phrasing video to video (e.g. "if
+     this surprised you, follow for more and tell me what you think," "liked this?
+     subscribe, and let me know in the comments," "follow for more [topic] breakdowns
+     -- what's your take?") so it doesn't read as copy-pasted spam, but the substance
+     -- both a subscribe/follow ask and a comment ask in the closing beat -- is fixed,
+     not optional. This supersedes the earlier ~50/50 mixed-CTA guidance (see
+     `state/ruleset_changelog.json`'s 2026-08-21 entry for why: prior data showed
+     comment-only CTAs dominating and subscriber conversion flat, but the fix the
+     owner wants is combining both asks rather than continuing to alternate). This can
+     still coexist with the loop-back (a callback line immediately followed by the
+     combined CTA).
   6. **Before finalizing, check the middle, not just the opener -- each beat is a
      micro-reveal, not a restatement.** A strong hook still loses viewers if beats 1
      through N-1 sag; re-read beats 1 through the second-to-last and ask: does each one

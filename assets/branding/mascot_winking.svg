@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs><filter id="glow" x="-40%" y="-80%" width="180%" height="260%">
+    <feGaussianBlur stdDeviation="5" result="b"></feGaussianBlur>
+    <feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter></defs>
+  <g filter="url(#glow)"><ellipse cx="120" cy="138" rx="98" ry="30" transform="rotate(-14 120 138)" fill="none" stroke="#C6F53C" stroke-width="7"></ellipse></g>
+  <path d="M120 40V72" fill="none" stroke="#C6F53C" stroke-width="7" stroke-linecap="round"></path>
+  <circle cx="120" cy="30" r="9" fill="#C6F53C"></circle>
+  <path d="M120 66C158 66 186 93 186 130C186 168 158 194 120 194C82 194 54 168 54 130C54 93 82 66 120 66Z" fill="#181F55"></path>
+  <path d="M76 114Q96 130 116 114" fill="none" stroke="#F6F5F0" stroke-width="8" stroke-linecap="round"></path>
+  <circle cx="144" cy="116" r="21" fill="#F6F5F0"></circle><circle cx="147" cy="112" r="10" fill="#181F55"></circle><circle cx="138" cy="107" r="4" fill="#F6F5F0"></circle>
+  <path d="M76 96Q96 88 114 94" fill="none" stroke="#F6F5F0" stroke-width="7" stroke-linecap="round"></path>
+  <path d="M126 82Q146 73 164 83" fill="none" stroke="#F6F5F0" stroke-width="7" stroke-linecap="round"></path>
+  <path d="M103 145Q120 161 139 141" fill="none" stroke="#F6F5F0" stroke-width="8" stroke-linecap="round"></path>
+  <g filter="url(#glow)"><path d="M24.9 161.7A98 30 -14 0 0 215.1 114.3" fill="none" stroke="#C6F53C" stroke-width="7" stroke-linecap="round"></path></g>
+</svg>

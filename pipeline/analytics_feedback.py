@@ -282,7 +282,18 @@ def summarize(performance):
         return sum(e[key] for e in entries) / len(entries)
 
     def _rank(bucket, limit):
-        ranked = sorted(bucket.items(), key=lambda kv: _avg("share_rate", kv[1]), reverse=True)
+        # Secondary key matters in practice: share_rate is 0.000 for every currently-
+        # active category right now (shares are still too rare at this channel's size
+        # to have landed on science facts/space/history yet), so a share_rate-only sort
+        # left them in arbitrary dict-insertion order -- history's actual ~4x retention
+        # lead over space/science facts was invisible in this ranking even though the
+        # raw numbers already showed it. avg_view_pct as tiebreak surfaces that signal
+        # instead of hiding it behind a three-way tie. Added 2026-08-21.
+        ranked = sorted(
+            bucket.items(),
+            key=lambda kv: (_avg("share_rate", kv[1]), _avg("avg_view_pct", kv[1])),
+            reverse=True,
+        )
         return [
             {
                 "name": name,

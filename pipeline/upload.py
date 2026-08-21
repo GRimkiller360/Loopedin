@@ -6,11 +6,42 @@ correct against current docs (developers.google.com/youtube/v3/docs/videos,
 """
 import argparse
 import json
+import random
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from pipeline import config
+
+
+# Posted as a top-level comment from the channel right after upload -- NOT pinned,
+# the YouTube Data API has no pin endpoint at all (verified against current
+# commentThreads docs 2026-08-21, pinning is Studio-UI-only). On a channel this small
+# it typically ends up the only/top comment anyway since nothing else has been posted
+# yet, but that's incidental, not guaranteed. Reinforces the narration's own closing
+# CTA (see ROUTINE_INSTRUCTIONS.md) rather than replacing it. Several templates,
+# randomly picked, for the same reason the narration CTA is varied rather than fixed --
+# a single verbatim comment repeated on every upload reads as copy-pasted spam.
+CTA_COMMENT_TEMPLATES = [
+    "If this surprised you, follow for more {category} breakdowns -- there's a new one every few hours.",
+    "What's your take? Drop a comment below, and follow if you want the next one.",
+    "Didn't already know this one? Follow for more {category} facts like it.",
+    "Let me know your reaction in the comments -- following gets you the next one before it's buried in your feed.",
+]
+
+
+def _post_cta_comment(youtube, video_id, channel_id, script):
+    text = random.choice(CTA_COMMENT_TEMPLATES).format(category=script.get("category") or "these")
+    youtube.commentThreads().insert(
+        part="snippet",
+        body={
+            "snippet": {
+                "channelId": channel_id,
+                "videoId": video_id,
+                "topLevelComment": {"snippet": {"textOriginal": text}},
+            }
+        },
+    ).execute()
 
 
 def _hashtags(script):
@@ -83,7 +114,17 @@ def upload_short(video_path, script, privacy_status="public"):
         # below and must propagate immediately, not get retried into wasted attempts.
         _, response = request.next_chunk(num_retries=3)
 
-    return response["id"]
+    video_id = response["id"]
+
+    # Best-effort, never fatal -- the video already published successfully by this
+    # point, and a comment API hiccup (comments disabled, transient error, etc.) must
+    # never be reported as an upload failure or count toward auto-pause.
+    try:
+        _post_cta_comment(youtube, video_id, response["snippet"]["channelId"], script)
+    except Exception as e:
+        print(f"warning: CTA comment failed (non-fatal): {e}", file=sys.stderr)
+
+    return video_id
 
 
 if __name__ == "__main__":
