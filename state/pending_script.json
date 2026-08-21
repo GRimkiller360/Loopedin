@@ -1,0 +1,38 @@
+{
+  "topic": "things astronauts genuinely can't do in space -- crying, burping, whistling, and height change",
+  "category": "space",
+  "seed_source_video_id": "JRpdwJuK9Uo",
+  "seed_view_count": 429866,
+  "title": "Things Astronauts Genuinely Can't Do In Space",
+  "description": "AI-narrated commentary. Crying, burping, whistling, even your own height -- space changes things you'd never expect. NASA-documented surprises about everyday life in zero gravity.",
+  "tags": ["space", "astronauts", "zero gravity", "nasa", "science facts", "shorts", "spacefacts"],
+  "hook_type": "list",
+  "hook_candidates": [
+    {"hook_type": "list", "text": "Things astronauts genuinely can't do once they're in space."},
+    {"hook_type": "shocking_fact", "text": "Astronauts can't cry properly, burp normally, or whistle outside their suit."},
+    {"hook_type": "question", "text": "What's something completely normal on Earth that's impossible in space?"},
+    {"hook_type": "myth_bust", "text": "You'd think crying, burping, and whistling would work the same in space -- they don't."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who always says space life must be basically the same as ours, because they want to prove it very much isn't.",
+  "contradicted_belief": "Most people assume astronauts can still cry, burp, and whistle normally once they're in space.",
+  "sources": [
+    {"url": "https://www.livescience.com/space/space-exploration/can-you-burp-in-space", "note": "Confirms zero-g prevents gas separating from liquid, so a burp brings both up instead."},
+    {"url": "https://www.space.com/19116-astronauts-taller-space-spines.html", "note": "Confirms astronauts temporarily gain about 2 inches in height from spinal disc expansion."}
+  ],
+  "beats": [
+    {"text": "Things astronauts genuinely **can't** do once they're in space.", "broll_query": "astronaut floating space station", "beat_role": "hook"},
+    {"text": "Crying in space doesn't work like you'd **expect**.", "broll_query": "astronaut face closeup emotional", "beat_role": "claim"},
+    {"text": "Tears just **pool** up and sting your eyes instead.", "broll_query": "water droplet floating zero gravity", "beat_role": "evidence"},
+    {"text": "Worse than not crying at all, honestly.", "broll_query": "astronaut shrugging space station", "beat_role": "joke"},
+    {"text": "Burping is nearly **impossible** too.", "broll_query": "astronaut eating space food", "beat_role": "claim"},
+    {"text": "Gas can't separate from liquid, so a burp brings **both** up.", "broll_query": "stomach digestive system illustration", "beat_role": "evidence"},
+    {"text": "Nobody mentions that part in training.", "broll_query": "astronaut training simulator classroom", "beat_role": "joke"},
+    {"text": "Whistling is **impossible** during a spacewalk.", "broll_query": "astronaut spacewalk spacesuit closeup", "beat_role": "claim"},
+    {"text": "Suits don't hold enough air pressure to whistle -- but the station **does**.", "broll_query": "space station interior astronaut floating", "beat_role": "evidence"},
+    {"text": "Bad suit design, not a space mystery.", "broll_query": "astronaut whistling smiling space", "beat_role": "joke"},
+    {"text": "The strangest one: astronauts actually grow **taller** in space.", "broll_query": "astronaut measuring height chart", "beat_role": "claim"},
+    {"text": "Without gravity compressing the spine, discs expand -- adding about **two inches**.", "broll_query": "human spine xray illustration", "beat_role": "evidence"},
+    {"text": "Researchers still don't know the **long-term** effects.", "broll_query": "scientist researcher lab study", "beat_role": "hedge"},
+    {"text": "So it turns out there are some...", "broll_query": "astronaut looking out window space", "beat_role": "ending"}
+  ]
+}
