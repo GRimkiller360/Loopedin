@@ -10,7 +10,6 @@ import argparse
 import json
 import math
 import random
-import re
 import subprocess
 import sys
 from pathlib import Path
@@ -54,15 +53,36 @@ def _ass_escape(text):
     return text.replace("\\", r"\\").replace("{", r"\{").replace("}", r"\}")
 
 
-def _beat_text_to_ass(text):
-    """Converts **word** emphasis markers (see script_schema.py) into ASS inline
-    override tags; everything else is escaped plain text."""
-    parts = re.split(r"\*\*(.+?)\*\*", text)
-    out = []
-    for i, part in enumerate(parts):
-        escaped = _ass_escape(part)
-        out.append(f"{EMPHASIS_OVERRIDE}{escaped}{EMPHASIS_RESET}" if i % 2 == 1 else escaped)
-    return "".join(out)
+# TikTok-style dynamic captions: 1-2 words on screen at a time instead of the whole
+# beat sentence at once -- the eye can't skim ahead of a caption that keeps changing,
+# which is exactly this channel's own top lever (avg_view_pct/retention). 2 rather than
+# 1 -- literal one-word-at-a-time reads choppy for short words at normal speaking pace;
+# 2 is the common sweet spot in TikTok/CapCut-style caption tools. Drop to 1 for an
+# even punchier feel.
+WORDS_PER_CAPTION = 2
+
+
+def _tokenize_beat(text):
+    """Splits beat text into (word, is_emphasized) tokens, based on the same **word**
+    markers (see script_schema.py) _beat_text_to_ass used to consume whole-beat --
+    needed per-word now since captions render 1-2 words at a time instead of a beat's
+    full sentence. Splits on whitespace first, then strips ** per token, rather than
+    re.split()-ing the whole string on the ** pairs first -- the latter drops trailing
+    punctuation stuck directly to an emphasized word's closing ** (e.g. "**1518**,")
+    into its own orphaned punctuation-only token with no word attached."""
+    tokens = []
+    for raw_word in text.split():
+        is_emphasized = "**" in raw_word
+        tokens.append((raw_word.replace("**", ""), is_emphasized))
+    return tokens
+
+
+def _chunk_to_ass(chunk):
+    words = []
+    for word, is_emphasized in chunk:
+        escaped = _ass_escape(word)
+        words.append(f"{EMPHASIS_OVERRIDE}{escaped}{EMPHASIS_RESET}" if is_emphasized else escaped)
+    return " ".join(words)
 
 
 ASS_HEADER = f"""[Script Info]
@@ -83,17 +103,40 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 def _write_ass(beats, durations, out_path):
     lines = [ASS_HEADER]
     t = 0.0
-    for beat, dur in zip(beats, durations):
-        start, end = t, t + dur
-        ass_text = _beat_text_to_ass(beat["text"])
-        lines.append(f"Dialogue: 0,{_format_ass_timestamp(start)},{_format_ass_timestamp(end)},Default,,0,0,0,,{ass_text}")
-        t = end
+    for beat, beat_duration in zip(beats, durations):
+        tokens = _tokenize_beat(beat["text"])
+        if not tokens:
+            t += beat_duration  # keep later beats' timing aligned even on empty text
+            continue
+
+        chunks = [tokens[i:i + WORDS_PER_CAPTION] for i in range(0, len(tokens), WORDS_PER_CAPTION)]
+        # No real per-word timestamps from the TTS step (see module docstring) -- each
+        # chunk's on-screen share of the beat is estimated proportionally to its word
+        # length, same approach _beat_durations already uses per-beat against the
+        # narration's actual audio duration, just carried one level deeper.
+        total_weight = sum(max(len(word), 1) for chunk in chunks for word, _ in chunk)
+        for chunk in chunks:
+            chunk_weight = sum(max(len(word), 1) for word, _ in chunk)
+            chunk_duration = beat_duration * chunk_weight / total_weight
+            start, end = t, t + chunk_duration
+            ass_text = _chunk_to_ass(chunk)
+            lines.append(f"Dialogue: 0,{_format_ass_timestamp(start)},{_format_ass_timestamp(end)},Default,,0,0,0,,{ass_text}")
+            t = end
     Path(out_path).write_text("\n".join(lines), encoding="utf-8")
 
 
 CLIP_DURATION_BUFFER = 0.35  # each segment overshoots slightly so frame-rounding
                               # across N clips can never leave the concatenated
                               # video shorter than the narration audio
+
+TRANSITION_DURATION = 0.35  # crossfade between consecutive b-roll clips instead of a
+                            # hard cut, so beats flow into each other rather than
+                            # bumping straight to the next scene. Each clip is rendered
+                            # this much longer too (see _scale_clip's target) --
+                            # otherwise the overlap xfade consumes to build the
+                            # crossfade would eat into CLIP_DURATION_BUFFER's own
+                            # safety margin and risk the video_track coming out shorter
+                            # than the narration again.
 
 
 OUTPUT_FPS = 30
@@ -120,8 +163,7 @@ SUBTLE_ZOOM_END = 1.06
 SIGNATURE_LOOK_FILTER = "eq=contrast=1.08:saturation=1.18:brightness=0.01,vignette=PI/4"
 
 
-def _scale_clip(src, dst, duration, zoom=None):
-    target = duration + CLIP_DURATION_BUFFER
+def _scale_clip(src, dst, target, zoom=None):
     clip_len = _probe_duration(src)
     loop_count = max(math.ceil(target / clip_len), 1) if clip_len > 0 else 1
     # fps filter forces a real, constant frame rate -- Pexels source clips come in
@@ -145,6 +187,46 @@ def _scale_clip(src, dst, duration, zoom=None):
         "-t", str(target), "-vf", vf, "-an", "-c:v", "libx264", "-preset", "veryfast",
         "-pix_fmt", "yuv420p", str(dst),
     ], check=True)
+
+
+def _build_video_track(scaled_paths, clip_targets, out_path):
+    """Crossfades consecutive beat clips into video_track.mp4 instead of hard-cutting
+    between them -- chains ffmpeg's xfade filter across all N clips in one pass, rather
+    than the old concat-demuxer approach (concat can't overlap two streams at once, only
+    play them back to back, so a real crossfade needs every clip as a live filter-graph
+    input instead)."""
+    n = len(scaled_paths)
+    inputs = []
+    for p in scaled_paths:
+        inputs += ["-i", str(p)]
+
+    if n == 1:
+        filter_complex, final_label = None, "0:v"
+    else:
+        parts = []
+        cumulative = clip_targets[0]
+        prev_label = "0:v"
+        for i in range(1, n):
+            offset = max(cumulative - TRANSITION_DURATION, 0.0)
+            out_label = f"v{i}"
+            parts.append(
+                f"[{prev_label}][{i}:v]xfade=transition=fade:"
+                f"duration={TRANSITION_DURATION}:offset={offset:.3f}[{out_label}]"
+            )
+            cumulative = cumulative + clip_targets[i] - TRANSITION_DURATION
+            prev_label = out_label
+        filter_complex, final_label = ";".join(parts), prev_label
+
+    cmd = ["ffmpeg", "-y", *inputs]
+    if filter_complex:
+        cmd += ["-filter_complex", filter_complex, "-map", f"[{final_label}]"]
+    else:
+        cmd += ["-map", final_label]
+    cmd += [
+        "-c:v", "libx264", "-preset", "veryfast", "-r", str(OUTPUT_FPS), "-pix_fmt", "yuv420p",
+        str(out_path),
+    ]
+    subprocess.run(cmd, check=True)
 
 
 # Category -> preferred music mood tags. assets/music/tags.json (user-maintained) maps
@@ -298,25 +380,19 @@ def assemble(script, narration_path, clip_paths, music_dir, out_path, work_dir, 
     narration_duration = min(_probe_duration(narration_path), config.MAX_SHORT_SECONDS - BUMPER_DURATION)
     durations = _beat_durations(script["beats"], narration_duration)
 
+    # Each clip is rendered TRANSITION_DURATION longer than it needs to be for its own
+    # beat -- see TRANSITION_DURATION's comment -- so the crossfade below has real
+    # overlap material to consume instead of eating into CLIP_DURATION_BUFFER's own
+    # frame-rounding safety margin.
+    clip_targets = [d + CLIP_DURATION_BUFFER + TRANSITION_DURATION for d in durations]
     scaled_paths = []
-    for i, (clip, dur) in enumerate(zip(clip_paths, durations)):
+    for i, (clip, target) in enumerate(zip(clip_paths, clip_targets)):
         scaled = work_dir / f"beat_{i:02d}_scaled.mp4"
-        _scale_clip(clip, scaled, dur, zoom="hook" if i == 0 else "subtle")
+        _scale_clip(clip, scaled, target, zoom="hook" if i == 0 else "subtle")
         scaled_paths.append(scaled)
 
-    concat_list = work_dir / "concat.txt"
-    concat_list.write_text("\n".join(f"file '{p.resolve()}'" for p in scaled_paths))
     video_track = work_dir / "video_track.mp4"
-    # Re-encode rather than stream-copy: these segments were encoded independently
-    # (separate ffmpeg invocations), and copy-concatenating them can produce subtly
-    # misaligned keyframes/timestamps -- symptom seen: video freezes on the last
-    # frame while audio keeps playing, because the copied track ends up shorter
-    # than its nominal duration.
-    subprocess.run([
-        "ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(concat_list),
-        "-c:v", "libx264", "-preset", "veryfast", "-r", str(OUTPUT_FPS), "-pix_fmt", "yuv420p",
-        str(video_track),
-    ], check=True)
+    _build_video_track(scaled_paths, clip_targets, video_track)
 
     ass_path = work_dir / "captions.ass"
     _write_ass(script["beats"], durations, ass_path)
