@@ -1373,6 +1373,22 @@
       "share_trigger": "A viewer sends this to the friend who always says space life must be basically the same as ours, because they want to prove it very much isn't.",
       "contradicted_belief": "Most people assume astronauts can still cry, burp, and whistle normally once they're in space.",
       "has_sources": true
+    },
+    {
+      "topic": "Soviet army slang 'dukhi' -- the same word for brand-new recruits and the Afghan mujahideen enemy",
+      "video_id": "qFY_fnYNmeU",
+      "uploaded_at": "2026-08-21T11:07:47.778650+00:00",
+      "publish_hour_utc": 11,
+      "category": "history",
+      "seed_source_video_id": "AQOwShthoYE",
+      "seed_view_count": 938198,
+      "hook_type": "shocking_fact",
+      "title": "The Soviet Army Called New Recruits The Same Word As The Enemy",
+      "duration_seconds": 48.6,
+      "ruleset_version": "2026-08-21-claim-evidence-joke-v7",
+      "share_trigger": "A viewer sends this to the friend who complains about being 'the new guy' at work, because they want to show it could have been so much worse.",
+      "contradicted_belief": "Most people assume a hazed new recruit and the actual enemy would never share the same nickname, but the Soviet army gave them one.",
+      "has_sources": true
     }
   ]
 }
