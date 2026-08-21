@@ -190,6 +190,20 @@
         "RULESET_VERSION left unchanged -- this only affects the covered-category set, not hook/pacing/writing guidance",
         "Deliberately did NOT touch state/performance_summary.md or state/used_topics.json -- past space/science-facts videos remain real production history, just no longer a category new scripts can pick"
       ]
+    },
+    {
+      "date": "2026-08-21",
+      "changed_by": "human-guided (Ethan) -- explicit instruction, following his own observation that posted comments were not unique",
+      "from_version": "2026-08-21-claim-evidence-joke-v7",
+      "to_version": "2026-08-21-closing-comment-v8",
+      "diagnosis": "Channel owner asked whether the posted-after-upload comment (pipeline/upload.py) was still unique per video. It was not: only 4 fixed templates existed, 2 of which varied by {category} -- and since categories were narrowed to history-only earlier the same day, that variable stopped providing any variation at all, leaving effectively 4 possible comments total picked at random. At this channel's publish rate, exact-duplicate comments across videos were likely within days, working against the same anti-formulaic-content goal the rest of the channel's variety rules exist for. Fix: have the routine -- which already has full context on each video's specific content while writing the script -- author the comment itself, instead of picking from a small fixed pool after the fact.",
+      "evidence": "Explicit instruction (\"use the Claude routine to write a comment for each video\"), following his own finding that the template pool was not producing unique output. Verified the new schema field end-to-end: script_schema.py accepts a well-formed closing_comment and rejects a too-short one; quality_gate.py's genericness check was verified to both correctly reject a real generic line (\"Let me know your thoughts below...\", overlap 0.033/0.0) and correctly accept a genuinely topic-specific one (overlap 0.179/0.174) against the same real published video's topic/title, confirming the 0.15 threshold is achievable for real specific writing and not just theoretically passable.",
+      "changes": [
+        "pipeline/script_schema.py: added required closing_comment field (>=8 words, MIN_CLOSING_COMMENT_WORDS); RULESET_VERSION -> 2026-08-21-closing-comment-v8",
+        "pipeline/quality_gate.py: added a genericness check -- closing_comment must overlap either the script's topic or title (same low-bar _title_overlap approach as contradicted_belief/hook-winner), rejecting a line generic enough to sit under any video",
+        "pipeline/upload.py: _post_cta_comment now posts script['closing_comment'] directly instead of randomly picking from CTA_COMMENT_TEMPLATES (removed, along with the now-unused random import) -- script_schema.py already gates pending_script.json before this stage runs, so the field is guaranteed present, same guarantee title already relies on",
+        "ROUTINE_INSTRUCTIONS.md step 2: added the closing_comment field description with a worked good-vs-bad example (a specific historical-parallel comment vs. \"Let me know your thoughts below!\")"
+      ]
     }
   ]
 }

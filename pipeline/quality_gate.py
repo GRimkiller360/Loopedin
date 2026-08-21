@@ -131,6 +131,24 @@ def check(script, used_topics_path):
                 "must be audible in the opening beat, not just exist as metadata"
             )
 
+    # closing_comment must actually reference this specific video, not be an
+    # interchangeable line that could sit under any upload -- checked against both
+    # topic and title (whichever it resembles), same low-bar overlap approach as the
+    # other specificity checks above. This is what replaced upload.py's old small
+    # fixed template pool, which was producing exact-duplicate comments across videos.
+    closing_comment = script.get("closing_comment", "")
+    if closing_comment:
+        best_overlap = max(
+            _title_overlap(closing_comment, script.get("topic", "")),
+            _title_overlap(closing_comment, script.get("title", "")),
+        )
+        if best_overlap < MIN_HOOK_WINNER_OVERLAP:
+            errors.append(
+                f"closing_comment doesn't resemble this video's topic/title (best overlap="
+                f"{best_overlap:.2f}) -- it reads as generic enough to sit under any video, "
+                "not written specifically for this one"
+            )
+
     # Candidates need to be genuinely different options, not the same idea reworded --
     # schema.py only catches exact-duplicate text; this catches near-duplicates.
     candidates = script.get("hook_candidates") or []

@@ -39,6 +39,15 @@ Expected script.json shape:
                           quality_gate.py checks it resembles the opening beat, not just sits
                           here as unused metadata. See ROUTINE_INSTRUCTIONS.md's share-trigger
                           step.",
+  "closing_comment": "one sentence (>=8 words), written fresh for THIS video's specific
+                     topic/claim -- posted by pipeline/upload.py as a top-level comment
+                     right after upload (not narrated, not pinned -- the Data API has no
+                     pin endpoint). Must actually reference something specific from this
+                     video (quality_gate.py checks it overlaps the topic/title, not a
+                     interchangeable line that could sit under any video). A natural
+                     subscribe/follow or comment-inviting nudge is welcome but not
+                     required -- specificity is what's enforced, not a fixed formula. See
+                     ROUTINE_INSTRUCTIONS.md's closing-comment step.",
   "sources": "optional list of {'url': '...', 'note': 'what this source actually confirms,
               <=20 words'} entries -- at least one real, independently-verifiable source for
               this video's central claim, found via WebSearch/WebFetch. pipeline/upload.py
@@ -90,15 +99,22 @@ import sys
 # state/ruleset_changelog.json for the full reasoning. payoff_mechanism is gone (no
 # single deep mechanism in this format); beats now carry a required beat_role so
 # assemble.py's transition/motion choices reflect real structural intent.
-RULESET_VERSION = "2026-08-21-claim-evidence-joke-v7"
+#
+# 2026-08-21-closing-comment-v8: added closing_comment -- the posted-after-upload
+# comment (pipeline/upload.py) is now written fresh per video instead of picked from a
+# small fixed template pool, which was producing exact-duplicate comments across
+# videos once category stopped varying (history-only). See
+# state/ruleset_changelog.json.
+RULESET_VERSION = "2026-08-21-closing-comment-v8"
 
-REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates", "share_trigger", "contradicted_belief"}
+REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates", "share_trigger", "contradicted_belief", "closing_comment"}
 REQUIRED_BEAT_KEYS = {"text", "broll_query", "beat_role"}
 REQUIRED_HOOK_CANDIDATE_KEYS = {"hook_type", "text"}
 MIN_BEATS, MAX_BEATS = 3, 16
 MIN_HOOK_CANDIDATES = 3
 MIN_SHARE_TRIGGER_WORDS = 12
 MIN_CONTRADICTED_BELIEF_WORDS = 8
+MIN_CLOSING_COMMENT_WORDS = 8
 MAX_TITLE_LEN = 100
 
 # What job each beat does -- see ROUTINE_INSTRUCTIONS.md step 2 for the full structure.
@@ -173,6 +189,14 @@ def validate(script):
         errors.append(
             f"contradicted_belief: need >={MIN_CONTRADICTED_BELIEF_WORDS} words stating what "
             f"the viewer currently believes that this video disproves, got {belief_words}"
+        )
+
+    closing_comment = (script.get("closing_comment") or "").strip()
+    closing_comment_words = len(closing_comment.split())
+    if closing_comment_words < MIN_CLOSING_COMMENT_WORDS:
+        errors.append(
+            f"closing_comment: need >={MIN_CLOSING_COMMENT_WORDS} words, written fresh for "
+            f"this video's specific topic, got {closing_comment_words}"
         )
 
     sources = script.get("sources")

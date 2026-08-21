@@ -258,6 +258,20 @@ Save it as `state/pending_script.json` matching the shape documented in
 - `contradicted_belief`: one sentence, >=8 words, stating what the viewer currently
   believes that this video disproves -- see the share-trigger step above. Must
   actually be audible in beat 0; rejected by `quality_gate.py` if it isn't.
+- `closing_comment`: one sentence, >=8 words, written fresh for THIS video's specific
+  topic -- `pipeline/upload.py` posts it as a top-level comment right after upload
+  (not narrated, not pinned -- the YouTube Data API has no pin endpoint at all).
+  Write it the way you'd actually comment on your own video: reference the specific
+  claim/fact, not a generic line that could sit under any upload -- `quality_gate.py`
+  checks it actually overlaps this video's topic/title, and rejects it if it reads as
+  interchangeable. A natural subscribe/follow nudge or a comment-inviting question is
+  welcome, but the substance requirement is specificity, not a fixed phrase -- e.g. for
+  a video about a wrongly-named historical figure, "Same thing happened with [other
+  example] -- history really doesn't like giving credit to the right person" is
+  specific; "Let me know your thoughts below!" is not, regardless of word count. This
+  replaced a small fixed template pool (2026-08-21) that started producing
+  exact-duplicate comments across videos once category stopped varying (history-only)
+  -- see `state/ruleset_changelog.json`.
 - `sources` (optional but strongly preferred): use `WebSearch`/`WebFetch` to find at
   least one real, independently-verifiable source for this video's central claim --
   not a source for the topic in general, the specific number/mechanism/claim you're

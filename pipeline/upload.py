@@ -6,7 +6,6 @@ correct against current docs (developers.google.com/youtube/v3/docs/videos,
 """
 import argparse
 import json
-import random
 import sys
 from pathlib import Path
 
@@ -18,20 +17,16 @@ from pipeline import config
 # the YouTube Data API has no pin endpoint at all (verified against current
 # commentThreads docs 2026-08-21, pinning is Studio-UI-only). On a channel this small
 # it typically ends up the only/top comment anyway since nothing else has been posted
-# yet, but that's incidental, not guaranteed. Reinforces the narration's own closing
-# CTA (see ROUTINE_INSTRUCTIONS.md) rather than replacing it. Several templates,
-# randomly picked, for the same reason the narration CTA is varied rather than fixed --
-# a single verbatim comment repeated on every upload reads as copy-pasted spam.
-CTA_COMMENT_TEMPLATES = [
-    "If this surprised you, follow for more {category} breakdowns -- there's a new one every few hours.",
-    "What's your take? Drop a comment below, and follow if you want the next one.",
-    "Didn't already know this one? Follow for more {category} facts like it.",
-    "Let me know your reaction in the comments -- following gets you the next one before it's buried in your feed.",
-]
-
-
+# yet, but that's incidental, not guaranteed.
+#
+# script["closing_comment"] is written fresh per video by the routine itself (see
+# ROUTINE_INSTRUCTIONS.md and script_schema.py's MIN_CLOSING_COMMENT_WORDS/genericness
+# check in quality_gate.py) -- replaced a small fixed template pool 2026-08-21 after
+# it started producing exact-duplicate comments across videos once category stopped
+# varying (history-only). script_schema.py already gates pending_script.json before
+# this stage ever runs, so closing_comment is guaranteed present here, same as title.
 def _post_cta_comment(youtube, video_id, channel_id, script):
-    text = random.choice(CTA_COMMENT_TEMPLATES).format(category=script.get("category") or "these")
+    text = script["closing_comment"]
     youtube.commentThreads().insert(
         part="snippet",
         body={
