@@ -1,0 +1,39 @@
+{
+  "topic": "the French WWI officer whose tactics manual got shelved before Germany invented the same thing",
+  "category": "history",
+  "seed_source_video_id": "XAnNERNAdlw",
+  "seed_view_count": 485055,
+  "title": "He Wrote The Tactics That Ended Trench Warfare. His Army Buried It.",
+  "description": "AI-narrated commentary on a real WWI story: a French officer's own army buried the tactics manual he wrote, tactics Germany's storm troopers had already built on their own before they ever captured it. #history #wwi #shorts",
+  "tags": ["WWI history", "world war 1", "military history", "storm troopers", "trench warfare", "history facts", "WW1 shorts"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "myth_bust", "text": "Germany's storm troopers already had these trench-breaking tactics before they ever captured the French manual that supposedly gave it to them."},
+    {"hook_type": "question", "text": "What if the officer who wrote the tactics that broke trench warfare got ignored by his own side?"},
+    {"hook_type": "shocking_fact", "text": "A wounded French captain handed his army the tactics manual that could've ended trench warfare years early, they shelved it."},
+    {"hook_type": "list", "text": "Three strange facts about the manual that supposedly taught Germany how to win World War One."}
+  ],
+  "share_trigger": "A viewer sends this to the coworker who insists their brilliant idea got stolen at work, because they want to show even history's most famous 'stolen' idea might not have been stolen at all.",
+  "contradicted_belief": "Most people assume Germany's storm troopers only got these tactics after they captured a French manual.",
+  "closing_comment": "Laffargue's manual is the wildest part of this trench warfare story, his own army buried the exact tactics Germany figured out on its own.",
+  "sources": [
+    {"url": "https://simonjoneshistorian.com/2014/03/05/infiltration-by-close-order-andre-laffargue-and-the-attack-of-9-may-1915/", "note": "Confirms Laffargue was wounded leading the 9 May 1915 attack and wrote his infiltration-tactics pamphlet during recovery."},
+    {"url": "https://en.wikipedia.org/wiki/Assault_Battalion_No._5_(Rohr)", "note": "Confirms the German assault unit (Sturmabteilung Calsow) was formed in March 1915, before Laffargue's pamphlet was captured."},
+    {"url": "https://en.wikipedia.org/wiki/Stormtroopers_(Imperial_Germany)", "note": "Confirms Germany captured and translated Laffargue's pamphlet in 1916, and that French command circulated it without adopting it as doctrine."}
+  ],
+  "beats": [
+    {"text": "Steal. Germany's storm troopers had these tactics **before** they ever captured it.", "broll_query": "a French WWI officer's handwritten notebook page under candlelight, dramatic close shot", "beat_role": "hook"},
+    {"text": "In 1915, wounded captain André **Laffargue** wrote it.", "broll_query": "a wounded French army captain lying in a WWI field hospital cot, writing", "beat_role": "claim"},
+    {"text": "He said stop marching at machine guns, **flank** strongpoints instead.", "broll_query": "WWI soldiers charging across open no-mans-land toward distant machine gun nests, smoke", "beat_role": "evidence"},
+    {"text": "Genuinely great advice. Filed and **forgotten**.", "broll_query": "a stack of paper reports gathering dust in a dim military office drawer", "beat_role": "joke"},
+    {"text": "His own commanders didn't lose it, they **shelved** it.", "broll_query": "a French general's desk with an unopened folder stamped and pushed aside", "beat_role": "claim"},
+    {"text": "Headquarters shared it 'for information,' never making it **doctrine**.", "broll_query": "a WWI officer stamping a document for information only at a wooden desk", "beat_role": "evidence"},
+    {"text": "Great notes. Zero **follow-through**, as usual.", "broll_query": "a cobweb slowly forming over an old filing cabinet drawer, close up", "beat_role": "joke"},
+    {"text": "Storm troopers supposedly stole this plan when Germany captured it in **1916**.", "broll_query": "German stormtroopers in spiked helmets crouched ready to storm a trench line", "beat_role": "claim"},
+    {"text": "A German unit already drilled the same tactics back in **March** 1915.", "broll_query": "German assault troops training with grenades and light machine guns, spring 1915", "beat_role": "evidence"},
+    {"text": "Awkward timing, for **literally** everyone's textbook.", "broll_query": "a raised eyebrow close-up on an old sepia-toned soldier's face, subtle", "beat_role": "joke"},
+    {"text": "Those tactics nearly broke the war open in 1918, and armies still **use** them.", "broll_query": "German stormtroopers breaking through a shattered trench line at dawn, 1918 offensive", "beat_role": "claim"},
+    {"text": "Historians still debate how much of that playbook was **borrowed**.", "broll_query": "two historians in an archive room arguing over an old faded document", "beat_role": "hedge"},
+    {"text": "So here's the WWI story everyone gets **backward**, the manual nobody needed to", "broll_query": "a dusty forgotten manual closing shut on a wooden desk, fade to black", "beat_role": "ending"}
+  ]
+}
