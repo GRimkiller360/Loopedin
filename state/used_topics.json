@@ -1453,6 +1453,22 @@
       "share_trigger": "A viewer sends this to the friend who thinks a modern army always wins, because they want proof one actually lost to birds.",
       "contradicted_belief": "Most people assume a modern army with machine guns always beats wild animals easily.",
       "has_sources": true
+    },
+    {
+      "topic": "Simon the ship's cat, the only cat ever awarded Britain's Dickin Medal, survived a shell but died in postwar quarantine",
+      "video_id": "FO_x8Ne51nQ",
+      "uploaded_at": "2026-08-22T13:16:04.415000+00:00",
+      "publish_hour_utc": 13,
+      "category": "history",
+      "seed_source_video_id": "7PGe16XfLdM",
+      "seed_view_count": 539781,
+      "hook_type": "myth_bust",
+      "title": "This Cat Survived A Warship Shelling. It's Not What Killed Him.",
+      "duration_seconds": 34.8,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who jokes their cat does nothing all day, because they want to prove one actual cat out-earned a military medal.",
+      "contradicted_belief": "Most people assume this decorated war-hero cat came closest to dying when a shell hit him during battle.",
+      "has_sources": true
     }
   ]
 }
