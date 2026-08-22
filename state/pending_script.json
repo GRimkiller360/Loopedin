@@ -1,0 +1,34 @@
+{
+  "topic": "Simon the ship's cat, the only cat ever awarded Britain's Dickin Medal, survived a shell but died in postwar quarantine",
+  "category": "history",
+  "seed_source_video_id": "7PGe16XfLdM",
+  "seed_view_count": 539781,
+  "title": "This Cat Survived A Warship Shelling. It's Not What Killed Him.",
+  "description": "AI-narrated commentary on the true story of Simon, the only cat ever awarded Britain's PDSA Dickin Medal for animal bravery, wounded aboard HMS Amethyst during the 1949 Yangtze Incident.",
+  "tags": ["history", "wwii history", "true story", "animal history", "dickin medal", "hms amethyst", "military history", "shorts"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "myth_bust", "text": "Britain's top medal for animal bravery has only gone to one cat, hit by a real shell that didn't kill him."},
+    {"hook_type": "question", "text": "What does it actually take for a cat to earn a real military medal for bravery?"},
+    {"hook_type": "story", "text": "In 1949, a half-starved dockyard stray ended up trapped on a warship for ten weeks under fire."},
+    {"hook_type": "shocking_fact", "text": "Only one cat in history has ever won Britain's top medal for animal bravery."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who jokes their cat does nothing all day, because they want to prove one actual cat out-earned a military medal.",
+  "contradicted_belief": "Most people assume this decorated war-hero cat came closest to dying when a shell hit him during battle.",
+  "closing_comment": "Simon really was the only cat ever awarded Britain's Dickin Medal, and he survived a warship shelling before quarantine got him.",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Simon_(cat)", "note": "Confirms Simon's Dickin Medal, his wounds during the 1949 Yangtze Incident, and his death in UK quarantine."},
+    {"url": "https://www.pdsa.org.uk/what-we-do/animal-awards-programme/pdsa-dickin-medal/simon", "note": "PDSA's own record confirming Simon is the only cat ever awarded the Dickin Medal."}
+  ],
+  "beats": [
+    {"text": "Britain's top medal for animal bravery has only gone to one cat, hit by a real **shell** that didn't kill him.", "broll_query": "a scarred grey warship cat sitting on a shell-damaged steel deck, smoke drifting behind", "beat_role": "hook"},
+    {"text": "His name was **Simon**, a stray adopted by a warship's crew.", "broll_query": "a thin stray tabby cat crouched among crates on a foggy 1940s Hong Kong dockyard", "beat_role": "claim"},
+    {"text": "In **1949**, enemy shellfire hit that ship, wounding him and killing the captain.", "broll_query": "explosions and smoke erupting around a grey warship on a wide river, chaos on deck", "beat_role": "evidence"},
+    {"text": "Rough way to start a Tuesday.", "broll_query": "a bandaged cat paw resting on a ship's wooden railing, dim lantern light", "beat_role": "joke"},
+    {"text": "Wounded and half-deaf, Simon still won Britain's **Dickin** Medal, the only cat ever to get one.", "broll_query": "a small bronze medal on a velvet cushion beside a photo of a navy cat", "beat_role": "claim"},
+    {"text": "Not bad for a hairball machine.", "broll_query": "a scruffy cat licking its paw beside an empty ration tin, moody light", "beat_role": "joke"},
+    {"text": "He survived the whole siege, then died months later in a **quarantine** kennel back in Britain.", "broll_query": "an empty cat bed in a cold quarantine kennel, bars casting long shadows", "beat_role": "claim"},
+    {"text": "Vets weren't fully certain the wounds caused it, but his heart never recovered.", "broll_query": "a veterinarian's hand gently checking a bandaged cat's chest with a stethoscope, dim clinic", "beat_role": "hedge"},
+    {"text": "So here's the story of", "broll_query": "a foggy dockyard at dawn, a small cat silhouette walking toward a warship", "beat_role": "ending"}
+  ]
+}
