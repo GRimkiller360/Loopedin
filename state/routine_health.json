@@ -1,5 +1,5 @@
 {
-  "consecutive_failures": 3,
+  "consecutive_failures": 4,
   "last_run_status": "error",
   "last_error": "produce-upload workflow failed, see run log",
   "paused": false,
