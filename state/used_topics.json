@@ -1421,6 +1421,22 @@
       "share_trigger": "A viewer sends this to the friend who has watched every WWII documentary ever made, because they want to prove one trick even those documentaries missed.",
       "contradicted_belief": "Most people assume the agent who fooled Hitler and his whole army was a trained spy, not a dead man.",
       "has_sources": true
+    },
+    {
+      "topic": "the Cardiff Giant -- an 1869 hoax stone giant built to win a Bible argument, then faked again by P.T. Barnum",
+      "video_id": "lqJNtWalgxY",
+      "uploaded_at": "2026-08-22T11:02:48.385654+00:00",
+      "publish_hour_utc": 11,
+      "category": "history",
+      "seed_source_video_id": "oQfZ4Rm9a9Q",
+      "seed_view_count": 670916,
+      "hook_type": "shocking_fact",
+      "title": "The 'Petrified Giant' That Was Never Even Real Stone",
+      "duration_seconds": 42.5,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who takes every argument about the Bible way too seriously, because they want to prove one guy spent a fortune just to win one.",
+      "contradicted_belief": "Most people assume a giant they dug up out of the ground in 1869 was real ancient stone, not something carved a year earlier.",
+      "has_sources": true
     }
   ]
 }
