@@ -272,6 +272,21 @@ def _scale_clip(src, dst, target, zoom=None, pan_target=None):
     ], check=True)
 
 
+def _cut_offsets(clip_targets, transition_durations):
+    """Absolute-time offset (seconds) of every cut point, one entry per shot after the
+    first. Shared between _build_video_track's xfade chain and _build_swipe_track's
+    sound placement (see assemble()) so a swipe sound can never drift out of sync with
+    the actual video cut it's supposed to punctuate -- both derive from this exact same
+    math instead of two separate copies of it."""
+    offsets = []
+    cumulative = clip_targets[0]
+    for i in range(1, len(clip_targets)):
+        duration = transition_durations[i]
+        offsets.append(max(cumulative - duration, 0.0))
+        cumulative = cumulative + clip_targets[i] - duration
+    return offsets
+
+
 def _build_video_track(scaled_paths, clip_targets, transition_durations, out_path):
     """Crossfades consecutive shot clips into video_track.mp4 instead of hard-cutting
     between them -- chains ffmpeg's xfade filter across all N clips in one pass, rather
@@ -289,19 +304,17 @@ def _build_video_track(scaled_paths, clip_targets, transition_durations, out_pat
     if n == 1:
         filter_complex, final_label = None, "0:v"
     else:
+        offsets = _cut_offsets(clip_targets, transition_durations)
         parts = []
-        cumulative = clip_targets[0]
         prev_label = "0:v"
         for i in range(1, n):
             duration = transition_durations[i]
             transition = "hblur" if duration == WHIP_TRANSITION_DURATION else "fade"
-            offset = max(cumulative - duration, 0.0)
             out_label = f"v{i}"
             parts.append(
                 f"[{prev_label}][{i}:v]xfade=transition={transition}:"
-                f"duration={duration}:offset={offset:.3f}[{out_label}]"
+                f"duration={duration}:offset={offsets[i - 1]:.3f}[{out_label}]"
             )
-            cumulative = cumulative + clip_targets[i] - duration
             prev_label = out_label
         filter_complex, final_label = ";".join(parts), prev_label
 
@@ -416,6 +429,55 @@ def _build_ambient_bed(work_dir, duration_seconds):
     return bed
 
 
+# Explicit per-cut punctuation, distinct from the ambient bed's continuous texture --
+# channel-owner request: a swipe/whoosh on every AI-image change, not just the
+# structurally-important whip-blur cuts. Synthesized (band-limited noise burst with a
+# fast attack/decay envelope), same reasoning as the ambient bed: no licensing question,
+# no external asset to manage. Placed once per real cut via _cut_offsets, so it always
+# matches the video track exactly -- generated once per run and reused via adelay
+# rather than re-synthesized per cut.
+SWIPE_DURATION = 0.18
+
+
+def _build_swipe_sfx(work_dir):
+    sfx = work_dir / "swipe_sfx.mp3"
+    subprocess.run([
+        "ffmpeg", "-y", "-f", "lavfi",
+        "-i", f"anoisesrc=color=white:duration={SWIPE_DURATION}:sample_rate=44100:amplitude=1",
+        "-af", (
+            "highpass=f=1200,lowpass=f=5000,"
+            f"afade=t=in:st=0:d=0.02,afade=t=out:st={SWIPE_DURATION - 0.08}:d=0.08,volume=2.5"
+        ),
+        "-ar", "44100", "-ac", "2", str(sfx),
+    ], check=True)
+    return sfx
+
+
+def _build_swipe_track(work_dir, cut_offsets):
+    if not cut_offsets:
+        return None
+    sfx = _build_swipe_sfx(work_dir)
+    n = len(cut_offsets)
+    split_labels = [f"s{i}" for i in range(n)]
+    parts = [f"[0:a]asplit={n}[" + "][".join(split_labels) + "]"]
+    for label, offset in zip(split_labels, cut_offsets):
+        ms = max(int(round(offset * 1000)), 0)
+        parts.append(f"[{label}]adelay={ms}|{ms}[{label}d]")
+    mix_inputs = "".join(f"[{label}d]" for label in split_labels)
+    # duration=longest, not first/shortest -- the first delayed copy is the shortest
+    # stream (least delay padding); using it as the reference would truncate every
+    # later swipe right at the mix step.
+    parts.append(f"{mix_inputs}amix=inputs={n}:duration=longest:normalize=0[out]")
+
+    track = work_dir / "swipe_track.mp3"
+    subprocess.run([
+        "ffmpeg", "-y", "-i", str(sfx),
+        "-filter_complex", ";".join(parts),
+        "-map", "[out]", "-ar", "44100", "-ac", "2", str(track),
+    ], check=True)
+    return track
+
+
 def assemble(script, narration_path, clips, music_dir, out_path, work_dir):
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
@@ -508,6 +570,21 @@ def assemble(script, narration_path, clips, music_dir, out_path, work_dir):
         "-map", "[aout]", "-t", str(narration_duration), str(bedded_audio),
     ], check=True)
     mixed_audio = bedded_audio
+
+    # A swipe sound on every real image-change cut (see _build_swipe_track's comment) --
+    # cut_offsets is the exact same math _build_video_track already used above for the
+    # xfade chain, so the sound can't drift out of sync with the picture cut it marks.
+    cut_offsets = _cut_offsets(clip_targets, transition_durations)
+    swipe_track = _build_swipe_track(work_dir, cut_offsets)
+    if swipe_track:
+        swiped_audio = work_dir / "swiped_audio.mp3"
+        subprocess.run([
+            "ffmpeg", "-y", "-i", str(mixed_audio), "-i", str(swipe_track),
+            "-filter_complex",
+            "[1:a]volume=0.6[sw];[0:a][sw]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[aout]",
+            "-map", "[aout]", "-t", str(narration_duration), str(swiped_audio),
+        ], check=True)
+        mixed_audio = swiped_audio
 
     # No force_style override needed -- the .ass file's own [V4+ Styles] section
     # carries the base look, and per-word emphasis overrides live inline in the text.
