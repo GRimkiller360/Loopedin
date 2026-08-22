@@ -401,9 +401,14 @@ def _build_ambient_bed(work_dir, duration_seconds):
         "-f", "lavfi", "-i", f"sine=frequency=121:duration={duration_seconds}",
         "-f", "lavfi", "-i", f"sine=frequency=163:duration={duration_seconds}",
         "-filter_complex",
-        "[0:a]tremolo=f=0.07:d=0.3[a0];"
+        # ffmpeg's tremolo filter rejects f<0.1 outright ("Numerical result out of
+        # range") -- 0.1 is the floor, not just a suggestion, confirmed by a real
+        # production crash on every run since this landed. 0.1/0.11 (the third tone's
+        # already-valid value) is as close to the intended near-imperceptible slow
+        # wobble as the filter actually allows.
+        "[0:a]tremolo=f=0.1:d=0.3[a0];"
         "[1:a]tremolo=f=0.11:d=0.3[a1];"
-        "[2:a]tremolo=f=0.05:d=0.25[a2];"
+        "[2:a]tremolo=f=0.1:d=0.25[a2];"
         "[a0][a1][a2]amix=inputs=3:duration=first:normalize=0,"
         "highpass=f=50,lowpass=f=400,volume=0.05[out]",
         "-map", "[out]", "-ar", "44100", "-ac", "2", str(bed),
