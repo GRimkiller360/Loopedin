@@ -9,16 +9,18 @@ for a "mask" search), though that's no longer the primary reason to prefer this 
 now that it's the only path.
 
 Free budget: Cloudflare gives every account 10,000 free Neurons/day (resets 00:00 UTC).
-Uses flux-1-schnell (switched from SDXL 2026-08-21) specifically because its pricing is
-documented and predictable -- tiles(512x512 blocks, rounded up) x 4.80 + 4 fixed steps x
-9.60. At this module's IMAGE_WIDTH/IMAGE_HEIGHT that's 2 tiles = 48 Neurons/image, ~208
-images/day at the full free budget. SDXL was dropped because Cloudflare lists it as Beta
-with unclear real-world Neuron cost -- flux-1-schnell's cost is knowable in advance, so
-the cap below can be set close to the real ceiling instead of guessing conservatively.
-Two independent safety nets still keep this from depending on that math being exact:
-1. DAILY_IMAGE_CAP is a hard, count-based ceiling with real headroom under the ~208/day
-   computed ceiling (see IMAGE_WIDTH/IMAGE_HEIGHT's comment), checked before every
-   generation attempt -- see quota_available().
+Uses flux-1-schnell (switched from SDXL 2026-08-21) for its predictable, documented
+per-step pricing. NOTE (2026-08-22 fix): the model's real input schema is `prompt`,
+`steps`, `seed` only -- no `width`/`height`, confirmed by a hard 400 from every single
+production run since the 2026-08-21 switch ("Additional or unevaluated properties
+'/width, /height' at '/' not allowed"). This module used to pass them anyway based on
+an incorrect assumption that output size (and therefore tile-based cost) was
+configurable; it isn't -- output comes back at the model's own fixed size, and the
+exact real Neuron cost per image isn't verified here. DAILY_IMAGE_CAP below is
+therefore a rough, conservative heuristic, not a precise budget calculation -- the real
+protection against actually running out mid-day is the reactive check:
+1. DAILY_IMAGE_CAP is a hard, count-based ceiling checked before every generation
+   attempt -- see quota_available().
 2. If Cloudflare's own API ever rejects a request as a quota/rate-limit error anyway --
    the real, authoritative signal, not an estimate -- that's treated as exhausted for
    the rest of today immediately. Same reactive pattern pipeline/quota_guard.py already
@@ -45,16 +47,6 @@ from pipeline.state_utils import load_json, save_json
 
 MODEL = "@cf/black-forest-labs/flux-1-schnell"
 
-# 512x1024 -- not the exact 1080x1920 (9:16, 0.5625) aspect ratio, but close (0.5), so
-# assemble.py's existing scale+crop pipeline only takes a small extra crop. Chosen over
-# the exact-ratio 576x1024 specifically for tile cost: Cloudflare bills flux-1-schnell
-# by 512x512 tiles rounded up, and 576 crosses into a second tile column for zero
-# visual benefit over 512 at this width. 512x1024 = 1x2 = 2 tiles; 576x1024 = 2x2 = 4
-# tiles, the same cost as a full 1024x1024 image. Halving the tile cost pushes the free
-# daily image budget from ~173/day to ~208/day -- see module docstring -- which matters
-# now that AI images are the only b-roll source, with no fallback if the budget runs out.
-IMAGE_WIDTH, IMAGE_HEIGHT = 512, 1024
-
 # A fixed style suffix appended to every prompt (broll_query is a scene description --
 # see ROUTINE_INSTRUCTIONS.md -- not pre-tuned for image generation specifically) --
 # biases the model toward a consistent, higher-quality look without requiring any
@@ -67,14 +59,15 @@ IMAGE_WIDTH, IMAGE_HEIGHT = 512, 1024
 # a phone screen in daylight.
 STYLE_SUFFIX = ", bright natural lighting, vivid colors, high detail, vertical portrait photo"
 
-# ~208/day is the computed ceiling at full free budget (see module docstring).
-# broll.py (2026-08-21) generates one DISTINCT image per visual shot, not per beat --
-# real demand at this channel's volume (6 videos/day, ~25 shots/video per
-# pipeline/shot_planning.py's constants) is roughly 150/day. Capped at 190, not right
-# up against the 208 ceiling: with Pixabay removed there's no fallback left at all, so
-# real headroom against Cloudflare's own pricing/rounding not matching this module's
-# math exactly, plus the occasional longer-than-usual script, matters more than
-# squeezing out every last free image.
+# Conservative round-number ceiling, not a precise budget calculation (see module
+# docstring -- real per-image Neuron cost at this model's fixed output size isn't
+# verified). broll.py (2026-08-21) generates one DISTINCT image per visual shot, not
+# per beat -- real demand at this channel's volume (6 videos/day, ~25 shots/video per
+# pipeline/shot_planning.py's constants) is roughly 150/day. With Pixabay removed
+# there's no fallback source left at all, so this exists purely to fail fast and
+# predictably (AIImageUnavailable) rather than run the free budget to zero mid-run;
+# the reactive 429/quota-error check below is what actually protects against
+# over-spending if this number is wrong in either direction.
 DAILY_IMAGE_CAP = 190
 
 QUOTA_PATH = config.STATE_DIR / "image_quota.json"
@@ -131,10 +124,13 @@ def generate_image(prompt, out_path):
     account_id = os.environ["CLOUDFLARE_ACCOUNT_ID"]
     token = os.environ["CLOUDFLARE_API_TOKEN"]
     url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{MODEL}"
+    # prompt/steps/seed only -- flux-1-schnell has no width/height input (confirmed by
+    # a hard 400 from every real production run, see module docstring). Output comes
+    # back at the model's own fixed size; assemble.py's scale+crop pipeline handles
+    # whatever that turns out to be, same as it already tolerates a near-but-not-exact
+    # aspect ratio.
     body = json.dumps({
         "prompt": prompt + STYLE_SUFFIX,
-        "width": IMAGE_WIDTH,
-        "height": IMAGE_HEIGHT,
     }).encode()
 
     req = urllib.request.Request(
