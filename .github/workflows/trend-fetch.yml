@@ -2,18 +2,19 @@ name: Trend Seed Fetch
 
 on:
   schedule:
-    # ~10 min before each Claude routine fire (routine fires at :53 past 3/6/9/12/15/18
-    # UTC -- 6x/day, every 3h, 05:00-20:00 Africa/Johannesburg (channel owner's active
-    # hours) -- confirmed via RemoteTrigger get). Cut from 10x/day spread across all 24h
-    # to 6x/day within this window 2026-08-20: raw upload volume wasn't what this
-    # channel's own data showed was the constraint (shares/subs stayed flat regardless
-    # of cadence), and near-hourly/round-the-clock uploads risk both YouTube's
-    # "mass-produced/inauthentic content" monetization policy and overwhelming a
-    # still-tiny subscriber base's feed. Matched 1:1 to the routine's cadence
+    # ~10 min before each Claude routine fire. Cut 6x/day -> 2x/day on 2026-08-22 after
+    # real usage data showed Cloudflare's free image-generation budget (10,000
+    # Neurons/day) only actually supports about 2 full videos/day at this pipeline's
+    # real per-image cost (~150 Neurons/image, measured directly -- the pipeline's own
+    # earlier estimate assumed a controllable image size that turned out not to exist).
+    # 6x/day was scheduled against a stale ~150-images/day *total* budget estimate that
+    # was off by roughly 2.3x once the real per-image cost was measured; running it
+    # unchanged would just mean most of the day's fires failing on quota exhaustion
+    # after the first one or two succeeded. Matched 1:1 to the routine's cadence
     # deliberately -- firing more often than the routine consumes seeds just burns
     # YouTube Data API quota (search.list is 100 units/call x up to 5 categories) on
     # fetches nothing reads.
-    - cron: "43 3,6,9,12,15,18 * * *"
+    - cron: "50 6,15 * * *"
   workflow_dispatch:
 
 permissions:
