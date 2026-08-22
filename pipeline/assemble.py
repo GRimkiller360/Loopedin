@@ -274,7 +274,10 @@ def _scale_clip(src, dst, target, zoom=None, pan_target=None):
 
 def _cut_offsets(clip_targets, transition_durations):
     """Absolute-time offset (seconds) of every cut point, one entry per shot after the
-    first -- used by _build_video_track's xfade chain to place each crossfade."""
+    first. Shared between _build_video_track's xfade chain and _build_swoosh_track's
+    sound placement (see assemble()) so the swoosh can never drift out of sync with the
+    actual video cut it's supposed to punctuate -- both derive from this exact same math
+    instead of two separate copies of it."""
     offsets = []
     cumulative = clip_targets[0]
     for i in range(1, len(clip_targets)):
@@ -426,6 +429,44 @@ def _build_ambient_bed(work_dir, duration_seconds):
     return bed
 
 
+# Explicit per-cut punctuation, distinct from the ambient bed's continuous texture --
+# channel-owner request: a swoosh on every AI-image change. A synthesized noise-burst
+# version of this shipped first and sounded terrible on a real render (channel-owner
+# feedback); this is a real sourced clip instead -- "Swoosh 014" by Universfield,
+# royalty-free/no-attribution-required (Pixabay license), picked by the channel owner
+# directly rather than another synthesis attempt. Placed at every real cut via
+# _cut_offsets, same as the removed synthesized version, so it can't drift out of sync
+# with the picture cut it marks.
+SWOOSH_SFX_PATH = config.ASSETS_DIR / "sfx" / "swoosh_014.mp3"
+# Mixed well under the narration ("a lot softer" -- explicit channel-owner feedback on
+# the first attempt) rather than the old synthesized version's volume=2.5 boost.
+SWOOSH_VOLUME = 0.12
+
+
+def _build_swoosh_track(work_dir, cut_offsets, sfx_path=SWOOSH_SFX_PATH):
+    if not cut_offsets:
+        return None
+    n = len(cut_offsets)
+    split_labels = [f"s{i}" for i in range(n)]
+    parts = [f"[0:a]asplit={n}[" + "][".join(split_labels) + "]"]
+    for label, offset in zip(split_labels, cut_offsets):
+        ms = max(int(round(offset * 1000)), 0)
+        parts.append(f"[{label}]adelay={ms}|{ms}[{label}d]")
+    mix_inputs = "".join(f"[{label}d]" for label in split_labels)
+    # duration=longest, not first/shortest -- the first delayed copy is the shortest
+    # stream (least delay padding); using it as the reference would truncate every
+    # later swoosh right at the mix step.
+    parts.append(f"{mix_inputs}amix=inputs={n}:duration=longest:normalize=0[out]")
+
+    track = work_dir / "swoosh_track.mp3"
+    subprocess.run([
+        "ffmpeg", "-y", "-i", str(sfx_path),
+        "-filter_complex", ";".join(parts),
+        "-map", "[out]", "-ar", "44100", "-ac", "2", str(track),
+    ], check=True)
+    return track
+
+
 def assemble(script, narration_path, clips, music_dir, out_path, work_dir):
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
@@ -518,6 +559,21 @@ def assemble(script, narration_path, clips, music_dir, out_path, work_dir):
         "-map", "[aout]", "-t", str(narration_duration), str(bedded_audio),
     ], check=True)
     mixed_audio = bedded_audio
+
+    # A swoosh on every real image-change cut (see _build_swoosh_track's comment) --
+    # cut_offsets is the exact same math _build_video_track already used above for the
+    # xfade chain, so the sound can't drift out of sync with the picture cut it marks.
+    cut_offsets = _cut_offsets(clip_targets, transition_durations)
+    swoosh_track = _build_swoosh_track(work_dir, cut_offsets)
+    if swoosh_track:
+        swooshed_audio = work_dir / "swooshed_audio.mp3"
+        subprocess.run([
+            "ffmpeg", "-y", "-i", str(mixed_audio), "-i", str(swoosh_track),
+            "-filter_complex",
+            f"[1:a]volume={SWOOSH_VOLUME}[sw];[0:a][sw]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[aout]",
+            "-map", "[aout]", "-t", str(narration_duration), str(swooshed_audio),
+        ], check=True)
+        mixed_audio = swooshed_audio
 
     # No force_style override needed -- the .ass file's own [V4+ Styles] section
     # carries the base look, and per-word emphasis overrides live inline in the text.
