@@ -1437,6 +1437,22 @@
       "share_trigger": "A viewer sends this to the friend who takes every argument about the Bible way too seriously, because they want to prove one guy spent a fortune just to win one.",
       "contradicted_belief": "Most people assume a giant they dug up out of the ground in 1869 was real ancient stone, not something carved a year earlier.",
       "has_sources": true
+    },
+    {
+      "topic": "the Great Emu War of 1932 -- the Australian army sent machine guns after 20,000 emus and lost",
+      "video_id": "4RGGCudcOTU",
+      "uploaded_at": "2026-08-22T11:47:23.233993+00:00",
+      "publish_hour_utc": 11,
+      "category": "history",
+      "seed_source_video_id": "7PGe16XfLdM",
+      "seed_view_count": 539781,
+      "hook_type": "shocking_fact",
+      "title": "Australia Actually Lost A War To Emus",
+      "duration_seconds": 44.9,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who thinks a modern army always wins, because they want proof one actually lost to birds.",
+      "contradicted_belief": "Most people assume a modern army with machine guns always beats wild animals easily.",
+      "has_sources": true
     }
   ]
 }
