@@ -230,38 +230,38 @@ def _scale_clip(src, dst, target, zoom=None, pan_target=None):
     )
     zoom_end = {"hook": HOOK_ZOOM_END, "subtle": SUBTLE_ZOOM_END}.get(zoom)
     if zoom_end:
-        total_frames = max(int(round(target * OUTPUT_FPS)), 1)
-        zoom_step = (zoom_end - 1.0) / total_frames
-        if pan_target:
-            fx, fy = pan_target
-            # Drift the crop window's center from frame-center toward (fx,fy) as zoom
-            # progresses from 1.0 to zoom_end, instead of staying centered -- e.g. at
-            # x: cx = 0.5 + progress*(fx-0.5), then x = iw*cx - (iw/zoom)/2 (the crop
-            # window's half-width at the current zoom level).
-            # Clamped to the valid crop range [0, iw-iw/zoom] -- at this pipeline's
-            # modest zoom_end values (1.06-1.15), the crop window only has a few
-            # percent of the frame to actually move within, so an uncomputed pan
-            # target like 0.85 would put x_expr's raw value far outside the frame
-            # (verified: at zoom_end=1.15, fx=0.85 needs x_frac=0.415 but the valid
-            # range tops out at 0.130). Clamping means the pan drifts as far toward
-            # the target as the zoom level actually allows, rather than producing an
-            # invalid crop -- still a real, visible directional drift, just bounded.
-            x_expr = f"max(0,min(iw-iw/zoom,(iw*(0.5+((zoom-1)/({zoom_end}-1))*({fx}-0.5)))-(iw/zoom/2)))"
-            y_expr = f"max(0,min(ih-ih/zoom,(ih*(0.5+((zoom-1)/({zoom_end}-1))*({fy}-0.5)))-(ih/zoom/2)))"
-        else:
-            x_expr = "iw/2-(iw/zoom/2)"
-            y_expr = "ih/2-(ih/zoom/2)"
-        # if(eq(on,1),1,...) forces the first output frame's zoom to exactly 1.0 --
-        # without it, zoompan's "zoom" accumulator is unreliable on frame 1 in several
-        # ffmpeg builds (can start undefined or snap straight to zoom_end), which would
-        # render the entire clip at one constant zoom level: visually indistinguishable
-        # from a static shot despite the animation math being otherwise correct. This
-        # was the real bug behind "images have no animation, it's just static" even
-        # after HOOK_ZOOM_END/SUBTLE_ZOOM_END were raised substantially -- a magnitude
-        # increase can't fix an animation that never actually progresses past frame 1.
+        # Driven entirely off ffmpeg's built-in `t` (elapsed seconds in this filter's
+        # own timeline), not zoompan's frame-to-frame self-referential "zoom"
+        # accumulator -- switched 2026-08-22 after a real published video (channel-owner
+        # report: "completely frozen") confirmed every clip was rendering at one
+        # unmoving frame despite the zoompan z='if(eq(on,1),1,min(zoom+step,zoom_end))'
+        # construction below (the standard documented workaround for zoompan's own
+        # frame-1 reset bug). That construction still depends on the filter correctly
+        # persisting "zoom" across frames, which apparently doesn't hold on this
+        # pipeline's real ffmpeg 6.1.1 build for a genuine multi-frame video input (as
+        # opposed to zoompan's more common use case of a single `-loop 1` image with a
+        # large `d`). `crop`'s w/h/x/y expressions are recomputed fresh from `t` on
+        # every single frame instead -- there is no accumulator to persist, so there's
+        # nothing left to fail to advance.
+        progress = f"min(t/{target},1)"
+        fx, fy = pan_target if pan_target else (0.5, 0.5)
+        # Drift the crop window's center from frame-center toward (fx,fy) as the zoom
+        # progresses from 1.0 to zoom_end, instead of staying centered -- see
+        # PAN_TARGETS' comment. cx/cy are the crop window's center as a 0-1 fraction of
+        # the frame; out_w/out_h (ffmpeg's names for THIS crop's own computed width/
+        # height) let x/y reference the already-shrinking crop window directly instead
+        # of recomputing its size a second time. max/min clamp to the valid crop range
+        # for the same reason the old zoompan version did: an unclamped pan target can
+        # put the raw center position outside the frame at modest zoom levels.
+        cx = f"(0.5+({progress})*({fx}-0.5))"
+        cy = f"(0.5+({progress})*({fy}-0.5))"
+        crop_w = f"iw/(1+({zoom_end}-1)*({progress}))"
+        crop_h = f"ih/(1+({zoom_end}-1)*({progress}))"
         vf += (
-            f",zoompan=z='if(eq(on,1),1,min(zoom+{zoom_step},{zoom_end}))':d=1:"
-            f"x='{x_expr}':y='{y_expr}':s={WIDTH}x{HEIGHT}:fps={OUTPUT_FPS}"
+            f",crop=w='{crop_w}':h='{crop_h}':"
+            f"x='max(0,min(in_w-out_w,in_w*{cx}-out_w/2))':"
+            f"y='max(0,min(in_h-out_h,in_h*{cy}-out_h/2))',"
+            f"scale={WIDTH}:{HEIGHT}"
         )
     clip_len = _probe_duration(src)
     loop_count = max(math.ceil(target / clip_len), 1) if clip_len > 0 else 1
