@@ -1,0 +1,38 @@
+{
+  "topic": "the 1919 Boston Molasses Flood -- a wave of molasses that moved faster than people could run and killed 21",
+  "category": "history",
+  "seed_source_video_id": "oQfZ4Rm9a9Q",
+  "seed_view_count": 670916,
+  "title": "The Wave That Killed 21 People -- And It Wasn't Water",
+  "description": "AI-narrated history commentary: the true story of the 1919 Boston Molasses Flood, when a burst storage tank released 2.3 million gallons of molasses in a wave that outran people in the street.",
+  "tags": ["Boston Molasses Flood", "1919 history", "history facts", "disaster history", "true story"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "A wave of molasses once moved faster than people could run, and killed them."},
+    {"hook_type": "myth_bust", "text": "You think a deadly flood has to be water. In 1919, Boston's was 2 million gallons of molasses."},
+    {"hook_type": "question", "text": "What if a wave of dessert syrup could outrun you and kill 21 people?"},
+    {"hook_type": "story", "text": "In 1919, a giant steel tank in Boston burst, and what poured out wasn't water."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who thinks flood disasters only happen with water, because they want to prove a wave of dessert syrup once killed 21 people.",
+  "contradicted_belief": "Most people assume a wave that killed people had to be water, not something as harmless-sounding as molasses.",
+  "closing_comment": "The wave of molasses that killed 21 people in Boston moved faster than most people can actually run.",
+  "sources": [
+    {"url": "https://www.history.com/articles/the-great-molasses-flood-of-1919", "note": "Confirms 2.3 million gallons, 35mph wave speed, 21 deaths, rushed wartime tank construction."},
+    {"url": "https://www.britannica.com/topic/Great-Molasses-Flood", "note": "Confirms fatalities, injuries, and the investigation finding the tank inadequate."}
+  ],
+  "beats": [
+    {"text": "**Molasses** wave that killed people faster than they could run.", "broll_query": "a massive dark brown wave crashing through a 1919 city street, vintage buildings, sepia tone", "beat_role": "hook"},
+    {"text": "In 1919, a giant steel tank in Boston simply gave way.", "broll_query": "a tall rusted steel storage tank cracking apart in an old industrial waterfront district, dramatic light", "beat_role": "claim"},
+    {"text": "It released 2.3 million gallons of molasses into the streets at once.", "broll_query": "thick dark syrup flooding a narrow vintage city street between brick buildings, chaotic motion", "beat_role": "evidence"},
+    {"text": "Worst pancake topping delivery ever.", "broll_query": "a stack of pancakes on a plate being buried under an absurd flood of dark syrup", "beat_role": "joke"},
+    {"text": "The wave wasn't slow or gentle, it moved faster than most people can sprint.", "broll_query": "a person in 1919 clothing sprinting in terror down a cobblestone street away from a dark wave", "beat_role": "claim"},
+    {"text": "Witnesses clocked it near **35 miles** per hour, tall as a two-story building.", "broll_query": "a towering wall of dark syrup rising two stories high above small vintage houses", "beat_role": "evidence"},
+    {"text": "Traffic tickets didn't apply to syrup.", "broll_query": "a vintage police officer holding a ticket book looking baffled at a wave of dark liquid", "beat_role": "joke"},
+    {"text": "Twenty-one people died, and drowning wasn't even the main cause.", "broll_query": "a somber black and white photo style street scene, rescue workers searching wreckage, muted tone", "beat_role": "claim"},
+    {"text": "Many victims **suffocated**, pinned under syrup too thick to escape.", "broll_query": "close-up of thick dark syrup slowly engulfing debris, viscous texture, dim light", "beat_role": "evidence"},
+    {"text": "Sticky really is the wrong word.", "broll_query": "a hand pulling away from a pool of thick dark syrup with long viscous strands", "beat_role": "joke"},
+    {"text": "The company rushed the tank's construction for wartime demand, and investigators proved it should have never held anything.", "broll_query": "an old engineering blueprint of a cylindrical tank stamped rejected, dim office desk lighting", "beat_role": "claim"},
+    {"text": "Exact death and injury counts still vary slightly between historical records.", "broll_query": "a historian in a library surrounded by open old newspaper archives, uncertain thoughtful expression", "beat_role": "hedge"},
+    {"text": "So here's the", "broll_query": "the same street from the opening shot now empty and quiet, faint dark stain across the cobblestones at dusk", "beat_role": "ending"}
+  ]
+}
