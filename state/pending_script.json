@@ -1,0 +1,37 @@
+{
+  "topic": "the last Ottoman sultan's secret 1922 escape aboard a British warship, hours after his own parliament abolished the sultanate",
+  "category": "history",
+  "seed_source_video_id": "TTax-smaWGk",
+  "seed_view_count": 481068,
+  "title": "The Ottoman Empire Didn't Fall in Battle. Its Sultan Snuck Out the Back Door.",
+  "description": "How the 623-year Ottoman Empire actually ended: not a final battle, but its last sultan's secret escape aboard a British warship, hours after his own parliament voted him out. AI-narrated historical commentary -- original script and analysis, not a repost.",
+  "tags": ["ottoman empire", "history", "world history", "sultan", "ww1 history", "istanbul", "historyfacts", "shorts"],
+  "hook_type": "story",
+  "hook_candidates": [
+    {"hook_type": "story", "text": "An empire's 623-year reign ends not with a battle, but with a sultan's quiet escape."},
+    {"hook_type": "shocking_fact", "text": "The Ottoman Empire ruled for 623 years and never actually lost the war that ended it."},
+    {"hook_type": "question", "text": "How do you end six centuries of empire without losing a single battle?"},
+    {"hook_type": "myth_bust", "text": "You think empires collapse in one final battle. This one ended with a sultan's ambulance ride to the docks."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who assumes every collapsed empire went down fighting, because they want to show the Ottomans' 600-year run ended with a sultan's quiet escape instead.",
+  "contradicted_belief": "Most people assume a centuries-old empire's collapse means one final decisive battle, not a sultan's quiet escape.",
+  "closing_comment": "Wild that a 623-year empire escaped a final battle only to have its own sultan sneak out instead.",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Abolition_of_the_Ottoman_sultanate", "note": "Confirms the Grand National Assembly abolished the Ottoman sultanate on November 1, 1922."},
+    {"url": "https://en.wikipedia.org/wiki/Mehmed_VI", "note": "Confirms Mehmed VI fled Constantinople by British ambulance and warship HMS Malaya on Nov 17, 1922, died in exile in San Remo in 1926."},
+    {"url": "https://www.dailysabah.com/feature/2015/03/13/the-bitter-story-of-the-ottoman-dynastys-exile", "note": "Confirms the 1924 law permanently banning the entire Ottoman dynasty from Turkey."}
+  ],
+  "beats": [
+    {"text": "An empire's **623-year** reign didn't end in battle, but a sultan's quiet escape.", "broll_query": "ornate Ottoman palace corridor at dawn, an open service door left ajar", "beat_role": "hook"},
+    {"text": "His own parliament **removed** him first.", "broll_query": "a formal parliament chamber, empty velvet chair at the head, gavel on documents", "beat_role": "claim"},
+    {"text": "On **November 1st**, 1922, Ankara abolished the sultanate while he still sat inside it.", "broll_query": "a hand stamping an official document dated 1922, red wax seal, candlelight", "beat_role": "evidence"},
+    {"text": "Fired by paperwork, not war.", "broll_query": "a stack of bureaucratic papers spilling off a desk, dim office lighting", "beat_role": "joke"},
+    {"text": "He didn't call his own **soldiers** for help.", "broll_query": "an empty ornate throne room, guard uniforms hanging unused on a rack", "beat_role": "claim"},
+    {"text": "He wrote to British officials for protection, then fled aboard their battleship, **HMS Malaya**.", "broll_query": "a British navy battleship at a foggy harbor dock, gangway lowered, dark water", "beat_role": "evidence"},
+    {"text": "Called his own occupiers first.", "broll_query": "a gloved hand waving from a ship railing, harbor fading into fog", "beat_role": "joke"},
+    {"text": "He **never** went home again.", "broll_query": "an old suitcase and coat left behind on an empty train platform, sepia tone", "beat_role": "claim"},
+    {"text": "He died in exile in **1926**; his whole dynasty was later banned from Turkey.", "broll_query": "a quiet Italian seaside villa at dusk, single lit window, empty garden chairs", "beat_role": "evidence"},
+    {"text": "Was it cowardice, or the only way to survive? Still debated.", "broll_query": "an old photograph on a desk beside a magnifying glass, dim study light", "beat_role": "hedge"},
+    {"text": "That's really all it took to end centuries of empire, an", "broll_query": "a palace door swinging slowly shut in an empty stone corridor, fading light", "beat_role": "ending"}
+  ]
+}
