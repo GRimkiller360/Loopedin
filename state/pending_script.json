@@ -1,0 +1,38 @@
+{
+  "topic": "the Cardiff Giant -- an 1869 hoax stone giant built to win a Bible argument, then faked again by P.T. Barnum",
+  "category": "history",
+  "seed_source_video_id": "oQfZ4Rm9a9Q",
+  "seed_view_count": 670916,
+  "title": "The 'Petrified Giant' That Was Never Even Real Stone",
+  "description": "AI-narrated history commentary: the true story of the 1869 Cardiff Giant hoax, a ten-foot carved gypsum 'petrified man' built to win an argument, and how P.T. Barnum later faked the fake.",
+  "tags": ["Cardiff Giant", "1869 history", "hoax history", "history facts", "P.T. Barnum"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "The 10-foot giant they dug up in 1869 wasn't a fossil, it wasn't even real stone."},
+    {"hook_type": "myth_bust", "text": "You think the Cardiff Giant was an ancient fossil. It was carved a year earlier to win an argument."},
+    {"hook_type": "question", "text": "What if an entire town paid to see a giant that was carved in a workshop the year before?"},
+    {"hook_type": "story", "text": "In 1869, two well-diggers in New York struck something that made national news for months."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who takes every argument about the Bible way too seriously, because they want to prove one guy spent a fortune just to win one.",
+  "contradicted_belief": "Most people assume a giant they dug up out of the ground in 1869 was real ancient stone, not something carved a year earlier.",
+  "closing_comment": "George Hull spent thousands building a fake giant just to win one argument about the Bible.",
+  "sources": [
+    {"url": "https://www.history.com/articles/the-cardiff-giant-fools-the-nation-145-years-ago", "note": "Confirms 1869 discovery, George Hull's confession, and the argument-with-a-minister origin."},
+    {"url": "https://en.wikipedia.org/wiki/Cardiff_Giant", "note": "Confirms gypsum construction, acid/needle aging technique, and P.T. Barnum's competing fake."}
+  ],
+  "beats": [
+    {"text": "**Giant** they dug up in 1869 that was never even real stone.", "broll_query": "a massive stone giant figure half-buried in dirt at the bottom of a dug well, vintage 1800s farm", "beat_role": "hook"},
+    {"text": "In 1869, two well-diggers in New York struck something enormous.", "broll_query": "two vintage-dressed 1800s laborers digging a well with shovels, surprised expressions, farmland", "beat_role": "claim"},
+    {"text": "They'd uncovered a ten-foot stone man, and the country wanted to see it.", "broll_query": "a crowd of vintage 1800s townspeople gathered around a giant stone figure lying in a pit", "beat_role": "evidence"},
+    {"text": "Best well-digging bonus in **history**.", "broll_query": "a vintage shovel resting beside a giant stone hand emerging from dirt, dramatic light", "beat_role": "joke"},
+    {"text": "It wasn't ancient, and it wasn't naturally occurring stone at all.", "broll_query": "close-up of carved gypsum stone surface with tool marks visible, workshop lighting", "beat_role": "claim"},
+    {"text": "A man named George Hull had it carved from **gypsum** a year earlier.", "broll_query": "a 1800s sculptor carving a large stone figure in a dim workshop, tools scattered around", "beat_role": "evidence"},
+    {"text": "Worst-kept secret with the best patience.", "broll_query": "an hourglass sitting on an old wooden workbench next to carving tools, dim light", "beat_role": "joke"},
+    {"text": "Hull built it to win one argument with a minister over the Bible.", "broll_query": "two 1800s men arguing intensely across a wooden table with an open Bible between them", "beat_role": "claim"},
+    {"text": "He spent **$2,600**, acid-aged it, and buried it to prove his point.", "broll_query": "a vintage bottle of acid being poured over a large stone figure at night, dramatic shadows", "beat_role": "evidence"},
+    {"text": "That's an expensive way to win one dinner debate.", "broll_query": "an ornate vintage dinner table set for two, empty chairs, candlelight", "beat_role": "joke"},
+    {"text": "Hull eventually confessed, and Barnum immediately built his own **fake** of the fake.", "broll_query": "a circus showman in a top hat unveiling a second giant stone figure to a stunned crowd", "beat_role": "claim"},
+    {"text": "Accounts differ slightly on exactly how much Barnum's copy actually earned.", "broll_query": "a historian in a library surrounded by open old newspaper archives, uncertain thoughtful expression", "beat_role": "hedge"},
+    {"text": "So here's the", "broll_query": "the same giant figure from the opening shot now displayed calmly in a quiet museum hall", "beat_role": "ending"}
+  ]
+}
