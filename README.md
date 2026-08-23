@@ -75,8 +75,18 @@ done by the agent — it requires logging into a real TikTok account and clickin
 1. Create a developer account at developers.tiktok.com and register an app.
 2. Add the **Content Posting API** product, request the **`video.upload`** scope
    (not `video.publish` — that one needs the audit above).
-3. Complete OAuth consent for the target TikTok account once, to get a client key/secret
-   and a refresh token — add all three as the secrets above.
+3. On the app's dashboard, note the **Client Key** and **Client Secret** — no further
+   action needed, TikTok generates these as soon as the app exists. Put them straight
+   into `TIKTOK_CLIENT_KEY` / `TIKTOK_CLIENT_SECRET` above.
+4. In that same app's settings, add `http://localhost:8080/callback` as a registered
+   **Redirect URI**. (Unconfirmed whether TikTok accepts a plain `http://localhost`
+   redirect for this — if it rejects that, see step 5's script docstring for the
+   manual fallback.)
+5. Run `python scripts/get_tiktok_refresh_token.py <client_key> <client_secret>` on
+   your own machine (not in the cloud) — same one-time-local-helper pattern as
+   `scripts/get_refresh_token.py` used for YouTube. It opens a browser, you log into
+   the target TikTok account and approve access, and it prints a refresh token. Put
+   that into `TIKTOK_REFRESH_TOKEN` above.
 
 `pipeline/tiktok_upload.py` was written without access to TikTok's own reference docs
 (blocked from the environment that built it) — treat the first real run against actual
