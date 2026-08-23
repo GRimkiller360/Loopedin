@@ -1,0 +1,36 @@
+{
+  "topic": "the 1917 French army mutiny after Nivelle's failed 48-hour victory promise",
+  "category": "history",
+  "seed_source_video_id": "XAnNERNAdlw",
+  "seed_view_count": 485055,
+  "title": "He Promised To Win WWI In 48 Hours. His Army Mutinied Instead.",
+  "description": "In 1917, French General Robert Nivelle promised to end World War One in 48 hours. When his offensive collapsed, nearly half of France's army refused to keep attacking, though they stayed in their trenches to defend. Original AI-narrated historical commentary, written from public historical sources, not a repost of any single video.",
+  "tags": ["history", "WW1", "WWI history", "Nivelle Offensive", "French Army Mutiny", "military history", "world war 1", "1917", "shorts", "historyshorts"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "myth_bust", "text": "In 1917, half the French army mutinied, but they never actually stopped fighting."},
+    {"hook_type": "shocking_fact", "text": "In 1917, a French general promised to win the war in 48 hours."},
+    {"hook_type": "question", "text": "What happens when half an army refuses to fight, but keeps holding the line?"},
+    {"hook_type": "story", "text": "In 1917, General Robert Nivelle bet his career on one 48-hour promise."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who insists a secret that big could never stay hidden, because they want to prove one nearly did, for decades.",
+  "contradicted_belief": "Most people assume that when an army mutinies, it stops fighting entirely, but half of this French army mutinied in 1917 and never actually stopped fighting, they only refused to attack.",
+  "closing_comment": "The wildest part is Nivelle's 48-hour promise turned into weeks of failed attacks before this French army mutiny even started. Ever notice how the boldest promises are usually the first ones to fall apart?",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Nivelle_offensive", "note": "Confirms Nivelle promised victory in 48 hours with 10,000 expected casualties; offensive ran weeks beyond that target."},
+    {"url": "https://en.wikipedia.org/wiki/1917_French_Army_mutinies", "note": "Confirms 54 divisions, about half the French Army, mutinied by June 1917, refusing to attack but still defending trenches."},
+    {"url": "https://bootcampmilitaryfitnessinstitute.com/2021/12/20/what-were-the-french-army-mutinies-1917/", "note": "Confirms German intelligence received reports of the unrest but didn't act on them, missing the war's biggest opportunity."}
+  ],
+  "beats": [
+    {"text": "In 1917, half the French army **mutinied**, but never stopped fighting.", "broll_query": "rows of exhausted WWI French soldiers standing motionless in a muddy trench, refusing to move, grim faces, overcast light", "beat_role": "hook"},
+    {"text": "General Robert Nivelle promised to win the war in **48 hours**.", "broll_query": "a confident French WWI general in uniform pointing at a battle map, candlelit war room, dramatic shadows", "beat_role": "claim"},
+    {"text": "He expected **10,000** casualties, then attacked for weeks anyway.", "broll_query": "WWI battlefield trench assault under artillery bombardment, thick smoke, soldiers advancing through no man's land, muddy ground", "beat_role": "evidence"},
+    {"text": "Punctuality was not his strong suit.", "broll_query": "a cracked antique pocket watch lying in mud on a WWI battlefield, close up shot, soft light", "beat_role": "joke"},
+    {"text": "Exhausted soldiers didn't desert. They just **refused** to attack again.", "broll_query": "French WWI soldiers sitting silently in a trench, arms crossed, rifles set down, defiant expressions", "beat_role": "claim"},
+    {"text": "Nearly **half** of France's divisions did the same.", "broll_query": "wide view of many WWI trench lines stretching across a muddy battlefield, overcast sky, aerial angle", "beat_role": "evidence"},
+    {"text": "Mass insubordination, but make it orderly.", "broll_query": "a neatly folded French WWI army uniform stacked beside an untouched rifle in a trench, tidy and orderly", "beat_role": "joke"},
+    {"text": "German commanders had hints, but never truly **grasped** the moment.", "broll_query": "a WWI German intelligence officer at a cluttered desk, ignoring a stack of intercepted reports, dim office", "beat_role": "claim"},
+    {"text": "Historians still debate how much Germany actually missed.", "broll_query": "an open leather-bound WWI-era military archive book on a wooden desk, magnifying glass resting on the page, soft light", "beat_role": "hedge"},
+    {"text": "That's why this mutiny stayed buried for **fifty** years, so", "broll_query": "a dusty sealed French military archive box being opened after decades, old paper documents spilling out, soft light", "beat_role": "ending"}
+  ]
+}
