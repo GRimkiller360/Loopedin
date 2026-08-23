@@ -1469,6 +1469,22 @@
       "share_trigger": "A viewer sends this to the friend who jokes their cat does nothing all day, because they want to prove one actual cat out-earned a military medal.",
       "contradicted_belief": "Most people assume this decorated war-hero cat came closest to dying when a shell hit him during battle.",
       "has_sources": true
+    },
+    {
+      "topic": "the 1904 Olympic marathon -- Fred Lorz rode in a car for 11 miles, and the actual winner was drugged with rat poison",
+      "video_id": "YXvEoTdUm5Y",
+      "uploaded_at": "2026-08-23T16:44:01.575560+00:00",
+      "publish_hour_utc": 16,
+      "category": "history",
+      "seed_source_video_id": "sVsEfNeGXxM",
+      "seed_view_count": 669529,
+      "hook_type": "shocking_fact",
+      "title": "The 1904 Olympic Marathon Winner Was Drugged With Rat Poison",
+      "duration_seconds": 48.3,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who thinks modern doping scandals are bad, because they want proof the first one involved actual rat poison.",
+      "contradicted_belief": "Most people assume winning an actual Olympic marathon never involved rat poison.",
+      "has_sources": true
     }
   ]
 }
