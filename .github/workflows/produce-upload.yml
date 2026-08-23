@@ -146,6 +146,25 @@ jobs:
           echo "quota_exceeded=false" >> "$GITHUB_OUTPUT"
           exit "$exit_code"
 
+      - name: Upload to TikTok (draft)
+        # Best-effort and non-fatal (continue-on-error) -- this pushes the video into
+        # the TikTok account's inbox as a draft (video.upload scope, no audit needed;
+        # see pipeline/tiktok_upload.py's docstring), a separate platform entirely from
+        # the YouTube upload above. Only runs once that upload actually succeeded --
+        # no point drafting a TikTok post for a video that was never produced. Never
+        # counts toward auto-pause and never blocks "Record state on success": a
+        # TikTok-side hiccup (or, right now, simply not having TIKTOK_* secrets set yet
+        # -- see module docstring, this is unverified against TikTok's real API) must
+        # never be reported as a production failure when YouTube's own upload is what
+        # this pipeline's health actually depends on.
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && steps.upload.outcome == 'success'
+        continue-on-error: true
+        env:
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_REFRESH_TOKEN: ${{ secrets.TIKTOK_REFRESH_TOKEN }}
+        run: python pipeline/tiktok_upload.py --video work/final.mp4 --script state/pending_script.json
+
       - name: Record state on success
         if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && steps.upload.outputs.quota_exceeded != 'true' && success()
         id: record

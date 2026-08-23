@@ -60,6 +60,29 @@ repository secret**. Add these exact names:
 | `CLOUDFLARE_API_TOKEN` | Cloudflare API token with Workers AI access -- see `CLOUDFLARE_ACCOUNT_ID` above. |
 | `DASHBOARD_URL` | The car-loan-dashboard Worker's base URL (same value the `bracketly` repo's `DASHBOARD_URL` secret uses) |
 | `LOOPEDIN_INGEST_SECRET` | A long random string — set the identical value as a `wrangler secret put LOOPEDIN_INGEST_SECRET` on the dashboard Worker. Distinct from bracketly's `BRACKETLY_INGEST_SECRET`, so either app's ingest can be rotated independently. |
+| `TIKTOK_CLIENT_KEY` | From a TikTok developer app — see below. Optional: `pipeline/tiktok_upload.py`'s step is `continue-on-error`, so production keeps running fine without it, just skips the TikTok draft. |
+| `TIKTOK_CLIENT_SECRET` | Same app as above. |
+| `TIKTOK_REFRESH_TOKEN` | From the one-time OAuth consent below. |
+
+**Setting up TikTok (optional, one-time, human-only):** every new video's finished
+`.mp4` gets pushed into the TikTok account's *inbox as a draft* (a notification, then
+tap "Post" from the phone) — not a fully automatic public post. Automatic public
+posting needs TikTok's Content Posting *audit*, a manual review that can take weeks and
+is built around apps with a real user-facing posting UI, a poor fit for a headless
+pipeline; draft mode (`video.upload` scope) skips that entirely. None of this can be
+done by the agent — it requires logging into a real TikTok account and clicking
+"Allow" on TikTok's own consent screen:
+1. Create a developer account at developers.tiktok.com and register an app.
+2. Add the **Content Posting API** product, request the **`video.upload`** scope
+   (not `video.publish` — that one needs the audit above).
+3. Complete OAuth consent for the target TikTok account once, to get a client key/secret
+   and a refresh token — add all three as the secrets above.
+
+`pipeline/tiktok_upload.py` was written without access to TikTok's own reference docs
+(blocked from the environment that built it) — treat the first real run against actual
+credentials as a debugging session against a best-effort implementation, not a
+guaranteed-working one; see that file's module docstring for the one field name that's
+an unconfirmed guess.
 
 These never touch the repo's file content or git history — GitHub encrypts them and
 only exposes them as env vars inside a workflow run.
