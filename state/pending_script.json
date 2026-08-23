@@ -1,0 +1,38 @@
+{
+  "topic": "the 1904 Olympic marathon -- Fred Lorz rode in a car for 11 miles, and the actual winner was drugged with rat poison",
+  "category": "history",
+  "seed_source_video_id": "sVsEfNeGXxM",
+  "seed_view_count": 669529,
+  "title": "The 1904 Olympic Marathon Winner Was Drugged With Rat Poison",
+  "description": "AI-narrated history commentary: the true story of the chaotic 1904 Olympic marathon, where Fred Lorz rode in a car for part of the race and the actual winner, Thomas Hicks, was fed strychnine -- rat poison -- by his own trainers.",
+  "tags": ["1904 Olympics", "Olympic history", "history facts", "weird history", "Thomas Hicks"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "The 1904 Olympic marathon winner crossed the finish line high on rat poison."},
+    {"hook_type": "myth_bust", "text": "You think Olympic doping is a modern problem. The 1904 winner was drugged with actual rat poison."},
+    {"hook_type": "question", "text": "What happens when a marathon runner rides eleven miles in a car and still gets caught?"},
+    {"hook_type": "story", "text": "In 1904, one Olympic marathon runner rode in a car and another got drugged by his own team."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who thinks modern doping scandals are bad, because they want proof the first one involved actual rat poison.",
+  "contradicted_belief": "Most people assume winning an actual Olympic marathon never involved rat poison.",
+  "closing_comment": "Fred Lorz rode eleven miles in a car during that actual Olympic marathon.",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Thomas_Hicks_(athlete)", "note": "Confirms Hicks was given strychnine and brandy by his trainers and nearly collapsed at the finish."},
+    {"url": "https://en.wikipedia.org/wiki/Frederick_Lorz", "note": "Confirms Lorz rode in a car for part of the race and was disqualified for it."}
+  ],
+  "beats": [
+    {"text": "**Rat poison** helped one man win an actual Olympic marathon in 1904.", "broll_query": "a determined marathon runner collapsing near a finish line, 1904 vintage stadium crowd, dramatic", "beat_role": "hook"},
+    {"text": "The race itself was brutal, run at midday through St. Louis in blistering heat.", "broll_query": "a dusty dirt road under harsh midday sun, 1904 St. Louis countryside, heat haze", "beat_role": "claim"},
+    {"text": "One runner, Fred Lorz, dropped out exhausted after nine miles.", "broll_query": "a vintage 1900s male runner collapsed on the roadside, exhausted, early 1900s clothing", "beat_role": "evidence"},
+    {"text": "Reasonable decision, terrible next decision.", "broll_query": "an old car parked on a dusty road next to a discarded pair of running shoes", "beat_role": "joke"},
+    {"text": "His manager drove him the next eleven miles in a car instead.", "broll_query": "a 1904-era open touring car driving down a dusty road with two men inside", "beat_role": "claim"},
+    {"text": "Lorz hopped out near the finish and jogged in first, waving to the crowd.", "broll_query": "a vintage runner jogging into a packed 1904 stadium, waving triumphantly at the crowd", "beat_role": "evidence"},
+    {"text": "Bold strategy for a race with actual judges watching.", "broll_query": "a row of stern-faced 1900s race officials watching from a stadium platform", "beat_role": "joke"},
+    {"text": "He was disqualified once officials realized what had happened.", "broll_query": "a 1900s official pointing accusingly at a runner in a crowded vintage stadium", "beat_role": "claim"},
+    {"text": "Meanwhile the real frontrunner, Thomas Hicks, was fed **strychnine** and brandy by his own trainers.", "broll_query": "vintage 1900s trainers handing a small bottle and a glass to an exhausted runner on a road", "beat_role": "evidence"},
+    {"text": "Worst sports drink ever invented.", "broll_query": "a small vintage glass bottle labeled with a skull symbol sitting on a dusty road", "beat_role": "joke"},
+    {"text": "Hicks finished barely conscious and had to be carried across the line by his handlers.", "broll_query": "two vintage 1900s men carrying a barely conscious runner across a stadium finish line", "beat_role": "claim"},
+    {"text": "Some records say doctors nearly couldn't revive him afterward.", "broll_query": "a historian in an archive room examining old 1900s medical records, uncertain expression", "beat_role": "hedge"},
+    {"text": "So here's the", "broll_query": "the same marathon runner from the opening shot now standing calmly, recovered, in a quiet stadium", "beat_role": "ending"}
+  ]
+}
