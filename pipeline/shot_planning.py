@@ -1,27 +1,8 @@
-"""Shared shot-count math used by both broll.py (to decide how many distinct AI images
-to generate per beat) and assemble.py (informational only -- assemble.py's own final
-layout is driven by however many images broll.py actually produced for a beat, not by
-recomputing this itself, so the two stages never need to agree on an exact count; see
-both modules' docstrings). Kept in one place so the shot-count formula itself has a
-single definition instead of two copies that could quietly drift apart.
+"""Shared shot-count math used by broll.py to decide how many distinct AI images to
+generate per beat, from that beat's real measured duration (tts.py's synthesize_beats()
+sidecar -- see broll.py's fetch_all()). Kept in one place so the shot-count formula
+itself has a single definition rather than being duplicated anywhere else that needs it.
 """
-import subprocess
-
-from pipeline import config
-
-
-def probe_duration(path):
-    out = subprocess.check_output([
-        "ffprobe", "-v", "error", "-show_entries", "format=duration",
-        "-of", "default=noprint_wrappers=1:nokey=1", str(path),
-    ])
-    return float(out.strip())
-
-
-def beat_durations(beats, total_duration):
-    weights = [max(len(config.strip_emphasis_markup(b["text"])), 1) for b in beats]
-    total_weight = sum(weights)
-    return [total_duration * w / total_weight for w in weights]
 
 
 # Splits each beat's screen time into several short visual shots instead of one static

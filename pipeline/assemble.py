@@ -2,9 +2,14 @@
 narration + background music. Uses ffmpeg directly (installed by setup_env.sh) rather
 than a Python video library -- fewer deps to reinstall on every fresh cloud checkout.
 
-Caption timing has no word-level timestamps from the TTS step, so each beat's on-screen
-duration is estimated proportionally to its text length against the narration's actual
-audio duration. Good enough for short-form captions; not frame-perfect.
+Per-beat on-screen duration comes from the narration's <name>.beats.json sidecar
+(tts.py's synthesize_beats() -- each beat is its own TTS call, so its real audio
+duration is measured directly, not guessed). Switched from a proportional text-length
+estimate 2026-08-22 after a channel-owner report that captions/cuts didn't line up
+with the narration -- that estimate had no actual relationship to how long Chirp3-HD
+takes to speak any given beat. Only the WITHIN-beat word-to-word caption split is still
+estimated (no real word-level timestamps exist for that finer grain), now anchored to
+each beat's real measured duration instead of a whole-video guess.
 """
 import argparse
 import json
@@ -52,12 +57,6 @@ def _probe_duration(path):
         "-of", "default=noprint_wrappers=1:nokey=1", str(path),
     ])
     return float(out.strip())
-
-
-def _beat_durations(beats, total_duration):
-    weights = [max(len(config.strip_emphasis_markup(b["text"])), 1) for b in beats]
-    total_weight = sum(weights)
-    return [total_duration * w / total_weight for w in weights]
 
 
 def _format_ass_timestamp(seconds):
@@ -139,9 +138,13 @@ def _write_ass(beats, durations, out_path):
 
         chunks = [tokens[i:i + WORDS_PER_CAPTION] for i in range(0, len(tokens), WORDS_PER_CAPTION)]
         # No real per-word timestamps from the TTS step (see module docstring) -- each
-        # chunk's on-screen share of the beat is estimated proportionally to its word
-        # length, same approach _beat_durations already uses per-beat against the
-        # narration's actual audio duration, just carried one level deeper.
+        # chunk's on-screen share is estimated proportionally to its word length
+        # against beat_duration, which IS now a real measured span (tts.py synthesizes
+        # each beat separately and reports its actual audio duration -- see
+        # synthesize_beats() there), not a whole-video text-length guess. The
+        # within-beat word-to-word split is still an estimate, just a much
+        # smaller-scope one now that it's anchored to the beat's real duration instead
+        # of one proportionally guessed from the total video length.
         total_weight = sum(max(len(word), 1) for chunk in chunks for word, _ in chunk)
         for chunk in chunks:
             chunk_weight = sum(max(len(word), 1) for word, _ in chunk)
@@ -368,34 +371,6 @@ def _pick_music_track(music_dir, category):
     return random.choice(tracks)
 
 
-# Caps any internal silence in the narration at MAX_PAUSE_SECONDS instead of leaving
-# whatever gap Cloud TTS naturally inserts at each sentence boundary -- a real
-# published video (2026-08-21) measured 13 pauses totaling 6.4s (18% of runtime),
-# longest 0.96s, against a healthy reference's 2.78s/6%. Deliberately NOT done via
-# SSML <break> tags: Chirp3-HD's SSML tag support is genuinely unclear/inconsistently
-# documented as of this session (no way to verify locally, and a malformed/unsupported
-# tag risks breaking synthesis entirely for every video, a far worse failure than the
-# pause issue itself). silenceremove operates on the already-synthesized audio file
-# with a well-documented, stable ffmpeg filter instead -- stop_periods=-1 targets every
-# internal silence (not just leading/trailing), and stop_duration caps each one at
-# MAX_PAUSE_SECONDS by dropping only the excess beyond that point, not the whole gap --
-# still reads as a natural sentence pause, just not a stall.
-MAX_PAUSE_SECONDS = 0.25
-SILENCE_THRESHOLD_DB = "-40dB"  # narration's dead air measured -57 to -60+ dBFS --
-                                # comfortably below any actual quiet speech, low risk
-                                # of clipping a real quiet word as "silence"
-
-
-def _trim_long_pauses(narration_path, work_dir):
-    trimmed = work_dir / "narration_trimmed.mp3"
-    subprocess.run([
-        "ffmpeg", "-y", "-i", str(narration_path),
-        "-af", f"silenceremove=stop_periods=-1:stop_duration={MAX_PAUSE_SECONDS}:stop_threshold={SILENCE_THRESHOLD_DB}",
-        "-ar", "44100", "-ac", "2", str(trimmed),
-    ], check=True)
-    return trimmed
-
-
 # A quiet, non-rhythmic ambient bed under the narration -- a real published video
 # measured as pure mono with dead silence between words (no independent low end at
 # all), while a healthy reference video ran a continuous stereo bed ~16dB under the
@@ -471,20 +446,28 @@ def assemble(script, narration_path, clips, music_dir, out_path, work_dir):
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
 
-    # Trimmed BEFORE probing duration -- everything downstream (beat timing, caption
-    # timing) should reflect the actual, post-trim audio length, not the original.
-    narration_path = _trim_long_pauses(narration_path, work_dir)
+    # Real, measured per-beat spans from tts.py's synthesize_beats() -- each beat was
+    # its own TTS call, so this is the beat's actual audio duration (plus the fixed
+    # gap that follows it), not a guess. Required, not optional: narration_path always
+    # comes from tts.py in this pipeline (Narration always runs immediately before
+    # B-roll/Assemble in produce-upload.yml), so the sidecar always exists here -- a
+    # missing sidecar means something upstream is broken and should fail loud, not
+    # silently fall back to the old text-length estimate that caused the drift this
+    # replaced. See module docstring.
+    narration_path = Path(narration_path)
+    beat_spans = json.loads(narration_path.with_suffix(".beats.json").read_text(encoding="utf-8"))["beat_spans"]
     narration_duration = min(_probe_duration(narration_path), config.MAX_SHORT_SECONDS)
-    durations = _beat_durations(script["beats"], narration_duration)
+    durations = beat_spans
 
     # broll.py already generated one DISTINCT image per visual shot and tagged each
     # clip with which beat it belongs to (pipeline/shot_planning.py decided the shot
-    # count there, from its own narration-duration estimate) -- group by beat_index and
-    # lay out whatever images actually exist for beat i evenly across that beat's FINAL
-    # duration (computed just above, from the actual trimmed narration). The two stages
-    # deliberately don't need to agree on an exact shot count: assemble.py just adapts
-    # to whatever broll.py produced, so a small drift between broll.py's duration
-    # estimate and this one can never desync captions/timing from the video track.
+    # count there, from that same beat's real measured duration) -- group by beat_index
+    # and lay out whatever images actually exist for beat i evenly across that beat's
+    # span (computed just above, from the real per-beat measurement). The two stages
+    # both read the same ground-truth beat_spans now, but deliberately still don't
+    # NEED to agree on an exact shot count: assemble.py just adapts to whatever
+    # broll.py produced, so nothing here can desync captions/timing from the video
+    # track even if that ever changes.
     shots_by_beat = {}
     for clip in clips:
         shots_by_beat.setdefault(clip["beat_index"], []).append(clip)

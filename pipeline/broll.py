@@ -17,9 +17,10 @@ each time, not the same picture panned/cropped differently). This is what actual
 delivers the "new visual every ~1.5s" the reference-video breakdown called for
 (assemble.py's earlier same-image-different-crop approach was explicitly rejected --
 see state/ruleset_changelog.json). Shot counts come from pipeline/shot_planning.py
-using this stage's own narration-duration estimate; assemble.py doesn't need that
-count to match exactly (see its own docstring/comments) -- it lays out whatever images
-this stage actually produced for a beat evenly across that beat's final duration.
+using each beat's real measured duration (tts.py's synthesize_beats() sidecar);
+assemble.py doesn't need that count to match exactly (see its own docstring/comments)
+-- it lays out whatever images this stage actually produced for a beat evenly across
+that beat's final duration.
 """
 import argparse
 import json
@@ -55,12 +56,12 @@ def fetch_all(script, narration_path, work_dir):
     work_dir.mkdir(parents=True, exist_ok=True)
     clips = []
 
-    # Only an estimate -- assemble.py computes the FINAL beat durations later from the
-    # actual trimmed narration (its narration_path has already been through
-    # _trim_long_pauses by then, this one hasn't). Good enough for deciding shot
-    # counts; doesn't need to be exact, see module docstring.
-    narration_duration = shot_planning.probe_duration(narration_path)
-    durations = shot_planning.beat_durations(script["beats"], narration_duration)
+    # Real, measured per-beat spans from tts.py's synthesize_beats() sidecar -- same
+    # source assemble.py uses (see its module docstring), not a text-length guess.
+    # Shot counts don't need to match assemble.py's own layout exactly (see this
+    # module's docstring), but there's no reason to use a worse estimate for this
+    # decision now that the real one is sitting right next to narration_path.
+    durations = json.loads(Path(narration_path).with_suffix(".beats.json").read_text(encoding="utf-8"))["beat_spans"]
 
     for i, (beat, duration) in enumerate(zip(script["beats"], durations)):
         n_shots = shot_planning.shots_for_duration(duration)
