@@ -360,12 +360,20 @@ CHORD_SECONDS = 3.5
 
 # A different root note (and therefore overall pitch) per video, picked from real
 # equal-tempered frequencies -- small, deliberate per-video variety without needing a
-# whole pre-made library, and all four stay in a low, unobtrusive register appropriate
-# for something sitting under narration rather than competing with it.
-ROOT_FREQUENCIES = [174.61, 196.00, 220.00, 233.08]  # F3, G3, A3, Bb3
+# whole pre-made library. F4-Bb4, not F3-Bb3 (2026-08-23 fix): a real render at the
+# lower octave measured as genuinely inaudible -- narration.mp3's own vocal fundamental
+# sits in roughly this same 100-250Hz band for a male voice (this channel's "Charon"
+# voice), so even at an audible volume level the chord tones were being acoustically
+# masked by the narration itself, not just quiet. One octave up keeps the same
+# progression/character while mostly clearing the narration's own fundamental range.
+ROOT_FREQUENCIES = [349.23, 392.00, 440.00, 466.16]  # F4, G4, A4, Bb4
 
-MUSIC_VOLUME = 0.12  # mixed well under narration -- same target level the swoosh SFX
-                     # settled on after "a lot softer" feedback on an earlier attempt
+# 0.22, not 0.12 (2026-08-23 fix): measured the actual synthesized output locally --
+# the raw chord mix sits around -22dB mean, so the old 0.12 (-18.4dB) scaling put the
+# final mixed-in level around -40dB mean, well below what's actually perceptible under
+# narration. 0.22 (-13.2dB) lands it closer to -35dB -- still clearly a background bed,
+# not competing with narration, but no longer effectively silent.
+MUSIC_VOLUME = 0.22
 
 
 def _chord_frequencies(root, semitone_offsets):
