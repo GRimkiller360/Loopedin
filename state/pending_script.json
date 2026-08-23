@@ -1,0 +1,35 @@
+{
+  "topic": "the 1917 French Army mutinies -- soldiers refused to attack but almost none deserted, and far fewer were executed than sentenced",
+  "category": "history",
+  "seed_source_video_id": "XAnNERNAdlw",
+  "seed_view_count": 485055,
+  "title": "France's WWI Army Mutinied in 1917, But Fewer Than 50 Were Executed",
+  "description": "AI-narrated commentary on the 1917 French Army mutinies -- when nearly half of France's WWI infantry divisions refused to keep attacking, but the way it actually played out (and ended) is stranger than the popular idea of a 'mutiny.'",
+  "tags": ["history", "WWI", "WW1", "military history", "France", "1917", "mutiny", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "A 1917 mutiny where a French army refused to fight, but not one soldier deserted."},
+    {"hook_type": "question", "text": "What happens when half an army refuses to fight, but nobody deserts?"},
+    {"hook_type": "myth_bust", "text": "A mutiny doesn't always mean soldiers turn against their own side. In 1917, French troops proved that."},
+    {"hook_type": "story", "text": "In the spring of 1917, tens of thousands of French soldiers made an unspoken deal with their own generals."}
+  ],
+  "share_trigger": "A viewer sends this to their grandfather who insists mutinies always end in mass executions, because they want to prove him wrong.",
+  "contradicted_belief": "Most people think a mutiny means soldiers desert or refuse to fight, but not this time.",
+  "closing_comment": "554 men were sentenced to death, but fewer than 50 were actually shot, and that gap says everything about this mutiny.",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/1917_French_Army_mutinies", "note": "Petain's courts martial sentenced 554 mutineers to death; only a small fraction were ever actually executed."},
+    {"url": "https://roadstothegreatwar-ww1.blogspot.com/2015/08/the-french-mutinies-of-1917-real-numbers.html", "note": "Details the disputed execution count (est. 26-50) against 3,400 courts martial and 554 death sentences."}
+  ],
+  "beats": [
+    {"text": "A **1917** mutiny where a French army refused to fight, but not one soldier deserted.", "broll_query": "French WWI soldiers standing together in a muddy trench, rifles lowered, defiant expressions, overcast light", "beat_role": "hook"},
+    {"text": "Commanders were sure this would end in total **collapse**.", "broll_query": "worried French WWI general studying a battle map by candlelight in a cramped dugout", "beat_role": "claim"},
+    {"text": "They kept holding their trench lines each night, only **refusing** to attack.", "broll_query": "French soldiers standing guard in a WWI trench at night, rifles ready, calm, moody blue light", "beat_role": "evidence"},
+    {"text": "The most French protest imaginable.", "broll_query": "a French WWI soldier shrugging with arms crossed, wry half smile, muddy trench background", "beat_role": "joke"},
+    {"text": "**Hundreds** of those soldiers were sentenced to die.", "broll_query": "rows of French WWI soldiers standing trial in a makeshift military courtroom tent, stern officers seated", "beat_role": "claim"},
+    {"text": "Petain's courts martial tried **3,400** men, sentencing 554 to death.", "broll_query": "stack of French military court documents on a wooden desk, ink pen, dramatic candlelight shadow", "beat_role": "evidence"},
+    {"text": "Turns out paperwork was punishment enough.", "broll_query": "a French WWI officer wearily stamping a tall stack of paper folders at a desk", "beat_role": "joke"},
+    {"text": "Fewer than **fifty** of those 554 were actually executed.", "broll_query": "close-up of an unsigned execution order document being quietly set aside on a desk, single candle", "beat_role": "claim"},
+    {"text": "Historians still argue over the exact toll today.", "broll_query": "two historians in a dim archive room examining old military records together, thoughtful discussion", "beat_role": "hedge"},
+    {"text": "So here's a story about", "broll_query": "wide shot of an empty WWI trench at dawn, fog rolling over no man's land, quiet aftermath", "beat_role": "ending"}
+  ]
+}
