@@ -1,7 +1,7 @@
 {
   "paused": false,
   "pause_reason": null,
-  "consecutive_failures": 0,
-  "last_run_status": "ok",
-  "last_error": null
+  "consecutive_failures": 1,
+  "last_run_status": "error",
+  "last_error": "produce-upload workflow failed, see run log"
 }
