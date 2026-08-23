@@ -1,0 +1,35 @@
+{
+  "topic": "Ada Blackjack, the last-minute hire who was the sole survivor of the failed 1921 Wrangel Island expedition",
+  "category": "history",
+  "seed_source_video_id": "S_d127xzZEI",
+  "seed_view_count": 510223,
+  "title": "She Was Hired As An Afterthought. She Was The Only One Who Came Home.",
+  "description": "AI-narrated commentary on the true story of Ada Blackjack, hired almost as an afterthought for a 1921 Arctic expedition sent to claim Wrangel Island for Britain -- and the only member of the five-person team who made it home. Original commentary and analysis, not a reproduction of any single source video.",
+  "tags": ["history", "truestory", "arctic", "survival", "wrangelisland", "adablackjack", "explorer", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "This mission's fifth hire was almost an afterthought. She's the only one who came home."},
+    {"hook_type": "question", "text": "What happens when the person a five-person Arctic expedition almost didn't bring turns out to be the only one who survives it?"},
+    {"hook_type": "myth_bust", "text": "People assume an Arctic expedition's sole survivor would be one of its trained explorers. It wasn't."},
+    {"hook_type": "story", "text": "In 1921, four men picked one extra hire almost as an afterthought to help claim an Arctic island for Britain. She's the only one who came home."}
+  ],
+  "share_trigger": "A viewer sends this to the coworker who always gets picked last on group projects, because they want to prove the backup hire is sometimes the only one who pulls through.",
+  "contradicted_belief": "Most people assume the trained explorers on this mission were the ones who came home, but the hire who seemed like an afterthought was the only one who did.",
+  "closing_comment": "Ada Blackjack was hired almost as an afterthought for this 1921 Wrangel Island expedition, and she's still the only one who ever came home.",
+  "sources": [
+    {"url": "https://www.anchoragemuseum.org/exhibits/extra-tough-women-of-the-north/women-of-the-north-profiles/ada-blackjack-sole-survivor-of-doomed-wrangel-island-expedition/", "note": "Confirms Ada Blackjack was hired as seamstress/cook and was the sole survivor of the 1921 Wrangel Island expedition."},
+    {"url": "https://www.history.com/articles/ada-blackjack-inuit-wrangel-island", "note": "Confirms the four men's deaths/disappearance and Ada Blackjack's survival until August 1923 rescue."},
+    {"url": "https://www.newworldencyclopedia.org/entry/Wrangel_Island", "note": "Confirms Soviet forces removed the island's remaining foreign settlers in 1924 and annexed it in 1926."}
+  ],
+  "beats": [
+    {"text": "This mission's fifth hire was almost an **afterthought**. She's the only one who came home.", "broll_query": "a woman in a fur-trimmed parka standing alone on a vast frozen arctic ice field, gray overcast sky", "beat_role": "hook"},
+    {"text": "Land could once be **legally** claimed just by living there.", "broll_query": "an antique 1920s survey map of a remote arctic island, hand annotated in ink, weathered edges", "beat_role": "claim"},
+    {"text": "In **1921**, Stefansson sent four men and Ada Blackjack to claim Wrangel Island.", "broll_query": "four men and one woman loading sledges with expedition supplies onto a wooden ship deck, early 1900s", "beat_role": "evidence"},
+    {"text": "History's laziest border dispute.", "broll_query": "a comically oversized flag being planted crookedly in snow by a lone explorer, wide shot", "beat_role": "joke"},
+    {"text": "Two years later, three of them tried crossing the ice to Siberia.", "broll_query": "three bundled explorers trudging single file across cracked sea ice toward a hazy horizon", "beat_role": "claim"},
+    {"text": "None of them were ever seen **again**.", "broll_query": "an empty stretch of arctic pack ice at dusk, no footprints, wind blowing snow", "beat_role": "evidence"},
+    {"text": "Great pitch for a cold case show.", "broll_query": "a vintage detective in a trench coat examining a magnifying glass over a blank snowy map", "beat_role": "joke"},
+    {"text": "Ada's rescue never secured the island. A second wave of settlers lost it to the **Soviets** in 1924.", "broll_query": "a soviet-flagged icebreaker ship cutting through arctic ice toward a small wooden settlement", "beat_role": "claim"},
+    {"text": "So that's the hire nobody expected much from, one of", "broll_query": "a single set of footprints leading off into a snowy arctic horizon at dusk", "beat_role": "ending"}
+  ]
+}
