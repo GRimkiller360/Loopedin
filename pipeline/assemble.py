@@ -333,75 +333,97 @@ def _build_video_track(scaled_paths, clip_targets, transition_durations, out_pat
     subprocess.run(cmd, check=True)
 
 
-# Category -> preferred music mood tags. assets/music/tags.json (user-maintained) maps
-# filename -> list of mood tags; a track matching any preferred tag for the script's
-# category is preferred over a fully random pick. Inert and harmless until tagged
-# files actually exist -- falls straight back to random, same as before this existed.
-CATEGORY_MOODS = {
-    "history": ("mysterious", "dramatic", "epic"),
+# Soft, genuinely musical background bed, synthesized fresh per video rather than
+# picked from a manually-curated folder -- explicit channel-owner request ("the
+# routine must get a track for each video"). Replaces both the old file-based
+# MUSIC_ENABLED/CATEGORY_MOODS system (assets/music/ was never actually populated --
+# every external hosting site tried for real tracks was unreachable from this
+# environment, and manual per-video uploads don't scale to an automated routine) and
+# the older textureless ambient-bed drone -- this is a real, if simple, chord
+# progression instead of three detuned sine tones.
+#
+# i-VI-III-VII in natural minor -- a common, pleasant, slightly moody progression (the
+# same shape behind a lot of cinematic/lo-fi backing loops), chosen to land in the same
+# "mysterious/dramatic/epic" territory the old CATEGORY_MOODS system targeted for this
+# channel's history content, without needing per-category branching logic. Each chord
+# is three sine tones at the chord's own equal-tempered frequencies -- no sourced
+# samples or synth plugins, same zero-licensing-question reasoning as the swipe/ambient
+# synthesis elsewhere in this file.
+NATURAL_MINOR_CHORDS = {
+    "i": (0, 3, 7),
+    "VI": (8, 11, 15),
+    "III": (3, 7, 10),
+    "VII": (10, 14, 17),
 }
+CHORD_PROGRESSION = ["i", "VI", "III", "VII"]
+CHORD_SECONDS = 3.5
+
+# A different root note (and therefore overall pitch) per video, picked from real
+# equal-tempered frequencies -- small, deliberate per-video variety without needing a
+# whole pre-made library, and all four stay in a low, unobtrusive register appropriate
+# for something sitting under narration rather than competing with it.
+ROOT_FREQUENCIES = [174.61, 196.00, 220.00, 233.08]  # F3, G3, A3, Bb3
+
+MUSIC_VOLUME = 0.12  # mixed well under narration -- same target level the swoosh SFX
+                     # settled on after "a lot softer" feedback on an earlier attempt
 
 
-MUSIC_ENABLED = False  # disabled per user request (2026-08-18) -- re-enable by flipping this back
+def _chord_frequencies(root, semitone_offsets):
+    return [root * 2 ** (s / 12) for s in semitone_offsets]
 
 
-def _pick_music_track(music_dir, category):
-    if not MUSIC_ENABLED:
-        return None
-
-    music_dir = Path(music_dir)
-    tracks = list(music_dir.glob("*.mp3"))
-    if not tracks:
-        return None
-
-    tags_path = music_dir / "tags.json"
-    tags = {}
-    if tags_path.exists():
-        try:
-            tags = json.loads(tags_path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
-            tags = {}
-
-    preferred = set(CATEGORY_MOODS.get(category, ()))
-    if preferred and tags:
-        matches = [t for t in tracks if preferred & set(tags.get(t.name, []))]
-        if matches:
-            return random.choice(matches)
-
-    return random.choice(tracks)
-
-
-# A quiet, non-rhythmic ambient bed under the narration -- a real published video
-# measured as pure mono with dead silence between words (no independent low end at
-# all), while a healthy reference video ran a continuous stereo bed ~16dB under the
-# voice with no detectable beat (autocorrelation peak 0.06). Synthesized rather than a
-# sourced track, same reasoning as the hook chirp/mascot chime already in this file --
-# zero licensing/copyright question, and it sidesteps MUSIC_ENABLED's file-based system
-# entirely (assets/music/ has no files in it, and that flag was about actual music
-# tracks specifically, not this kind of textureless room-tone bed). Three detuned low
-# sine tones with independent slow tremolo -- deliberately non-musical/non-rhythmic so
-# it can't create the "is there a beat" impression the reference explicitly lacked.
-def _build_ambient_bed(work_dir, duration_seconds):
-    bed = work_dir / "ambient_bed.mp3"
+def _build_chord_clip(work_dir, index, freqs):
+    clip = work_dir / f"music_chord_{index:02d}.mp3"
+    inputs = []
+    for f in freqs:
+        inputs += ["-f", "lavfi", "-i", f"sine=frequency={f:.3f}:duration={CHORD_SECONDS}"]
+    n = len(freqs)
+    labels = "".join(f"[{i}:a]" for i in range(n))
+    # afade in/out on every chord (not just the loop's own seams) is what gives this a
+    # soft pad envelope instead of an audible click at each chord change --
+    # highpass/lowpass keeps it out of both sub-bass mud and anything sharp enough to
+    # compete with narration frequencies.
+    filter_complex = (
+        f"{labels}amix=inputs={n}:duration=longest:normalize=0,"
+        f"afade=t=in:st=0:d=0.6,afade=t=out:st={CHORD_SECONDS - 0.6}:d=0.6,"
+        "highpass=f=100,lowpass=f=2000[out]"
+    )
     subprocess.run([
-        "ffmpeg", "-y",
-        "-f", "lavfi", "-i", f"sine=frequency=80:duration={duration_seconds}",
-        "-f", "lavfi", "-i", f"sine=frequency=121:duration={duration_seconds}",
-        "-f", "lavfi", "-i", f"sine=frequency=163:duration={duration_seconds}",
-        "-filter_complex",
-        # ffmpeg's tremolo filter rejects f<0.1 outright ("Numerical result out of
-        # range") -- 0.1 is the floor, not just a suggestion, confirmed by a real
-        # production crash on every run since this landed. 0.1/0.11 (the third tone's
-        # already-valid value) is as close to the intended near-imperceptible slow
-        # wobble as the filter actually allows.
-        "[0:a]tremolo=f=0.1:d=0.3[a0];"
-        "[1:a]tremolo=f=0.11:d=0.3[a1];"
-        "[2:a]tremolo=f=0.1:d=0.25[a2];"
-        "[a0][a1][a2]amix=inputs=3:duration=first:normalize=0,"
-        "highpass=f=50,lowpass=f=400,volume=0.05[out]",
-        "-map", "[out]", "-ar", "44100", "-ac", "2", str(bed),
+        "ffmpeg", "-y", *inputs, "-filter_complex", filter_complex,
+        "-map", "[out]", "-ar", "44100", "-ac", "2", str(clip),
     ], check=True)
-    return bed
+    return clip
+
+
+def _build_background_music(work_dir, duration_seconds):
+    root = random.choice(ROOT_FREQUENCIES)
+    chord_clips = [
+        _build_chord_clip(work_dir, i, _chord_frequencies(root, NATURAL_MINOR_CHORDS[degree]))
+        for i, degree in enumerate(CHORD_PROGRESSION)
+    ]
+
+    loop = work_dir / "music_loop.mp3"
+    inputs = []
+    for clip in chord_clips:
+        inputs += ["-i", str(clip)]
+    n = len(chord_clips)
+    concat_filter = "".join(f"[{i}:a]" for i in range(n)) + f"concat=n={n}:v=0:a=1[out]"
+    subprocess.run([
+        "ffmpeg", "-y", *inputs, "-filter_complex", concat_filter,
+        "-map", "[out]", "-ar", "44100", "-ac", "2", str(loop),
+    ], check=True)
+
+    # Looped (not regenerated) to cover the full narration, same pattern as every other
+    # short bed/track in this file -- one real chord progression is plenty of material
+    # for something meant to sit quietly in the background the whole video.
+    loop_seconds = CHORD_SECONDS * len(CHORD_PROGRESSION)
+    loop_count = max(math.ceil(duration_seconds / loop_seconds), 1)
+    music = work_dir / "background_music.mp3"
+    subprocess.run([
+        "ffmpeg", "-y", "-stream_loop", str(loop_count - 1), "-i", str(loop),
+        "-t", str(duration_seconds), "-ar", "44100", "-ac", "2", str(music),
+    ], check=True)
+    return music
 
 
 # Explicit per-cut punctuation, distinct from the ambient bed's continuous texture --
@@ -442,7 +464,7 @@ def _build_swoosh_track(work_dir, cut_offsets, sfx_path=SWOOSH_SFX_PATH):
     return track
 
 
-def assemble(script, narration_path, clips, music_dir, out_path, work_dir):
+def assemble(script, narration_path, clips, out_path, work_dir):
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
 
@@ -519,29 +541,16 @@ def assemble(script, narration_path, clips, music_dir, out_path, work_dir):
     ass_path = work_dir / "captions.ass"
     _write_ass(script["beats"], durations, ass_path)
 
-    music_path = _pick_music_track(music_dir, script.get("category"))
-
-    mixed_audio = narration_path
-    if music_path:
-        mixed_audio = work_dir / "mixed_audio.mp3"
-        subprocess.run([
-            "ffmpeg", "-y", "-i", str(narration_path), "-stream_loop", "-1", "-i", str(music_path),
-            "-filter_complex",
-            "[1:a]volume=0.12[music];[0:a][music]amix=inputs=2:duration=first:dropout_transition=2[aout]",
-            "-map", "[aout]", "-t", str(narration_duration), str(mixed_audio),
-        ], check=True)
-
-    # Ambient bed layers in regardless of whether a music track was found above --
-    # it's a room-tone texture, not music (see _build_ambient_bed's comment), so it
-    # doesn't compete with or substitute for MUSIC_ENABLED's file-based track system.
-    ambient_bed = _build_ambient_bed(work_dir, narration_duration)
-    bedded_audio = work_dir / "bedded_audio.mp3"
+    # See _build_background_music's comment -- one synthesized chord progression per
+    # video, not a file picked from a folder, so this always has something to mix in.
+    background_music = _build_background_music(work_dir, narration_duration)
+    mixed_audio = work_dir / "mixed_audio.mp3"
     subprocess.run([
-        "ffmpeg", "-y", "-i", str(mixed_audio), "-i", str(ambient_bed),
-        "-filter_complex", "[0:a][1:a]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[aout]",
-        "-map", "[aout]", "-t", str(narration_duration), str(bedded_audio),
+        "ffmpeg", "-y", "-i", str(narration_path), "-i", str(background_music),
+        "-filter_complex",
+        f"[1:a]volume={MUSIC_VOLUME}[music];[0:a][music]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[aout]",
+        "-map", "[aout]", "-t", str(narration_duration), str(mixed_audio),
     ], check=True)
-    mixed_audio = bedded_audio
 
     # A swoosh on every real image-change cut (see _build_swoosh_track's comment) --
     # cut_offsets is the exact same math _build_video_track already used above for the
@@ -583,7 +592,6 @@ if __name__ == "__main__":
     parser.add_argument("--script", required=True)
     parser.add_argument("--narration", required=True)
     parser.add_argument("--clips", required=True, help="JSON list of {path, source, beat_index, shot_index} shot entries (see broll.py), inline or a file path")
-    parser.add_argument("--music-dir", default=str(config.ASSETS_DIR / "music"))
     parser.add_argument("--work-dir", required=True)
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
@@ -595,6 +603,6 @@ if __name__ == "__main__":
         clips = json.loads(Path(args.clips).read_text(encoding="utf-8"))
 
     result = assemble(
-        script_data, args.narration, clips, args.music_dir, args.out, args.work_dir,
+        script_data, args.narration, clips, args.out, args.work_dir,
     )
     print(result)
