@@ -115,6 +115,21 @@ jobs:
             --narration work/narration.mp3 --clips work/broll_clips.json \
             --work-dir work/assemble --out work/final.mp4
 
+      - name: Save video as workflow artifact
+        # Lets a human grab the exact rendered file directly (e.g. for manual TikTok
+        # posting) without depending on YouTube Studio's mobile download working --
+        # that was failing on a real phone (tiny/incomplete download, unclear cause on
+        # this end). This is the same H.264/AAC MP4 pipeline/upload.py sends to
+        # YouTube, saved before the runner tears down and the file is lost for good.
+        # 7-day retention -- long enough to fetch, short enough not to build up unused
+        # storage run after run.
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-video
+          path: work/final.mp4
+          retention-days: 7
+
       - name: Upload
         if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped'
         id: upload
