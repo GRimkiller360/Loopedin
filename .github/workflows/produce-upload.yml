@@ -106,6 +106,13 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # Optional -- a second, genuinely separate Cloudflare account (see
+          # pipeline/ai_broll.py's module docstring) ai_broll.py falls through to if
+          # the primary account reports itself quota-exhausted. Fine to leave both
+          # unset: generate_image() just skips an unconfigured account, same as before
+          # this existed.
+          CLOUDFLARE_ACCOUNT_ID_FALLBACK: ${{ secrets.CLOUDFLARE_ACCOUNT_ID_FALLBACK }}
+          CLOUDFLARE_API_TOKEN_FALLBACK: ${{ secrets.CLOUDFLARE_API_TOKEN_FALLBACK }}
         run: python pipeline/broll.py --script state/pending_script.json --narration work/narration.mp3 --work-dir work/broll > work/broll_clips.json
 
       - name: Assemble

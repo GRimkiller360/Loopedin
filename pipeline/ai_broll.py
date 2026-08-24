@@ -26,11 +26,24 @@ protection against actually running out mid-day is the reactive check:
    the rest of today immediately. Same reactive pattern pipeline/quota_guard.py already
    uses for YouTube's own quota: react to the provider's own rejection, don't just trust
    a self-computed number.
-Either trigger raises AIImageUnavailable. With no fallback source left, broll.py no
-longer catches this -- it propagates and fails that beat's b-roll step outright, the
-same way script_schema.py/quality_gate.py already fail a run rather than silently
-shipping something degraded. This makes CLOUDFLARE_ACCOUNT_ID/CLOUDFLARE_API_TOKEN
+Either trigger raises AIImageUnavailable. With no stock-footage fallback source left,
+broll.py no longer catches this -- it propagates and fails that beat's b-roll step
+outright, the same way script_schema.py/quality_gate.py already fail a run rather than
+silently shipping something degraded. This makes CLOUDFLARE_ACCOUNT_ID/CLOUDFLARE_API_TOKEN
 required secrets in practice, not optional ones -- see credentials_configured().
+
+Fallback Cloudflare account (2026-08-24): an optional second, genuinely separate
+Cloudflare account -- CLOUDFLARE_ACCOUNT_ID_FALLBACK/CLOUDFLARE_API_TOKEN_FALLBACK --
+generate_image() tries after the primary account reports itself quota-exhausted (local
+cap or a real Cloudflare 429/4006 that survived the retry-with-backoff above). Added
+after a real, extended (18+ minute) Cloudflare-side quota-enforcement bug: the
+dashboard showed 0/10k real usage the whole time, but every request was still rejected
+with "daily free allocation" -- a documented, still-open Cloudflare platform bug (see
+QUOTA_RETRY_ATTEMPTS's comment), not something retrying the SAME account can reliably
+route around. A second account has its own independent 10,000 free Neurons/day
+allocation and its own independent backend state -- a second API token on the same
+account would NOT help, since the free quota is enforced per-account, not per-token.
+Purely additive: with no fallback configured, behavior is identical to before.
 """
 import base64
 import json
@@ -90,11 +103,27 @@ QUOTA_PATH = config.STATE_DIR / "image_quota.json"
 QUOTA_RETRY_ATTEMPTS = 4
 QUOTA_RETRY_BACKOFF_SECONDS = 20
 
+# Tried in order for every image request. "fallback" only actually gets used if its two
+# env vars are both set -- see _account_configured() -- so an unconfigured fallback is
+# silently skipped, not an error.
+ACCOUNTS = [
+    {"label": "primary", "account_env": "CLOUDFLARE_ACCOUNT_ID", "token_env": "CLOUDFLARE_API_TOKEN"},
+    {"label": "fallback", "account_env": "CLOUDFLARE_ACCOUNT_ID_FALLBACK", "token_env": "CLOUDFLARE_API_TOKEN_FALLBACK"},
+]
+
 
 class AIImageUnavailable(Exception):
-    """Not configured, quota exhausted, or a real API failure -- broll.py no longer
-    catches this (no fallback source exists any more), so it propagates and fails
-    that production run outright."""
+    """Not configured, quota exhausted on every configured account, or a real API
+    failure -- broll.py no longer catches this (no stock-footage fallback source
+    exists any more), so it propagates and fails that production run outright."""
+
+
+class _AccountQuotaExhausted(Exception):
+    """Internal signal only: this one account is out for today (local cap, not
+    configured, or a confirmed Cloudflare quota rejection). generate_image() catches
+    this and tries the next configured account, if any -- a real (non-quota) API
+    error raises AIImageUnavailable directly instead, since a different account
+    wouldn't fix a malformed request either."""
 
 
 def _today():
@@ -104,7 +133,15 @@ def _today():
 def _load_quota():
     q = load_json(QUOTA_PATH, {})
     if q.get("date") != _today():
-        q = {"date": _today(), "generated": 0, "exhausted": False}
+        return {"date": _today(), "generated": 0, "exhausted": {}}
+    exhausted = q.get("exhausted", {})
+    if isinstance(exhausted, bool):
+        # Migrates the old single-account boolean schema (pre-fallback-account
+        # support, before 2026-08-24) -- a prior True meant the primary account was
+        # exhausted; there was no fallback concept yet for it to apply to.
+        exhausted = {"primary": exhausted} if exhausted else {}
+    q["exhausted"] = exhausted
+    q.setdefault("generated", 0)
     return q
 
 
@@ -112,14 +149,14 @@ def _save_quota(q):
     save_json(QUOTA_PATH, q)
 
 
-def quota_available():
+def quota_available(label="primary"):
     q = _load_quota()
-    return not q["exhausted"] and q["generated"] < DAILY_IMAGE_CAP
+    return not q["exhausted"].get(label, False) and q["generated"] < DAILY_IMAGE_CAP
 
 
-def _mark_exhausted():
+def _mark_exhausted(label):
     q = _load_quota()
-    q["exhausted"] = True
+    q["exhausted"][label] = True
     _save_quota(q)
 
 
@@ -129,18 +166,25 @@ def _record_generated():
     _save_quota(q)
 
 
+def _account_configured(account):
+    return bool(os.environ.get(account["account_env"])) and bool(os.environ.get(account["token_env"]))
+
+
 def credentials_configured():
-    return bool(os.environ.get("CLOUDFLARE_ACCOUNT_ID")) and bool(os.environ.get("CLOUDFLARE_API_TOKEN"))
+    """True if at least one configured Cloudflare account (primary or fallback) has
+    both its account ID and API token set."""
+    return any(_account_configured(a) for a in ACCOUNTS)
 
 
-def generate_image(prompt, out_path):
-    if not credentials_configured():
-        raise AIImageUnavailable("CLOUDFLARE_ACCOUNT_ID/CLOUDFLARE_API_TOKEN not configured")
-    if not quota_available():
-        raise AIImageUnavailable("today's DAILY_IMAGE_CAP already reached")
+def _generate_from_account(account, prompt, out_path):
+    label = account["label"]
+    if not _account_configured(account):
+        raise _AccountQuotaExhausted(f"{label}: {account['account_env']}/{account['token_env']} not configured")
+    if not quota_available(label):
+        raise _AccountQuotaExhausted(f"{label}: today's local cap/quota already exhausted")
 
-    account_id = os.environ["CLOUDFLARE_ACCOUNT_ID"]
-    token = os.environ["CLOUDFLARE_API_TOKEN"]
+    account_id = os.environ[account["account_env"]]
+    token = os.environ[account["token_env"]]
     url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{MODEL}"
     # prompt/steps/seed only -- flux-1-schnell has no width/height input (confirmed by
     # a hard 400 from every real production run, see module docstring). Output comes
@@ -169,19 +213,19 @@ def generate_image(prompt, out_path):
             detail = e.read().decode(errors="replace")
             is_quota = e.code == 429 or "quota" in detail.lower() or "rate limit" in detail.lower()
             if not is_quota:
-                raise AIImageUnavailable(f"Cloudflare Workers AI request failed ({e.code}): {detail}") from e
+                raise AIImageUnavailable(f"{label}: Cloudflare Workers AI request failed ({e.code}): {detail}") from e
             if attempt < QUOTA_RETRY_ATTEMPTS:
                 time.sleep(QUOTA_RETRY_BACKOFF_SECONDS * attempt)
                 continue
-            _mark_exhausted()
-            raise AIImageUnavailable(f"Cloudflare rejected as quota/rate-limit ({e.code}): {detail}") from e
+            _mark_exhausted(label)
+            raise _AccountQuotaExhausted(f"{label}: Cloudflare rejected as quota/rate-limit ({e.code}): {detail}") from e
         except Exception as e:
             # Any other transport/parsing failure -- wrapped as AIImageUnavailable so
             # every failure mode (not configured, quota, a real API error, this) is one
             # distinct, identifiable exception type in the logs, rather than a grab-bag
             # of different underlying exceptions all reaching the same "this run
             # failed" outcome.
-            raise AIImageUnavailable(f"Cloudflare Workers AI request failed: {e}") from e
+            raise AIImageUnavailable(f"{label}: Cloudflare Workers AI request failed: {e}") from e
 
     # flux-1-schnell's documented response is a JSON envelope with a base64-encoded
     # image (unlike SDXL, which the REST endpoint returns as raw bytes) -- handling
@@ -193,14 +237,26 @@ def generate_image(prompt, out_path):
             errors = payload.get("errors", [])
             detail = json.dumps(errors)
             if any("quota" in str(e).lower() or "rate limit" in str(e).lower() for e in errors):
-                _mark_exhausted()
-            raise AIImageUnavailable(f"Cloudflare Workers AI returned an error: {detail}")
+                _mark_exhausted(label)
+                raise _AccountQuotaExhausted(f"{label}: Cloudflare Workers AI returned a quota error: {detail}")
+            raise AIImageUnavailable(f"{label}: Cloudflare Workers AI returned an error: {detail}")
         result = payload.get("result") or {}
         b64 = result.get("image") or result.get("image_b64")
         if not b64:
-            raise AIImageUnavailable(f"unrecognized JSON response shape: {list(payload.keys())}")
+            raise AIImageUnavailable(f"{label}: unrecognized JSON response shape: {list(payload.keys())}")
         data = base64.b64decode(b64)
 
     Path(out_path).write_bytes(data)
     _record_generated()
     return out_path
+
+
+def generate_image(prompt, out_path):
+    errors = []
+    for account in ACCOUNTS:
+        try:
+            return _generate_from_account(account, prompt, out_path)
+        except _AccountQuotaExhausted as e:
+            errors.append(str(e))
+            continue
+    raise AIImageUnavailable("every configured Cloudflare account is unconfigured/quota-exhausted today: " + "; ".join(errors))
