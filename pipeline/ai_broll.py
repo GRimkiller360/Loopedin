@@ -44,6 +44,16 @@ route around. A second account has its own independent 10,000 free Neurons/day
 allocation and its own independent backend state -- a second API token on the same
 account would NOT help, since the free quota is enforced per-account, not per-token.
 Purely additive: with no fallback configured, behavior is identical to before.
+
+Second fallback account (2026-08-24, CLOUDFLARE_ACCOUNT_ID_FALLBACK2/
+CLOUDFLARE_API_TOKEN_FALLBACK2, same requirements -- a genuinely separate account, not
+a second token): added after primary AND the first fallback both hit a real Cloudflare
+capacity error (3040, "Out of Capacity" -- see CLOUDFLARE_OUT_OF_CAPACITY_CODE) on the
+same day. Since that specific outage affected multiple accounts at once, a third
+account isn't guaranteed to route around a genuinely platform-wide crunch -- but each
+additional independent account is still one more real, separate chance at landing on
+infrastructure that isn't currently squeezed. Also purely additive: unconfigured is
+identical to not existing.
 """
 import base64
 import json
@@ -143,12 +153,18 @@ def _cloudflare_error_code(detail):
     except (json.JSONDecodeError, AttributeError, TypeError):
         return None
 
-# Tried in order for every image request. "fallback" only actually gets used if its two
-# env vars are both set -- see _account_configured() -- so an unconfigured fallback is
-# silently skipped, not an error.
+# Tried in order for every image request. Each entry only actually gets used if both
+# its env vars are set -- see _account_configured() -- so an unconfigured account is
+# silently skipped, not an error. "fallback2" added 2026-08-24 after a real capacity
+# outage (Cloudflare error 3040 -- see CLOUDFLARE_OUT_OF_CAPACITY_CODE's comment) hit
+# BOTH primary and fallback at once, suggesting some capacity crunches are broad enough
+# to affect multiple accounts on the same platform simultaneously -- a third account
+# doesn't fix that specific failure mode, but does add a real, separate chance of
+# landing on infrastructure that isn't currently squeezed.
 ACCOUNTS = [
     {"label": "primary", "account_env": "CLOUDFLARE_ACCOUNT_ID", "token_env": "CLOUDFLARE_API_TOKEN"},
     {"label": "fallback", "account_env": "CLOUDFLARE_ACCOUNT_ID_FALLBACK", "token_env": "CLOUDFLARE_API_TOKEN_FALLBACK"},
+    {"label": "fallback2", "account_env": "CLOUDFLARE_ACCOUNT_ID_FALLBACK2", "token_env": "CLOUDFLARE_API_TOKEN_FALLBACK2"},
 ]
 
 

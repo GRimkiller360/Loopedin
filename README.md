@@ -58,8 +58,10 @@ repository secret**. Add these exact names:
 | `GOOGLE_TTS_CREDENTIALS_JSON` | Cloud TTS service-account JSON, full contents |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID -- required as of 2026-08-21. AI-generated images (`pipeline/ai_broll.py`, flux-1-schnell) are the sole b-roll source; there is no stock-footage fallback any more, so the B-roll step fails outright without this and the token below. |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare API token with Workers AI access -- see `CLOUDFLARE_ACCOUNT_ID` above. |
-| `CLOUDFLARE_ACCOUNT_ID_FALLBACK` | Optional. Account ID for a second, genuinely separate Cloudflare account (different sign-up, not a second token on the same account -- the free 10,000 Neurons/day allowance is per-account). `pipeline/ai_broll.py` falls through to this account if the primary reports itself quota-exhausted for the day. Safe to leave unset. |
+| `CLOUDFLARE_ACCOUNT_ID_FALLBACK` | Optional. Account ID for a second, genuinely separate Cloudflare account (different sign-up, not a second token on the same account -- the free 10,000 Neurons/day allowance is per-account). `pipeline/ai_broll.py` falls through to this account if the primary reports itself quota-exhausted/at capacity for the day. Safe to leave unset. |
 | `CLOUDFLARE_API_TOKEN_FALLBACK` | Optional. API token (Workers AI Read + Edit) for the account above -- see `CLOUDFLARE_ACCOUNT_ID_FALLBACK`. |
+| `CLOUDFLARE_ACCOUNT_ID_FALLBACK2` | Optional. Account ID for a third, again genuinely separate Cloudflare account -- tried if both accounts above fail. Added 2026-08-24 after a real capacity outage hit the primary and first fallback accounts on the same day; see `pipeline/ai_broll.py`'s module docstring. Safe to leave unset. |
+| `CLOUDFLARE_API_TOKEN_FALLBACK2` | Optional. API token (Workers AI Read + Edit) for the account above -- see `CLOUDFLARE_ACCOUNT_ID_FALLBACK2`. |
 | `DASHBOARD_URL` | The car-loan-dashboard Worker's base URL (same value the `bracketly` repo's `DASHBOARD_URL` secret uses) |
 | `LOOPEDIN_INGEST_SECRET` | A long random string — set the identical value as a `wrangler secret put LOOPEDIN_INGEST_SECRET` on the dashboard Worker. Distinct from bracketly's `BRACKETLY_INGEST_SECRET`, so either app's ingest can be rotated independently. |
 
