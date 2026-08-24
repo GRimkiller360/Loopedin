@@ -111,6 +111,38 @@ QUOTA_PATH = config.STATE_DIR / "image_quota.json"
 QUOTA_RETRY_ATTEMPTS = 4
 QUOTA_RETRY_BACKOFF_SECONDS = 20
 
+# 2026-08-24, later the same day: two separate real test runs both failed completely
+# (zero successful images, on a fresh account with generated=65 well under
+# DAILY_IMAGE_CAP) even after the retry-with-backoff above. Checked Cloudflare's own
+# documentation for what a 429 here can actually mean -- it's not one thing:
+# - 3036 ("Account limited"): the account's 10,000 daily Neurons are genuinely spent.
+#   A real, correctly day-long block.
+# - 3040 ("Out of Capacity"): the shared GPU infrastructure behind image-generation
+#   models is temporarily full -- UNRELATED to this account's own usage, and
+#   documented to happen even at zero spend for the day. Fluctuates throughout the
+#   day; a later beat's request (or a later run today) may well succeed even if this
+#   one didn't.
+# Before this fix, every 429 (including 3040 and the 4006 bug above) was treated
+# identically -- marked exhausted for the rest of the day after retries. That's
+# correct for 3036, but wrong for 3040: a transient infrastructure issue was
+# permanently blocking every later attempt today over something that might clear in
+# minutes. Only 3036 now marks the account exhausted; everything else still fails this
+# attempt (and cascades to the fallback account, then to failing the run -- there's no
+# other fallback left) without poisoning later attempts today.
+CLOUDFLARE_QUOTA_EXHAUSTED_CODE = 3036
+CLOUDFLARE_OUT_OF_CAPACITY_CODE = 3040
+
+
+def _cloudflare_error_code(detail):
+    """Best-effort extraction of Cloudflare's structured error code from a JSON error
+    body ({"errors": [{"code": N, ...}], ...}) -- None if the body isn't JSON or
+    doesn't have this shape (a raw string error, an HTML error page, etc.)."""
+    try:
+        errors = json.loads(detail).get("errors") or []
+        return errors[0].get("code") if errors and isinstance(errors[0], dict) else None
+    except (json.JSONDecodeError, AttributeError, TypeError):
+        return None
+
 # Tried in order for every image request. "fallback" only actually gets used if its two
 # env vars are both set -- see _account_configured() -- so an unconfigured fallback is
 # silently skipped, not an error.
@@ -219,14 +251,23 @@ def _generate_from_account(account, prompt, out_path):
             break
         except urllib.error.HTTPError as e:
             detail = e.read().decode(errors="replace")
-            is_quota = e.code == 429 or "quota" in detail.lower() or "rate limit" in detail.lower()
+            cf_code = _cloudflare_error_code(detail)
+            is_quota = (
+                cf_code in (CLOUDFLARE_QUOTA_EXHAUSTED_CODE, CLOUDFLARE_OUT_OF_CAPACITY_CODE)
+                or e.code == 429 or "quota" in detail.lower() or "rate limit" in detail.lower()
+            )
             if not is_quota:
                 raise AIImageUnavailable(f"{label}: Cloudflare Workers AI request failed ({e.code}): {detail}") from e
             if attempt < QUOTA_RETRY_ATTEMPTS:
                 time.sleep(QUOTA_RETRY_BACKOFF_SECONDS * attempt)
                 continue
-            _mark_exhausted(label)
-            raise _AccountQuotaExhausted(f"{label}: Cloudflare rejected as quota/rate-limit ({e.code}): {detail}") from e
+            # Only a confirmed 3036 (real daily quota) marks the account exhausted for
+            # the rest of today -- see CLOUDFLARE_QUOTA_EXHAUSTED_CODE's comment. A 3040
+            # (capacity) or an unclassified 429/quota-ish message fails this attempt
+            # only, so a later beat or a later run today still gets a fresh try.
+            if cf_code == CLOUDFLARE_QUOTA_EXHAUSTED_CODE:
+                _mark_exhausted(label)
+            raise _AccountQuotaExhausted(f"{label}: Cloudflare rejected as quota/rate-limit/capacity ({e.code}, cf_code={cf_code}): {detail}") from e
         except Exception as e:
             # Any other transport/parsing failure -- wrapped as AIImageUnavailable so
             # every failure mode (not configured, quota, a real API error, this) is one
@@ -244,9 +285,16 @@ def _generate_from_account(account, prompt, out_path):
         if not payload.get("success", True):
             errors = payload.get("errors", [])
             detail = json.dumps(errors)
-            if any("quota" in str(e).lower() or "rate limit" in str(e).lower() for e in errors):
-                _mark_exhausted(label)
-                raise _AccountQuotaExhausted(f"{label}: Cloudflare Workers AI returned a quota error: {detail}")
+            codes = {e.get("code") for e in errors if isinstance(e, dict)}
+            is_quota = bool(codes & {CLOUDFLARE_QUOTA_EXHAUSTED_CODE, CLOUDFLARE_OUT_OF_CAPACITY_CODE}) or any(
+                "quota" in str(e).lower() or "rate limit" in str(e).lower() for e in errors
+            )
+            if is_quota:
+                # Same distinction as the HTTPError path above -- only a confirmed
+                # 3036 marks the account exhausted for the rest of today.
+                if CLOUDFLARE_QUOTA_EXHAUSTED_CODE in codes:
+                    _mark_exhausted(label)
+                raise _AccountQuotaExhausted(f"{label}: Cloudflare Workers AI returned a quota/capacity error: {detail}")
             raise AIImageUnavailable(f"{label}: Cloudflare Workers AI returned an error: {detail}")
         result = payload.get("result") or {}
         b64 = result.get("image") or result.get("image_b64")
