@@ -36,6 +36,7 @@ import base64
 import json
 import os
 import sys
+import time
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -71,6 +72,23 @@ STYLE_SUFFIX = ", bright natural lighting, vivid colors, high detail, vertical p
 DAILY_IMAGE_CAP = 190
 
 QUOTA_PATH = config.STATE_DIR / "image_quota.json"
+
+# Cloudflare's own daily-quota 429 (error 4006) is unreliable: a well-documented, still
+# -open Cloudflare platform bug returns this even when the account's real usage is
+# 0/10k for the day -- a backend quota-enforcement/dashboard sync bug, not a real cap.
+# See community.cloudflare.com threads "Workers AI daily free Neuron quota did not
+# reset at 00:00 UTC" and "error 4006 persists after UTC reset while daily usage is 0"
+# (multiple independent reports, Apr-Jul 2026) -- confirmed against this pipeline's own
+# 2026-08-24 05:10 UTC run, which hit this error on its very first image request of the
+# day. Retried here with backoff before accepting it as real exhaustion; this is
+# deliberately local to ai_broll.py rather than folded into
+# config.is_retryable_urllib_error -- a 429 from other providers (e.g. tts.py's Google
+# Cloud TTS calls) is a real quota signal, not this specific Cloudflare bug, and
+# shouldn't get the same treatment. Only the first image request of a run pays this
+# cost: once _mark_exhausted() actually fires, quota_available() short-circuits every
+# later call in the same run without another network round-trip.
+QUOTA_RETRY_ATTEMPTS = 4
+QUOTA_RETRY_BACKOFF_SECONDS = 20
 
 
 class AIImageUnavailable(Exception):
@@ -142,20 +160,28 @@ def generate_image(prompt, out_path):
         with urllib.request.urlopen(req) as resp:
             return resp.headers.get("Content-Type", ""), resp.read()
 
-    try:
-        content_type, data = config.retry_transient(_do_request, is_retryable=config.is_retryable_urllib_error)
-    except urllib.error.HTTPError as e:
-        detail = e.read().decode(errors="replace")
-        if e.code == 429 or "quota" in detail.lower() or "rate limit" in detail.lower():
+    content_type = data = None
+    for attempt in range(1, QUOTA_RETRY_ATTEMPTS + 1):
+        try:
+            content_type, data = config.retry_transient(_do_request, is_retryable=config.is_retryable_urllib_error)
+            break
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode(errors="replace")
+            is_quota = e.code == 429 or "quota" in detail.lower() or "rate limit" in detail.lower()
+            if not is_quota:
+                raise AIImageUnavailable(f"Cloudflare Workers AI request failed ({e.code}): {detail}") from e
+            if attempt < QUOTA_RETRY_ATTEMPTS:
+                time.sleep(QUOTA_RETRY_BACKOFF_SECONDS * attempt)
+                continue
             _mark_exhausted()
             raise AIImageUnavailable(f"Cloudflare rejected as quota/rate-limit ({e.code}): {detail}") from e
-        raise AIImageUnavailable(f"Cloudflare Workers AI request failed ({e.code}): {detail}") from e
-    except Exception as e:
-        # Any other transport/parsing failure -- wrapped as AIImageUnavailable so every
-        # failure mode (not configured, quota, a real API error, this) is one distinct,
-        # identifiable exception type in the logs, rather than a grab-bag of different
-        # underlying exceptions all reaching the same "this run failed" outcome.
-        raise AIImageUnavailable(f"Cloudflare Workers AI request failed: {e}") from e
+        except Exception as e:
+            # Any other transport/parsing failure -- wrapped as AIImageUnavailable so
+            # every failure mode (not configured, quota, a real API error, this) is one
+            # distinct, identifiable exception type in the logs, rather than a grab-bag
+            # of different underlying exceptions all reaching the same "this run
+            # failed" outcome.
+            raise AIImageUnavailable(f"Cloudflare Workers AI request failed: {e}") from e
 
     # flux-1-schnell's documented response is a JSON envelope with a base64-encoded
     # image (unlike SDXL, which the REST endpoint returns as raw bytes) -- handling
