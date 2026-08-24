@@ -1,0 +1,39 @@
+{
+  "topic": "Ada Blackjack, the seamstress who was the sole survivor of the 1921 Wrangel Island Arctic expedition",
+  "category": "history",
+  "seed_source_video_id": "S_d127xzZEI",
+  "seed_view_count": 665008,
+  "title": "She Was Hired to Sew. She Outlived Every Man on the Expedition.",
+  "description": "The true, sourced story of Ada Blackjack -- the Inupiat seamstress hired for an ill-fated 1921 Arctic expedition to claim Wrangel Island, and the only member of her four-person team who survived. AI-narrated original commentary, not a repost.",
+  "tags": ["history", "ada blackjack", "arctic survival", "wrangel island", "true story", "shorts", "survival story", "1920s history"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Here's the seamstress who outlived every man on that expedition, alone, with only a cat."},
+    {"hook_type": "question", "text": "What happens when the three men who go for help across the ice never come back?"},
+    {"hook_type": "myth_bust", "text": "Arctic expeditions weren't won by the toughest survivalist on the team. This one was won by the seamstress nobody trained to hunt."},
+    {"hook_type": "story", "text": "In 1921, four men and one seamstress sailed to claim an island for the British Empire. Only she made it home."}
+  ],
+  "share_trigger": "A viewer sends this to the friend obsessed with reality TV survival shows, because they want to show them what real survival actually looked like.",
+  "contradicted_belief": "Most people assume the survivor of a deadly Arctic expedition would be a trained explorer, not the seamstress who outlived every man alone.",
+  "closing_comment": "Ada Blackjack and her cat Vic both survived this Arctic expedition on Wrangel Island, which deserves its own documentary.",
+  "sources": [
+    {"url": "https://www.nps.gov/articles/000/ada-blackjack-stranded-on-wrangel-island.htm", "note": "Confirms Ada Blackjack was hired as seamstress with no survival training and was the expedition's sole survivor."},
+    {"url": "https://en.wikipedia.org/wiki/Ada_Blackjack", "note": "Confirms the three men who left for Siberia in Jan 1923 were never found; Lorne Knight died of scurvy June 23, 1923."},
+    {"url": "https://www.newsweek.com/russia-arctic-wrangel-island-ukraine-seized-1760023", "note": "Confirms Soviet icebreaker Red October seized Wrangel Island Aug 1924, arresting American settlers there."}
+  ],
+  "beats": [
+    {"text": "Here's the seamstress who outlived every man on that expedition, **alone**, with only a cat.", "broll_query": "young Inupiat woman in sealskin parka standing alone on Arctic ice, fierce expression, wide shot", "beat_role": "hook"},
+    {"text": "She was hired to **sew**, not survive, terrified of polar bears.", "broll_query": "woman sewing thick fur parka by oil lamp inside a canvas tent, close-up hands", "beat_role": "claim"},
+    {"text": "She'd never hunted, but needed money for her sick **son's** care.", "broll_query": "worn photograph of a small boy propped against a sewing kit, dim cabin light", "beat_role": "evidence"},
+    {"text": "Bold move for a five-month contract.", "broll_query": "small weathered contract paper blowing across snowy tundra, single canvas tent in distance", "beat_role": "joke"},
+    {"text": "Three of the four men then **vanished** trying to save everyone.", "broll_query": "three men in fur coats trudging away across a frozen sea horizon, tiny figures", "beat_role": "claim"},
+    {"text": "They crossed the frozen sea for Siberia in **1923** and were never found.", "broll_query": "empty frozen coastline at dusk, sled tracks vanishing into blowing snow, no figures", "beat_role": "evidence"},
+    {"text": "The rescue plan needed a rescue.", "broll_query": "old unlit rescue flare half-buried in snow, ironic still life, close-up", "beat_role": "joke"},
+    {"text": "The last man with her didn't **survive** either.", "broll_query": "gaunt man wrapped in blankets inside a dim canvas tent, feverish, candle beside him", "beat_role": "claim"},
+    {"text": "Scurvy took him months later, leaving her with no food and one **cat**.", "broll_query": "woman alone in a snow shelter cradling a small gray cat, single lantern glow", "beat_role": "evidence"},
+    {"text": "None of it actually saved the island for **Britain**.", "broll_query": "faded British flag half-buried and frozen stiff in Arctic snow, wide desolate shot", "beat_role": "claim"},
+    {"text": "Soviet ships **seized** the island a few years later.", "broll_query": "gray armored icebreaker ship cutting through pack ice toward a rocky Arctic coastline", "beat_role": "evidence"},
+    {"text": "What happened to those three men was never confirmed.", "broll_query": "blank frozen horizon at twilight, no footprints, empty and unresolved, wide shot", "beat_role": "hedge"},
+    {"text": "This Arctic survival story sounds fake, so", "broll_query": "same young woman from the opening walking toward camera across the ice, determined", "beat_role": "ending"}
+  ]
+}
