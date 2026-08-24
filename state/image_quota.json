@@ -2,6 +2,7 @@
   "date": "2026-08-24",
   "generated": 65,
   "exhausted": {
-    "primary": true
+    "primary": true,
+    "fallback": true
   }
 }
