@@ -111,13 +111,15 @@ QUOTA_PATH = config.STATE_DIR / "image_quota.json"
 # reset at 00:00 UTC" and "error 4006 persists after UTC reset while daily usage is 0"
 # (multiple independent reports, Apr-Jul 2026) -- confirmed against this pipeline's own
 # 2026-08-24 05:10 UTC run, which hit this error on its very first image request of the
-# day. Retried here with backoff before accepting it as real exhaustion; this is
-# deliberately local to ai_broll.py rather than folded into
-# config.is_retryable_urllib_error -- a 429 from other providers (e.g. tts.py's Google
-# Cloud TTS calls) is a real quota signal, not this specific Cloudflare bug, and
-# shouldn't get the same treatment. Only the first image request of a run pays this
-# cost: once _mark_exhausted() actually fires, quota_available() short-circuits every
-# later call in the same run without another network round-trip.
+# day. QUOTA_RETRY_ATTEMPTS is the number of ROUNDS generate_image() cycles through
+# ALL configured accounts (not retries of one account before trying the next -- see
+# that function's own docstring for why that changed), with QUOTA_RETRY_BACKOFF_SECONDS
+# * round_num of sleep between rounds if every account failed that round. Once
+# _mark_exhausted() actually fires for an account, quota_available() short-circuits
+# every later call to it (this run and any later run today) without another network
+# round-trip -- deliberately local to ai_broll.py rather than folded into
+# config.is_retryable_urllib_error, since a 429 from other providers (e.g. tts.py's
+# Google Cloud TTS calls) is a real quota signal, not this specific Cloudflare bug.
 QUOTA_RETRY_ATTEMPTS = 4
 QUOTA_RETRY_BACKOFF_SECONDS = 20
 
@@ -260,37 +262,35 @@ def _generate_from_account(account, prompt, out_path):
         with urllib.request.urlopen(req) as resp:
             return resp.headers.get("Content-Type", ""), resp.read()
 
-    content_type = data = None
-    for attempt in range(1, QUOTA_RETRY_ATTEMPTS + 1):
-        try:
-            content_type, data = config.retry_transient(_do_request, is_retryable=config.is_retryable_urllib_error)
-            break
-        except urllib.error.HTTPError as e:
-            detail = e.read().decode(errors="replace")
-            cf_code = _cloudflare_error_code(detail)
-            is_quota = (
-                cf_code in (CLOUDFLARE_QUOTA_EXHAUSTED_CODE, CLOUDFLARE_OUT_OF_CAPACITY_CODE)
-                or e.code == 429 or "quota" in detail.lower() or "rate limit" in detail.lower()
-            )
-            if not is_quota:
-                raise AIImageUnavailable(f"{label}: Cloudflare Workers AI request failed ({e.code}): {detail}") from e
-            if attempt < QUOTA_RETRY_ATTEMPTS:
-                time.sleep(QUOTA_RETRY_BACKOFF_SECONDS * attempt)
-                continue
-            # Only a confirmed 3036 (real daily quota) marks the account exhausted for
-            # the rest of today -- see CLOUDFLARE_QUOTA_EXHAUSTED_CODE's comment. A 3040
-            # (capacity) or an unclassified 429/quota-ish message fails this attempt
-            # only, so a later beat or a later run today still gets a fresh try.
-            if cf_code == CLOUDFLARE_QUOTA_EXHAUSTED_CODE:
-                _mark_exhausted(label)
-            raise _AccountQuotaExhausted(f"{label}: Cloudflare rejected as quota/rate-limit/capacity ({e.code}, cf_code={cf_code}): {detail}") from e
-        except Exception as e:
-            # Any other transport/parsing failure -- wrapped as AIImageUnavailable so
-            # every failure mode (not configured, quota, a real API error, this) is one
-            # distinct, identifiable exception type in the logs, rather than a grab-bag
-            # of different underlying exceptions all reaching the same "this run
-            # failed" outcome.
-            raise AIImageUnavailable(f"{label}: Cloudflare Workers AI request failed: {e}") from e
+    # Exactly one attempt -- no internal retry loop here any more. Retrying across
+    # ROUNDS of all accounts (not repeatedly on this one account before ever trying
+    # the others) is generate_image()'s job now; see its own docstring for why.
+    try:
+        content_type, data = config.retry_transient(_do_request, is_retryable=config.is_retryable_urllib_error)
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode(errors="replace")
+        cf_code = _cloudflare_error_code(detail)
+        is_quota = (
+            cf_code in (CLOUDFLARE_QUOTA_EXHAUSTED_CODE, CLOUDFLARE_OUT_OF_CAPACITY_CODE)
+            or e.code == 429 or "quota" in detail.lower() or "rate limit" in detail.lower()
+        )
+        if not is_quota:
+            raise AIImageUnavailable(f"{label}: Cloudflare Workers AI request failed ({e.code}): {detail}") from e
+        # Only a confirmed 3036 (real daily quota) marks the account exhausted for
+        # the rest of today -- see CLOUDFLARE_QUOTA_EXHAUSTED_CODE's comment. A 3040
+        # (capacity) or an unclassified 429/quota-ish message fails this attempt
+        # only, so a later round (or a later beat, or a later run today) still gets
+        # a fresh try at this same account.
+        if cf_code == CLOUDFLARE_QUOTA_EXHAUSTED_CODE:
+            _mark_exhausted(label)
+        raise _AccountQuotaExhausted(f"{label}: Cloudflare rejected as quota/rate-limit/capacity ({e.code}, cf_code={cf_code}): {detail}") from e
+    except Exception as e:
+        # Any other transport/parsing failure -- wrapped as AIImageUnavailable so
+        # every failure mode (not configured, quota, a real API error, this) is one
+        # distinct, identifiable exception type in the logs, rather than a grab-bag
+        # of different underlying exceptions all reaching the same "this run
+        # failed" outcome.
+        raise AIImageUnavailable(f"{label}: Cloudflare Workers AI request failed: {e}") from e
 
     # flux-1-schnell's documented response is a JSON envelope with a base64-encoded
     # image (unlike SDXL, which the REST endpoint returns as raw bytes) -- handling
@@ -324,11 +324,27 @@ def _generate_from_account(account, prompt, out_path):
 
 
 def generate_image(prompt, out_path):
+    """Tries every configured account once per round, cycling through all of them
+    before waiting and trying again -- NOT retrying one account repeatedly before
+    ever trying the others. 2026-08-24: the old per-account-first design (retry
+    account A up to QUOTA_RETRY_ATTEMPTS times with growing backoff, THEN move to B)
+    cost up to ~2 minutes of pure backoff sleep PER ACCOUNT before ever finding out
+    whether a different account was free the whole time -- with 3 accounts now
+    configured, a real capacity outage measurably stalled a single video's B-roll
+    step for 15+ minutes and still climbing. Round-robin instead: try all accounts
+    back-to-back with zero sleep in round 1 (cheapest possible check of "is ANY
+    account free right now"), and only sleep between full rounds if every account
+    failed in that round -- still gives a transient capacity issue (3040) multiple
+    chances to clear over time, just without paying for that patience on an account
+    that a completely different account might have sailed past instantly."""
     errors = []
-    for account in ACCOUNTS:
-        try:
-            return _generate_from_account(account, prompt, out_path)
-        except _AccountQuotaExhausted as e:
-            errors.append(str(e))
-            continue
-    raise AIImageUnavailable("every configured Cloudflare account is unconfigured/quota-exhausted today: " + "; ".join(errors))
+    for round_num in range(1, QUOTA_RETRY_ATTEMPTS + 1):
+        for account in ACCOUNTS:
+            try:
+                return _generate_from_account(account, prompt, out_path)
+            except _AccountQuotaExhausted as e:
+                errors.append(str(e))
+                continue
+        if round_num < QUOTA_RETRY_ATTEMPTS:
+            time.sleep(QUOTA_RETRY_BACKOFF_SECONDS * round_num)
+    raise AIImageUnavailable("every configured Cloudflare account is unconfigured/quota-exhausted/at capacity today: " + "; ".join(errors))
