@@ -333,6 +333,14 @@ Save it as `state/pending_script.json` matching the shape documented in
      >=3 hook candidates, spanning >=2 hook_types, picked for specificity over
      genre-fit.
 
+     **The category tease must be brief -- a handful of words, not a clause.** A real
+     published video measured its actual payoff word landing at ~3.70s (against a
+     healthy reference's ~1.90s), even though the hook sentence itself was well
+     written -- the subject was just buried after a longer setup than intended. Say
+     the hook out loud: if the subject/payload word doesn't land by about 2 seconds in,
+     the category tease in front of it is too long, not the sentence itself -- trim the
+     setup, don't rewrite the payoff.
+
      **Sentence-loop technique -- mandatory, every video, not situational.** Write the
      hook and the `ending` beat as one continuous sentence, then split it in two -- the
      back half becomes the video's opening, the front half becomes its close. E.g.

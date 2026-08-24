@@ -87,7 +87,7 @@ def fetch_all(script, narration_path, work_dir):
     durations = json.loads(Path(narration_path).with_suffix(".beats.json").read_text(encoding="utf-8"))["beat_spans"]
 
     for i, (beat, duration) in enumerate(zip(script["beats"], durations)):
-        n_shots = shot_planning.shots_for_duration(duration)
+        n_shots = shot_planning.shots_for_duration(duration, beat.get("beat_role"))
         for s in range(n_shots):
             out_path = work_dir / f"beat_{i:02d}_shot_{s:02d}.mp4"
             # No fallback and no try/except here -- see module docstring. AIImageUnavailable
