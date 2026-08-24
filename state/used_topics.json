@@ -1533,6 +1533,22 @@
       "share_trigger": "a viewer sends this to their friend who insists Napoleon never lost a single fight in his entire life",
       "contradicted_belief": "Most people assume Napoleon never lost a real battle in his entire life.",
       "has_sources": false
+    },
+    {
+      "topic": "1618 Defenestration of Prague",
+      "video_id": "Gegnkobpi8M",
+      "uploaded_at": "2026-08-24T15:36:14.636198+00:00",
+      "publish_hour_utc": 15,
+      "category": "history",
+      "seed_source_video_id": null,
+      "seed_view_count": null,
+      "hook_type": "shocking_fact",
+      "title": "Three Men Survived Being Thrown Out Of A Castle Window",
+      "duration_seconds": 44.7,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "a viewer sends this to their friend who insists nobody could survive falling from that high up",
+      "contradicted_belief": "Most people assume three men falling from a high castle window would always be fatal.",
+      "has_sources": false
     }
   ]
 }
