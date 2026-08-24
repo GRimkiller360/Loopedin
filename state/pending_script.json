@@ -1,0 +1,33 @@
+{
+  "topic": "Napoleon rabbit hunt disaster",
+  "category": "history",
+  "title": "Napoleon Lost A Fight To An Army Of Rabbits",
+  "description": "AI-narrated commentary revisiting the bizarre true story of Napoleon's disastrous 1807 rabbit hunt, when the animals he was supposed to shoot charged straight at him instead.",
+  "tags": ["napoleon", "history facts", "weird history", "napoleon bonaparte", "military history", "funny history"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Napoleon once lost a battle to rabbits."},
+    {"hook_type": "question", "text": "What actually made Napoleon retreat from a hunting trip?"},
+    {"hook_type": "myth_bust", "text": "Napoleon wasn't undefeated after all, thanks to a field of rabbits."},
+    {"hook_type": "list", "text": "Three things Napoleon never expected to lose to: weather, terrain, and rabbits."}
+  ],
+  "share_trigger": "a viewer sends this to their friend who insists Napoleon never lost a single fight in his entire life",
+  "contradicted_belief": "Most people assume Napoleon never lost a real battle in his entire life.",
+  "closing_comment": "If you think Napoleon lost a fight to an army of angry rabbits sounds made up, it's real recorded history.",
+  "seed_source_video_id": null,
+  "beats": [
+    {"text": "Napoleon once lost a battle to **rabbits**.", "broll_query": "Napoleon in military uniform recoiling from a swarm of rabbits, dramatic outdoor scene", "beat_role": "hook"},
+    {"text": "In 1807 he organized a **hunt** he was certain he'd win.", "broll_query": "18th century French hunting party with rifles gathered in a field, formal military dress", "beat_role": "claim"},
+    {"text": "His staff rounded up **thousands** of rabbits for him to shoot.", "broll_query": "wooden crates full of live rabbits being unloaded in a countryside field", "beat_role": "evidence"},
+    {"text": "Nobody thought to ask the rabbits if they'd agreed to that.", "broll_query": "cartoon-style rabbit looking directly at camera with a mischievous grin, closeup", "beat_role": "joke"},
+    {"text": "Those rabbits weren't wild, they were **farm-raised** and totally tame.", "broll_query": "domesticated rabbits being fed by hand inside a wooden farm hutch", "beat_role": "claim"},
+    {"text": "Tame rabbits see a human and think **one** thing: food is coming.", "broll_query": "close-up of a rabbit's nose twitching eagerly near an outstretched human hand", "beat_role": "evidence"},
+    {"text": "Napoleon just became lunch, wearing an extremely fancy hat.", "broll_query": "ornate bicorne hat sitting on the ground surrounded by curious rabbits, comedic angle", "beat_role": "joke"},
+    {"text": "When released, thousands of rabbits **charged** straight at Napoleon instead of running away.", "broll_query": "large group of rabbits running in one direction across an open field toward camera", "beat_role": "claim"},
+    {"text": "His own men couldn't beat them back fast enough with sticks.", "broll_query": "soldiers in period uniform waving sticks frantically at ground level, chaotic scene", "beat_role": "evidence"},
+    {"text": "The emperor of Europe, defeated by lunch on legs.", "broll_query": "silhouette of a defeated military officer sitting slumped on the ground at dusk", "beat_role": "joke"},
+    {"text": "Napoleon actually had to retreat before the rabbits reached his carriage.", "broll_query": "ornate 19th century carriage pulling away quickly across a grassy field, motion blur", "beat_role": "claim"},
+    {"text": "Historians still debate the exact rabbit count, some say **thousands**, others say hundreds.", "broll_query": "old sepia-toned history book open to a page with illustrations, magnifying glass on top", "beat_role": "hedge"},
+    {"text": "So here's proof that", "broll_query": "old parchment map of European battle campaigns being rolled up by hand, warm lighting", "beat_role": "ending"}
+  ]
+}
