@@ -1,0 +1,36 @@
+{
+  "topic": "Kung Fu Hustle's tailor is a real Hung Gar grandmaster whose lineage traces to Wong Fei-hung",
+  "category": "history",
+  "seed_source_video_id": "-bPV5pDCZgc",
+  "seed_view_count": 2144586,
+  "title": "The Funniest Fighter In Kung Fu Hustle Wasn't Acting",
+  "description": "AI-narrated commentary on the real Hung Gar martial arts history behind the actor who played the Tailor in Kung Fu Hustle. Original commentary and analysis, not a re-upload of any existing video.",
+  "tags": ["kung fu hustle", "hung gar", "wong fei hung", "chiu chi ling", "martial arts history", "kung fu movies", "history shorts", "china"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "One of the funniest fighters in Kung Fu Hustle is a real Hung Gar grandmaster."},
+    {"hook_type": "question", "text": "Which comic-relief character in Kung Fu Hustle could actually fight for real?"},
+    {"hook_type": "myth_bust", "text": "Kung Fu Hustle's fights look like slapstick comedy, but one fighter's kung fu was completely real."},
+    {"hook_type": "story", "text": "A six-year-old boy trained under his own parents in a kung fu lineage traced to Wong Fei-hung, then grew up to play comic relief in a kung fu movie."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who insists kung fu movies are all wire-work and camera tricks because they want to prove one fight was completely real.",
+  "contradicted_belief": "Most viewers assume Kung Fu Hustle's comedy fighters are just doing exaggerated acting, not real kung fu.",
+  "closing_comment": "The tailor's actor, Chiu Chi-ling, has trained real Hung Gar since age six, the same style traced to Wong Fei-hung.",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Chiu_Chi-ling", "note": "Confirms Chiu Chi-ling is a Hung Gar grandmaster who played the Tailor, lineage via Lam Sai-wing to Wong Fei-hung."},
+    {"url": "https://wkfkungfu.com/grandmaster-chiu-chi-ling-the-living-legend-of-hung-gar-kung-fu/", "note": "Confirms his father Chiu Kau trained him from age six and named him style heir in 1965."}
+  ],
+  "beats": [
+    {"text": "Kung Fu Hustle's fights look like slapstick comedy, but one fighter's kung fu was completely **real**.", "broll_query": "a stocky comedic kung fu fighter in gray robes in mid iron-wire stance, tenement alley, dramatic side light", "beat_role": "hook"},
+    {"text": "He's practiced Hung Gar kung fu since age **six**.", "broll_query": "a determined six-year-old boy in a training uniform practicing a low horse stance, small courtyard, morning light", "beat_role": "claim"},
+    {"text": "He mastered the brutal Tiger-Crane form by age **eight**.", "broll_query": "a child performing the tiger-crane kung fu form, arms curved like claws, wide stance, dusty training yard", "beat_role": "evidence"},
+    {"text": "A wildly overachieving childhood, honestly.", "broll_query": "a small trophy shelf crowded with kung fu medals beside abandoned children's toys, warm indoor light", "beat_role": "joke"},
+    {"text": "His lineage traces straight back to the legendary **Wong Fei-hung**.", "broll_query": "an old sepia-toned portrait of a stern Chinese kung fu master in traditional robes, faded photograph", "beat_role": "claim"},
+    {"text": "His father trained under one of Wong Fei-hung's own students.", "broll_query": "two generations of kung fu masters bowing to each other in a wooden training hall, incense smoke", "beat_role": "evidence"},
+    {"text": "Basically kung fu royalty, minus the palace.", "broll_query": "an empty gilded throne room with kung fu training mats spread across the marble floor", "beat_role": "joke"},
+    {"text": "The iron rings on his arms mid-fight weren't a costume.", "broll_query": "close-up of iron rings clanking on a fighter's forearms during a fast punch, film set lighting", "beat_role": "claim"},
+    {"text": "That's real **Iron Wire** training, used to condition forearms for full-contact strikes.", "broll_query": "a fighter's bare forearms wrapped and striking a wooden dummy repeatedly, sweat visible, harsh gym light", "beat_role": "evidence"},
+    {"text": "That tournament record is hard to verify today.", "broll_query": "an old faded newspaper clipping about a martial arts tournament, torn edges, dim archive light", "beat_role": "hedge"},
+    {"text": "So next time a comedy fight looks fake, remember one of those fighters wasn't acting, one of.", "broll_query": "a stocky fighter in gray robes walking away down a narrow slum alley at dusk, looking back", "beat_role": "ending"}
+  ]
+}
