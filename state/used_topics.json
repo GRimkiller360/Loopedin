@@ -1549,6 +1549,22 @@
       "share_trigger": "a viewer sends this to their friend who insists nobody could survive falling from that high up",
       "contradicted_belief": "Most people assume three men falling from a high castle window would always be fatal.",
       "has_sources": false
+    },
+    {
+      "topic": "the Battle of Karansebes (1788) -- an army that may have fought and defeated itself",
+      "video_id": "WG0RFlusdUQ",
+      "uploaded_at": "2026-08-24T17:23:38.599518+00:00",
+      "publish_hour_utc": 17,
+      "category": "history",
+      "seed_source_video_id": null,
+      "seed_view_count": 0,
+      "hook_type": "shocking_fact",
+      "title": "The Army That May Have Completely Defeated Itself",
+      "duration_seconds": 48.7,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who thinks military history is always deadly serious and disciplined.",
+      "contradicted_belief": "Most people assume an army can only be defeated by an actual enemy, never by itself.",
+      "has_sources": true
     }
   ]
 }
