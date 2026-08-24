@@ -1,0 +1,32 @@
+{
+  "topic": "1618 Defenestration of Prague",
+  "category": "history",
+  "title": "Three Men Survived Being Thrown Out Of A Castle Window",
+  "description": "AI-narrated commentary on the 1618 Defenestration of Prague, when three men were thrown from a castle window and survived, sparking the Thirty Years' War.",
+  "tags": ["history facts", "defenestration of prague", "thirty years war", "weird history", "european history"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Three men survived being thrown out of a castle window."},
+    {"hook_type": "question", "text": "Did anyone really survive being thrown out of a castle window?"},
+    {"hook_type": "myth_bust", "text": "That famous window fall wasn't fatal, all three men actually survived."}
+  ],
+  "share_trigger": "a viewer sends this to their friend who insists nobody could survive falling from that high up",
+  "contradicted_belief": "Most people assume three men falling from a high castle window would always be fatal.",
+  "closing_comment": "If you think no one could survive being thrown out of a castle window, three men actually did.",
+  "seed_source_video_id": null,
+  "beats": [
+    {"text": "Three men survived being thrown out of a **castle** window.", "broll_query": "medieval castle tower with one open window high above the ground, dramatic angle", "beat_role": "hook"},
+    {"text": "In 1618 Protestant nobles threw two officials out in Prague.", "broll_query": "angry medieval noblemen confronting officials inside an ornate castle hall", "beat_role": "claim"},
+    {"text": "The window was about **seventy** feet above the ground.", "broll_query": "view looking straight down from a tall castle window to the ground far below", "beat_role": "evidence"},
+    {"text": "Somehow that height didn't kill a single one of them.", "broll_query": "cartoon-style falling figure tumbling through the air with a surprised expression", "beat_role": "joke"},
+    {"text": "Catholics said angels caught them on the way down.", "broll_query": "religious painting style angels reaching down from clouds toward the ground", "beat_role": "claim"},
+    {"text": "Protestants insisted they landed in a giant pile of manure.", "broll_query": "large messy pile of manure and hay in a castle courtyard", "beat_role": "evidence"},
+    {"text": "History's biggest debate, angels or an enormous heap of dung.", "broll_query": "old debate-style illustration split down the middle, angels on one side hay pile on other", "beat_role": "joke"},
+    {"text": "That one shove out a window started a **thirty-year** war.", "broll_query": "massive army of soldiers marching across a smoky European battlefield", "beat_role": "claim"},
+    {"text": "Millions of people across Europe eventually died in that conflict.", "broll_query": "field covered with fallen soldiers and abandoned weapons after a battle", "beat_role": "evidence"},
+    {"text": "All because three men couldn't just use the front door.", "broll_query": "cartoon door with a red X over it next to an open window, comedic sign", "beat_role": "joke"},
+    {"text": "Historians still call it the Defenestration of Prague today.", "broll_query": "old engraved illustration of a castle window labeled with a historical plaque", "beat_role": "claim"},
+    {"text": "Some records disagree about whether it was manure or luck.", "broll_query": "old handwritten manuscript pages with conflicting notes, magnifying glass on top", "beat_role": "hedge"},
+    {"text": "So that's the true story of", "broll_query": "peaceful sunset view over a European castle skyline, calm aftermath", "beat_role": "ending"}
+  ]
+}
