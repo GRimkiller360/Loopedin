@@ -1,0 +1,22 @@
+{
+  "topic": "Pope Urban VII shortest papal reign",
+  "category": "history",
+  "title": "One Pope's Reign Lasted Only Thirteen Days",
+  "description": "AI-narrated commentary on Pope Urban VII, whose 1590 papacy lasted only thirteen days before he died of malaria.",
+  "tags": ["pope history", "history facts", "vatican history", "weird history", "shortest reign"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "One pope's reign lasted only thirteen days."},
+    {"hook_type": "question", "text": "What's the shortest papal reign in history?"},
+    {"hook_type": "myth_bust", "text": "Not every pope ruled for decades, one lasted just thirteen days."}
+  ],
+  "share_trigger": "a viewer sends this to their religious studies teacher who insists every pope ruled for decades",
+  "contradicted_belief": "Most people assume every pope's reign lasted for many years.",
+  "closing_comment": "If you think a pope's reign can't end in just thirteen days, this one genuinely did.",
+  "seed_source_video_id": null,
+  "beats": [
+    {"text": "One pope's reign lasted only **thirteen days**.", "broll_query": "ornate empty papal throne inside a grand cathedral, dramatic lighting", "beat_role": "hook"},
+    {"text": "He died of malaria before he was even formally crowned as pope.", "broll_query": "old sick man lying in a canopy bed inside a grand palace room", "beat_role": "claim"},
+    {"text": "So that's the true story of", "broll_query": "quiet sunset view over Vatican City rooftops, peaceful aftermath", "beat_role": "ending"}
+  ]
+}
