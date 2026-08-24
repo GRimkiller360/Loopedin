@@ -34,6 +34,28 @@ from pipeline import ai_broll, shot_planning
 AI_HELD_IMAGE_SECONDS = 3  # arbitrary and short -- assemble.py's _scale_clip already
                            # loops/trims this clip to whatever each sub-shot actually needs
 
+# Rotating framing/angle suffixes appended to a beat's broll_query for its 2nd, 3rd,
+# etc. shot -- 2026-08-24, addresses a real measured finding: a beat with N shots was
+# generating the exact same prompt N times, and a fresh random seed alone still
+# produced only superficially different renders of the same static portrait (26 shots
+# across only ~8 distinct subjects, several near-identical shots grouped consecutively
+# -- e.g. 4 near-identical "flag pair" shots back to back). The first shot of every
+# beat still gets the routine's own broll_query verbatim -- these are secondary
+# framings of the same subject, not a substitute for the routine writing genuinely
+# distinct prompts across DIFFERENT beats (that's a content/judgment problem, addressed
+# in ROUTINE_INSTRUCTIONS.md instead, plus a mechanical backstop in quality_gate.py).
+SHOT_ANGLE_VARIANTS = (
+    "",
+    ", different camera angle, wider framing",
+    ", close-up detail shot",
+    ", different moment, different pose",
+    ", from a different distance and angle",
+)
+
+
+def _prompt_for_shot(broll_query, shot_index):
+    return broll_query + SHOT_ANGLE_VARIANTS[shot_index % len(SHOT_ANGLE_VARIANTS)]
+
 
 def _image_to_held_clip(image_path, out_path):
     """Turns a single static image into a short, motionless mp4 -- no scale/crop/zoom
@@ -47,7 +69,8 @@ def _image_to_held_clip(image_path, out_path):
 
 def _fetch_ai_shot(beat, out_path, work_dir, beat_index, shot_index):
     image_path = work_dir / f"beat_{beat_index:02d}_shot_{shot_index:02d}_ai.png"
-    ai_broll.generate_image(beat["broll_query"], image_path)
+    prompt = _prompt_for_shot(beat["broll_query"], shot_index)
+    ai_broll.generate_image(prompt, image_path)
     _image_to_held_clip(image_path, out_path)
 
 

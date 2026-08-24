@@ -292,7 +292,20 @@ Save it as `state/pending_script.json` matching the shape documented in
   a vague or generic image, and this channel's own measured feedback has flagged AI
   images as "too conceptual" before. A fixed style suffix (lighting/quality/aspect terms)
   is appended automatically -- don't write those into `broll_query` yourself, just
-  describe the scene's actual content. `beat_role` must be one of `hook`, `claim`, `evidence`,
+  describe the scene's actual content.
+
+  **No beat's `broll_query` may be a generic filler image reused for an abstract
+  statement.** A real published video (2026-08-24) leaned on a "flags" image for every
+  beat that made a broad claim instead of a concrete one -- 22% of the whole video ended
+  up showing the same picture. `pipeline/quality_gate.py` now hard-rejects any two beats
+  whose `broll_query` text is too similar, but passing that check isn't the actual bar:
+  every beat's text should already be concrete enough that its own specific visual is
+  obvious (the reference video's own discipline -- Alexander's face on "Alexander," an
+  actual snake on "asp," never a generic stand-in). If a beat's claim is abstract, find
+  the one concrete thing in it a camera could actually point at, don't reach for a
+  generic image because nothing else fits.
+
+  `beat_role` must be one of `hook`, `claim`, `evidence`,
   `joke`, `hedge`, `ending` (`pipeline/script_schema.py`'s `BEAT_ROLES`) -- see the
   format below for what each one means and when to use it; `pipeline/assemble.py` uses
   this field (not beat position) to decide which cuts get a whip-blur transition vs. a

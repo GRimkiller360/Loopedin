@@ -168,6 +168,26 @@ def check(script, used_topics_path):
                 "describe one concrete scene, not a sprawling paragraph"
             )
 
+    # Catches the same generic filler image reused across far-apart beats -- a real
+    # published video (2026-08-24) reused a near-identical "US/UK flag pair" prompt
+    # across 3 separate beats spanning most of the runtime (7 of 26 total shots, 22% of
+    # the video), reached for whenever the script said something abstract instead of
+    # depicting that beat's own specific content. Word-overlap is a blunt instrument --
+    # it catches literal near-duplicate prompt text, not true semantic subject reuse
+    # phrased differently -- but that's exactly the observed failure mode (the same
+    # prompt text, copy-pasted as filler), and ROUTINE_INSTRUCTIONS.md's own guidance
+    # is the primary defense against the subtler cases this can't catch.
+    BROLL_QUERY_OVERLAP_THRESHOLD = 0.4
+    for i in range(len(beats)):
+        for j in range(i + 1, len(beats)):
+            overlap = _title_overlap(beats[i].get("broll_query", ""), beats[j].get("broll_query", ""))
+            if overlap >= BROLL_QUERY_OVERLAP_THRESHOLD:
+                errors.append(
+                    f"beat {i} and beat {j} have near-identical broll_query text "
+                    f"({overlap:.2f} word overlap) -- each beat needs its own specific "
+                    "visual, not a generic image reused as filler"
+                )
+
     # The winning hook_candidate must actually be the one used -- catches "planning
     # theater" where candidates get drafted per the schema but beat 0 is written as
     # something unrelated anyway. Light-touch polish between candidate and final beat 0
