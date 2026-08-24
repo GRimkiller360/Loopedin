@@ -1517,6 +1517,22 @@
       "share_trigger": "A viewer sends this to the friend who insists every war has to be dramatic and bloody, just to watch them lose it over a pig.",
       "contradicted_belief": "Most people assume a war can only have a soldier as its casualty, never a farm animal like a pig.",
       "has_sources": true
+    },
+    {
+      "topic": "Napoleon rabbit hunt disaster",
+      "video_id": "vBdHjyQyIeY",
+      "uploaded_at": "2026-08-24T10:59:01.957540+00:00",
+      "publish_hour_utc": 10,
+      "category": "history",
+      "seed_source_video_id": null,
+      "seed_view_count": null,
+      "hook_type": "shocking_fact",
+      "title": "Napoleon Lost A Fight To An Army Of Rabbits",
+      "duration_seconds": 48.1,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "a viewer sends this to their friend who insists Napoleon never lost a single fight in his entire life",
+      "contradicted_belief": "Most people assume Napoleon never lost a real battle in his entire life.",
+      "has_sources": false
     }
   ]
 }
