@@ -373,6 +373,17 @@ Save it as `state/pending_script.json` matching the shape documented in
      punctuation, not a joke. If nothing genuinely funny comes to mind for a given
      claim, skip the joke there rather than forcing a flat one; not every claim needs
      one, but most of this format's claims should have one.
+
+     **A joke beat's `broll_query` must depict the joke's own punchline, not the
+     preceding claim's subject matter again.** A real published video's joke -- "Rest
+     in peace, glorious potato thief" -- sat over a plain farmer-and-boar-in-a-field
+     shot, the same kind of image the claim beat right before it already used. The
+     reference's equivalent moments always built a purpose-made image for the punchline
+     itself (a specific visual gag), not a straight illustrative photo of the topic --
+     that was flagged as the single highest-value asset the reference had that this
+     channel didn't. If the joke says "rest in peace," the image should show something
+     that reads as a joke on sight (a gravestone, a memorial, whatever the specific line
+     calls for) -- not a repeat of the claim beat's own literal subject.
   5. **Repeat claim -> evidence -> joke 2-4 times, then close on one stronger claim
      without a joke** (the "dark turn" -- your single best, most surprising, or most
      serious claim, saved for last rather than opened with).
