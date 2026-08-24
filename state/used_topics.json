@@ -1501,6 +1501,22 @@
       "share_trigger": "A viewer sends this to the friend who thinks every huge explosion leaves a crater, because they want proof one leveled a forest without one.",
       "contradicted_belief": "Most people assume any explosion that flattens 80 million trees leaves a crater.",
       "has_sources": true
+    },
+    {
+      "topic": "the Pig War of 1859 -- a US-Britain border standoff whose only casualty was a pig",
+      "video_id": "2eLM_ScAFUY",
+      "uploaded_at": "2026-08-24T05:45:51.741530+00:00",
+      "publish_hour_utc": 5,
+      "category": "history",
+      "seed_source_video_id": null,
+      "seed_view_count": 0,
+      "hook_type": "shocking_fact",
+      "title": "The Only War in History Where the Sole Casualty Was a Pig",
+      "duration_seconds": 50.1,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who insists every war has to be dramatic and bloody, just to watch them lose it over a pig.",
+      "contradicted_belief": "Most people assume a war can only have a soldier as its casualty, never a farm animal like a pig.",
+      "has_sources": true
     }
   ]
 }

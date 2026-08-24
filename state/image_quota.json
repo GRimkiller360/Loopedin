@@ -1,5 +1,7 @@
 {
   "date": "2026-08-24",
-  "generated": 0,
-  "exhausted": true
+  "generated": 33,
+  "exhausted": {
+    "primary": true
+  }
 }
