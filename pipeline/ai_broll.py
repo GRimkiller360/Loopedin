@@ -66,12 +66,16 @@ MODEL = "@cf/black-forest-labs/flux-1-schnell"
 # biases the model toward a consistent, higher-quality look without requiring any
 # change to how the routine writes broll_query in the first place. "cinematic
 # lighting" (the original suffix, written for the SDXL era) measurably biased toward
-# moody/dark images -- a real published
-# video measured at 24% mean brightness against a healthy reference's 54%, with the
-# top third of frame near-black through most of it. Swapped for wording that keeps
-# quality/detail but pushes toward a brighter, higher-key look that actually reads on
-# a phone screen in daylight.
-STYLE_SUFFIX = ", bright natural lighting, vivid colors, high detail, vertical portrait photo"
+# moody/dark images -- a real published video measured at 24% mean brightness against
+# a healthy reference's 54%, with the top third of frame near-black through most of
+# it. First swap (to "bright natural lighting, vivid colors") got a real published
+# video from 62/255 to 99.4/255 -- a big move, but still 28% below the reference's
+# 138/255 -- so pushed further and more explicitly here (2026-08-24): "overexposed"
+# and "high-key" are real photography terms that bias generation harder toward bright
+# output than "bright natural lighting" alone did in practice, and "no shadows, no
+# dark areas" gives the model an explicit negative to push against rather than only a
+# positive description it can still satisfy while keeping a dim background.
+STYLE_SUFFIX = ", bright overexposed high-key lighting, no shadows, no dark areas, vivid colors, high detail, vertical portrait photo"
 
 # Conservative round-number ceiling, not a precise budget calculation (see module
 # docstring -- real per-image Neuron cost at this model's fixed output size isn't

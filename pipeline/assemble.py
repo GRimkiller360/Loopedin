@@ -213,7 +213,19 @@ SUBTLE_ZOOM_END = 1.20
 # unlike per-video variation which reads as generic every time. Mild boost to
 # contrast/saturation plus a soft vignette pulling focus toward center -- deliberately
 # conservative, not stylized enough to fight the footage or look artificial.
-SIGNATURE_LOOK_FILTER = "eq=contrast=1.08:saturation=1.18:brightness=0.01,vignette=PI/4"
+#
+# brightness 0.01->0.08, vignette PI/4->PI/6 (2026-08-24): a real published video
+# measured 99.4/255 mean frame brightness against a healthy reference's 138/255 (28%
+# low), even after ai_broll.py's prompt was already changed once to push for a
+# brighter image. brightness=0.01 was functionally a no-op (ffmpeg's eq brightness
+# ranges -1..1); PI/4 is a stronger-than-default vignette angle (ffmpeg's own default
+# is PI/8) whose darkened corners/edges pull the frame-average measurement down on a
+# tall 9:16 crop where the vignette affects a larger fraction of the visible frame
+# than on a landscape crop. Both this AND ai_broll.py's prompt wording are being
+# pushed further in the same round -- deliberately not choosing between "it's the
+# prompt" and "it's the color grade" since both measurably contribute and neither is
+# verified in isolation without a real render.
+SIGNATURE_LOOK_FILTER = "eq=contrast=1.08:saturation=1.18:brightness=0.08,vignette=PI/6"
 
 # Real Ken Burns pan targets (fractional focal point the crop window drifts toward as
 # it zooms), applied to every clip -- every clip is now an AI-generated held image
