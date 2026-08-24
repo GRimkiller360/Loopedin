@@ -23,6 +23,15 @@ SCOPES = [
     "https://www.googleapis.com/auth/youtube.upload",
     "https://www.googleapis.com/auth/youtube.readonly",
     "https://www.googleapis.com/auth/yt-analytics.readonly",
+    # Needed specifically for commentThreads.insert (pipeline/upload.py's closing-
+    # comment post-upload) -- the broad "youtube" scope above does NOT cover it despite
+    # sounding like it should; Google's own docs list youtube.force-ssl as the actual
+    # required scope for comment writes. Missing this was a real, silent bug: every
+    # upload since this token was minted got a 403 "insufficient authentication scopes"
+    # on the comment post, swallowed by upload.py's non-fatal try/except (the video
+    # publishes fine either way), so no comment was ever actually posted and nothing
+    # surfaced the failure anywhere a human would see it.
+    "https://www.googleapis.com/auth/youtube.force-ssl",
 ]
 
 
