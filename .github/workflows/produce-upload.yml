@@ -20,6 +20,15 @@ permissions:
 jobs:
   produce:
     runs-on: ubuntu-latest
+    # Without this, GitHub Actions' own default (6 hours) is the only ceiling -- a real
+    # incident (2026-08-24) had B-roll silently taking ~4 minutes per image with zero
+    # visible errors (see pipeline/ai_broll.py's per-attempt logging, added the same
+    # day), and nothing would have killed that run on its own even at 20x this length.
+    # 30 min comfortably covers every real successful run so far (typically a few
+    # minutes) plus real degraded-but-working scenarios; a run that still needs longer
+    # than this is worth failing fast and letting the next scheduled fire retry, not
+    # letting it run indefinitely.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -231,7 +240,15 @@ jobs:
           rm -f state/pending_script.json
 
       - name: Record failure
-        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && steps.upload.outputs.quota_exceeded != 'true' && failure()
+        # cancelled() as well as failure() -- a real 2026-08-24 incident (B-roll
+        # silently taking ~4 min/image, no visible errors, discovered via the new
+        # timeout-minutes ceiling above and a manual cancel) showed that a
+        # cancelled/timed-out run otherwise skips this step entirely (only failure()
+        # was checked), leaving pending_script.json in place and consecutive_failures
+        # untouched -- the next scheduled fire then sees a "pending" script per
+        # ROUTINE_INSTRUCTIONS.md step 0.5 and assumes a run is still in flight,
+        # silently blocking production far longer than a real, counted failure would.
+        if: steps.health.outputs.paused != 'true' && steps.script_check.outputs.exists == 'true' && steps.quota.outputs.result != 'capped' && steps.upload.outputs.quota_exceeded != 'true' && (failure() || cancelled())
         run: |
           python -c "
           from pipeline.state_utils import record_failure

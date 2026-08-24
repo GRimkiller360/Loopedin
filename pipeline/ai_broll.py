@@ -155,6 +155,14 @@ def _cloudflare_error_code(detail):
     except (json.JSONDecodeError, AttributeError, TypeError):
         return None
 
+# Per-attempt network timeout -- see _do_request()'s comment. Generous (flux-1-schnell
+# generation genuinely isn't instant), but bounded: without this, a stalled connection
+# blocks forever instead of failing into the round-robin logic below. Added the same
+# day as a real incident where a run sat "in progress" for 40+ minutes with zero
+# visible errors -- lining up ffmpeg step timestamps showed a new image finishing
+# every ~4 minutes, consistent with a stalled/slow connection nothing was bounding.
+REQUEST_TIMEOUT_SECONDS = 60
+
 # Tried in order for every image request. Each entry only actually gets used if both
 # its env vars are set -- see _account_configured() -- so an unconfigured account is
 # silently skipped, not an error. "fallback2" added 2026-08-24 after a real capacity
@@ -259,7 +267,11 @@ def _generate_from_account(account, prompt, out_path):
     )
 
     def _do_request():
-        with urllib.request.urlopen(req) as resp:
+        # REQUEST_TIMEOUT_SECONDS bounds a single attempt -- without it,
+        # urllib.request.urlopen has NO default timeout at all, so a connection that
+        # stalls (slow TLS handshake, a half-open socket through the runner's network
+        # path) blocks indefinitely instead of failing fast into the retry logic below.
+        with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT_SECONDS) as resp:
             return resp.headers.get("Content-Type", ""), resp.read()
 
     # Exactly one attempt -- no internal retry loop here any more. Retrying across
@@ -343,8 +355,17 @@ def generate_image(prompt, out_path):
             try:
                 return _generate_from_account(account, prompt, out_path)
             except _AccountQuotaExhausted as e:
+                # Visible in job logs on purpose -- a real 2026-08-24 incident (a run
+                # stuck "in progress" on B-roll for 40+ minutes with zero visible
+                # errors anywhere) was only diagnosable after the fact by manually
+                # diffing ffmpeg step timestamps in the log. Every account attempt and
+                # every inter-round sleep now prints, so a slow-but-working run reads
+                # as one in progress instead of looking identical to a hang.
+                print(f"ai_broll: round {round_num}/{QUOTA_RETRY_ATTEMPTS}: {e}", file=sys.stderr)
                 errors.append(str(e))
                 continue
         if round_num < QUOTA_RETRY_ATTEMPTS:
-            time.sleep(QUOTA_RETRY_BACKOFF_SECONDS * round_num)
+            sleep_seconds = QUOTA_RETRY_BACKOFF_SECONDS * round_num
+            print(f"ai_broll: every account failed round {round_num}/{QUOTA_RETRY_ATTEMPTS}, sleeping {sleep_seconds}s before next round", file=sys.stderr)
+            time.sleep(sleep_seconds)
     raise AIImageUnavailable("every configured Cloudflare account is unconfigured/quota-exhausted/at capacity today: " + "; ".join(errors))
