@@ -1,0 +1,37 @@
+{
+  "topic": "the Pig War of 1859 -- a US-Britain border standoff whose only casualty was a pig",
+  "category": "history",
+  "seed_source_video_id": null,
+  "seed_view_count": 0,
+  "title": "The Only War in History Where the Sole Casualty Was a Pig",
+  "description": "AI-narrated commentary on the Pig War of 1859 -- a real US-Britain border standoff over the San Juan Islands that lasted 13 years and killed exactly one pig.",
+  "tags": ["history", "pigwar", "sanjuanislands", "1859", "unitedstates", "britishempire", "historyfacts", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "The only war in American history where the single casualty was a pig."},
+    {"hook_type": "question", "text": "What if the strangest border dispute in American history started with a single dead pig?"},
+    {"hook_type": "myth_bust", "text": "You'd think a real war needs real casualties, but this one only had a pig's."},
+    {"hook_type": "story", "text": "In June 1859, an American farmer shot a British company's prize pig, and a war nearly followed."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who insists every war has to be dramatic and bloody, just to watch them lose it over a pig.",
+  "contradicted_belief": "Most people assume a war can only have a soldier as its casualty, never a farm animal like a pig.",
+  "closing_comment": "The pig at the center of this whole war never even got a name in the official record. Anyone else never learn about this one in school?",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Pig_War_(1859)", "note": "Confirms the 1859 San Juan Island standoff started with a shot pig and ran until 1872."}
+  ],
+  "beats": [
+    {"text": "The only war in American history where the single casualty was a **pig**.", "broll_query": "a lone pig standing in a vegetable garden at dawn, vintage 1800s farmstead, moody", "beat_role": "hook"},
+    {"text": "One dead pig alone dragged the US and Britain to the brink of **war**.", "broll_query": "American and British flags planted facing each other across a grassy island field", "beat_role": "claim"},
+    {"text": "Farmer Lyman **Cutlar** shot a British company's boar for raiding his potatoes.", "broll_query": "a 19th-century farmer aiming a rifle at a boar rooting through a potato patch", "beat_role": "evidence"},
+    {"text": "Rest in peace, glorious potato thief.", "broll_query": "a single dead pig lying in a potato field, dramatic overcast lighting", "beat_role": "joke"},
+    {"text": "Weeks later, hundreds of soldiers and warships showed up over that one **pig**.", "broll_query": "rows of 1800s soldiers with rifles lined up on a coastal island shoreline", "beat_role": "claim"},
+    {"text": "By late August, **450** American troops faced three British warships offshore.", "broll_query": "three tall wooden British warships anchored just offshore facing a small island camp", "beat_role": "evidence"},
+    {"text": "Overkill for one dead hog.", "broll_query": "a lone pig silhouette dwarfed by cannons and soldiers on a hillside", "beat_role": "joke"},
+    {"text": "That armed standoff didn't end for another **thirteen** years.", "broll_query": "a weathered military campsite with tents, seasons visibly changing around it, timelapse feel", "beat_role": "claim"},
+    {"text": "Both nations jointly occupied San Juan Island from 1859 until 1872.", "broll_query": "American and British flags flying side by side over a shared island military camp", "beat_role": "evidence"},
+    {"text": "Slowest ceasefire in history.", "broll_query": "an old pocket watch resting on a weathered wooden military desk, dim light", "beat_role": "joke"},
+    {"text": "In thirteen years of standoff, the pig stayed the **only** casualty on either side.", "broll_query": "an empty grassy battlefield at golden hour, no soldiers, peaceful and abandoned", "beat_role": "claim"},
+    {"text": "Historians still debate the troop numbers, though nobody disputes the pig died.", "broll_query": "an open 19th-century history book with faded handwritten military records, close-up", "beat_role": "hedge"},
+    {"text": "So here's the story of", "broll_query": "a foggy island coastline at sunrise, silhouette of an old military watchtower", "beat_role": "ending"}
+  ]
+}
