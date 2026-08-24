@@ -156,21 +156,34 @@ def _write_ass(beats, durations, out_path):
     Path(out_path).write_text("\n".join(lines), encoding="utf-8")
 
 
-CLIP_DURATION_BUFFER = 0.35  # each segment overshoots slightly so frame-rounding
-                              # across N clips can never leave the concatenated
-                              # video shorter than the narration audio
+# Tiny frame-rounding safety margin only -- see assemble()'s clip_targets math.
+# 2026-08-24: this REPLACES a fixed CLIP_DURATION_BUFFER(0.35)+TRANSITION_DURATION(0.16)
+# constant added to every single clip regardless of its actual transition, which was a
+# real bug, not just a harmless inefficiency: a real published video measured its hook
+# shots at 1.8-1.83s against a 0.9s target, and a joke's punchline image visibly
+# playing under the NEXT beat's narration ("plays under 'instead'", a word from the
+# following claim beat) -- both traced to the same cause. That fixed padding was mostly
+# NOT consumed by the real transition (usually a 0.06s hard cut, not the 0.16s worst
+# case it reserved for), so the leftover (~0.35-0.45s per shot) leaked through as real
+# extra visible screen time on every single shot. Compounded across ~20-25 shots per
+# video, this made the whole video track run far longer than the narration (verified:
+# a toy 3-shot/0.9s-target case rendered at 1.29-1.35s visible per shot, not 0.9s), and
+# the growing drift between the video's actual cut timing and the audio/caption
+# timeline it's supposed to track is exactly what put a joke's image under the wrong
+# beat's words. Replaced with per-shot-exact padding (assemble()'s clip_targets: each
+# clip reserves precisely its own left+right transition durations, nothing more) plus
+# this small epsilon for genuine ffmpeg frame-rounding, verified via simulation to keep
+# per-beat drift under ~0.1s (vs. multiple seconds of cumulative drift before) while
+# still keeping the total video track safely longer than the narration.
+CLIP_PADDING_EPSILON = 0.02
 
 # Transition type as punctuation, not decoration -- a whip-blur transition marks a
 # structurally important cut (into/out of a joke, into the hedge, into the ending),
 # while an ordinary claim/evidence beat gets a near-instant hard cut. Using the same
 # transition everywhere (what this pipeline did before) makes every cut feel equally
-# weighted; varying it signals which moments actually matter. Both still go through the
-# same xfade chain in _build_video_track -- WHIP_TRANSITION_DURATION is also the
-# padding basis for every clip (see clip_targets in assemble()), a safe upper bound
-# since HARD_CUT_DURATION is always smaller.
+# weighted; varying it signals which moments actually matter.
 WHIP_TRANSITION_DURATION = 0.16
 HARD_CUT_DURATION = 0.06
-TRANSITION_DURATION = WHIP_TRANSITION_DURATION  # padding basis, see comment above
 
 # beat_role values (script_schema.py's BEAT_ROLES) whose transition IN is a whip --
 # matches the structural pattern found in a reference video's own edit: whip lands on
@@ -221,11 +234,17 @@ SUBTLE_ZOOM_END = 1.20
 # ranges -1..1); PI/4 is a stronger-than-default vignette angle (ffmpeg's own default
 # is PI/8) whose darkened corners/edges pull the frame-average measurement down on a
 # tall 9:16 crop where the vignette affects a larger fraction of the visible frame
-# than on a landscape crop. Both this AND ai_broll.py's prompt wording are being
-# pushed further in the same round -- deliberately not choosing between "it's the
-# prompt" and "it's the color grade" since both measurably contribute and neither is
-# verified in isolation without a real render.
-SIGNATURE_LOOK_FILTER = "eq=contrast=1.08:saturation=1.18:brightness=0.08,vignette=PI/6"
+# than on a landscape crop.
+#
+# saturation 1.18->1.5 (2026-08-24, same round as ai_broll.py's STYLE_SUFFIX change):
+# that brightness push (119.9/255 after this round's own prompt change) came with a
+# real measured saturation cost -- 133.9 -> 113.3 against the reference's 146.9 --
+# "overexposed" wording in the prompt biased toward washed-out color as a predictable
+# side effect. Rather than lean on the prompt alone to recover it (already addressed
+# there too, see STYLE_SUFFIX), pushed the color-grade's own saturation multiplier up
+# as well so brightness and saturation aren't fighting each other through the same
+# single lever.
+SIGNATURE_LOOK_FILTER = "eq=contrast=1.08:saturation=1.5:brightness=0.08,vignette=PI/6"
 
 # Real Ken Burns pan targets (fractional focal point the crop window drifts toward as
 # it zooms), applied to every clip -- every clip is now an AI-generated held image
@@ -392,19 +411,37 @@ def _chord_frequencies(root, semitone_offsets):
     return [root * 2 ** (s / 12) for s in semitone_offsets]
 
 
+# Per-tone stereo pan positions (L gain, R gain), cycled across a chord's tones --
+# 2026-08-24 fix for a real measured finding: the bed read as mono in 51% of windows
+# (24.9dB channel separation vs. a healthy reference's 19.6dB -- lower separation is
+# MORE stereo width, so this channel had noticeably less). Root cause: every tone was
+# a mono sine source, amix'd together into one mono sum, then only DUPLICATED to 2
+# channels by the final -ac 2 -- a file that measures as stereo (2 channels) but is
+# acoustically identical L/R, i.e. genuinely mono content. Panning each tone to a
+# different L/R position BEFORE mixing means the stereo mix has real inter-channel
+# differences instead of a duplicated mono sum.
+CHORD_TONE_PAN = [(0.75, 0.25), (0.25, 0.75), (0.55, 0.45)]
+
+
 def _build_chord_clip(work_dir, index, freqs):
     clip = work_dir / f"music_chord_{index:02d}.mp3"
     inputs = []
     for f in freqs:
         inputs += ["-f", "lavfi", "-i", f"sine=frequency={f:.3f}:duration={CHORD_SECONDS}"]
     n = len(freqs)
-    labels = "".join(f"[{i}:a]" for i in range(n))
+    pan_parts = []
+    pan_labels = []
+    for i in range(n):
+        l, r = CHORD_TONE_PAN[i % len(CHORD_TONE_PAN)]
+        pan_parts.append(f"[{i}:a]pan=stereo|c0={l}*c0|c1={r}*c0[p{i}]")
+        pan_labels.append(f"[p{i}]")
     # afade in/out on every chord (not just the loop's own seams) is what gives this a
     # soft pad envelope instead of an audible click at each chord change --
     # highpass/lowpass keeps it out of both sub-bass mud and anything sharp enough to
     # compete with narration frequencies.
     filter_complex = (
-        f"{labels}amix=inputs={n}:duration=longest:normalize=0,"
+        f"{';'.join(pan_parts)};"
+        f"{''.join(pan_labels)}amix=inputs={n}:duration=longest:normalize=0,"
         f"afade=t=in:st=0:d=0.6,afade=t=out:st={CHORD_SECONDS - 0.6}:d=0.6,"
         "highpass=f=100,lowpass=f=2000[out]"
     )
@@ -516,13 +553,11 @@ def assemble(script, narration_path, clips, out_path, work_dir):
     for beat_clips in shots_by_beat.values():
         beat_clips.sort(key=lambda c: c["shot_index"])
 
-    # Each sub-shot clip is rendered TRANSITION_DURATION longer than it needs to be --
-    # see TRANSITION_DURATION's comment -- so the crossfade below has real overlap
-    # material to consume instead of eating into CLIP_DURATION_BUFFER's own
-    # frame-rounding safety margin.
-    scaled_paths = []
-    clip_targets = []
-    transition_durations = [0.0]  # index 0 unused -- the first shot has nothing to transition from
+    # Flatten into one ordered list of shots across the whole video, and compute every
+    # cut's transition duration BEFORE rendering anything -- needed so each shot's own
+    # rendered length can be padded with EXACTLY the overlap its real left/right cuts
+    # need (see CLIP_PADDING_EPSILON's comment), not a blanket worst-case constant.
+    flat_shots = []  # (beat_index, shot_index, clip, zoom, sub_duration)
     for i, duration in enumerate(durations):
         role = script["beats"][i].get("beat_role")
         # 'ending' matches the hook's own zoom rate (not the subtle everyday rate) --
@@ -530,30 +565,41 @@ def assemble(script, narration_path, clips, out_path, work_dir):
         # matching motion across the loop point is part of what makes the cut back to
         # beat 0 read as continuous rather than a hard restart.
         zoom = "hook" if role in ("hook", "ending") else "subtle"
-
         beat_clips = shots_by_beat[i]
         sub_duration = duration / len(beat_clips)
-        sub_target = sub_duration + CLIP_DURATION_BUFFER + TRANSITION_DURATION
+        for clip in beat_clips:
+            flat_shots.append((i, clip["shot_index"], clip, zoom, sub_duration))
 
-        for s, clip in enumerate(beat_clips):
-            scaled = work_dir / f"beat_{i:02d}_shot_{s:02d}_scaled.mp4"
-            # Every clip is a distinct AI-generated image with no motion of its own
-            # (see PAN_TARGETS' comment), so every sub-shot gets a real Ken Burns pan
-            # on top of its own already-distinct content.
-            pan_target = random.choice(PAN_TARGETS)
-            _scale_clip(clip["path"], scaled, sub_target, zoom=zoom, pan_target=pan_target)
-            scaled_paths.append(scaled)
-            clip_targets.append(sub_target)
+    n = len(flat_shots)
+    transition_durations = [0.0]  # index 0 unused -- the first shot has nothing to transition from
+    for k in range(1, n):
+        beat_index = flat_shots[k][0]
+        if beat_index != flat_shots[k - 1][0]:
+            # A real beat boundary -- carries the existing whip/hard-cut meaning.
+            transition_durations.append(_transition_duration(script["beats"], beat_index))
+        else:
+            # A within-beat sub-shot cut -- not a structural boundary, always a fast
+            # hard cut so it reads as pace, not punctuation.
+            transition_durations.append(HARD_CUT_DURATION)
 
-            if i == 0 and s == 0:
-                continue  # the video's very first shot -- nothing to transition from
-            if s == 0:
-                # A real beat boundary -- carries the existing whip/hard-cut meaning.
-                transition_durations.append(_transition_duration(script["beats"], i))
-            else:
-                # A within-beat sub-shot cut -- not a structural boundary, always a
-                # fast hard cut so it reads as pace, not punctuation.
-                transition_durations.append(HARD_CUT_DURATION)
+    # Each clip is rendered with EXACTLY the overlap material its own left+right cuts
+    # need (plus CLIP_PADDING_EPSILON for frame-rounding), not a blanket buffer -- see
+    # that constant's comment for why a fixed one here was a real bug, not just an
+    # inefficiency.
+    scaled_paths = []
+    clip_targets = []
+    for k, (beat_index, shot_index, clip, zoom, sub_duration) in enumerate(flat_shots):
+        transition_in = transition_durations[k]
+        transition_out = transition_durations[k + 1] if k + 1 < n else 0.0
+        target = sub_duration + transition_in + transition_out + CLIP_PADDING_EPSILON
+        scaled = work_dir / f"beat_{beat_index:02d}_shot_{shot_index:02d}_scaled.mp4"
+        # Every clip is a distinct AI-generated image with no motion of its own
+        # (see PAN_TARGETS' comment), so every sub-shot gets a real Ken Burns pan
+        # on top of its own already-distinct content.
+        pan_target = random.choice(PAN_TARGETS)
+        _scale_clip(clip["path"], scaled, target, zoom=zoom, pan_target=pan_target)
+        scaled_paths.append(scaled)
+        clip_targets.append(target)
 
     video_track = work_dir / "video_track.mp4"
     _build_video_track(scaled_paths, clip_targets, transition_durations, video_track)

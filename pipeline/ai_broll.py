@@ -67,15 +67,19 @@ MODEL = "@cf/black-forest-labs/flux-1-schnell"
 # change to how the routine writes broll_query in the first place. "cinematic
 # lighting" (the original suffix, written for the SDXL era) measurably biased toward
 # moody/dark images -- a real published video measured at 24% mean brightness against
-# a healthy reference's 54%, with the top third of frame near-black through most of
-# it. First swap (to "bright natural lighting, vivid colors") got a real published
-# video from 62/255 to 99.4/255 -- a big move, but still 28% below the reference's
-# 138/255 -- so pushed further and more explicitly here (2026-08-24): "overexposed"
-# and "high-key" are real photography terms that bias generation harder toward bright
-# output than "bright natural lighting" alone did in practice, and "no shadows, no
-# dark areas" gives the model an explicit negative to push against rather than only a
-# positive description it can still satisfy while keeping a dim background.
-STYLE_SUFFIX = ", bright overexposed high-key lighting, no shadows, no dark areas, vivid colors, high detail, vertical portrait photo"
+# a healthy reference's 54%. First swap ("bright natural lighting, vivid colors") got a
+# real video from 62/255 to 99.4/255; a second swap to "overexposed high-key... no
+# shadows, no dark areas" got it to 119.9/255 (still ~13% below the reference's
+# 138/255) but measurably cost saturation (133.9 -> 113.3, against the reference's
+# 146.9) -- "overexposed" is a real photography term that also implies washed-out,
+# desaturated color, a predictable side effect of pushing brightness that hard through
+# the prompt alone rather than through saturation-specific wording. Dropped
+# "overexposed" (keeping "high-key"/"no shadows, no dark areas" for the brightness
+# win) and added explicit saturation-specific terms so the two attributes are pushed
+# independently instead of trading off against each other -- the color-grade filter's
+# own saturation multiplier is also raised in the same round (see
+# SIGNATURE_LOOK_FILTER) rather than relying on the prompt alone for this.
+STYLE_SUFFIX = ", bright well-lit high-key lighting, no shadows, no dark areas, rich saturated colors, vivid vibrant colors, high detail, vertical portrait photo"
 
 # Conservative round-number ceiling, not a precise budget calculation (see module
 # docstring -- real per-image Neuron cost at this model's fixed output size isn't
