@@ -94,12 +94,16 @@ STYLE_SUFFIX = ", bright well-lit high-key lighting, no shadows, no dark areas, 
 # Conservative round-number ceiling, not a precise budget calculation (see module
 # docstring -- real per-image Neuron cost at this model's fixed output size isn't
 # verified). broll.py (2026-08-21) generates one DISTINCT image per visual shot, not
-# per beat -- real demand at this channel's volume (6 videos/day, ~25 shots/video per
-# pipeline/shot_planning.py's constants) is roughly 150/day. With Pixabay removed
-# there's no fallback source left at all, so this exists purely to fail fast and
-# predictably (AIImageUnavailable) rather than run the free budget to zero mid-run;
-# the reactive 429/quota-error check below is what actually protects against
-# over-spending if this number is wrong in either direction.
+# per beat -- real demand at this channel's current volume (4 videos/day as of
+# 2026-08-25, ~20-25 shots/video per pipeline/shot_planning.py's constants) is roughly
+# 80-100/day. NOTE: this cap is a single GLOBAL counter shared across every configured
+# account (see quota_available()'s q["generated"] check), not tracked per-account --
+# adding fallback accounts increases resilience (a different account can pick up the
+# slack if one is exhausted/at capacity) but does NOT raise this ceiling on its own.
+# With Pixabay removed there's no stock-footage fallback source left at all, so this
+# exists purely to fail fast and predictably (AIImageUnavailable) rather than run the
+# free budget to zero mid-run; the reactive 429/quota-error check below is what
+# actually protects against over-spending if this number is wrong in either direction.
 DAILY_IMAGE_CAP = 190
 
 QUOTA_PATH = config.STATE_DIR / "image_quota.json"

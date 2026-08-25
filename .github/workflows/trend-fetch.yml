@@ -4,17 +4,17 @@ on:
   schedule:
     # ~10 min before each Claude routine fire. Cut 6x/day -> 2x/day on 2026-08-22 after
     # real usage data showed Cloudflare's free image-generation budget (10,000
-    # Neurons/day) only actually supports about 2 full videos/day at this pipeline's
-    # real per-image cost (~150 Neurons/image, measured directly -- the pipeline's own
-    # earlier estimate assumed a controllable image size that turned out not to exist).
-    # 6x/day was scheduled against a stale ~150-images/day *total* budget estimate that
-    # was off by roughly 2.3x once the real per-image cost was measured; running it
-    # unchanged would just mean most of the day's fires failing on quota exhaustion
-    # after the first one or two succeeded. Matched 1:1 to the routine's cadence
-    # deliberately -- firing more often than the routine consumes seeds just burns
-    # YouTube Data API quota (search.list is 100 units/call x up to 5 categories) on
-    # fetches nothing reads.
-    - cron: "50 6,15 * * *"
+    # Neurons/day, ONE account at the time) only actually supported about 2 full
+    # videos/day at this pipeline's real per-image cost (~150 Neurons/image, measured
+    # directly). Raised back to 4x/day on 2026-08-25 alongside the routine's own
+    # schedule change -- by then a second and third fallback Cloudflare account had
+    # been added (pipeline/ai_broll.py), roughly tripling the realistic daily image
+    # budget versus the single-account estimate the 2x/day cut was based on, so 4
+    # videos/day (~100 images at ~25 shots/video) comfortably fits with real headroom
+    # to spare. Matched 1:1 to the routine's cadence deliberately -- firing more often
+    # than the routine consumes seeds just burns YouTube Data API quota (search.list is
+    # 100 units/call x up to 5 categories) on fetches nothing reads.
+    - cron: "50 4,8,12,16 * * *"
   workflow_dispatch:
 
 permissions:

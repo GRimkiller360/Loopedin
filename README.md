@@ -16,12 +16,13 @@ credential ever needs to live anywhere but GitHub's secrets store.
 
 ## How the three pieces fit together
 
-1. **`.github/workflows/trend-fetch.yml`** — runs ~10x/day on its own schedule, ~10
-   minutes before each Claude routine fire. Uses the `YOUTUBE_API_KEY` secret to find a
-   trending-Shorts topic seed, writes `state/latest_trend_seed.json`, commits it. Also
-   refreshes `state/live_stats.json` (near-real-time view/like/comment counts for
-   recent uploads via `videos.list` — unlike Analytics data, this updates fast enough
-   that checking it ~10x/day is actually useful, see `pipeline/live_stats.py`).
+1. **`.github/workflows/trend-fetch.yml`** — runs 4x/day (as of 2026-08-25) on its own
+   schedule, ~10 minutes before each Claude routine fire. Uses the `YOUTUBE_API_KEY`
+   secret to find a trending-Shorts topic seed, writes `state/latest_trend_seed.json`,
+   commits it. Also refreshes `state/live_stats.json` (near-real-time view/like/comment
+   counts for recent uploads via `videos.list` — unlike Analytics data, this updates
+   fast enough that checking it multiple times a day is actually useful, see
+   `pipeline/live_stats.py`).
 2. **Claude Code cloud routine** — fires shortly after, follows
    `ROUTINE_INSTRUCTIONS.md`: reads the seed + `state/performance_summary.md` +
    `state/used_topics.json`, writes an **original** `state/pending_script.json`,

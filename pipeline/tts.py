@@ -5,10 +5,10 @@ ElevenLabs, for better voice quality once there's income) via TTS_PROVIDER witho
 touching any other pipeline stage.
 
 Voice defaults to Chirp3-HD (Google's highest-quality TTS tier, 2026-08-18) --
-this channel's actual volume (~10 videos/day, ~400 chars narration each, ~120k
-chars/month) sits comfortably under Chirp3-HD's ~1M free characters/month, so this
-costs $0 at current scale despite being the premium tier, not the free-by-necessity
-Standard voice used before.
+this channel's actual volume (4 videos/day as of 2026-08-25, ~400 chars narration
+each, ~48k chars/month) sits comfortably under Chirp3-HD's ~1M free characters/month,
+so this costs $0 at current scale despite being the premium tier, not the
+free-by-necessity Standard voice used before.
 
 Synthesizes each beat as a SEPARATE TTS call rather than joining every beat into one
 text blob for a single call (the original approach) -- channel-owner report
