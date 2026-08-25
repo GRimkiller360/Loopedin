@@ -1,0 +1,32 @@
+{
+  "topic": "1914 Christmas Truce football match",
+  "category": "history",
+  "title": "Enemy Soldiers Once Stopped A War To Play Football",
+  "description": "AI-narrated commentary on the 1914 Christmas Truce, when German and British soldiers on the Western Front stopped fighting to sing carols, exchange gifts, and play an impromptu football match.",
+  "tags": ["history facts", "christmas truce 1914", "wwi history", "weird history", "military history"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Enemy soldiers once stopped a war to play football."},
+    {"hook_type": "question", "text": "Did enemy soldiers really stop a war to play football?"},
+    {"hook_type": "myth_bust", "text": "That Christmas truce wasn't just carols, soldiers actually played football."}
+  ],
+  "share_trigger": "a viewer sends this to their friend who insists soldiers on opposite sides never showed each other kindness",
+  "contradicted_belief": "Most people assume enemy soldiers in a war never voluntarily stopped fighting.",
+  "closing_comment": "If you think enemy soldiers wouldn't stop a war to play football, this one genuinely did.",
+  "seed_source_video_id": null,
+  "beats": [
+    {"text": "Enemy soldiers once stopped a war to play **football**.", "broll_query": "German and British soldiers cautiously stepping out of trenches toward each other in a snowy field", "beat_role": "hook"},
+    {"text": "In 1914 German and British troops declared their own truce.", "broll_query": "two groups of WWI soldiers in different uniforms standing near a barbed wire fence, tense but calm", "beat_role": "claim"},
+    {"text": "It started with soldiers singing carols across no-man's-land.", "broll_query": "soldiers singing together across a snowy no-man's-land at dusk, candles or lanterns visible", "beat_role": "evidence"},
+    {"text": "Nothing says Christmas spirit like abandoning your trench.", "broll_query": "soldier looking back nervously at an empty trench behind him, snow falling", "beat_role": "joke"},
+    {"text": "Soldiers actually left their trenches to meet in the open.", "broll_query": "soldiers from opposing sides shaking hands in an open snowy field", "beat_role": "claim"},
+    {"text": "They traded cigarettes, buttons, and whatever food they had.", "broll_query": "close-up of soldiers exchanging cigarettes and small items by hand", "beat_role": "evidence"},
+    {"text": "Finally, an actual white elephant gift exchange worth remembering.", "broll_query": "pile of small wartime trinkets and cigarettes laid out on a cloth in the snow", "beat_role": "joke"},
+    {"text": "In at least one spot, they played an actual **football** match.", "broll_query": "improvised football match between soldiers in a muddy snowy field", "beat_role": "claim"},
+    {"text": "Nobody agreed on the final score, and nobody really cared.", "broll_query": "soldiers laughing and celebrating around a makeshift football goal made of helmets", "beat_role": "evidence"},
+    {"text": "The only game in history with zero interest in the result.", "broll_query": "scoreboard chalk marks being erased in the snow, nobody keeping track", "beat_role": "joke"},
+    {"text": "Commanders on both sides were furious once they heard about it.", "broll_query": "stern military officer reading a letter angrily inside a command tent", "beat_role": "claim"},
+    {"text": "The exact scale of the truce still varies by historical account.", "broll_query": "old sepia-toned history book open with handwritten notes, magnifying glass on top", "beat_role": "hedge"},
+    {"text": "So that's the true story of", "broll_query": "quiet snowy battlefield at dawn, peaceful empty trenches, calm aftermath", "beat_role": "ending"}
+  ]
+}
