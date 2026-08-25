@@ -178,7 +178,7 @@
       "seed_source_video_id": "J8m8vCiVjsE",
       "seed_view_count": 794256,
       "hook_type": "myth_bust",
-      "title": "A Government Could Read Your 'Sealed' Letter — In Under 3 Hours",
+      "title": "A Government Could Read Your 'Sealed' Letter \u2014 In Under 3 Hours",
       "duration_seconds": 35.7,
       "ruleset_version": "2026-08-20-share-trigger-v5",
       "share_trigger": "A viewer sends this to the friend who jokes that snail mail was safer than email, because they want to prove even sealed eighteenth-century letters were secretly read by the government.",
@@ -234,7 +234,7 @@
       "has_sources": true
     },
     {
-      "topic": "Portugal's 1966 World Cup squad's colonial-Africa-born stars (Coluna, Eusébio), the same year Africa boycotted the tournament entirely",
+      "topic": "Portugal's 1966 World Cup squad's colonial-Africa-born stars (Coluna, Eus\u00e9bio), the same year Africa boycotted the tournament entirely",
       "video_id": "ulVCT_wmFjY",
       "uploaded_at": "2026-08-21T11:37:01.286396+00:00",
       "publish_hour_utc": 11,
@@ -439,6 +439,22 @@
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
       "share_trigger": "A viewer sends this to the friend who thinks only gullible people fall for scams, because they want to prove a real businessman got fooled by a stranger's fake badge.",
       "contradicted_belief": "Most people assume you can't sell something you don't legally own.",
+      "has_sources": true
+    },
+    {
+      "topic": "Hawa Mahal, Jaipur's 'Palace of Winds': barely a room deep behind 953 one-way lattice windows, engineered to lean 87 degrees with no real foundation",
+      "video_id": "Fcp-XZybBIg",
+      "uploaded_at": "2026-08-25T13:16:11.655955+00:00",
+      "publish_hour_utc": 13,
+      "category": "history",
+      "seed_source_video_id": "9GZJxBT9mVo",
+      "seed_view_count": 1114947,
+      "hook_type": "myth_bust",
+      "title": "Jaipur's Pink Palace Is Basically A 953-Window Screen",
+      "duration_seconds": 46.2,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who's already posted a photo in front of Hawa Mahal, because they want to reveal that famous backdrop is barely a room deep.",
+      "contradicted_belief": "Most people assume Jaipur's postcard-famous pink palace is a real building full of rooms behind every window.",
       "has_sources": true
     }
   ]
