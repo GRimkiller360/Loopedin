@@ -65,11 +65,15 @@ BANNED_OPENERS = (
     "so today", "in this video", "welcome back", "today we're talking about",
     "today we are talking about", "let's talk about", "in today's video",
     "hey guys", "what's up everyone",
-    # Evidence-backed, not a guess: this channel's two weakest-retention hooks
-    # (29.7% and 53.6% avg view) both opened with this exact pattern -- a familiar
-    # observation the viewer already agrees with, not a claim that creates tension.
-    # None of the strong hooks (up to 97.8%) use it. See ROUTINE_INSTRUCTIONS.md
-    # step 2.1 for the full "pattern-observation vs specific claim" reasoning.
+    # Evidence-backed, not a guess: this channel's weakest-retention hooks have
+    # repeatedly opened with this exact pattern -- a familiar observation the viewer
+    # already agrees with, not a claim that creates tension. (The specific videos that
+    # originally demonstrated this are no longer live -- re-derive from
+    # state/performance_log.json if you want current numbers rather than trusting a
+    # citation baked into this comment; see ROUTINE_INSTRUCTIONS.md's note on why
+    # video-specific citations belong in fresh data, not in prose.) See
+    # ROUTINE_INSTRUCTIONS.md step 2.1 for the full "pattern-observation vs specific
+    # claim" reasoning.
     "every year", "every few months", "every time",
 )
 
