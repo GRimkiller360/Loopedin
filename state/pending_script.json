@@ -1,0 +1,37 @@
+{
+  "topic": "Hawa Mahal, Jaipur's 'Palace of Winds': barely a room deep behind 953 one-way lattice windows, engineered to lean 87 degrees with no real foundation",
+  "category": "history",
+  "seed_source_video_id": "9GZJxBT9mVo",
+  "seed_view_count": 1114947,
+  "title": "Jaipur's Pink Palace Is Basically A 953-Window Screen",
+  "description": "AI-narrated commentary on Hawa Mahal, Jaipur's 'Palace of Winds': a five-story pink sandstone screen that's barely a room deep behind its 953 carved windows, built in 1799 for royal women to watch the city unseen, engineered to cool itself and lean 87 degrees without a real foundation. Original commentary, not a repost of any source clip.",
+  "tags": ["history", "HawaMahal", "Jaipur", "India", "architecture", "shorts", "didyouknow", "engineering", "ancienthistory"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "myth_bust", "text": "Jaipur's most-photographed palace hides almost nothing behind its pink screen."},
+    {"hook_type": "shocking_fact", "text": "Jaipur's five-story pink palace was built to stand with no real foundation at all."},
+    {"hook_type": "question", "text": "What if the most photographed palace in India barely has any rooms behind it?"},
+    {"hook_type": "story", "text": "In 1799, Jaipur's royal women got 953 carved windows built just so they could watch the streets without ever being seen."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who's already posted a photo in front of Hawa Mahal, because they want to reveal that famous backdrop is barely a room deep.",
+  "contradicted_belief": "Most people assume Jaipur's postcard-famous pink palace is a real building full of rooms behind every window.",
+  "closing_comment": "Jaipur's pink palace has 953 windows total, but that 'tallest building with no foundation' claim about it is still unverified, so does anyone actually know the source?",
+  "sources": [
+    {"url": "https://housivity.com/blog/hawa-mahals-hidden-genius-the-story-behind-953-windows", "note": "Confirms 953 jharokha lattice windows, built 1799, let royal women watch the street while staying unseen."},
+    {"url": "https://www.studiomatrx.org/guides/hawa-mahal-jaipur-architecture", "note": "Confirms the top floors are barely one room deep and the facade leans at 87 degrees with no conventional foundation."},
+    {"url": "https://www.hvacredu.net/how-indias-lattice-buildings-cool-without-air-conditioning/", "note": "Explains how carved jali lattice windows like Hawa Mahal's cool interiors via accelerated airflow (Venturi effect)."}
+  ],
+  "beats": [
+    {"text": "Jaipur's most photographed palace hides almost **nothing** behind that pink screen.", "broll_query": "towering five-story pink sandstone facade covered in hundreds of tiny carved window holes, golden hour light, low upward angle", "beat_role": "hook"},
+    {"text": "Its top three floors are barely **one room** deep.", "broll_query": "cutaway illustration of a pink lattice palace wall showing empty space and one thin room behind it", "beat_role": "claim"},
+    {"text": "Behind the pink facade there's just a windowed wall built in **1799**.", "broll_query": "bare dusty stone room with light streaming through hundreds of small carved holes in the far wall, no furniture", "beat_role": "evidence"},
+    {"text": "Basically the world's fanciest movie set.", "broll_query": "old wooden film clapperboard resting against an ornate carved pink sandstone archway", "beat_role": "joke"},
+    {"text": "Those **953** tiny carved windows were never meant to be seen through.", "broll_query": "extreme close-up of intricate pink sandstone latticework, sunlight piercing tiny carved geometric openings", "beat_role": "claim"},
+    {"text": "Royal women watched street life from behind the lattice, while the holes stayed too small to see **in**.", "broll_query": "silhouette of a woman in traditional Rajasthani dress peering through a carved stone lattice window at a busy street below", "beat_role": "evidence"},
+    {"text": "History's original one-way mirror.", "broll_query": "modern one-way interrogation mirror glass reflecting an empty room, dramatic side lighting", "beat_role": "joke"},
+    {"text": "The whole five-story face leans forward at **87 degrees** and has no real foundation at all.", "broll_query": "dramatic low-angle shot of a tall pink sandstone facade leaning slightly forward against a bright blue sky", "beat_role": "claim"},
+    {"text": "That lean keeps its center of **gravity** inside its own base, built to stand without one.", "broll_query": "cross-section diagram of a pyramid-shaped stone structure with a glowing center-of-gravity arrow pointing straight down inside its base", "beat_role": "evidence"},
+    {"text": "No engineering body has ever independently **verified** that record.", "broll_query": "close-up of an old dusty engineering ledger book open on a wooden desk beside a quill pen", "beat_role": "hedge"},
+    {"text": "So here's what's actually hiding in", "broll_query": "wide establishing shot of Jaipur's pink Hawa Mahal palace at dusk, busy city street below, warm glowing lights", "beat_role": "ending"}
+  ]
+}
