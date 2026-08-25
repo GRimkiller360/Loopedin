@@ -1565,6 +1565,22 @@
       "share_trigger": "A viewer sends this to the friend who thinks military history is always deadly serious and disciplined.",
       "contradicted_belief": "Most people assume an army can only be defeated by an actual enemy, never by itself.",
       "has_sources": true
+    },
+    {
+      "topic": "medieval anchoress living-burial ritual and Julian of Norwich's 20-year enclosure",
+      "video_id": "ElGbJFGkQw4",
+      "uploaded_at": "2026-08-25T05:14:49.739372+00:00",
+      "publish_hour_utc": 5,
+      "category": "history",
+      "seed_source_video_id": "40Wp_ZrmcOc",
+      "seed_view_count": 553904,
+      "hook_type": "myth_bust",
+      "title": "Medieval Women Who Asked The Church To Bury Them Alive",
+      "duration_seconds": 41.9,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who jokes about wanting to disappear from everyone forever, because a medieval woman actually did it.",
+      "contradicted_belief": "Most people assume medieval women who were sealed alive in their own grave had no choice in it.",
+      "has_sources": true
     }
   ]
 }
