@@ -1,0 +1,36 @@
+{
+  "topic": "the 1919 Boston Molasses Flood that killed 21 people faster than they could run",
+  "category": "history",
+  "seed_source_video_id": "1IxWPfNhI0M",
+  "seed_view_count": 3037163,
+  "title": "A Wave Of Molasses Killed 21 People Faster Than They Could Run",
+  "description": "In 1919 a molasses storage tank burst in Boston's North End and unleashed a wave fast enough to kill. This is AI-narrated historical commentary on how it happened and what came after. #shorts #history #boston",
+  "tags": ["history", "boston history", "molasses flood", "1919", "shorts", "weird history", "true history", "disaster history", "boston"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Facts about the flood that killed 21 people in Boston, and it was made of molasses."},
+    {"hook_type": "question", "text": "What moves 35 miles an hour, is sticky, and once killed 21 people in Boston?"},
+    {"hook_type": "myth_bust", "text": "A wave of molasses killing people sounds made up. It happened, and it outran anyone trying to run from it."},
+    {"hook_type": "story", "text": "In 1919, a molasses tank in Boston burst without warning and unleashed a wave nobody could outrun."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who thinks they know every weird disaster in history, because they want to prove a flood of molasses actually outran people and killed them.",
+  "contradicted_belief": "Most people assume any flood that killed 21 people in Boston must have been water, not molasses.",
+  "closing_comment": "That molasses wave in Boston really did move faster than people could run, which is how it killed 21 of them.",
+  "sources": [
+    {"url": "https://www.britannica.com/topic/Great-Molasses-Flood", "note": "Confirms the tank's size, the 35 mph wave, and 21 deaths/150 injuries in the 1919 Boston flood."},
+    {"url": "https://www.sec.state.ma.us/divisions/state-house-tours/did-you-know/Molasses-Flood.htm", "note": "Massachusetts state history page confirming the negligence lawsuit and ruling against the tank's owner."}
+  ],
+  "beats": [
+    {"text": "Facts about the flood that killed **21** people in Boston, and it was made of **molasses**.", "broll_query": "a towering steel molasses tank looming over a Boston street, ominous storm light", "beat_role": "hook"},
+    {"text": "This wave moved **35** miles an hour, faster than most people could run.", "broll_query": "a thick dark wave of syrup surging between brick buildings, motion blur, terrified people running", "beat_role": "claim"},
+    {"text": "In 1919, a molasses tank in Boston's North End burst, releasing **2.3 million** gallons in minutes.", "broll_query": "a massive steel tank rupturing open, thick brown liquid exploding outward across a city block", "beat_role": "evidence"},
+    {"text": "Boston's sweetest smell turned deadly weather.", "broll_query": "a hand-painted weather sign reading storm with molasses dripping down instead of rain", "beat_role": "joke"},
+    {"text": "The syrup was thick enough that victims **couldn't swim** free of it.", "broll_query": "a person's arm reaching up from a thick pool of dark syrup, straining to break free", "beat_role": "claim"},
+    {"text": "Rescuers waded through waist-deep molasses for days, and trapped horses had to be **shot**.", "broll_query": "rescue workers wading waist deep through dark syrup between wrecked buildings, exhausted expressions", "beat_role": "evidence"},
+    {"text": "Nothing kills a sweet tooth faster.", "broll_query": "an old fashioned dentist chair sitting abandoned in a flooded syrup covered street", "beat_role": "joke"},
+    {"text": "The company's first move was to blame **Italian anarchists** for a bomb.", "broll_query": "a 1919 newspaper front page with a bold blurred headline about a bomb, magnifying glass over it", "beat_role": "claim"},
+    {"text": "A six-year investigation found **no bomb**, just a tank built too thin for wartime demand.", "broll_query": "investigators examining a thin cracked sheet of rusted steel plate under bright work lights", "beat_role": "evidence"},
+    {"text": "Some records still debate how much a sudden temperature swing mattered that day.", "broll_query": "a thermometer needle swinging wildly next to a frost covered window, dramatic lighting", "beat_role": "hedge"},
+    {"text": "So here are some", "broll_query": "a wide shot of a quiet modern Boston street, faint brown stain still visible on old brick", "beat_role": "ending"}
+  ]
+}
