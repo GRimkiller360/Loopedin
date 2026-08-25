@@ -13,6 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from pipeline import config
+from pipeline.script_schema import CATEGORIES
 from pipeline.state_utils import load_json, save_json
 
 
@@ -263,7 +264,14 @@ def summarize(performance):
             "sub_rate": _rate_per_1k(v.get("subscribers_gained") or 0, views),
             "eng_rate": _rate_per_1k((v.get("likes") or 0) + (v.get("comments") or 0), views),
         }
-        if v.get("category"):
+        # Only categories still in CATEGORIES (pipeline/script_schema.py) are actually
+        # choosable by a future script -- a category the channel used to make (e.g.
+        # "space", dropped 2026-08-21 when narrowed to history-only) can have real,
+        # still-live videos with real Analytics data, but showing it in a section
+        # titled "steer topic choice by this" is misleading when it was never a choice
+        # to begin with. Excluded from ranking here, not deleted from
+        # performance_log.json -- the underlying video data stays as historical record.
+        if v.get("category") in CATEGORIES:
             dimensions["by_category"][v["category"]].append(entry)
         if v.get("hook_type"):
             dimensions["by_hook_type"][v["hook_type"]].append(entry)

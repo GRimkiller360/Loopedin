@@ -25,7 +25,6 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top categories (steer topic choice by this)
 
-- space: 0.962 shares/1k views, 72.6% avg view, 1.11 subs/1k views, 11.72 likes+comments/1k views (n=2)
 - history: 0.000 shares/1k views, 84.0% avg view, 0.46 subs/1k views, 18.48 likes+comments/1k views (n=16)
 
 ## Top hook styles (steer how you open/close by this)
