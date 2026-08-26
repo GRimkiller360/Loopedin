@@ -148,6 +148,18 @@ QUOTA_RETRY_BACKOFF_SECONDS = 20
 CLOUDFLARE_QUOTA_EXHAUSTED_CODE = 3036
 CLOUDFLARE_OUT_OF_CAPACITY_CODE = 3040
 
+# 2026-08-26: two real published-attempt scripts each had exactly one beat's
+# broll_query rejected outright by Cloudflare's own safety classifier -- a 400 with
+# code 8007, "Input prompt contains NSFW content" -- for entirely legitimate historical
+# content (e.g. "a preserved human ear floating in a glass specimen jar", from a script
+# about the real 1739 War of Jenkins' Ear). This is NOT a quota/capacity issue: every
+# configured account rejects the identical prompt TEXT the same way, so cycling
+# accounts (unlike 3040) does nothing here. Raised as its own exception (see
+# AIContentPolicyRejected below) so broll.py can catch it specifically and retry with a
+# generic safe fallback prompt for just that one shot, instead of the whole video's
+# production failing over one flagged image request.
+CLOUDFLARE_NSFW_PROMPT_CODE = 8007
+
 
 def _cloudflare_error_code(detail):
     """Best-effort extraction of Cloudflare's structured error code from a JSON error
@@ -186,6 +198,15 @@ class AIImageUnavailable(Exception):
     """Not configured, quota exhausted on every configured account, or a real API
     failure -- broll.py no longer catches this (no stock-footage fallback source
     exists any more), so it propagates and fails that production run outright."""
+
+
+class AIContentPolicyRejected(AIImageUnavailable):
+    """Cloudflare's own safety classifier rejected the prompt TEXT itself (code 8007,
+    'Input prompt contains NSFW content') -- not a quota/capacity issue, and not
+    something a different account can route around, since every account rejects the
+    identical text the same way. broll.py catches this specifically (unlike the base
+    AIImageUnavailable) and retries once with a generic, always-safe fallback prompt
+    for just that one shot, instead of failing the whole video's production."""
 
 
 class _AccountQuotaExhausted(Exception):
@@ -286,6 +307,11 @@ def _generate_from_account(account, prompt, out_path):
     except urllib.error.HTTPError as e:
         detail = e.read().decode(errors="replace")
         cf_code = _cloudflare_error_code(detail)
+        if cf_code == CLOUDFLARE_NSFW_PROMPT_CODE:
+            # Not marked exhausted -- this account is perfectly fine, it's the prompt
+            # text that was rejected. Raised immediately rather than folded into the
+            # quota path so it never gets cycled across accounts/rounds pointlessly.
+            raise AIContentPolicyRejected(f"{label}: Cloudflare's NSFW classifier rejected the prompt text ({e.code}, cf_code={cf_code}): {detail}") from e
         is_quota = (
             cf_code in (CLOUDFLARE_QUOTA_EXHAUSTED_CODE, CLOUDFLARE_OUT_OF_CAPACITY_CODE)
             or e.code == 429 or "quota" in detail.lower() or "rate limit" in detail.lower()
@@ -318,6 +344,8 @@ def _generate_from_account(account, prompt, out_path):
             errors = payload.get("errors", [])
             detail = json.dumps(errors)
             codes = {e.get("code") for e in errors if isinstance(e, dict)}
+            if CLOUDFLARE_NSFW_PROMPT_CODE in codes:
+                raise AIContentPolicyRejected(f"{label}: Cloudflare's NSFW classifier rejected the prompt text: {detail}")
             is_quota = bool(codes & {CLOUDFLARE_QUOTA_EXHAUSTED_CODE, CLOUDFLARE_OUT_OF_CAPACITY_CODE}) or any(
                 "quota" in str(e).lower() or "rate limit" in str(e).lower() for e in errors
             )

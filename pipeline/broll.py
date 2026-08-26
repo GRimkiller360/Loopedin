@@ -67,10 +67,30 @@ def _image_to_held_clip(image_path, out_path):
     ], check=True)
 
 
+# 2026-08-26: used only when Cloudflare's own safety classifier rejects a specific
+# broll_query's prompt TEXT outright (ai_broll.AIContentPolicyRejected -- code 8007,
+# "Input prompt contains NSFW content"). Real incidents hit this on entirely legitimate
+# historical content (e.g. "a preserved human ear floating in a glass specimen jar",
+# from a script about the real 1739 War of Jenkins' Ear) that a black-box classifier
+# still flags. Deliberately NOT derived from the original flagged text -- reusing or
+# lightly editing it risks tripping the same classifier again -- just a generic, always
+# -safe scene so this one shot still gets a real image instead of failing the entire
+# video's production over one flagged prompt.
+NSFW_FALLBACK_QUERY = "a moody vintage-style historical illustration, empty landscape, warm sepia tones, no people, no violence, no graphic content"
+
+
 def _fetch_ai_shot(beat, out_path, work_dir, beat_index, shot_index):
     image_path = work_dir / f"beat_{beat_index:02d}_shot_{shot_index:02d}_ai.png"
     prompt = _prompt_for_shot(beat["broll_query"], shot_index)
-    ai_broll.generate_image(prompt, image_path)
+    try:
+        ai_broll.generate_image(prompt, image_path)
+    except ai_broll.AIContentPolicyRejected as e:
+        print(
+            f"broll: beat {beat_index} shot {shot_index}'s prompt was rejected by "
+            f"Cloudflare's NSFW classifier, retrying with a generic safe fallback: {e}",
+            file=sys.stderr,
+        )
+        ai_broll.generate_image(NSFW_FALLBACK_QUERY, image_path)
     _image_to_held_clip(image_path, out_path)
 
 
@@ -90,10 +110,12 @@ def fetch_all(script, narration_path, work_dir):
         n_shots = shot_planning.shots_for_duration(duration, beat.get("beat_role"))
         for s in range(n_shots):
             out_path = work_dir / f"beat_{i:02d}_shot_{s:02d}.mp4"
-            # No fallback and no try/except here -- see module docstring. AIImageUnavailable
-            # (not configured, quota exhausted, or a real API error) or any other failure
-            # propagates and fails this step, the same way script_schema.py/quality_gate.py
-            # already fail this run outright rather than shipping a degraded video.
+            # No fallback/try-except here beyond what _fetch_ai_shot already handles
+            # (the NSFW-classifier-specific retry, see NSFW_FALLBACK_QUERY) -- see
+            # module docstring. AIImageUnavailable (not configured, quota exhausted, or
+            # a real API error) or any other failure propagates and fails this step,
+            # the same way script_schema.py/quality_gate.py already fail this run
+            # outright rather than shipping a degraded video.
             _fetch_ai_shot(beat, out_path, work_dir, i, s)
             clips.append({"path": str(out_path), "source": "ai_image", "beat_index": i, "shot_index": s})
 
