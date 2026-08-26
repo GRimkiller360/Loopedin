@@ -472,6 +472,22 @@
       "share_trigger": "A viewer sends this to the friend who thinks any affair scandal is just about the cheating, because they want to prove this one was about something pettier.",
       "contradicted_belief": "Most people assume a Prime Minister only resigns for having an affair, not for being cheap.",
       "has_sources": true
+    },
+    {
+      "topic": "Antikythera Mechanism ancient Greek eclipse predictor",
+      "video_id": "yDETlpJddQ4",
+      "uploaded_at": "2026-08-26T08:57:24.776918+00:00",
+      "publish_hour_utc": 8,
+      "category": "history",
+      "seed_source_video_id": null,
+      "seed_view_count": null,
+      "hook_type": "shocking_fact",
+      "title": "An Ancient Greek Device Predicted Eclipses Two Thousand Years Early",
+      "duration_seconds": 9.6,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "a viewer sends this to their friend who insists ancient civilizations had no real technology at all",
+      "contradicted_belief": "Most people assume ancient Greek civilizations had no way to predict eclipses this early.",
+      "has_sources": false
     }
   ]
 }
