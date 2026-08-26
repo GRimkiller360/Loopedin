@@ -76,17 +76,17 @@ further, that's out of scope per "On failure" below.
   **Top hook styles** actively steer which candidate/angle and `hook_type` you pick.
   **Top video lengths** should nudge your target narration word count (you only control
   words, not seconds -- roughly 2.2 words/sec, so ~45 words for short/<=20s, ~45-90 for
-  medium/20-40s, ~90-130 for long/40-58s). **As of 2026-08-26, length is no longer left
-  to this section's judgment call -- it's fixed by fire time: short at the 09:00/17:00
-  UTC fires, the claim/evidence/joke format's own ~90-130 words at 05:00/13:00.** See
-  the "Two of every four daily runs target SHORT instead" rule under Write the beats
-  below for the actual mechanics; this section's role now is just informing *which*
-  angle/claims you pick within whichever length this run already calls for, not
-  choosing the length itself. Independent of this channel's own data, external
-  research on Shorts retention converges on **15-30s as the general sweet spot**
-  (enough room for a real micro-story, short enough that patience never runs out) --
-  worth keeping in mind when picking how much of a short-format topic's story to
-  actually tell. **Top publish hours** and
+  medium/20-40s, ~90-130 for long/40-58s). **Always use the claim/evidence/joke format's
+  own ~90-130 words -- short-form was tried on a fixed schedule (2026-08-26) and
+  reverted the same day after its first real video measured 20.9% avg-view, the
+  channel's worst on record, against a claim/evidence/joke baseline that's
+  consistently well above that.** Don't re-introduce a short-form split without a
+  fresh, explicit channel-owner instruction to do so -- this was a real, deliberate
+  test, not an oversight that needs correcting back. Independent of this channel's own
+  data, external research on Shorts retention converges on 15-30s as a general sweet
+  spot for Shorts overall, but weight this channel's own measured result above that
+  outside prior now that there's a real result to weigh it against. **Top publish
+  hours** and
   **Top seed momentum
   tiers** are reference-only for now -- interesting once there's a real spread of data
   behind them, but you don't control posting time and seed selection is already
@@ -317,19 +317,11 @@ Save it as `state/pending_script.json` matching the shape documented in
   hard cut, and which beats get a lateral pan vs. a zoom, so getting it right actually
   changes how the video looks, not just organizational bookkeeping.
 
-  **Two of every four daily runs target SHORT instead (2026-08-26, explicit
-  channel-owner instruction: keep the current claim/evidence/joke format as the
-  default, but deliberately run short on a fixed schedule rather than leaving it to
-  chance).** This routine fires at 05:00, 09:00, 13:00, 17:00 UTC. **At the 09:00 and
-  17:00 UTC fires, write a SHORT script instead of the claim/evidence/joke format
-  below** -- skip straight to the "Short-format alternative" block a few paragraphs
-  down. **At the 05:00 and 13:00 UTC fires, use the claim/evidence/joke format as
-  normal**, exactly as documented below (05:00 UTC already published long-format
-  today before this rule existed -- 05:00/13:00 kept as the long slots so the daily
-  pattern stays consistent with what already ran). If you can't tell what hour this
-  run is firing at, default to the claim/evidence/joke format (05:00/13:00 behavior)
-  rather than guessing -- getting the split slightly uneven is a minor loss, silently
-  never running short again is the actual failure mode this rule exists to prevent.
+  **Every run uses the claim/evidence/joke format below -- no exceptions.** A fixed
+  2-of-4-daily-runs short-form split was tried on 2026-08-26 and reverted the same
+  day: its first real video measured 20.9% avg-view, the channel's worst on record.
+  Don't re-introduce short-form on your own judgment; that requires a fresh, explicit
+  channel-owner instruction, not a re-reading of this section.
 
   **Format: claim / evidence / joke, replacing the old single-deep-payoff structure
   (2026-08-21, explicit channel-owner instruction, informed by a structural analysis of
@@ -424,34 +416,6 @@ Save it as `state/pending_script.json` matching the shape documented in
      by the comment `pipeline/upload.py` posts automatically after every upload, so the
      narration is free to end on pure momentum instead of splitting its last seconds
      between a hook and a housekeeping ask.
-
-  **Short-format alternative (09:00/17:00 UTC fires only -- see above).** One topic,
-  one claim, one payoff -- no repeated cycles, no `hedge`. Target ~45 words total
-  (roughly 2.2 words/sec at the <=20s length this is for). Real proof this works: this
-  channel's own best-ever video ran exactly this shape --
-  `hook`: "Working longer shifts once made factories produce less." ->
-  `claim`: "WWI Britain pushed munitions workers to 12-hour days to win faster." ->
-  `evidence`: "Past ten hours, fatigue caused mistakes that erased the extra output." ->
-  `ending`: "So shifts dropped to eight, and output jumped." -- 4 beats, ~44 words,
-  15.7s, and it measured 274% average-view (people watched it nearly 3 times over).
-  Structure:
-  1. `hook` (beat 0) -- same rules as above: the specific claim itself, no
-     scene-setting, still needs >=3 real `hook_candidates` spanning >=2 `hook_type`s
-     (that requirement is schema-enforced regardless of format, not specific to the
-     long form).
-  2. `claim` -- the one surprising fact this whole video is built around.
-  3. `evidence` -- the actual mechanism/proof. This is the beat carrying the real
-     payoff in a short script -- don't compress it into a throwaway line just because
-     the video is short; a short script with a thin `evidence` beat is a worse video,
-     not a faster one.
-  4. Optional `joke` -- only if a genuinely fresh one-liner fits; skip it rather than
-     force one. `pipeline/quality_gate.py`'s joke-floor requirement only applies at 8+
-     beats, so a short script needs zero jokes to pass.
-  5. `ending` -- same rules as the long format: no summary, no CTA, momentum or the
-     sentence-loop technique.
-  Everything else in this document (hook-drafting rigor, `share_trigger`,
-  `contradicted_belief`, dash/sentence-length rules, quality gates) applies exactly the
-  same regardless of which format this run uses.
 
   **Sentence length: mostly 6-19 words**, shorter for `joke` beats (4-6). Break a
   longer thought into two beats rather than one long compound sentence -- short,
