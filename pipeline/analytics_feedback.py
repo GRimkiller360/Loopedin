@@ -6,6 +6,7 @@ than daily would just re-fetch unchanged numbers. Near-real-time early-velocity 
 comes from a separate, faster-updating source -- see live_stats.py."""
 import argparse
 import json
+import re
 import sys
 from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
@@ -182,6 +183,66 @@ def score_video(v):
     return round(min(100.0, score), 1)
 
 
+# Simple, mechanically-computable title-level signals -- not semantic understanding,
+# just regex-detectable proxies for the kind of pattern a human already found once by
+# hand (the human-stakes-angle finding in ROUTINE_INSTRUCTIONS.md: a named-person
+# angle out-reached an abstract-mechanism one by ~1.7x, discovered by someone looking
+# at the data once). topic_signals() below automates *looking* for more patterns like
+# that on every run instead of relying on a person noticing again. Deliberately
+# simple/regex over clever/NLP -- a wrong mechanical signal is at least auditable from
+# its own detector function; a black-box one isn't. Extend this dict with more
+# detectors as ideas come up; each one is checked independently.
+TOPIC_SIGNALS = {
+    "named person/place (possessive)": lambda title: bool(re.search(r"[A-Za-z][\w'-]*'s\b", title or "")),
+    "contains a specific number": lambda title: bool(re.search(r"\d", title or "")),
+    "phrased as a question": lambda title: (title or "").rstrip().endswith("?"),
+    "title over 8 words": lambda title: len((title or "").split()) > 8,
+}
+# Each side of a signal split (has it / doesn't) needs at least this many scored
+# videos before a gap is reported at all -- below this, noise dominates and any
+# "pattern" is just which few videos happened to land there.
+TOPIC_SIGNAL_MIN_GROUP_SIZE = 4
+# Minimum gap in score_video() points (0-100 scale) between the two sides before it's
+# worth a human's attention -- small gaps at small sample sizes are indistinguishable
+# from chance.
+TOPIC_SIGNAL_MIN_GAP = 12.0
+
+
+def topic_signals(performance):
+    """Compares scored videos with vs. without each TOPIC_SIGNALS detector, using the
+    same composite score_video() the dashboard already ranks by, and returns any gap
+    large enough (both thresholds above) to plausibly matter -- ranked by gap size,
+    largest first. Returns [] if nothing clears the bar yet; that's a correct, expected
+    result while sample sizes are still small, not a sign anything is broken."""
+    scored = []
+    for v in performance["videos"]:
+        score = score_video(v)
+        if score is not None:
+            scored.append((v.get("title") or v.get("topic") or "", score))
+
+    results = []
+    for name, detector in TOPIC_SIGNALS.items():
+        has = [score for title, score in scored if detector(title)]
+        hasnt = [score for title, score in scored if not detector(title)]
+        if len(has) < TOPIC_SIGNAL_MIN_GROUP_SIZE or len(hasnt) < TOPIC_SIGNAL_MIN_GROUP_SIZE:
+            continue
+        avg_has = sum(has) / len(has)
+        avg_hasnt = sum(hasnt) / len(hasnt)
+        gap = avg_has - avg_hasnt
+        if abs(gap) < TOPIC_SIGNAL_MIN_GAP:
+            continue
+        results.append({
+            "signal": name,
+            "avg_score_with": round(avg_has, 1),
+            "avg_score_without": round(avg_hasnt, 1),
+            "gap": round(gap, 1),
+            "n_with": len(has),
+            "n_without": len(hasnt),
+        })
+    results.sort(key=lambda r: abs(r["gap"]), reverse=True)
+    return results
+
+
 def build_video_list(used_topics_path, performance, live_stats_path):
     """Full per-video table for the dashboard -- every uploaded video (from
     used_topics.json, the authoritative record of what's actually been published),
@@ -347,7 +408,7 @@ def recent_uploads(used_topics_path, live_stats_path, hours=48):
     return sorted(recent, key=lambda v: v.get("views", 0), reverse=True)
 
 
-def render_summary_markdown(summary, recent, traffic_sources):
+def render_summary_markdown(summary, recent, traffic_sources, topic_signal_results=None):
     lines = ["# Performance summary (auto-generated, read this before writing a script)", ""]
 
     if recent:
@@ -402,6 +463,34 @@ def render_summary_markdown(summary, recent, traffic_sources):
     _section("Top publish hours (UTC) -- reference only, needs more spread of upload times before it means anything", "by_publish_hour")
     _section("Top seed momentum tiers -- does a higher-view-count trend seed actually predict this channel's own performance?", "by_seed_momentum")
 
+    lines.append("## Topic-title patterns (auto-detected, steer topic choice by this)")
+    lines.append("")
+    lines.append(
+        "Mechanical title-level signals only, not semantic understanding -- each line "
+        "compares scored videos that have a signal against ones that don't, using the "
+        "same composite score `score_video()` already computes for the dashboard. Only "
+        "shown when both sides have a real sample "
+        f"(n>={TOPIC_SIGNAL_MIN_GROUP_SIZE} each) and a real gap "
+        f"(>={TOPIC_SIGNAL_MIN_GAP:.0f} score points) -- read as a lean worth trying "
+        "when picking between otherwise-similar angles, not a rule that overrides "
+        "genuine topic quality."
+    )
+    lines.append("")
+    if topic_signal_results:
+        for r in topic_signal_results:
+            lines.append(
+                f"- {r['signal']}: {r['avg_score_with']:.1f} avg score WITH "
+                f"(n={r['n_with']}) vs. {r['avg_score_without']:.1f} WITHOUT "
+                f"(n={r['n_without']}) -- gap {r['gap']:+.1f}"
+            )
+    else:
+        lines.append(
+            "No signal has cleared both the sample-size and gap thresholds yet -- "
+            "expected while the channel still has few scored videos, not a sign "
+            "anything is broken. Check back as more videos publish."
+        )
+    lines.append("")
+
     lines.append("## Top individual topics (reference only -- these exact topics are already used)")
     lines.append("")
     for r in summary["by_topic"]:
@@ -441,7 +530,8 @@ if __name__ == "__main__":
     print(json.dumps(output, indent=2))
 
     if args.summary_out:
-        Path(args.summary_out).write_text(render_summary_markdown(summary, recent, traffic), encoding="utf-8")
+        signals = topic_signals(perf)
+        Path(args.summary_out).write_text(render_summary_markdown(summary, recent, traffic, signals), encoding="utf-8")
 
     if args.dashboard_out:
         dashboard_payload = dict(summary)

@@ -56,6 +56,12 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 - medium (100k-1M): 3.786 shares/1k views, 71.0% avg view, 0.17 subs/1k views, 17.35 likes+comments/1k views (n=13)
 - high (>=1M): 0.000 shares/1k views, 101.3% avg view, 1.22 subs/1k views, 17.17 likes+comments/1k views (n=6)
 
+## Topic-title patterns (auto-detected, steer topic choice by this)
+
+Mechanical title-level signals only, not semantic understanding -- each line compares scored videos that have a signal against ones that don't, using the same composite score `score_video()` already computes for the dashboard. Only shown when both sides have a real sample (n>=4 each) and a real gap (>=12 score points) -- read as a lean worth trying when picking between otherwise-similar angles, not a rule that overrides genuine topic quality.
+
+No signal has cleared both the sample-size and gap thresholds yet -- expected while the channel still has few scored videos, not a sign anything is broken. Check back as more videos publish.
+
 ## Top individual topics (reference only -- these exact topics are already used)
 
 - the Pig War of 1859 -- a US-Britain border standoff whose only casualty was a pig: 59.5% avg view
@@ -68,19 +74,4 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 - the 1908 Tunguska explosion -- 80 million trees flattened by a blast with no crater: 58.1% avg view
 - the WWI fatigue study that accidentally won the 8-hour workday: 274.1% avg view
 - the Thyiades -- real Delphi women who performed Dionysian rituals on Mount Parnassus, once stranded by a blizzard: 227.7% avg view
-
-## Where views are coming from (last 28 days, channel-wide, reference only -- not a per-video lever)
-
-- SHORTS: 92.6% of views (39170)
-- YT_CHANNEL: 2.4% of views (998)
-- YT_SEARCH: 2.3% of views (973)
-- YT_OTHER_PAGE: 2.0% of views (843)
-- SUBSCRIBER: 0.6% of views (236)
-- NO_LINK_OTHER: 0.1% of views (38)
-- EXT_URL: 0.0% of views (20)
-- NOTIFICATION: 0.0% of views (11)
-- SOUND_PAGE: 0.0% of views (11)
-- PLAYLIST: 0.0% of views (3)
-- RELATED_VIDEO: 0.0% of views (1)
-- HASHTAGS: 0.0% of views (1)
 

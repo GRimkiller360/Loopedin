@@ -91,7 +91,16 @@ further, that's out of scope per "On failure" below.
   tiers** are reference-only for now -- interesting once there's a real spread of data
   behind them, but you don't control posting time and seed selection is already
   constrained by what `trend_source.py` hands you this run, so don't force a choice
-  based on either yet. **Top individual topics** is reference only, not repeatable.
+  based on either yet. **Topic-title patterns** (2026-08-26) is a real steering
+  signal, not reference-only -- it mechanically detects whether simple title-level
+  traits (a named person/place, a specific number, phrasing as a question, title
+  length) correlate with a real score gap across this channel's own scored videos, and
+  only shows a line once there's enough sample on both sides to trust it. When it's
+  empty, that's an honest "not enough data yet," not a sign to ignore the section --
+  check it every run regardless, since a signal can appear as soon as enough videos
+  accumulate. When choosing between two similarly-strong candidate angles for the same
+  topic, prefer whichever one matches a signal shown here with a positive gap. **Top
+  individual topics** is reference only, not repeatable.
   **Where views are coming from** (traffic sources, e.g. SHORTS/YT_SEARCH/SUBSCRIBER) is
   channel-wide context, not a per-video lever -- useful for understanding how dependent
   the channel is on the Shorts feed algorithm specifically, nothing to act on per script.
