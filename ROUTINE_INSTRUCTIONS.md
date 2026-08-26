@@ -77,8 +77,8 @@ further, that's out of scope per "On failure" below.
   **Top video lengths** should nudge your target narration word count (you only control
   words, not seconds -- roughly 2.2 words/sec, so ~45 words for short/<=20s, ~45-90 for
   medium/20-40s, ~90-130 for long/40-58s). **As of 2026-08-26, length is no longer left
-  to this section's judgment call -- it's fixed by fire time: short at the 05:00/13:00
-  UTC fires, the claim/evidence/joke format's own ~90-130 words at 09:00/17:00.** See
+  to this section's judgment call -- it's fixed by fire time: short at the 09:00/17:00
+  UTC fires, the claim/evidence/joke format's own ~90-130 words at 05:00/13:00.** See
   the "Two of every four daily runs target SHORT instead" rule under Write the beats
   below for the actual mechanics; this section's role now is just informing *which*
   angle/claims you pick within whichever length this run already calls for, not
@@ -311,14 +311,16 @@ Save it as `state/pending_script.json` matching the shape documented in
   **Two of every four daily runs target SHORT instead (2026-08-26, explicit
   channel-owner instruction: keep the current claim/evidence/joke format as the
   default, but deliberately run short on a fixed schedule rather than leaving it to
-  chance).** This routine fires at 05:00, 09:00, 13:00, 17:00 UTC. **At the 05:00 and
-  13:00 UTC fires, write a SHORT script instead of the claim/evidence/joke format
+  chance).** This routine fires at 05:00, 09:00, 13:00, 17:00 UTC. **At the 09:00 and
+  17:00 UTC fires, write a SHORT script instead of the claim/evidence/joke format
   below** -- skip straight to the "Short-format alternative" block a few paragraphs
-  down. **At the 09:00 and 17:00 UTC fires, use the claim/evidence/joke format as
-  normal**, exactly as documented below. If you can't tell what hour this run is firing
-  at, default to the claim/evidence/joke format (09:00/17:00 behavior) rather than
-  guessing -- getting the split slightly uneven is a minor loss, silently never
-  running short again is the actual failure mode this rule exists to prevent.
+  down. **At the 05:00 and 13:00 UTC fires, use the claim/evidence/joke format as
+  normal**, exactly as documented below (05:00 UTC already published long-format
+  today before this rule existed -- 05:00/13:00 kept as the long slots so the daily
+  pattern stays consistent with what already ran). If you can't tell what hour this
+  run is firing at, default to the claim/evidence/joke format (05:00/13:00 behavior)
+  rather than guessing -- getting the split slightly uneven is a minor loss, silently
+  never running short again is the actual failure mode this rule exists to prevent.
 
   **Format: claim / evidence / joke, replacing the old single-deep-payoff structure
   (2026-08-21, explicit channel-owner instruction, informed by a structural analysis of
@@ -414,7 +416,7 @@ Save it as `state/pending_script.json` matching the shape documented in
      narration is free to end on pure momentum instead of splitting its last seconds
      between a hook and a housekeeping ask.
 
-  **Short-format alternative (05:00/13:00 UTC fires only -- see above).** One topic,
+  **Short-format alternative (09:00/17:00 UTC fires only -- see above).** One topic,
   one claim, one payoff -- no repeated cycles, no `hedge`. Target ~45 words total
   (roughly 2.2 words/sec at the <=20s length this is for). Real proof this works: this
   channel's own best-ever video ran exactly this shape --
