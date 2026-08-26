@@ -167,7 +167,7 @@ jobs:
         run: |
           set -o pipefail
           if python pipeline/upload.py --video work/final.mp4 --script state/pending_script.json \
-            --privacy "$PRIVACY" | tee work/upload_result.json; then
+            --privacy "$PRIVACY" --captions work/assemble/captions.srt | tee work/upload_result.json; then
             exit_code=0
           else
             exit_code=${PIPESTATUS[0]}

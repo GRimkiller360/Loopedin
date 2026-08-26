@@ -156,6 +156,44 @@ def _write_ass(beats, durations, out_path):
     Path(out_path).write_text("\n".join(lines), encoding="utf-8")
 
 
+def _format_srt_timestamp(seconds):
+    ms = int(round(seconds * 1000))
+    h, ms = divmod(ms, 3_600_000)
+    m, ms = divmod(ms, 60_000)
+    s, ms = divmod(ms, 1_000)
+    return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
+
+
+def _write_srt(beats, durations, out_path):
+    """A real YouTube caption track (2026-08-26) -- separate from captions.ass above,
+    which burns TikTok-style 1-2-word captions into the video pixels for the
+    watch-muted case. That approach makes the video watchable without sound, but
+    produces nothing YouTube itself can read as text: no search/suggested-matching
+    signal from the spoken content, and no real accessibility track (a screen reader
+    or a viewer toggling CC sees nothing). YouTube's own auto-generated ASR captions
+    fill the gap by default, but reliably mangle this channel's own proper nouns
+    (historical names, places) that a generic speech model has never seen. One
+    subtitle entry per BEAT (not per word/chunk like the burned-in track) -- full
+    sentences are what a real caption track should show; the choppy word-flash style
+    is a burned-in-caption technique, not a transcript. Reuses the same per-beat
+    `durations` (real measured TTS audio spans) _write_ass already anchors to, so the
+    two tracks can never drift against each other or against the actual audio."""
+    lines = []
+    t = 0.0
+    index = 1
+    for beat, beat_duration in zip(beats, durations):
+        text = config.strip_emphasis_markup(beat["text"]).strip()
+        if text:
+            start, end = t, t + beat_duration
+            lines.append(str(index))
+            lines.append(f"{_format_srt_timestamp(start)} --> {_format_srt_timestamp(end)}")
+            lines.append(text)
+            lines.append("")
+            index += 1
+        t += beat_duration
+    Path(out_path).write_text("\n".join(lines), encoding="utf-8")
+
+
 # Tiny frame-rounding safety margin only -- see assemble()'s clip_targets math.
 # 2026-08-24: this REPLACES a fixed CLIP_DURATION_BUFFER(0.35)+TRANSITION_DURATION(0.16)
 # constant added to every single clip regardless of its actual transition, which was a
@@ -606,6 +644,7 @@ def assemble(script, narration_path, clips, out_path, work_dir):
 
     ass_path = work_dir / "captions.ass"
     _write_ass(script["beats"], durations, ass_path)
+    _write_srt(script["beats"], durations, work_dir / "captions.srt")
 
     # See _build_background_music's comment -- one synthesized chord progression per
     # video, not a file picked from a folder, so this always has something to mix in.
