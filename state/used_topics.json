@@ -488,6 +488,22 @@
       "share_trigger": "a viewer sends this to their friend who insists ancient civilizations had no real technology at all",
       "contradicted_belief": "Most people assume ancient Greek civilizations had no way to predict eclipses this early.",
       "has_sources": false
+    },
+    {
+      "topic": "Actaeon myth: Artemis turned him into a stag and his own hunting dogs killed him",
+      "video_id": "52BAyEx33xE",
+      "uploaded_at": "2026-08-26T09:07:31.385650+00:00",
+      "publish_hour_utc": 9,
+      "category": "history",
+      "seed_source_video_id": "-s9hLMykeho",
+      "seed_view_count": 726116,
+      "hook_type": "shocking_fact",
+      "title": "His Own Dogs Killed Him After He Saw a Goddess Bathing",
+      "duration_seconds": 16.4,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who insists their dog would recognize them no matter what they looked like, because they want to prove even loyalty has limits.",
+      "contradicted_belief": "Most people assume a hunter's own dogs would always recognize him, no matter what he looked like.",
+      "has_sources": true
     }
   ]
 }
