@@ -456,6 +456,22 @@
       "share_trigger": "A viewer sends this to the friend who's already posted a photo in front of Hawa Mahal, because they want to reveal that famous backdrop is barely a room deep.",
       "contradicted_belief": "Most people assume Jaipur's postcard-famous pink palace is a real building full of rooms behind every window.",
       "has_sources": true
+    },
+    {
+      "topic": "S\u014dsuke Uno's 1989 geisha scandal: Japan's PM resigned in 69 days for being too cheap, not for the affair itself",
+      "video_id": "unhECDCIlMQ",
+      "uploaded_at": "2026-08-26T05:15:08.099922+00:00",
+      "publish_hour_utc": 5,
+      "category": "history",
+      "seed_source_video_id": "uHWl0or-LKU",
+      "seed_view_count": 936795,
+      "hook_type": "shocking_fact",
+      "title": "Japan's Prime Minister Resigned After 69 Days For Being Too Cheap",
+      "duration_seconds": 39.4,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who thinks any affair scandal is just about the cheating, because they want to prove this one was about something pettier.",
+      "contradicted_belief": "Most people assume a Prime Minister only resigns for having an affair, not for being cheap.",
+      "has_sources": true
     }
   ]
 }
