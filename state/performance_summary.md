@@ -2,14 +2,14 @@
 
 ## Recent uploads (last 48h) -- early velocity signal, near-real-time (not the retention ranking below)
 
-- medieval anchoress living-burial ritual and Julian of Norwich's 20-year enclosure (history/myth_bust): 959 views, 16 likes, 4 comments
-- 1618 Defenestration of Prague (history/shocking_fact): 578 views, 5 likes, 0 comments
-- Hawa Mahal, Jaipur's 'Palace of Winds': barely a room deep behind 953 one-way lattice windows, engineered to lean 87 degrees with no real foundation (history/myth_bust): 499 views, 15 likes, 1 comments
-- 1914 Christmas Truce football match (history/shocking_fact): 281 views, 4 likes, 1 comments
-- the Battle of Karansebes (1788) -- an army that may have fought and defeated itself (history/shocking_fact): 81 views, 1 likes, 0 comments
-- Victor Lustig sold the Eiffel Tower twice, then conned Al Capone by giving his money back (history/myth_bust): 43 views, 1 likes, 1 comments
-- the Pig War of 1859 -- a US-Britain border standoff whose only casualty was a pig (history/shocking_fact): 38 views, 0 likes, 0 comments
-- Napoleon rabbit hunt disaster (history/shocking_fact): 24 views, 1 likes, 0 comments
+- medieval anchoress living-burial ritual and Julian of Norwich's 20-year enclosure (history/myth_bust): 969 views, 17 likes, 4 comments
+- Hawa Mahal, Jaipur's 'Palace of Winds': barely a room deep behind 953 one-way lattice windows, engineered to lean 87 degrees with no real foundation (history/myth_bust): 949 views, 23 likes, 1 comments
+- 1618 Defenestration of Prague (history/shocking_fact): 589 views, 5 likes, 0 comments
+- 1914 Christmas Truce football match (history/shocking_fact): 300 views, 4 likes, 1 comments
+- the Battle of Karansebes (1788) -- an army that may have fought and defeated itself (history/shocking_fact): 91 views, 1 likes, 0 comments
+- Victor Lustig sold the Eiffel Tower twice, then conned Al Capone by giving his money back (history/myth_bust): 47 views, 1 likes, 1 comments
+- Napoleon rabbit hunt disaster (history/shocking_fact): 25 views, 1 likes, 0 comments
+- Sōsuke Uno's 1989 geisha scandal: Japan's PM resigned in 69 days for being too cheap, not for the affair itself (history/shocking_fact): 0 views, 0 likes, 1 comments
 
 ## Performance by ruleset version -- READ THIS FIRST if more than one is listed
 
