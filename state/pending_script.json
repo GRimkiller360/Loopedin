@@ -1,0 +1,35 @@
+{
+  "topic": "Sōsuke Uno's 1989 geisha scandal: Japan's PM resigned in 69 days for being too cheap, not for the affair itself",
+  "category": "history",
+  "seed_source_video_id": "uHWl0or-LKU",
+  "seed_view_count": 936795,
+  "title": "Japan's Prime Minister Resigned After 69 Days For Being Too Cheap",
+  "description": "AI-narrated commentary on Japan's Prime Minister Sōsuke Uno, who resigned after just 69 days in office in 1989 following a geisha scandal, not for the affair itself, but for how little he paid her. Original commentary, not sourced from any single video.",
+  "tags": ["history", "Japan history", "prime minister", "political scandal", "1980s history", "shorts", "true story"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "A Japanese Prime Minister resigned after 69 days, for being too cheap to his mistress."},
+    {"hook_type": "myth_bust", "text": "Everyone assumes a political affair scandal ends a career because of the cheating. This one didn't."},
+    {"hook_type": "question", "text": "What if a Prime Minister's affair wasn't what ended his career, but how he paid for it?"},
+    {"hook_type": "story", "text": "A geisha named Mitsuko Nakanishi ended a sitting Prime Minister's career, by revealing exactly how little he paid her."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who thinks any affair scandal is just about the cheating, because they want to prove this one was about something pettier.",
+  "contradicted_belief": "Most people assume a Prime Minister only resigns for having an affair, not for being cheap.",
+  "closing_comment": "Resigning in 69 days for being cheap might be the pettiest downfall a Prime Minister has ever had.",
+  "sources": [
+    {"url": "https://www.upi.com/Archives/1989/06/26/Former-Geisha-describes-alleged-affair-with-prime-minister/1806614836800/", "note": "1989 wire report: geisha Nakanishi described the affair and the ~300,000 yen/month arrangement with PM Uno."},
+    {"url": "https://www.deseret.com/1989/7/3/18813937/election-losses-could-force-japan-s-uno-to-resign/", "note": "Contemporary 1989 report on the election losses that pushed PM Uno toward resignation after 69 days."}
+  ],
+  "beats": [
+    {"text": "A Prime Minister who resigned after **69 days**, for being too cheap to a geisha.", "broll_query": "a stern Japanese politician in a dark suit stepping toward a podium, camera flashes bursting around him", "beat_role": "hook"},
+    {"text": "Right before that, the press called him **Mr. Clean**.", "broll_query": "a pristine white dress shirt hanging on a wooden hanger, backlit in a tidy office", "beat_role": "claim"},
+    {"text": "He'd been picked precisely because he had zero ties to the bribery scandal that just toppled the last government.", "broll_query": "stacks of yen banknotes bundled with rubber bands piled on a dark wooden desk", "beat_role": "evidence"},
+    {"text": "Turns out clean has layers.", "broll_query": "a dress shirt half unbuttoned, revealing a grimy undershirt underneath, close up shot", "beat_role": "joke"},
+    {"text": "The affair itself barely moved anyone.", "broll_query": "a folded newspaper lying on a quiet cafe table, morning light, nobody reading it", "beat_role": "claim"},
+    {"text": "A geisha said their affair ran on a strict **300,000-yen** monthly rate, then he just vanished.", "broll_query": "a geisha in formal kimono counting yen bills at a low wooden table, dim lamplight", "beat_role": "evidence"},
+    {"text": "Cheaper than his own haircut budget, probably.", "broll_query": "an old barber shop mirror reflecting an empty chair, scissors resting on the counter", "beat_role": "joke"},
+    {"text": "The next day, his party lost its first election in **34 years**.", "broll_query": "a ballot box overflowing with paper ballots spilling onto a marble government floor", "beat_role": "claim"},
+    {"text": "Historians still debate how much of that defeat was really about him.", "broll_query": "a dusty stack of old newspapers and history books piled on a library table", "beat_role": "hedge"},
+    {"text": "So here's one wild story about", "broll_query": "a black government sedan pulling away from a building at dusk, red taillights glowing", "beat_role": "ending"}
+  ]
+}
