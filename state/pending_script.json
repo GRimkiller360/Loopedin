@@ -1,0 +1,36 @@
+{
+  "topic": "Peter Safar invented CPR but couldn't save his own daughter, then built the first paramedic ambulance service.",
+  "category": "history",
+  "seed_source_video_id": "UFqkLLCZZh4",
+  "seed_view_count": 336336,
+  "title": "CPR's Inventor Couldn't Save His Own Daughter With It",
+  "description": "Peter Safar invented modern CPR in 1960, but in 1966 he couldn't save his own 11-year-old daughter from a severe asthma attack. Instead of stopping, his grief helped launch the first paramedic ambulance service in America. AI-narrated commentary on the human cost behind a medical breakthrough most people take for granted.",
+  "tags": ["history", "medical history", "CPR", "Peter Safar", "true history", "history facts", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Peter Safar, who invented CPR, still couldn't save his own daughter."},
+    {"hook_type": "question", "text": "Could the man who invented CPR actually save his own daughter with it?"},
+    {"hook_type": "myth_bust", "text": "Inventing CPR didn't guarantee Peter Safar could save his own family."},
+    {"hook_type": "story", "text": "In 1966, Peter Safar got the call every parent dreads, already knowing CPR."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who took a CPR class once and assumes it always guarantees a save, because they want to show even its own inventor couldn't guarantee that.",
+  "contradicted_belief": "Most people assume the person who invented CPR could always use it to save the people he loved most.",
+  "closing_comment": "Wild that CPR's own inventor couldn't save his daughter, but saved thousands through the paramedics he built after.",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Peter_Safar", "note": "Confirms Safar developed modern CPR and that his daughter Elizabeth died in 1966 despite his resuscitation attempt."},
+    {"url": "https://emsmuseum.org/collections/archives/people/peter_safar/", "note": "Confirms Safar helped found the Freedom House Ambulance paramedic service in Pittsburgh."}
+  ],
+  "beats": [
+    {"text": "Peter Safar, who invented CPR yet **couldn't save** his own daughter.", "broll_query": "a man in a white lab coat standing motionless in a dim 1960s hospital corridor, single overhead light", "beat_role": "hook"},
+    {"text": "Before 1960, there was **no standard way** to restart a stopped heart.", "broll_query": "a black-and-white 1950s hospital ward with doctors standing helpless around a still patient on a gurney", "beat_role": "claim"},
+    {"text": "He combined his own mouth-to-mouth research with chest-compression trials to create the **ABC sequence** taught worldwide.", "broll_query": "two 1960s doctors demonstrating chest compressions and mouth-to-mouth breathing on a resuscitation training mannequin under clinical light", "beat_role": "evidence"},
+    {"text": "Even lifesaving needed a **snappy acronym**.", "broll_query": "a chalkboard with the letters A B C written huge in white chalk, dust drifting in spotlight", "beat_role": "joke"},
+    {"text": "A year after his daughter's funeral, Safar helped build one of America's **first paramedic** ambulances.", "broll_query": "a boxy 1960s ambulance parked outside a brick rowhouse at dusk, its back doors open, warm streetlight", "beat_role": "claim"},
+    {"text": "In 1967, Freedom House in Pittsburgh trained ordinary citizens, not doctors, to run **emergency care**.", "broll_query": "a group of ordinary men in plain jackets practicing bandaging on each other in a 1960s community hall", "beat_role": "evidence"},
+    {"text": "Your neighbor, suddenly **outranking** doctors.", "broll_query": "a man in a flannel shirt confidently pointing at a stethoscope on a hook, warm kitchen light", "beat_role": "joke"},
+    {"text": "Though a few **other cities** were racing toward the same idea.", "broll_query": "a worn 1960s United States map on a wall with pins in several different cities, warm desk lamp", "beat_role": "hedge"},
+    {"text": "But in 1966, his own **11-year-old daughter** Elizabeth had a severe asthma attack.", "broll_query": "a child's bedroom at night, an inhaler on the nightstand beside a single dim lamp, empty bed", "beat_role": "claim"},
+    {"text": "He restarted her heart and lungs, but her **brain** had already gone too long without oxygen.", "broll_query": "a heart rate monitor screen showing a faint returning pulse, sterile blue hospital light, close on the display", "beat_role": "evidence"},
+    {"text": "So this is the story of", "broll_query": "a single dim lightbulb swinging slightly in an empty hospital hallway, long shadows, quiet stillness", "beat_role": "ending"}
+  ]
+}
