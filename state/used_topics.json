@@ -552,6 +552,22 @@
       "share_trigger": "A viewer sends this to the friend who took a CPR class once and assumes it always guarantees a save, because they want to show even its own inventor couldn't guarantee that.",
       "contradicted_belief": "Most people assume the person who invented CPR could always use it to save the people he loved most.",
       "has_sources": true
+    },
+    {
+      "topic": "Cyril Radcliffe drew the India-Pakistan border in five weeks having never visited India, then vanished before it was published",
+      "video_id": "rntCuPSHuZw",
+      "uploaded_at": "2026-08-27T13:13:47.129952+00:00",
+      "publish_hour_utc": 13,
+      "category": "history",
+      "seed_source_video_id": "e2_PrfROye4",
+      "seed_view_count": 345098,
+      "hook_type": "shocking_fact",
+      "title": "The Man Who Drew India And Pakistan's Border In 5 Weeks",
+      "duration_seconds": 46.6,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who thinks every national border was drawn by regional experts after years of careful negotiation, because they want to prove one was drawn by a total stranger in five weeks.",
+      "contradicted_belief": "Most people assume a border as significant as India and Pakistan's was drawn by regional experts over years, but it was drawn by an outsider in five weeks.",
+      "has_sources": true
     }
   ]
 }
