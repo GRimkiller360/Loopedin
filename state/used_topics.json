@@ -568,6 +568,22 @@
       "share_trigger": "A viewer sends this to the friend who thinks every national border was drawn by regional experts after years of careful negotiation, because they want to prove one was drawn by a total stranger in five weeks.",
       "contradicted_belief": "Most people assume a border as significant as India and Pakistan's was drawn by regional experts over years, but it was drawn by an outsider in five weeks.",
       "has_sources": true
+    },
+    {
+      "topic": "Marina Abramovi\u0107 and Ulay's reunion that ended in a lawsuit, not peace",
+      "video_id": "QBkwlg5ymZ0",
+      "uploaded_at": "2026-08-27T17:13:52.103341+00:00",
+      "publish_hour_utc": 17,
+      "category": "history",
+      "seed_source_video_id": "Vn1Gynom9G0",
+      "seed_view_count": 633435,
+      "hook_type": "myth_bust",
+      "title": "Marina Abramovi\u0107's Viral Reunion Wasn't Actually A Happy Ending",
+      "duration_seconds": 51.3,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who still believes that viral reunion video meant they made peace for good.",
+      "contradicted_belief": "Most people assume that famous viral museum reunion meant these two artists finally made peace.",
+      "has_sources": true
     }
   ]
 }
