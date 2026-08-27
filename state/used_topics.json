@@ -536,6 +536,22 @@
       "share_trigger": "A viewer sends this to the friend who thinks corporations only became ruthless in the modern age, because they want to prove a 17th-century company invented the playbook.",
       "contradicted_belief": "Most people assume a company would never massacre an island's population just to control a spice.",
       "has_sources": true
+    },
+    {
+      "topic": "Peter Safar invented CPR but couldn't save his own daughter, then built the first paramedic ambulance service.",
+      "video_id": "Br29vu9ls0I",
+      "uploaded_at": "2026-08-27T09:13:33.535187+00:00",
+      "publish_hour_utc": 9,
+      "category": "history",
+      "seed_source_video_id": "UFqkLLCZZh4",
+      "seed_view_count": 336336,
+      "hook_type": "shocking_fact",
+      "title": "CPR's Inventor Couldn't Save His Own Daughter With It",
+      "duration_seconds": 51.4,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who took a CPR class once and assumes it always guarantees a save, because they want to show even its own inventor couldn't guarantee that.",
+      "contradicted_belief": "Most people assume the person who invented CPR could always use it to save the people he loved most.",
+      "has_sources": true
     }
   ]
 }
