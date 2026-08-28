@@ -1,0 +1,35 @@
+{
+  "topic": "Tuskegee Airmen's 'never lost a bomber' myth vs. the real WWII record (27 lost)",
+  "category": "history",
+  "seed_source_video_id": "V9DpUxRsMIs",
+  "seed_view_count": 710454,
+  "title": "The Tuskegee Airmen 'Never Lost A Bomber' Myth, Debunked",
+  "description": "AI-narrated commentary on the real WWII combat record behind the Tuskegee Airmen's famous 'never lost a bomber' reputation, and the 1945 magazine claim that started the myth.",
+  "tags": ["Tuskegee Airmen", "WWII history", "99th Fighter Squadron", "332nd Fighter Group", "WWII facts", "military history", "history shorts", "Red Tails", "WWII myths", "North Africa campaign"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "myth_bust", "text": "This WWII group supposedly never lost a bomber."},
+    {"hook_type": "shocking_fact", "text": "This WWII fighter group actually lost 27 bombers it was escorting."},
+    {"hook_type": "question", "text": "What if the most repeated fact about a legendary WWII fighter group was false?"},
+    {"hook_type": "story", "text": "A single 1945 magazine article about Black fighter pilots got repeated as fact for 60 years."}
+  ],
+  "share_trigger": "A viewer sends this to the uncle who repeats the Tuskegee Airmen's perfect record like it's gospel, because they want to show him the real number.",
+  "contradicted_belief": "Most people still believe the WWII myth that the Tuskegee Airmen never lost a single escorted bomber.",
+  "closing_comment": "The real number, 27 lost bombers, doesn't erase how good the Tuskegee Airmen actually were, it just makes the truth more impressive than the myth.",
+  "sources": [
+    {"url": "https://www.abmc.gov/news-events/news/origins-tuskegee-airmen-99th-fighter-squadrons-first-encounters-enemy-aircraft/", "note": "Confirms the 99th Fighter Squadron's first combat mission flew June 2, 1943, from Tunisia, North Africa."},
+    {"url": "https://www.nbcnews.com/id/wbna17908209", "note": "Confirms Air Force historical research found 27 bombers the 332nd Fighter Group escorted were shot down, debunking the 'never lost a bomber' myth."}
+  ],
+  "beats": [
+    {"text": "This WWII group supposedly **never lost** a bomber.", "broll_query": "WWII fighter planes with red painted tails flying tight formation around a bomber squadron in a clear blue sky", "beat_role": "hook"},
+    {"text": "It started as the **99th** Fighter Squadron, America's first Black military pilots, flying combat over Tunisia.", "broll_query": "a P-40 Warhawk fighter plane taking off from a dusty North African desert airstrip, 1943, dramatic low angle", "beat_role": "claim"},
+    {"text": "Their first combat mission flew on **June 2**, 1943, from a captured airfield in North Africa.", "broll_query": "a row of WWII fighter planes lined up on a sandy desert airstrip at dawn, mechanics working, 1943 style", "beat_role": "evidence"},
+    {"text": "**Low expectations**, high stakes.", "broll_query": "a hand-drawn cartoon scale tipping unexpectedly upward, comic ink style, exaggerated surprised expression lines", "beat_role": "joke"},
+    {"text": "By 1944, this same group was escorting **heavy bombers** deep into enemy territory.", "broll_query": "WWII red-tailed fighter planes flying alongside large four-engine bombers high above clouds, dramatic wide shot", "beat_role": "claim"},
+    {"text": "A 1945 magazine article claimed they'd flown over **100 missions** without losing one bomber.", "broll_query": "a 1940s magazine page close-up on a wooden desk, bold headline text, vintage print texture, dim lamp light", "beat_role": "evidence"},
+    {"text": "One **journalist's math** aged badly.", "broll_query": "a cartoon calculator cracking and sparking, comic-style motion lines, exaggerated visual gag", "beat_role": "joke"},
+    {"text": "Air Force historians later found **27** escorted bombers were actually shot down.", "broll_query": "a single WWII bomber plane trailing smoke and going down over open sky, dramatic silhouette, historic wartime photograph style", "beat_role": "claim"},
+    {"text": "Their real **loss rate** still ranked among the war's better escort records, historians note.", "broll_query": "an old military records office, stacks of typed reports and file folders on a wooden desk, dim archival lighting", "beat_role": "hedge"},
+    {"text": "So next time someone calls a war record unbreakable, remember that", "broll_query": "a vintage WWII propeller fighter plane silhouette flying into a golden sunset, cinematic wide shot", "beat_role": "ending"}
+  ]
+}
