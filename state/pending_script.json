@@ -1,0 +1,35 @@
+{
+  "topic": "Jack Broughton and the 1743 boxing rules created after his 1741 fight killed George Stevenson",
+  "category": "history",
+  "seed_source_video_id": "WjENApK6iaA",
+  "seed_view_count": 1537285,
+  "title": "Boxing Only Got Rules Because Its Champion Killed A Man",
+  "description": "AI-narrated commentary on how bare-knuckle boxing got its first written rules in 1743, two years after reigning champion Jack Broughton's opponent George Stevenson died from injuries sustained in their 1741 bout. Sources linked below.",
+  "tags": ["boxing history", "bare knuckle boxing", "Jack Broughton", "boxing rules", "history shorts", "sports history", "18th century history", "Broughton's Rules"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Boxing had zero written rules until the reigning champion **killed** a man in the ring."},
+    {"hook_type": "question", "text": "What did it actually take to give boxing its first rulebook? A dead opponent."},
+    {"hook_type": "myth_bust", "text": "The father of boxing did not earn that title by making the sport safe first."},
+    {"hook_type": "story", "text": "In 1743, a haunted champion sat down and wrote the first rules bare-knuckle boxing ever had."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who thinks boxing has always had rules, because they want to reveal the sport's first rulebook only exists thanks to a death.",
+  "contradicted_belief": "Most people assume boxing has always had rules for fighters to follow.",
+  "closing_comment": "Jack Broughton wrote the first boxing rules only two years after his own fight against George Stevenson turned fatal.",
+  "sources": [
+    {"url": "http://www.thehistoryblog.com/archives/22691", "note": "Confirms Broughton's 1741 bout with Stevenson, Stevenson's death days later, and the resulting 1743 rules."},
+    {"url": "https://en.wikipedia.org/wiki/Broughton_Rules", "note": "Confirms the 1743 rules' actual content: no hitting a downed man, a 30-second count, no groin strikes."}
+  ],
+  "beats": [
+    {"text": "Bare-knuckle boxing had **zero** rules for a century, until one death changed that.", "broll_query": "a bare-knuckle boxer's gloveless fist mid-swing, dusty 1740s fairground crowd behind him, dramatic side light", "beat_role": "hook"},
+    {"text": "Before 1743, an English prize fight had **no rulebook** at all.", "broll_query": "two shirtless 18th-century boxers locked in a violent no-rules brawl, dirt ring, jeering crowd", "beat_role": "claim"},
+    {"text": "Fighters could **gouge eyes**, headbutt, and hit a man already on the ground.", "broll_query": "one bare-knuckle fighter gouging at a fallen opponent's eye on the ground, gritty tavern-yard scene", "beat_role": "evidence"},
+    {"text": "Sportsmanship had not been invented yet.", "broll_query": "an old parchment scoreboard with the word sportsmanship scrawled and crossed out, candlelight", "beat_role": "joke"},
+    {"text": "The man who fixed that mess was the **same one** causing it.", "broll_query": "a stern 18th-century Englishman in a long coat writing by candlelight at a wooden desk", "beat_role": "claim"},
+    {"text": "**Jack Broughton** wrote those rules himself in 1743 and got royal backing for it.", "broll_query": "a bare-knuckle boxer in period stance signing a parchment rulebook, quill in hand, formal portrait style", "beat_role": "evidence"},
+    {"text": "Nothing like grading your own homework.", "broll_query": "a man grading his own exam paper with a giant red A plus, ink quill, smug grin", "beat_role": "joke"},
+    {"text": "Broughton beat George Stevenson so badly in **1741** that Stevenson never recovered.", "broll_query": "a stretcher carrying an unconscious 18th-century boxer out of a torch-lit fairground boxing ring", "beat_role": "claim"},
+    {"text": "Some historians still dispute whether that fight alone actually killed him.", "broll_query": "two historians in a dusty archive arguing over a faded 1741 newspaper clipping, magnifying glass", "beat_role": "hedge"},
+    {"text": "And that is the whole reason modern boxing still runs on rules that started with just one.", "broll_query": "a modern boxing referee's gloved hand raising an old rulebook above a lit ring, slow zoom", "beat_role": "ending"}
+  ]
+}
