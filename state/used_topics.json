@@ -584,6 +584,22 @@
       "share_trigger": "A viewer sends this to the friend who still believes that viral reunion video meant they made peace for good.",
       "contradicted_belief": "Most people assume that famous viral museum reunion meant these two artists finally made peace.",
       "has_sources": true
+    },
+    {
+      "topic": "Tuskegee Airmen's 'never lost a bomber' myth vs. the real WWII record (27 lost)",
+      "video_id": "ArWlT-ktj9I",
+      "uploaded_at": "2026-08-28T05:16:20.531982+00:00",
+      "publish_hour_utc": 5,
+      "category": "history",
+      "seed_source_video_id": "V9DpUxRsMIs",
+      "seed_view_count": 710454,
+      "hook_type": "myth_bust",
+      "title": "The Tuskegee Airmen 'Never Lost A Bomber' Myth, Debunked",
+      "duration_seconds": 47.0,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the uncle who repeats the Tuskegee Airmen's perfect record like it's gospel, because they want to show him the real number.",
+      "contradicted_belief": "Most people still believe the WWII myth that the Tuskegee Airmen never lost a single escorted bomber.",
+      "has_sources": true
     }
   ]
 }
