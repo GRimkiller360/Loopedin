@@ -1,0 +1,35 @@
+{
+  "topic": "Vivekananda almost rejected from the 1893 Parliament of Religions over missing credentials",
+  "category": "history",
+  "seed_source_video_id": "T4cd2mVr-FY",
+  "seed_view_count": 1544200,
+  "title": "The Monk Who Almost Got Rejected From The Speech That Made Him Famous",
+  "description": "The wild true story of how a wandering monk almost missed the 1893 Chicago speech that made him a global icon, until a Harvard professor's snap decision changed everything. AI-narrated commentary on real, independently documented history.",
+  "tags": ["Vivekananda", "1893", "history", "ParliamentOfReligions", "Chicago", "truestory", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "An 1893 religious conference almost rejected a monk with zero credentials."},
+    {"hook_type": "question", "text": "What if the loudest ovation in religious history almost never happened over a missing form?"},
+    {"hook_type": "myth_bust", "text": "You think raw talent alone got him on that stage? A missing form almost kept him off it completely."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who thinks credentials and connections don't matter if you're actually talented enough.",
+  "contradicted_belief": "Most people assume a monk got fully invited to speak at that religious conference, not nearly rejected over missing credentials.",
+  "closing_comment": "The wildest part: a monk almost got rejected from the exact speech that made him famous, all over paperwork.",
+  "sources": [
+    {"url": "https://pluralism.org/parliament-of-religions-1893", "note": "Confirms he arrived in Chicago without delegate credentials, initially unable to register."},
+    {"url": "https://vivekavani.com/sisters-brothers-america/", "note": "Documents his 'Sisters and brothers of America' line and the two-minute standing ovation from the crowd."}
+  ],
+  "beats": [
+    {"text": "An 1893 religious conference almost rejected a monk with **zero** credentials.", "broll_query": "a barefoot orange-robed monk being blocked at a grand marble hall entrance by officials in suits, 1890s", "beat_role": "hook"},
+    {"text": "He'd crossed an ocean to speak, but no credentials meant **no** entry.", "broll_query": "a stern clerk stamping REJECTED on a paper application at a wooden registration desk, sepia tone", "beat_role": "claim"},
+    {"text": "Broke in Chicago, he left for **Boston** to save money, ready to quit.", "broll_query": "a tired traveler in worn robes boarding a steam train at a foggy 1890s station platform", "beat_role": "evidence"},
+    {"text": "Bold strategy: flee the venue.", "broll_query": "a man in worn robes walking away from a grand illuminated hall entrance at night, glancing back, cinematic", "beat_role": "joke"},
+    {"text": "On that train, a Harvard professor met him by **chance** and stepped in.", "broll_query": "a bearded professor in a train car turning to speak intently to a stranger seated across from him, 1890s", "beat_role": "claim"},
+    {"text": "Wright vouched for him directly, skipped every rule, got him a last-minute **slot**.", "broll_query": "a handwritten letter of recommendation being handed across a wooden desk, ink pen beside it, close-up", "beat_role": "evidence"},
+    {"text": "Best unpaid talent scout ever.", "broll_query": "a small golden trophy shaped like a magnifying glass sitting on an antique wooden church pew, whimsical", "beat_role": "joke"},
+    {"text": "When he finally spoke, he earned the **loudest** ovation of the entire nine-day event.", "broll_query": "a packed 1890s auditorium of thousands rising to their feet applauding, dramatic wide shot from the stage", "beat_role": "claim"},
+    {"text": "Seven thousand people clapped for two full minutes before he'd said anything **else**.", "broll_query": "a grand ornate hall filled with a standing crowd applauding under high arched windows, dramatic lighting", "beat_role": "evidence"},
+    {"text": "That two-minute figure comes from his own letter, so take his **word**.", "broll_query": "an old handwritten letter with a wax seal and a pocket watch resting beside it on a desk", "beat_role": "hedge"},
+    {"text": "All from one snap decision to vouch for a stranger, missing one piece of", "broll_query": "a single blank official document fluttering off a desk in slow motion, dramatic close-up", "beat_role": "ending"}
+  ]
+}
