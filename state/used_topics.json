@@ -632,6 +632,22 @@
       "share_trigger": "A viewer sends this to the friend who thinks boxing has always had rules, because they want to reveal the sport's first rulebook only exists thanks to a death.",
       "contradicted_belief": "Most people assume boxing has always had rules for fighters to follow.",
       "has_sources": true
+    },
+    {
+      "topic": "Night of the Grizzlies -- two women killed by different grizzlies the same night in Glacier National Park (1967), caused by hotel bear-feeding shows and a failed huckleberry crop",
+      "video_id": "9HNX_OP40P8",
+      "uploaded_at": "2026-08-29T05:11:05.437332+00:00",
+      "publish_hour_utc": 5,
+      "category": "history",
+      "seed_source_video_id": "nXu6KPdi08A",
+      "seed_view_count": 1776369,
+      "hook_type": "shocking_fact",
+      "title": "Two Grizzlies Killed Two Women In One Night, Ten Miles Apart",
+      "duration_seconds": 50.7,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who insists wild animal attacks are just random bad luck, because they want to prove humans usually cause it.",
+      "contradicted_belief": "Most people assume two grizzly bears attacking on the same night is just wild coincidence.",
+      "has_sources": true
     }
   ]
 }
