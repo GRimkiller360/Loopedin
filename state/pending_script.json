@@ -1,0 +1,38 @@
+{
+  "topic": "Night of the Grizzlies -- two women killed by different grizzlies the same night in Glacier National Park (1967), caused by hotel bear-feeding shows and a failed huckleberry crop",
+  "category": "history",
+  "seed_source_video_id": "nXu6KPdi08A",
+  "seed_view_count": 1776369,
+  "title": "Two Grizzlies Killed Two Women In One Night, Ten Miles Apart",
+  "description": "AI-narrated original commentary on the 1967 'Night of the Grizzlies' in Glacier National Park -- the night two different grizzly bears killed two different women in two different locations, and the hotel bear-feeding shows that helped cause it. Not sourced from any single video; written as original commentary on a public historical event.",
+  "tags": ["history", "truestory", "nationalparks", "grizzlybear", "glaciernationalpark", "wildlife", "nightofthegrizzlies", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Two different grizzly bears each killed a different woman on the exact same night, ten miles apart."},
+    {"hook_type": "question", "text": "How do two separate grizzly bear attacks happen in the same park on the exact same night?"},
+    {"hook_type": "myth_bust", "text": "The bears that killed two women in one night weren't hunting on instinct. Tourists had trained them to expect food."},
+    {"hook_type": "story", "text": "Julie Helgeson and Michele Koons never met, but they died the same night, ten miles apart, killed by two different grizzlies."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who insists wild animal attacks are just random bad luck, because they want to prove humans usually cause it.",
+  "contradicted_belief": "Most people assume two grizzly bears attacking on the same night is just wild coincidence.",
+  "closing_comment": "Julie and Michele never met, but two grizzlies killing them the same night is why every national park closed its bear-feeding dumps.",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Night_of_the_Grizzlies", "note": "Confirms two women killed by separate grizzlies the same night, Aug 12-13 1967, ~10 miles apart, first fatal attacks in park history."},
+    {"url": "https://www.smithsonianmag.com/history/deadly-grizzly-bear-attacks-changed-national-park-service-forever-180964462/", "note": "Confirms hotel garbage-dump bear-feeding shows and the nationwide closure of open-pit park dumps that followed."}
+  ],
+  "beats": [
+    {"text": "night two grizzly bears each killed a woman, **ten** miles apart.", "broll_query": "a grizzly bear silhouette looming near a moonlit sleeping bag in a dark forest campsite", "beat_role": "hook"},
+    {"text": "Two teenagers named Julie and Michele never met each other.", "broll_query": "two separate faded 1960s polaroid photos side by side on a wooden table, dim light", "beat_role": "claim"},
+    {"text": "Julie died at one chalet, Michele died at a campsite **ten** miles away.", "broll_query": "an old stone mountain chalet lit by lantern light at night, remote wilderness", "beat_role": "evidence"},
+    {"text": "Different bears. Same terrible timing.", "broll_query": "two grizzly bear paw prints crossing in fresh mud, side by side", "beat_role": "joke"},
+    {"text": "For years, hotels fed grizzlies **by hand** so tourists could watch.", "broll_query": "a 1960s park ranger tossing food scraps to a grizzly bear while a crowd watches from a fence", "beat_role": "claim"},
+    {"text": "Every night, the hotel's open dump became a live feeding show.", "broll_query": "a floodlit open-pit garbage dump at night with a grizzly bear pawing through trash, tourists watching from a fence", "beat_role": "evidence"},
+    {"text": "Somehow this counted as vacation entertainment.", "broll_query": "a torn vintage ticket stub reading Bear Feeding Show Tonight, dim lighting", "beat_role": "joke"},
+    {"text": "That same summer, the bears' **main food source** mostly failed.", "broll_query": "a nearly bare huckleberry bush on a dry mountainside in late summer light", "beat_role": "claim"},
+    {"text": "Nineteen sixty-seven's huckleberry crop was one of the worst ever recorded.", "broll_query": "close-up of a wilted huckleberry branch with almost no berries against a foggy mountain", "beat_role": "evidence"},
+    {"text": "Hungry bears do not read expiration dates.", "broll_query": "a torn trash bag spilling food scraps across a dark forest floor at night", "beat_role": "joke"},
+    {"text": "Within four years, **every** national park shut its dumps down for good.", "broll_query": "a padlocked chain-link gate with a hand painted Dump Closed sign, overgrown weeds, abandoned site", "beat_role": "claim"},
+    {"text": "Some researchers still debate whether that night's storm made the bears aggressive.", "broll_query": "a dramatic lightning bolt striking over dark mountain silhouettes above a forest at night", "beat_role": "hedge"},
+    {"text": "And that's just one of the strange details behind the", "broll_query": "a single lit window in a dark wooden mountain chalet at night, isolated in wilderness", "beat_role": "ending"}
+  ]
+}
