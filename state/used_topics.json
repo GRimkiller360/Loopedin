@@ -680,6 +680,22 @@
       "share_trigger": "A viewer sends this to the friend who thinks credentials and connections don't matter if you're actually talented enough.",
       "contradicted_belief": "Most people assume a monk got fully invited to speak at that religious conference, not nearly rejected over missing credentials.",
       "has_sources": true
+    },
+    {
+      "topic": "the Hiroshima 'human shadow' that's actually bleached stone, not a burn",
+      "video_id": "wTNBtfy4tek",
+      "uploaded_at": "2026-08-29T17:12:24.613035+00:00",
+      "publish_hour_utc": 17,
+      "category": "history",
+      "seed_source_video_id": "8dej5DitC_I",
+      "seed_view_count": 733512,
+      "hook_type": "myth_bust",
+      "title": "Hiroshima's Famous 'Shadow' Isn't Actually a Burn Mark",
+      "duration_seconds": 41.9,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who thinks they already know everything about Hiroshima's shadow, because they want to prove that mark isn't even a burn.",
+      "contradicted_belief": "Most people assume Hiroshima's nuclear shadow is a burn mark, but it's actually the opposite: bleached stone, not a scorch mark.",
+      "has_sources": true
     }
   ]
 }
