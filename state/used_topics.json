@@ -648,6 +648,22 @@
       "share_trigger": "A viewer sends this to the friend who insists wild animal attacks are just random bad luck, because they want to prove humans usually cause it.",
       "contradicted_belief": "Most people assume two grizzly bears attacking on the same night is just wild coincidence.",
       "has_sources": true
+    },
+    {
+      "topic": "Andr\u00e9s Escobar's 1994 World Cup own goal and the shooting that followed ten days later",
+      "video_id": "RExBjCccLio",
+      "uploaded_at": "2026-08-29T09:11:30.705579+00:00",
+      "publish_hour_utc": 9,
+      "category": "history",
+      "seed_source_video_id": "M5-wpgvD3tE",
+      "seed_view_count": 778674,
+      "hook_type": "story",
+      "title": "He Scored An Own Goal, Then Was Shot Six Times Ten Days Later",
+      "duration_seconds": 42.6,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who thinks losing a game is the worst that can happen to an athlete, because they want to prove one mistake actually got a man killed.",
+      "contradicted_belief": "Most people assume a World Cup mistake only costs you the game, not a man his life.",
+      "has_sources": true
     }
   ]
 }
