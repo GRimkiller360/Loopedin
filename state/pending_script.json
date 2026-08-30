@@ -1,0 +1,39 @@
+{
+  "topic": "the US military intervention in the Russian Civil War, Kolchak's betrayal, and the Czechoslovak Legion mutiny",
+  "category": "history",
+  "seed_source_video_id": "pYiJspOt6As",
+  "seed_view_count": 1010561,
+  "title": "The US Invaded Russia In 1918 And Almost Nobody Remembers",
+  "description": "AI-narrated commentary on the forgotten Allied intervention in the Russian Civil War: American troops fighting Bolshevik forces, the betrayal of Admiral Kolchak, and the mutiny that dragged Siberia into war.",
+  "tags": ["history", "RussianCivilWar", "AmericanHistory", "WWI", "ColdWar", "historyfacts", "shorts", "USSR", "forgottenhistory", "worldhistory"],
+  "hook_type": "list",
+  "hook_candidates": [
+    {"hook_type": "list", "text": "Facts about America's secret war in Russia that sound made up."},
+    {"hook_type": "shocking_fact", "text": "The US Army invaded Russia in 1918, and almost nobody remembers it."},
+    {"hook_type": "myth_bust", "text": "You think the Cold War was the first US-Russia fight. It wasn't."},
+    {"hook_type": "question", "text": "Did you know American troops fought Soviet Russia a year after World War One ended?"}
+  ],
+  "share_trigger": "A viewer sends this to the friend who insists the Cold War started the rivalry, because they want to prove American and Russian troops fought decades earlier.",
+  "contradicted_belief": "Most people have never heard about the secret war America fought against Russia in 1918.",
+  "closing_comment": "That typhus death toll is wild. More people died from disease in the Russian Civil War than in combat itself.",
+  "sources": [
+    {"url": "https://www.military.com/history/united-states-invasion-of-russia-was-yearlong-freezing-hell-troops.html", "note": "About 13,000 US troops fought Bolshevik forces in North Russia and Siberia, 1918-1920."},
+    {"url": "https://www.rbth.com/history/334103-how-french-general-betrayed-kolchak", "note": "Czechoslovak Legion handed Admiral Kolchak to Bolsheviks for safe rail passage; he was executed."},
+    {"url": "https://www.britannica.com/event/Russian-Civil-War", "note": "Confirms Russian Civil War death toll dominated by disease and famine, not combat."},
+    {"url": "https://en.wikipedia.org/wiki/Revolt_of_the_Czechoslovak_Legion", "note": "50,000-strong Czechoslovak Legion revolted after a weapons dispute, seizing the Trans-Siberian Railway."}
+  ],
+  "beats": [
+    {"text": "Facts about America's **secret** war in Russia that sound made up.", "broll_query": "American WWI-era soldiers marching through a snow-covered Russian village, breath visible in freezing air", "beat_role": "hook"},
+    {"text": "In 1918, American troops **invaded** Russia to fight the Bolsheviks.", "broll_query": "US Army soldiers in winter coats disembarking from a ship onto a snowy Russian dock, 1918", "beat_role": "claim"},
+    {"text": "About **13,000** US soldiers fought there for two years after World War One ended.", "broll_query": "column of American infantry trudging through deep snow past wooden Russian houses, rifles slung", "beat_role": "evidence"},
+    {"text": "Guess peace had fine print.", "broll_query": "a magnifying glass hovering over tiny fine print text on an old paper treaty document", "beat_role": "joke"},
+    {"text": "Admiral Kolchak, leader of the White Russians, was **betrayed** by his own allies.", "broll_query": "a stern military officer in a White Russian general's uniform standing before a firing squad wall", "beat_role": "claim"},
+    {"text": "His Czech allies **handed** him to the Bolsheviks for safe passage home.", "broll_query": "soldiers in Czech Legion uniforms handing over a bound Russian general to Bolshevik soldiers at a snowy train station", "beat_role": "evidence"},
+    {"text": "Some ticket price for loyalty.", "broll_query": "a single paper train ticket lying on train tracks in the snow, spotlighted", "beat_role": "joke"},
+    {"text": "A **mutiny** by tired soldiers dragged all of Siberia into war.", "broll_query": "angry soldiers in mismatched WWI uniforms rioting on a train platform, rifles raised", "beat_role": "claim"},
+    {"text": "**50,000** Czech soldiers revolted over confiscated rifles and seized the railway.", "broll_query": "soldiers seizing control of a steam locomotive and rail yard, confiscated rifles piled on the platform", "beat_role": "evidence"},
+    {"text": "More people died from **typhus** and starvation here than in actual combat.", "broll_query": "a crowded field hospital tent full of exhausted typhus patients lying on cots, dim lantern light", "beat_role": "claim"},
+    {"text": "The exact death toll is **still debated**, since many records were lost.", "broll_query": "a dusty stack of torn, incomplete Russian archive documents on a wooden desk", "beat_role": "hedge"},
+    {"text": "So next time someone blames the Cold War for this, remember there are some", "broll_query": "a lone steam train disappearing into a snowy Siberian horizon at dusk", "beat_role": "ending"}
+  ]
+}
