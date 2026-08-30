@@ -1,0 +1,37 @@
+{
+  "topic": "Castle Bravo's 1954 miscalculated H-bomb test, the Lucky Dragon 5 fallout disaster, and how it inspired Godzilla",
+  "category": "history",
+  "seed_source_video_id": "8dej5DitC_I",
+  "seed_view_count": 733512,
+  "title": "The Real Nuclear Disaster That Inspired Godzilla",
+  "description": "The true 1954 nuclear test disaster behind Godzilla: Castle Bravo's miscalculated blast, the Lucky Dragon 5 fallout, and the human cost the movie was really about. AI-narrated history commentary, original script and research each episode.",
+  "tags": ["Godzilla", "history", "nuclear history", "Castle Bravo", "Cold War", "shorts", "history facts", "true story"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "myth_bust", "text": "Godzilla was inspired by a real nuclear disaster in 1954."},
+    {"hook_type": "shocking_fact", "text": "In 1954 a hydrogen bomb test detonated three times bigger than predicted, and it directly inspired Godzilla."},
+    {"hook_type": "question", "text": "What if Godzilla wasn't fiction at all?"},
+    {"hook_type": "story", "text": "A Japanese fishing boat sailed straight into the fallout of the biggest nuclear test America ever ran."}
+  ],
+  "share_trigger": "A viewer sends this to their friend who's obsessed with Godzilla movies because they want to reveal the real history hiding behind the monster.",
+  "contradicted_belief": "Most people believe Godzilla was invented purely from imagination, not inspired by any real nuclear disaster in 1954.",
+  "closing_comment": "That real 1954 nuclear disaster is also why Kuboyama died and why Godzilla was inspired by an actual event, not just imagination.",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Castle_Bravo", "note": "Confirms Castle Bravo's actual yield (15 megatons) vs the predicted 6 megatons and the lithium-7 miscalculation."},
+    {"url": "https://www.amusingplanet.com/2019/07/the-japanese-fishing-boat-whose-lethal.html", "note": "Confirms the Lucky Dragon 5's fallout exposure, Kuboyama's death, and the direct link to Godzilla's creation."}
+  ],
+  "beats": [
+    {"text": "**Godzilla** was inspired by a real nuclear disaster in 1954.", "broll_query": "a shadowy kaiju silhouette looming over a distant mushroom cloud at dusk", "beat_role": "hook"},
+    {"text": "That year, America ran its **biggest** nuclear test yet.", "broll_query": "a massive orange fireball nuclear explosion erupting over a pacific atoll, wide shot", "beat_role": "claim"},
+    {"text": "Castle Bravo was predicted at 6 megatons but hit **15**, because scientists misjudged one isotope.", "broll_query": "a 1950s physicist staring wide-eyed at a chalkboard covered in equations", "beat_role": "evidence"},
+    {"text": "History's most expensive rounding error.", "broll_query": "a giant red pencil crossing out a number on an oversized receipt", "beat_role": "joke"},
+    {"text": "The fallout reached a boat **nowhere** near the test itself.", "broll_query": "a small wooden fishing boat alone on dark open ocean under storm clouds", "beat_role": "claim"},
+    {"text": "A Japanese boat, the **Lucky Dragon**, was fishing **eighty** miles off when radioactive ash fell like snow.", "broll_query": "white ash falling onto a fishing boat deck, crew members looking up puzzled", "beat_role": "evidence"},
+    {"text": "Worst possible day for an umbrella.", "broll_query": "a straw hat flying off a fisherman's head in a gust of gray ash", "beat_role": "joke"},
+    {"text": "That catch reached Japanese markets before anyone knew it was **radioactive**.", "broll_query": "rows of fresh tuna laid out on ice at a crowded japanese fish market", "beat_role": "claim"},
+    {"text": "It triggered a scare that crashed **tuna sales** for months.", "broll_query": "a geiger counter held above a crate of fish on a harbor dock, needle spiking", "beat_role": "evidence"},
+    {"text": "The boat's radio operator, **Kuboyama**, died seven months later, the first confirmed death from a **hydrogen** bomb.", "broll_query": "a solemn black and white portrait of a japanese radio operator at his station", "beat_role": "claim"},
+    {"text": "Doctors still debate whether fallout alone caused his death, or the treatment for it.", "broll_query": "a dim 1950s hospital ward corridor, empty gurney, muted lighting", "beat_role": "hedge"},
+    {"text": "So here's a monster movie legend that's actually true, because", "broll_query": "a massive clawed footprint pressed into wet sand at the tideline, dusk light", "beat_role": "ending"}
+  ]
+}
