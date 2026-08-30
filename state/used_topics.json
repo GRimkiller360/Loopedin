@@ -728,6 +728,22 @@
       "share_trigger": "A viewer sends this to the friend who insists the Cold War started the rivalry, because they want to prove American and Russian troops fought decades earlier.",
       "contradicted_belief": "Most people have never heard about the secret war America fought against Russia in 1918.",
       "has_sources": true
+    },
+    {
+      "topic": "the 897 Cadaver Synod trial of Pope Formosus's corpse",
+      "video_id": "z87EobwB-y8",
+      "uploaded_at": "2026-08-30T13:12:37.792862+00:00",
+      "publish_hour_utc": 13,
+      "category": "history",
+      "seed_source_video_id": "76wuqe5pQJM",
+      "seed_view_count": 819309,
+      "hook_type": "shocking_fact",
+      "title": "The Pope Who Put His Predecessor's Corpse on Trial",
+      "duration_seconds": 49.0,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who thinks their annoying boss is the pettiest person alive, because they want to prove medieval Rome did pettier.",
+      "contradicted_belief": "Most people assume a trial always needs a defendant who is still alive, not a decaying corpse.",
+      "has_sources": true
     }
   ]
 }
