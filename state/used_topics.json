@@ -696,6 +696,22 @@
       "share_trigger": "A viewer sends this to the friend who thinks they already know everything about Hiroshima's shadow, because they want to prove that mark isn't even a burn.",
       "contradicted_belief": "Most people assume Hiroshima's nuclear shadow is a burn mark, but it's actually the opposite: bleached stone, not a scorch mark.",
       "has_sources": true
+    },
+    {
+      "topic": "Castle Bravo's 1954 miscalculated H-bomb test, the Lucky Dragon 5 fallout disaster, and how it inspired Godzilla",
+      "video_id": "d9t2PQPvHnQ",
+      "uploaded_at": "2026-08-30T05:10:24.892415+00:00",
+      "publish_hour_utc": 5,
+      "category": "history",
+      "seed_source_video_id": "8dej5DitC_I",
+      "seed_view_count": 733512,
+      "hook_type": "myth_bust",
+      "title": "The Real Nuclear Disaster That Inspired Godzilla",
+      "duration_seconds": 52.0,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to their friend who's obsessed with Godzilla movies because they want to reveal the real history hiding behind the monster.",
+      "contradicted_belief": "Most people believe Godzilla was invented purely from imagination, not inspired by any real nuclear disaster in 1954.",
+      "has_sources": true
     }
   ]
 }
