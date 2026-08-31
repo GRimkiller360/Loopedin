@@ -776,6 +776,22 @@
       "share_trigger": "A viewer sends this to the friend who insists apps and lottery drawings can't be secretly rigged, because they want to prove an insider pulled it off for years.",
       "contradicted_belief": "Most people assume the lottery's random numbers can't be secretly controlled by the very person protecting them.",
       "has_sources": true
+    },
+    {
+      "topic": "the faked bullet-dent 'proof mark' scam on historic 'bulletproof' armor",
+      "video_id": "NWHvOKjOZ74",
+      "uploaded_at": "2026-08-31T17:10:36.018401+00:00",
+      "publish_hour_utc": 17,
+      "category": "history",
+      "seed_source_video_id": "IjUzAXxQtZI",
+      "seed_view_count": 698742,
+      "hook_type": "myth_bust",
+      "title": "The 'Bulletproof' Armor Dent That Might Be a 500-Year-Old Fake",
+      "duration_seconds": 42.9,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who owns a replica sword and swears vintage armor could stop a musket ball, because they want to prove that claim was sometimes just a hammer trick.",
+      "contradicted_belief": "Most people assume that dent in old armor is honest proof it stopped a bullet, not part of a centuries-old scam.",
+      "has_sources": true
     }
   ]
 }
