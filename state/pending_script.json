@@ -1,0 +1,38 @@
+{
+  "topic": "the faked bullet-dent 'proof mark' scam on historic 'bulletproof' armor",
+  "category": "history",
+  "seed_source_video_id": "IjUzAXxQtZI",
+  "seed_view_count": 698742,
+  "title": "The 'Bulletproof' Armor Dent That Might Be a 500-Year-Old Fake",
+  "description": "AI-narrated commentary on the real history of armor 'proof marks' -- the bullet dents 16th and 17th century armorers left on breastplates to prove they were shot-resistant, and how some armorers faked that test with a hammer instead of a gun. Sources below.",
+  "tags": ["history", "armor", "medieval history", "renaissance history", "shorts", "historyfacts", "didyouknow", "museum"],
+  "hook_type": "myth_bust",
+  "hook_candidates": [
+    {"hook_type": "myth_bust", "text": "Here's a 500-year-old armor scam that still fools people today."},
+    {"hook_type": "shocking_fact", "text": "Armor buyers once refused to pay until the maker literally shot the breastplate first."},
+    {"hook_type": "story", "text": "A 17th-century armorer sold soldiers a lie stamped right into the steel."},
+    {"hook_type": "question", "text": "How do you prove armor stops a bullet? Sometimes, you just hit it with a hammer."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who owns a replica sword and swears vintage armor could stop a musket ball, because they want to prove that claim was sometimes just a hammer trick.",
+  "contradicted_belief": "Most people assume that dent in old armor is honest proof it stopped a bullet, not part of a centuries-old scam.",
+  "closing_comment": "That bulletproof armor dent might be a total fake, since some armorers just hammered one in and skipped the actual gun test entirely. Ever spotted a dented breastplate at a museum?",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Proofing_(armour)", "note": "Confirms proof marks are deliberate bullet-test dents left on 16th-17th century breastplates to show firearm resistance."},
+    {"url": "https://gladius.revistas.csic.es/index.php/gladius/article/download/8/8", "note": "Academic study finding many 'proof' dents don't match real bullet-impact energy, suggesting fraudulent hammer marks."},
+    {"url": "https://www.metmuseum.org/art/collection/search/31058", "note": "Met Museum's surviving shot-proof cuirass, a breastplate and backplate genuinely tested against firearms."}
+  ],
+  "beats": [
+    {"text": "Facts about a 500-year-old **armor scam** that still fools people today.", "broll_query": "close-up of a dented steel breastplate glinting under dramatic museum spotlight, single bullet-shaped dent catching the light", "beat_role": "hook"},
+    {"text": "Buyers wouldn't pay for a breastplate until the armorer **shot** it himself.", "broll_query": "17th-century armorer in leather apron aiming a flintlock pistol at a polished steel breastplate propped on a workshop stand", "beat_role": "claim"},
+    {"text": "Armorers fired a pistol at close range, leaving the dent as proof it worked.", "broll_query": "smoke curling from a fired flintlock pistol beside a steel breastplate with a fresh dent, workshop table, dramatic side light", "beat_role": "evidence"},
+    {"text": "Failing that test wasn't survivable.", "broll_query": "an empty 17th-century leather armorer's apron hanging on a hook, single shaft of light, faintly ominous mood", "beat_role": "joke"},
+    {"text": "Some armorers **never** fired a single shot.", "broll_query": "shady armorer glancing over his shoulder while gripping a hammer near a breastplate, dim candlelit workshop", "beat_role": "claim"},
+    {"text": "They just **hammered** a fake dent into the steel, no gun involved.", "broll_query": "close-up of a ball-peen style hammer striking a steel breastplate, small dent forming, sparks, workshop bench", "beat_role": "evidence"},
+    {"text": "A hammer, doing a bullet's job.", "broll_query": "a hammer posed dramatically next to a flintlock pistol on a wooden table, side-by-side comparison, dim lighting", "beat_role": "joke"},
+    {"text": "Not all **proof** meant the same level of protection.", "broll_query": "two steel breastplates side by side on stands, one visibly thicker and heavier than the other, workshop lighting", "beat_role": "claim"},
+    {"text": "Half-proof stopped a pistol; full proof meant a **musket**, and weighed far more.", "broll_query": "soldier straining to lift a heavy full-proof steel cuirass onto his shoulders, dim battlefield camp at dusk", "beat_role": "evidence"},
+    {"text": "Even trained conservators can't always tell a real proof mark from a **fake** one.", "broll_query": "museum conservator in white gloves examining a dented breastplate closely with a magnifying loupe under bright exam light", "beat_role": "claim"},
+    {"text": "Researchers are still refining how to tell the two apart with any real certainty.", "broll_query": "close-up of scientific scanning equipment analyzing a metal dent on a breastplate, laboratory setting, focused blue light", "beat_role": "hedge"},
+    {"text": "So here are some.", "broll_query": "steel breastplate slowly rotating on a museum turntable stand, spotlight sweeping across its dented surface, moody atmosphere", "beat_role": "ending"}
+  ]
+}
