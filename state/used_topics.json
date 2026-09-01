@@ -840,6 +840,22 @@
       "share_trigger": "A viewer sends this to the friend who thinks safety codes are pointless bureaucracy, because they want to prove one collapse literally rewrote the law.",
       "contradicted_belief": "Most people believe molasses is slow, thick, and completely harmless, not a wave that could kill people.",
       "has_sources": true
+    },
+    {
+      "topic": "China's last Mongol emperor got an 'Obedient Emperor' title after fleeing his throne",
+      "video_id": "5q8AlJ6mRks",
+      "uploaded_at": "2026-09-01T17:11:43.918374+00:00",
+      "publish_hour_utc": 17,
+      "category": "history",
+      "seed_source_video_id": "Qakev_GjKXY",
+      "seed_view_count": 751145,
+      "hook_type": "shocking_fact",
+      "title": "China's Last Mongol Emperor Got A Compliment For Losing His Throne",
+      "duration_seconds": 50.2,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who assumes losing your throne always means a villain's ending, because they want to show the emperor who fled got a compliment for it instead.",
+      "contradicted_belief": "Most people assume a defeated emperor who lost his throne would never get a compliment from the person who dethroned him.",
+      "has_sources": true
     }
   ]
 }
