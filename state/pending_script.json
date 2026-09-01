@@ -1,0 +1,36 @@
+{
+  "topic": "China's last Mongol emperor got an 'Obedient Emperor' title after fleeing his throne",
+  "category": "history",
+  "seed_source_video_id": "Qakev_GjKXY",
+  "seed_view_count": 751145,
+  "title": "China's Last Mongol Emperor Got A Compliment For Losing His Throne",
+  "description": "China's last Mongol emperor didn't fight to keep his throne, he just left in the night. Then the man who dethroned him gave him a posthumous title that literally means 'obedient.' The strange true ending of the Yuan dynasty in China, and the 20-year war that followed it. AI-narrated historical commentary.",
+  "tags": ["history", "Mongol Empire", "Yuan Dynasty", "China history", "Ming Dynasty", "Hongwu Emperor", "Toghon Temur", "medieval history", "world history", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "A defeated Mongol emperor got something no dethroned ruler expects: a compliment from his conqueror."},
+    {"hook_type": "question", "text": "What do you call an emperor who fled instead of fighting? China had an answer: obedient."},
+    {"hook_type": "myth_bust", "text": "Losing your throne doesn't always end in disgrace. This emperor got a compliment instead."},
+    {"hook_type": "story", "text": "In 1368, China's last Mongol emperor looked at the enemy at his gates and just left."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who assumes losing your throne always means a villain's ending, because they want to show the emperor who fled got a compliment for it instead.",
+  "contradicted_belief": "Most people assume a defeated emperor who lost his throne would never get a compliment from the person who dethroned him.",
+  "closing_comment": "The 'Obedient Emperor' title given after he fled his throne is real, historians recorded it exactly that way.",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Toghon_Tem%C3%BCr", "note": "Confirms Hongwu Emperor granted the posthumous name 'Emperor Shun,' meaning he yielded per the Mandate of Heaven."},
+    {"url": "https://en.wikipedia.org/wiki/Battle_of_Buir_Lake", "note": "Confirms the 1388 Ming victory over the Northern Yuan, capturing hundreds of royal family members."}
+  ],
+  "beats": [
+    {"text": "A defeated Mongol emperor got something no dethroned ruler expects: a **compliment** from his conqueror.", "broll_query": "Mongol emperor in embroidered silk robe standing atop a palace wall, Chinese army banners approaching below", "beat_role": "hook"},
+    {"text": "In 1368, China's last Mongol emperor didn't **defend** his own capital.", "broll_query": "an empty golden throne room at night, doors flung open, torches guttering, no guards present", "beat_role": "claim"},
+    {"text": "As Ming troops closed in on Khanbaliq, he **slipped** out at night with his court, leaving the throne behind.", "broll_query": "a fleeing imperial caravan of horses and covered wagons rushing through a city gate at night", "beat_role": "evidence"},
+    {"text": "Worst home security review ever.", "broll_query": "a comically small broken padlock hanging off a giant golden palace gate", "beat_role": "joke"},
+    {"text": "The man who dethroned him then gave him a genuine **compliment**.", "broll_query": "Chinese Ming emperor in golden robe writing an official proclamation scroll at a wooden desk", "beat_role": "claim"},
+    {"text": "Zhu Yuanzhang, the Ming founder, gave him the title 'Shun Di,' meaning **Obedient** Emperor.", "broll_query": "close-up of a calligraphy brush painting the Chinese character for obedient onto a scroll", "beat_role": "evidence"},
+    {"text": "A participation trophy, imperial edition.", "broll_query": "a golden imperial trophy engraved with dragon patterns sitting on a red silk cushion", "beat_role": "joke"},
+    {"text": "His empire didn't end there. It kept fighting for **twenty** more years.", "broll_query": "a ragged Mongol cavalry camp on the open steppe under a grey overcast sky", "beat_role": "claim"},
+    {"text": "In 1388, a Ming army crossed the Gobi and captured **hundreds** of his family at Buir Lake.", "broll_query": "a massive army crossing a vast desert at dawn, dust clouds rising behind marching soldiers", "beat_role": "evidence"},
+    {"text": "Exact numbers from that battle vary a lot between historical sources.", "broll_query": "an old weathered battlefield map with faded ink markings of a lake and mountain pass", "beat_role": "hedge"},
+    {"text": "So when people say history always rewards resistance, they forget that", "broll_query": "a single Mongol imperial banner fluttering alone in the wind above an empty steppe horizon", "beat_role": "ending"}
+  ]
+}
