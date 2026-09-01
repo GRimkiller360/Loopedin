@@ -808,6 +808,22 @@
       "share_trigger": "A viewer sends this to the friend who insists the Padmaavat movie is based on solid history, because they want to prove even the poem's own author admitted he made it up.",
       "contradicted_belief": "Most people assume the queen an entire country rioted to protect in 2018 was a real historical figure, not a legend invented centuries later.",
       "has_sources": true
+    },
+    {
+      "topic": "Ignaz Semmelweis, the 1847 discovery that handwashing stopped childbed fever, medical rejection, and his death in a Vienna asylum from the same infection he fought",
+      "video_id": "GcfeGUugHwg",
+      "uploaded_at": "2026-09-01T09:13:09.338334+00:00",
+      "publish_hour_utc": 9,
+      "category": "history",
+      "seed_source_video_id": "O5_OOUEjA9w",
+      "seed_view_count": 1702375,
+      "hook_type": "shocking_fact",
+      "title": "He Proved Handwashing Saves Lives In 1847, Doctors Had Him Committed For It",
+      "duration_seconds": 45.7,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who's a nurse, because they want her to see the doctor who invented her handwashing rule and paid for it with his life.",
+      "contradicted_belief": "People assume handwashing has always been standard medical practice for a doctor, not something anyone had to fight for back in 1847.",
+      "has_sources": true
     }
   ]
 }
