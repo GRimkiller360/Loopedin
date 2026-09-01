@@ -1,0 +1,36 @@
+{
+  "topic": "Ignaz Semmelweis, the 1847 discovery that handwashing stopped childbed fever, medical rejection, and his death in a Vienna asylum from the same infection he fought",
+  "category": "history",
+  "seed_source_video_id": "O5_OOUEjA9w",
+  "seed_view_count": 1702375,
+  "title": "He Proved Handwashing Saves Lives In 1847, Doctors Had Him Committed For It",
+  "description": "AI-narrated commentary on the true, ironic story of Dr. Ignaz Semmelweis: the 1847 discovery that handwashing could cut maternal deaths by ninety percent, the medical establishment that destroyed him for it, and the asylum where he died of the very infection he had spent his career fighting.",
+  "tags": ["history", "medical history", "Semmelweis", "handwashing", "shorts", "true story", "science history", "1847", "medicine"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "In 1847, a Vienna doctor cut his hospital's death rate by ninety percent, just by handwashing, and his colleagues destroyed him for it."},
+    {"hook_type": "myth_bust", "text": "Doctors didn't always wash their hands before touching patients, and one man who tried to fix that ended up dead in an asylum."},
+    {"hook_type": "question", "text": "What if the doctor who proved handwashing saves lives was punished so badly he died from the very infection he was trying to stop?"},
+    {"hook_type": "story", "text": "A Vienna doctor noticed one hospital ward kept killing new mothers while the one next door barely lost any, and what he found broke his career."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who's a nurse, because they want her to see the doctor who invented her handwashing rule and paid for it with his life.",
+  "contradicted_belief": "People assume handwashing has always been standard medical practice for a doctor, not something anyone had to fight for back in 1847.",
+  "closing_comment": "In 1847, Semmelweis proved handwashing saves lives, and doctors still had him committed for saying so.",
+  "sources": [
+    {"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3807775/", "note": "Confirms Semmelweis's Vienna handwashing intervention cut maternal mortality from over 18% to under 2%."},
+    {"url": "https://www.cambridge.org/core/journals/the-british-journal-of-psychiatry/article/epidemics-wash-your-hands-the-asylum-delivery-and-violent-death-of-professor-ignaz-philipp-semmelweis-and-the-cursed-semmelweis-reflex-psychiatry-in-history/83073D7952BA9B51C3E79C3577B23DC9", "note": "Confirms Semmelweis was beaten in the asylum and died of sepsis, the disease he had fought to prevent."}
+  ],
+  "beats": [
+    {"text": "In 1847, a Vienna doctor cut his hospital's death rate by **ninety** percent, just by handwashing.", "broll_query": "a 19th-century doctor scrubbing bare hands in a basin of cloudy water, other doctors watching with suspicion", "beat_role": "hook"},
+    {"text": "One ward there was killing new mothers **three** times faster than the next.", "broll_query": "two wooden hospital doors side by side in a dim corridor, one marked with a small black ribbon", "beat_role": "claim"},
+    {"text": "He ordered handwashing, and deaths fell from **eighteen** percent to two.", "broll_query": "a doctor's blood-stained hands reaching toward a newborn in a candlelit 1840s delivery room, surgical tools nearby", "beat_role": "evidence"},
+    {"text": "Handwashing, apparently, was beneath a gentleman.", "broll_query": "a pompous gentleman doctor in a top hat holding his hands above a basin, refusing to dip them, exaggerated disgust", "beat_role": "joke"},
+    {"text": "So his own colleagues mocked him and forced him out of Vienna.", "broll_query": "a doctor shown the door of a grand hospital by two stern colleagues, medical bag in hand, gaslit hallway", "beat_role": "claim"},
+    {"text": "No hospital adopted it, and deaths on unwashed wards stayed just as high.", "broll_query": "an empty 1840s hospital ward, rows of unmade beds, a flickering gas lamp, no basin anywhere in sight", "beat_role": "evidence"},
+    {"text": "Correct, unemployed, and about to worsen.", "broll_query": "a torn help-wanted notice pinned crookedly to a wooden door, a doctor's shadow walking away down a cobblestone street", "beat_role": "joke"},
+    {"text": "Years later, guards at an asylum beat him so badly the wound turned **septic**.", "broll_query": "a dim stone asylum cell with a barred window, a doctor's coat crumpled on the floor, harsh lamp shadows", "beat_role": "claim"},
+    {"text": "He died two weeks later of the exact infection he'd spent his career fighting.", "broll_query": "an old hospital death ledger open on a desk by candlelight, a quill resting across a signed entry", "beat_role": "evidence"},
+    {"text": "Historians debate whether the beating alone caused it.", "broll_query": "sepia photographs and handwritten medical journals scattered on a wooden desk, a magnifying glass resting on top", "beat_role": "hedge"},
+    {"text": "It took his death to finally prove him right, all the way back in", "broll_query": "a bronze statue of a 19th-century doctor in a quiet hospital courtyard, soft morning light, fresh flowers at its base", "beat_role": "ending"}
+  ]
+}
