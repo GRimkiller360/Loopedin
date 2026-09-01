@@ -824,6 +824,22 @@
       "share_trigger": "A viewer sends this to the friend who's a nurse, because they want her to see the doctor who invented her handwashing rule and paid for it with his life.",
       "contradicted_belief": "People assume handwashing has always been standard medical practice for a doctor, not something anyone had to fight for back in 1847.",
       "has_sources": true
+    },
+    {
+      "topic": "the 1919 Boston Molasses Flood and the engineering licensing law it caused",
+      "video_id": "wDNyBG2MSq0",
+      "uploaded_at": "2026-09-01T13:34:43.008843+00:00",
+      "publish_hour_utc": 13,
+      "category": "history",
+      "seed_source_video_id": "9oHp-4a5xa4",
+      "seed_view_count": 1831948,
+      "hook_type": "shocking_fact",
+      "title": "The 1919 Molasses Flood That Made America License Its Engineers",
+      "duration_seconds": 42.5,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who thinks safety codes are pointless bureaucracy, because they want to prove one collapse literally rewrote the law.",
+      "contradicted_belief": "Most people believe molasses is slow, thick, and completely harmless, not a wave that could kill people.",
+      "has_sources": true
     }
   ]
 }
