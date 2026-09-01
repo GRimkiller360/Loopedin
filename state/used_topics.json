@@ -792,6 +792,22 @@
       "share_trigger": "A viewer sends this to the friend who owns a replica sword and swears vintage armor could stop a musket ball, because they want to prove that claim was sometimes just a hammer trick.",
       "contradicted_belief": "Most people assume that dent in old armor is honest proof it stopped a bullet, not part of a centuries-old scam.",
       "has_sources": true
+    },
+    {
+      "topic": "Padmavati's historicity: the 1303 siege of Chittor and the poet who admitted inventing her legend",
+      "video_id": "7htr7-gf8Fw",
+      "uploaded_at": "2026-09-01T05:12:54.337291+00:00",
+      "publish_hour_utc": 5,
+      "category": "history",
+      "seed_source_video_id": "pzTFN4Rdxrg",
+      "seed_view_count": 597554,
+      "hook_type": "myth_bust",
+      "title": "The Queen A Nation Rioted To Protect May Not Have Existed",
+      "duration_seconds": 45.3,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who insists the Padmaavat movie is based on solid history, because they want to prove even the poem's own author admitted he made it up.",
+      "contradicted_belief": "Most people assume the queen an entire country rioted to protect in 2018 was a real historical figure, not a legend invented centuries later.",
+      "has_sources": true
     }
   ]
 }
