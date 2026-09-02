@@ -1,0 +1,75 @@
+{
+  "topic": "the 2017 Congressional Review Act repeal that let ISPs sell your search history without consent",
+  "category": "history",
+  "seed_source_video_id": "M-yeiV2a27k",
+  "seed_view_count": 1847620,
+  "title": "The 2017 Law That Let Your Provider Sell Your Search History",
+  "description": "In 2017, Congress voted to kill a federal rule before it ever took effect, a rule that would have required your internet provider to get your permission before selling your browsing and search history. This AI-narrated commentary breaks down what that rule required, how fast it was repealed, and what it means for your privacy today. #history #privacy #internet",
+  "tags": ["internet privacy", "search history", "history", "shorts", "FCC", "congress", "2017", "privacy law", "tech history", "ISP"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "In 2017, Congress voted to let your internet provider sell your entire search history without asking you."},
+    {"hook_type": "question", "text": "Why does your internet bill never mention who else gets to see your search history?"},
+    {"hook_type": "myth_bust", "text": "You think a federal law stops your internet provider from selling your search history. That law never even took effect."},
+    {"hook_type": "story", "text": "One Senate vote in 2017 decided your internet provider would never need your permission to sell your search history."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who insists deleting their search history keeps it private, because they want to prove their provider could still sell it.",
+  "contradicted_belief": "Most people assume a federal law already stops their internet provider from selling their search history, but that protection never actually took effect.",
+  "closing_comment": "Wild that the law meant to protect your search history got repealed in 2017 before it ever took effect. Did your provider ever ask your permission for anything like this?",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/2017_Broadband_Consumer_Privacy_Proposal_repeal", "note": "Confirms the March 2017 Senate (50-48) and House (215-205) votes repealing the FCC's 2016 opt-in broadband privacy rule."},
+    {"url": "https://www.theregreview.org/2017/04/06/kang-fcc-privacy-rule-repealed/", "note": "Confirms the repeal permanently blocks the FCC from issuing a substantially similar privacy rule without new legislation."}
+  ],
+  "beats": [
+    {
+      "text": "Law that could've stopped your internet provider from selling your search history, killed in **2017** before it ever took effect.",
+      "broll_query": "a hand slamming a rubber stamp marked VOID onto a printed government document, dramatic side light",
+      "beat_role": "hook"
+    },
+    {
+      "text": "The rule would have forced every provider to ask before selling your data.",
+      "broll_query": "a laptop screen showing a popup asking allow this site to see your browsing history, blue glow",
+      "beat_role": "claim"
+    },
+    {
+      "text": "It covered browsing history, app usage, and email content, finalized in **late 2016**.",
+      "broll_query": "three labeled folders marked browsing, apps, email stacked on a wooden desk, overhead light",
+      "beat_role": "evidence"
+    },
+    {
+      "text": "A permission slip nobody ever signed.",
+      "broll_query": "a blank permission slip paper curling and yellowing with age on a desk, dust in light",
+      "beat_role": "joke"
+    },
+    {
+      "text": "Congress killed the rule before providers ever had to follow it.",
+      "broll_query": "the US Capitol dome at dusk with dark storm clouds gathering behind it",
+      "beat_role": "claim"
+    },
+    {
+      "text": "The Senate voted **50 to 48**, and the House **215 to 205**, both before the rule ever took effect.",
+      "broll_query": "a hand pressing a red voting button on a wood paneled senate chamber desk, close up",
+      "beat_role": "evidence"
+    },
+    {
+      "text": "Fastest repeal of an unused rule.",
+      "broll_query": "a small trophy engraved worlds fastest nothing sitting on a dusty shelf, single spotlight",
+      "beat_role": "joke"
+    },
+    {
+      "text": "That repeal permanently blocks regulators from writing a similar privacy rule again.",
+      "broll_query": "a heavy iron padlock chained shut over a stack of blank legal paper, dim room",
+      "beat_role": "claim"
+    },
+    {
+      "text": "Some states have their own ISP privacy laws now, though coverage still varies.",
+      "broll_query": "a US map glowing green in a few scattered states while the rest stay gray",
+      "beat_role": "hedge"
+    },
+    {
+      "text": "And that's the part your provider hopes you never look up, so here's one",
+      "broll_query": "a hand closing a laptop lid slowly as a browser search bar glows faintly in the dark",
+      "beat_role": "ending"
+    }
+  ]
+}
