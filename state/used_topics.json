@@ -856,6 +856,22 @@
       "share_trigger": "A viewer sends this to the friend who assumes losing your throne always means a villain's ending, because they want to show the emperor who fled got a compliment for it instead.",
       "contradicted_belief": "Most people assume a defeated emperor who lost his throne would never get a compliment from the person who dethroned him.",
       "has_sources": true
+    },
+    {
+      "topic": "the 2017 Congressional Review Act repeal that let ISPs sell your search history without consent",
+      "video_id": "KwEq4HWtuGc",
+      "uploaded_at": "2026-09-02T05:12:51.813112+00:00",
+      "publish_hour_utc": 5,
+      "category": "history",
+      "seed_source_video_id": "M-yeiV2a27k",
+      "seed_view_count": 1847620,
+      "hook_type": "shocking_fact",
+      "title": "The 2017 Law That Let Your Provider Sell Your Search History",
+      "duration_seconds": 45.8,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who insists deleting their search history keeps it private, because they want to prove their provider could still sell it.",
+      "contradicted_belief": "Most people assume a federal law already stops their internet provider from selling their search history, but that protection never actually took effect.",
+      "has_sources": true
     }
   ]
 }
