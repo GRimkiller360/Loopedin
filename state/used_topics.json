@@ -872,6 +872,22 @@
       "share_trigger": "A viewer sends this to the friend who insists deleting their search history keeps it private, because they want to prove their provider could still sell it.",
       "contradicted_belief": "Most people assume a federal law already stops their internet provider from selling their search history, but that protection never actually took effect.",
       "has_sources": true
+    },
+    {
+      "topic": "Emperor Norton, the San Francisco man who crowned himself Emperor of the United States in 1859 and reigned for 21 years",
+      "video_id": "O9J9vpij3es",
+      "uploaded_at": "2026-09-03T09:11:54.066082+00:00",
+      "publish_hour_utc": 9,
+      "category": "history",
+      "seed_source_video_id": "rcCENLtNCOA",
+      "seed_view_count": 742817,
+      "hook_type": "shocking_fact",
+      "title": "A Broke Man Declared Himself Emperor Of America, And It Worked For 21 Years",
+      "duration_seconds": 48.0,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who jokes about crowning themselves ruler of their apartment, because they want to prove someone actually pulled it off for real.",
+      "contradicted_belief": "Most people assume a ruined businessman who crowned himself emperor of America would just get arrested, not saluted by police.",
+      "has_sources": true
     }
   ]
 }
