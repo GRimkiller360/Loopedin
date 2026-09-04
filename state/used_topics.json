@@ -920,6 +920,22 @@
       "share_trigger": "A viewer sends this to the friend who's watched every season of The Crown, because they want to prove the real history goes even deeper than the show.",
       "contradicted_belief": "Most people assume Diana officially held the title Princess Diana her entire life.",
       "has_sources": true
+    },
+    {
+      "topic": "the Lucifer of Li\u00e8ge (Le G\u00e9nie du Mal) -- a devil statue a Belgian bishop banned from his own cathedral in 1844 for looking too seductive, later bought by a king, while its 'toned down' replacement became more famous than the banned original",
+      "video_id": "59_iA56FaxM",
+      "uploaded_at": "2026-09-04T13:13:22.699811+00:00",
+      "publish_hour_utc": 13,
+      "category": "history",
+      "seed_source_video_id": "RBgAOKvKa1k",
+      "seed_view_count": 881426,
+      "hook_type": "shocking_fact",
+      "title": "A Belgian Bishop Banned This Cathedral's Devil Statue For Looking Too Good",
+      "duration_seconds": 51.4,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who jokes that old churches were never scandalous, because they want to prove a bishop once banned a devil statue for being too attractive.",
+      "contradicted_belief": "Most people assume a bishop would never actually have banned his own cathedral's devil statue just for looking too good.",
+      "has_sources": true
     }
   ]
 }
