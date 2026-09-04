@@ -1,0 +1,39 @@
+{
+  "topic": "the 19th-century dead soldiers' teeth denture trade known as Waterloo teeth, plus George Washington's real dentures",
+  "category": "history",
+  "seed_source_video_id": "BT5Do_92LYY",
+  "seed_view_count": 1526937,
+  "title": "Rich Georgians Wore Dentures Pulled From Dead Soldiers' Mouths",
+  "description": "AI-narrated commentary on the real, documented 19th-century trade in dead soldiers' teeth used to make dentures -- 'Waterloo teeth,' George Washington's actual dentures, and how the practice continued for decades. Original commentary, not a reused clip.",
+  "tags": ["history", "waterlooteeth", "georgewashington", "dentalhistory", "shorts", "historyshorts", "didyouknow", "weirdhistory", "civilwarhistory", "georgianera"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "Dead soldiers' mouths supplied Georgian England's most expensive smile."},
+    {"hook_type": "question", "text": "Where do you think rich Georgians actually got their perfect smile?"},
+    {"hook_type": "myth_bust", "text": "George Washington's teeth weren't wood. They came from someone else's mouth."},
+    {"hook_type": "story", "text": "In 1815, scavengers walked Waterloo's battlefield with pliers, not muskets."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who's terrified of the dentist, because they want to prove today's checkup is nothing compared to Georgian dentures.",
+  "contradicted_belief": "Most people assume old-timey dentures were carved from wood or ivory, not pulled from dead soldiers' mouths.",
+  "closing_comment": "Georgians really paid extra for dentures pulled from dead soldiers, and most had no idea.",
+  "sources": [
+    {"url": "https://www.mentalfloss.com/article/73497/when-dentures-were-made-teeth-dead-waterloo-soldiers", "note": "Confirms scavengers pulled teeth from Waterloo's dead, sold to London dentists as 'Waterloo teeth.'"},
+    {"url": "https://www.smithsonianmag.com/smart-news/george-washington-didnt-have-wooden-teeth-they-were-ivory-180953273/", "note": "Confirms Washington's dentures were ivory and human teeth, not wood, debunking the wooden-teeth myth."},
+    {"url": "https://www.historynet.com/smile-the-evolution-of-dentistry-during-the-civil-war/", "note": "Confirms Civil War battlefield teeth were harvested and shipped to Europe, continuing the earlier trade."}
+  ],
+  "beats": [
+    {"text": "**Dead soldiers'** mouths supplied Georgian England's most expensive smile.", "broll_query": "a single denture glinting under a spotlight against a plain black backdrop, macro close-up", "beat_role": "hook"},
+    {"text": "Scavengers pulled teeth from **Waterloo's dead** and shipped them home in barrels.", "broll_query": "a hooded scavenger crouched beside a fallen soldier at dusk, pliers in hand, muddy field", "beat_role": "claim"},
+    {"text": "Dentists boiled them clean, set them into ivory plates as **'Waterloo teeth.'**", "broll_query": "loose human teeth boiling in a copper pot over open flame, dim candlelit workshop", "beat_role": "evidence"},
+    {"text": "Nothing says high society like unreturnable dentures.", "broll_query": "an ivory denture tray in a pawnshop window with a handwritten 'no refunds' tag", "beat_role": "joke"},
+    {"text": "George Washington's famous teeth were never actually **wood**.", "broll_query": "a formal 18th-century oil portrait, a stern man smiling with lips pressed firmly shut", "beat_role": "claim"},
+    {"text": "They were hippo ivory set with human teeth bought from **enslaved people**.", "broll_query": "an antique carved denture on velvet, base set with mismatched yellowed human teeth", "beat_role": "evidence"},
+    {"text": "Even founders apparently loved hand-me-downs.", "broll_query": "a worn wooden denture case tied shut with a faded secondhand price tag", "beat_role": "joke"},
+    {"text": "The dead man's teeth trade outlived Waterloo by **decades**.", "broll_query": "a dusty ship's manifest ledger open on a captain's desk beside a quill pen", "beat_role": "claim"},
+    {"text": "Civil War battlefields like Shiloh restocked it, shipped to Europe in **barrels**.", "broll_query": "an open wooden shipping barrel packed with loose teeth on a foggy 1860s dock", "beat_role": "evidence"},
+    {"text": "Try explaining that on a customs form.", "broll_query": "a customs officer squinting at a paper form labeled contents human teeth", "beat_role": "joke"},
+    {"text": "Some historians say **tens of thousands** of teeth left Waterloo's field alone.", "broll_query": "a Georgian dentist's shop window sign advertising fresh soldiers' teeth for sale", "beat_role": "claim"},
+    {"text": "That exact number was never verified, historians still don't fully agree.", "broll_query": "a historian's hand tracing faded numbers across an old leather-bound ledger, dim archive light", "beat_role": "hedge"},
+    {"text": "The smile rich Georgians paid the most for was pulled straight from", "broll_query": "a wide empty muddy battlefield at dawn, mist rising, no bodies left in view", "beat_role": "ending"}
+  ]
+}
