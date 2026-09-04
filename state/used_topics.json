@@ -936,6 +936,22 @@
       "share_trigger": "A viewer sends this to the friend who jokes that old churches were never scandalous, because they want to prove a bishop once banned a devil statue for being too attractive.",
       "contradicted_belief": "Most people assume a bishop would never actually have banned his own cathedral's devil statue just for looking too good.",
       "has_sources": true
+    },
+    {
+      "topic": "the 19th-century dead soldiers' teeth denture trade known as Waterloo teeth, plus George Washington's real dentures",
+      "video_id": "cqsrlO62lLM",
+      "uploaded_at": "2026-09-04T17:12:38.271180+00:00",
+      "publish_hour_utc": 17,
+      "category": "history",
+      "seed_source_video_id": "BT5Do_92LYY",
+      "seed_view_count": 1526937,
+      "hook_type": "shocking_fact",
+      "title": "Rich Georgians Wore Dentures Pulled From Dead Soldiers' Mouths",
+      "duration_seconds": 54.7,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who's terrified of the dentist, because they want to prove today's checkup is nothing compared to Georgian dentures.",
+      "contradicted_belief": "Most people assume old-timey dentures were carved from wood or ivory, not pulled from dead soldiers' mouths.",
+      "has_sources": true
     }
   ]
 }
