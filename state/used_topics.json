@@ -904,6 +904,22 @@
       "share_trigger": "A viewer sends this to the friend who insists movies got knight armor completely right, because they want to prove real medieval armor was nothing like Hollywood shows.",
       "contradicted_belief": "Most people assume medieval armor was so heavy it made knights slow and clumsy in a fight.",
       "has_sources": true
+    },
+    {
+      "topic": "the royal title Princess Diana never held, her 1987 AIDS ward visit, and her Angola landmine campaign",
+      "video_id": "4Mw42ZX8UII",
+      "uploaded_at": "2026-09-04T05:12:00.765883+00:00",
+      "publish_hour_utc": 5,
+      "category": "history",
+      "seed_source_video_id": "AeD-FD-Im7A",
+      "seed_view_count": 1085199,
+      "hook_type": "myth_bust",
+      "title": "What Everyone Gets Wrong About Princess Diana",
+      "duration_seconds": 49.2,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who's watched every season of The Crown, because they want to prove the real history goes even deeper than the show.",
+      "contradicted_belief": "Most people assume Diana officially held the title Princess Diana her entire life.",
+      "has_sources": true
     }
   ]
 }
