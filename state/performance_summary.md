@@ -2,15 +2,17 @@
 
 ## Recent uploads (last 48h) -- early velocity signal, near-real-time (not the retention ranking below)
 
-- Emperor Norton, the San Francisco man who crowned himself Emperor of the United States in 1859 and reigned for 21 years (history/shocking_fact): 63 views, 1 likes, 1 comments
-- medieval myths media gets wrong: armor weight/mobility, the chastity belt, spices masking rotten meat, and the iron maiden (history/shocking_fact): 45 views, 4 likes, 1 comments
-- the 2017 Congressional Review Act repeal that let ISPs sell your search history without consent (history/shocking_fact): 28 views, 0 likes, 1 comments
+- medieval myths media gets wrong: armor weight/mobility, the chastity belt, spices masking rotten meat, and the iron maiden (history/shocking_fact): 665 views, 16 likes, 1 comments
+- the Lucifer of Liège (Le Génie du Mal) -- a devil statue a Belgian bishop banned from his own cathedral in 1844 for looking too seductive, later bought by a king, while its 'toned down' replacement became more famous than the banned original (history/shocking_fact): 602 views, 21 likes, 1 comments
+- Emperor Norton, the San Francisco man who crowned himself Emperor of the United States in 1859 and reigned for 21 years (history/shocking_fact): 77 views, 1 likes, 1 comments
+- the royal title Princess Diana never held, her 1987 AIDS ward visit, and her Angola landmine campaign (history/myth_bust): 67 views, 0 likes, 1 comments
+- the 19th-century dead soldiers' teeth denture trade known as Waterloo teeth, plus George Washington's real dentures (history/shocking_fact): 10 views, 1 likes, 1 comments
 
 ## Performance by ruleset version -- READ THIS FIRST if more than one is listed
 
 A newer version means a real pipeline/guidance change (captions, b-roll provider, hook/payoff rules, voice, motion, etc.), not just more time passing. Older versions can look artificially weak for reasons that have nothing to do with topic/category choice -- e.g. every video before 2026-08-18-retention-overhaul-v3 had a caption-visibility bug that made captions unreadable regardless of topic. Weight the *current* version's own numbers most heavily once it has a real sample size (n>=5 or so); until then, older-version data still carries topic/category signal, but read its absolute retention numbers as a floor the current pipeline should beat, not a ceiling to match.
 
-- 2026-08-21-no-dash-connector-v9: 1.950 shares/1k views, 59.7% avg view, 0.91 subs/1k views, 17.56 likes+comments/1k views (n=39)
+- 2026-08-21-no-dash-connector-v9: 1.949 shares/1k views, 60.3% avg view, 0.94 subs/1k views, 17.55 likes+comments/1k views (n=39)
 - 2026-08-19-payoff-mechanism-v4: 0.382 shares/1k views, 113.3% avg view, 1.31 subs/1k views, 8.70 likes+comments/1k views (n=5)
 - 2026-08-19-share-first-v1: 0.000 shares/1k views, 88.2% avg view, 0.00 subs/1k views, 62.50 likes+comments/1k views (n=1)
 - 2026-08-20-share-trigger-v5: 0.000 shares/1k views, 72.1% avg view, 0.42 subs/1k views, 6.62 likes+comments/1k views (n=7)
@@ -18,39 +20,39 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top categories (steer topic choice by this)
 
-- history: 1.491 shares/1k views, 66.9% avg view, 0.84 subs/1k views, 16.85 likes+comments/1k views (n=51)
+- history: 1.491 shares/1k views, 67.3% avg view, 0.86 subs/1k views, 16.84 likes+comments/1k views (n=51)
 
 ## Top hook styles (steer how you open/close by this)
 
-- shocking_fact: 2.136 shares/1k views, 67.8% avg view, 0.40 subs/1k views, 17.78 likes+comments/1k views (n=34)
-- myth_bust: 0.382 shares/1k views, 66.4% avg view, 1.70 subs/1k views, 15.26 likes+comments/1k views (n=14)
-- list: 0.000 shares/1k views, 84.6% avg view, 0.00 subs/1k views, 20.81 likes+comments/1k views (n=1)
+- shocking_fact: 2.136 shares/1k views, 68.1% avg view, 0.43 subs/1k views, 17.69 likes+comments/1k views (n=34)
+- myth_bust: 0.380 shares/1k views, 67.2% avg view, 1.70 subs/1k views, 15.46 likes+comments/1k views (n=14)
+- list: 0.000 shares/1k views, 84.5% avg view, 0.00 subs/1k views, 20.66 likes+comments/1k views (n=1)
 - story: 0.000 shares/1k views, 59.4% avg view, 1.91 subs/1k views, 10.92 likes+comments/1k views (n=4)
 
 ## Top video lengths (steer target narration length by this)
 
-- medium (20-40s): 2.241 shares/1k views, 69.7% avg view, 0.30 subs/1k views, 11.81 likes+comments/1k views (n=10)
-- long (40-58s): 1.462 shares/1k views, 59.6% avg view, 0.95 subs/1k views, 16.55 likes+comments/1k views (n=38)
-- short (<=20s): 0.000 shares/1k views, 118.7% avg view, 1.26 subs/1k views, 27.12 likes+comments/1k views (n=5)
+- medium (20-40s): 2.238 shares/1k views, 69.8% avg view, 0.30 subs/1k views, 11.71 likes+comments/1k views (n=10)
+- long (40-58s): 1.462 shares/1k views, 60.2% avg view, 0.97 subs/1k views, 16.56 likes+comments/1k views (n=38)
+- short (<=20s): 0.000 shares/1k views, 118.7% avg view, 1.26 subs/1k views, 27.11 likes+comments/1k views (n=5)
 
 ## Top publish hours (UTC) -- reference only, needs more spread of upload times before it means anything
 
 - 11:00 UTC: 10.552 shares/1k views, 54.5% avg view, 0.00 subs/1k views, 24.08 likes+comments/1k views (n=2)
 - 16:00 UTC: 4.854 shares/1k views, 63.8% avg view, 0.00 subs/1k views, 36.10 likes+comments/1k views (n=2)
-- 05:00 UTC: 2.391 shares/1k views, 62.0% avg view, 0.43 subs/1k views, 15.45 likes+comments/1k views (n=11)
+- 05:00 UTC: 2.391 shares/1k views, 63.1% avg view, 0.42 subs/1k views, 15.62 likes+comments/1k views (n=11)
 - 15:00 UTC: 1.658 shares/1k views, 39.7% avg view, 0.00 subs/1k views, 8.29 likes+comments/1k views (n=1)
-- 17:00 UTC: 1.264 shares/1k views, 64.6% avg view, 0.50 subs/1k views, 22.06 likes+comments/1k views (n=9)
-- 13:00 UTC: 0.668 shares/1k views, 52.8% avg view, 0.49 subs/1k views, 8.14 likes+comments/1k views (n=8)
+- 17:00 UTC: 1.264 shares/1k views, 66.1% avg view, 0.50 subs/1k views, 21.65 likes+comments/1k views (n=9)
+- 13:00 UTC: 0.665 shares/1k views, 53.3% avg view, 0.49 subs/1k views, 8.42 likes+comments/1k views (n=8)
 - 08:00 UTC: 0.617 shares/1k views, 91.4% avg view, 0.00 subs/1k views, 15.61 likes+comments/1k views (n=4)
-- 06:00 UTC: 0.000 shares/1k views, 115.0% avg view, 1.08 subs/1k views, 7.88 likes+comments/1k views (n=4)
+- 06:00 UTC: 0.000 shares/1k views, 115.0% avg view, 1.08 subs/1k views, 7.87 likes+comments/1k views (n=4)
 - 19:00 UTC: 0.000 shares/1k views, 68.4% avg view, 0.00 subs/1k views, 45.45 likes+comments/1k views (n=1)
-- 09:00 UTC: 0.000 shares/1k views, 66.3% avg view, 3.19 subs/1k views, 14.51 likes+comments/1k views (n=8)
+- 09:00 UTC: 0.000 shares/1k views, 65.5% avg view, 3.32 subs/1k views, 14.39 likes+comments/1k views (n=8)
 
 ## Top seed momentum tiers -- does a higher-view-count trend seed actually predict this channel's own performance?
 
 - no source video: 11.602 shares/1k views, 49.2% avg view, 0.00 subs/1k views, 7.20 likes+comments/1k views (n=3)
-- medium (100k-1M): 1.383 shares/1k views, 66.1% avg view, 0.43 subs/1k views, 16.14 likes+comments/1k views (n=30)
-- high (>=1M): 0.000 shares/1k views, 76.0% avg view, 1.89 subs/1k views, 18.38 likes+comments/1k views (n=17)
+- medium (100k-1M): 1.382 shares/1k views, 66.7% avg view, 0.43 subs/1k views, 16.07 likes+comments/1k views (n=30)
+- high (>=1M): 0.000 shares/1k views, 76.2% avg view, 1.95 subs/1k views, 18.46 likes+comments/1k views (n=17)
 
 ## Topic-title patterns (auto-detected, steer topic choice by this)
 
@@ -73,16 +75,16 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 
 ## Where views are coming from (last 28 days, channel-wide, reference only -- not a per-video lever)
 
-- SHORTS: 92.9% of views (48756)
-- YT_SEARCH: 2.4% of views (1284)
-- YT_CHANNEL: 2.1% of views (1088)
-- YT_OTHER_PAGE: 1.9% of views (976)
-- SUBSCRIBER: 0.6% of views (304)
+- SHORTS: 92.8% of views (48970)
+- YT_SEARCH: 2.5% of views (1315)
+- YT_CHANNEL: 2.1% of views (1094)
+- YT_OTHER_PAGE: 1.9% of views (977)
+- SUBSCRIBER: 0.6% of views (306)
 - NO_LINK_OTHER: 0.1% of views (38)
-- EXT_URL: 0.0% of views (20)
+- EXT_URL: 0.0% of views (21)
 - SOUND_PAGE: 0.0% of views (13)
 - NOTIFICATION: 0.0% of views (11)
 - PLAYLIST: 0.0% of views (4)
+- HASHTAGS: 0.0% of views (3)
 - RELATED_VIDEO: 0.0% of views (1)
-- HASHTAGS: 0.0% of views (1)
 
