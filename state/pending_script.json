@@ -1,0 +1,37 @@
+{
+  "topic": "the WWII-era Japanese emperor never personally addressed by the name history calls him, and Japan's pre-1868 habit of renaming eras after disasters",
+  "category": "history",
+  "seed_source_video_id": "UAJvtOUeOyo",
+  "seed_view_count": 687917,
+  "title": "The WWII Emperor Who Never Heard His Own Historical Name",
+  "description": "AI-narrated history commentary. Japan's WWII-era emperor was never personally addressed by the name history now uses for him -- and before 1868, the imperial court didn't just avoid saying his name, it rewrote the calendar itself over bad omens. Original commentary inspired by public trend data, not a reproduction of any single source video.",
+  "tags": ["history", "japan", "hirohito", "emperor showa", "wwii", "japanese history", "shorts", "historyfacts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "This WWII emperor never once heard the name history calls him by."},
+    {"hook_type": "myth_bust", "text": "You think 'Emperor Shōwa' was his real title. He never used it himself."},
+    {"hook_type": "question", "text": "What was Japan's WWII emperor actually called to his own face?"},
+    {"hook_type": "story", "text": "In 1926, a young prince took a name he would never once hear spoken to him."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who's obsessed with WWII documentaries because they want to show them a detail even the History Channel skips.",
+  "contradicted_belief": "You assume Japan's WWII emperor was addressed by the name history uses for him.",
+  "closing_comment": "Wild that we call him Emperor Shōwa more than he ever did himself. Know another ruler who never heard their own historical name?",
+  "sources": [
+    {"url": "https://en.wikipedia.org/wiki/Sh%C5%8Dwa", "note": "Confirms 'Shōwa' was Hirohito's reign-era name, used as his personal historical name only after his 1989 death."},
+    {"url": "https://en.wikipedia.org/wiki/Chrysanthemum_taboo", "note": "Documents Japan's cultural taboo against naming or discussing the emperor, especially Hirohito."},
+    {"url": "https://www.nippon.com/en/in-depth/a05403/", "note": "Confirms era names changed multiple times within a single reign before 1868's one-reign-one-era reform."}
+  ],
+  "beats": [
+    {"text": "This WWII emperor **never** once heard the name history calls him by.", "broll_query": "an elderly Japanese emperor in formal military dress uniform standing alone in a dim palace hall, black and white photo", "beat_role": "hook"},
+    {"text": "Everyone calls him **Emperor Shōwa.** He never once heard that name used for him.", "broll_query": "an ornate gold Japanese imperial chrysanthemum seal stamped on aged paper, close up, warm lamp light", "beat_role": "claim"},
+    {"text": "Shōwa was only his reign's calendar name. In life he was addressed as **His Majesty.**", "broll_query": "a formal Japanese court attendant bowing before an empty ornate throne, soft gold lighting, respectful distance", "beat_role": "evidence"},
+    {"text": "History's most polite **dodge** ever.", "broll_query": "a comedic blank name-tag sticker reading nothing, pinned to an empty lapel, studio light", "beat_role": "joke"},
+    {"text": "His actual birth name was almost never **spoken** aloud either.", "broll_query": "a single index finger pressed to closed lips in a dim quiet room, warm side light", "beat_role": "claim"},
+    {"text": "Japan's imperial naming taboo made saying an emperor's real name **disrespectful**.", "broll_query": "an old handwritten Japanese document with a name deliberately left blank, aged parchment, dim study light", "beat_role": "evidence"},
+    {"text": "Never **allowed** to say it back.", "broll_query": "a comedic zipper sealed tightly across a cartoon mouth, plain background, flat lighting", "beat_role": "joke"},
+    {"text": "Before 1868, Japan didn't just avoid his name. It **rewrote** the calendar instead.", "broll_query": "a wall covered in torn calendar pages with different handwritten Japanese characters, dim scattered light", "beat_role": "claim"},
+    {"text": "A bad fire or omen could scrap an era name mid-reign, and one era once **straddled** two emperors.", "broll_query": "a burning wooden building at night with a bright comet streaking across the sky above it", "beat_role": "evidence"},
+    {"text": "How strictly ordinary people obeyed that speaking taboo is still **debated** among historians.", "broll_query": "a dim library reading room with stacks of old Japanese history books, warm lamp light", "beat_role": "hedge"},
+    {"text": "Which is a **strange** way to end a very old naming tradition, so.", "broll_query": "a single lit candle beside a stack of old Japanese calendar scrolls in darkness", "beat_role": "ending"}
+  ]
+}
