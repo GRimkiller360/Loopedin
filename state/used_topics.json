@@ -968,6 +968,22 @@
       "share_trigger": "A viewer sends this to the friend obsessed with expensive skincare because they want to prove even a queen's routine can secretly poison you.",
       "contradicted_belief": "Most people think Elizabeth I's beauty trick was just makeup, not the actual poison it really was.",
       "has_sources": true
+    },
+    {
+      "topic": "the 1915 cocoa-pod mix-up behind Coca-Cola's contour bottle shape",
+      "video_id": "9PZGptBffFM",
+      "uploaded_at": "2026-09-05T17:12:15.800170+00:00",
+      "publish_hour_utc": 17,
+      "category": "history",
+      "seed_source_video_id": "IjJAQzflmAQ",
+      "seed_view_count": 1144746,
+      "hook_type": "shocking_fact",
+      "title": "Coca-Cola's Bottle Shape Came From a Cocoa-Pod Mistake",
+      "duration_seconds": 46.6,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who insists Coca-Cola's bottle was designed to look sexy, because they want to prove it was actually just a mix-up.",
+      "contradicted_belief": "Most people assume Coca-Cola's iconic bottle shape came from pure design genius, not a mistake.",
+      "has_sources": true
     }
   ]
 }
