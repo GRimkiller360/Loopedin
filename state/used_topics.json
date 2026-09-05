@@ -952,6 +952,22 @@
       "share_trigger": "A viewer sends this to the friend who's terrified of the dentist, because they want to prove today's checkup is nothing compared to Georgian dentures.",
       "contradicted_belief": "Most people assume old-timey dentures were carved from wood or ivory, not pulled from dead soldiers' mouths.",
       "has_sources": true
+    },
+    {
+      "topic": "Elizabeth I's lead-based Mask of Youth makeup, the hair loss and mirror ban it caused",
+      "video_id": "Xbyxzxk7DE0",
+      "uploaded_at": "2026-09-05T13:12:34.926834+00:00",
+      "publish_hour_utc": 13,
+      "category": "history",
+      "seed_source_video_id": "v8Vcw-aoKtw",
+      "seed_view_count": 878906,
+      "hook_type": "shocking_fact",
+      "title": "Elizabeth I's Beauty Routine Was Secretly Poisoning Her",
+      "duration_seconds": 47.5,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend obsessed with expensive skincare because they want to prove even a queen's routine can secretly poison you.",
+      "contradicted_belief": "Most people think Elizabeth I's beauty trick was just makeup, not the actual poison it really was.",
+      "has_sources": true
     }
   ]
 }
