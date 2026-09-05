@@ -1,0 +1,35 @@
+{
+  "topic": "the 1835 Great Moon Hoax -- a New York newspaper's fake bat-people-on-the-moon story fooled Yale scientists and briefly made it the best-selling paper on Earth",
+  "category": "history",
+  "seed_source_video_id": "v8Vcw-aoKtw",
+  "seed_view_count": 807419,
+  "title": "The 1835 Newspaper Hoax That Convinced America the Moon Had Bat-People",
+  "description": "AI-narrated commentary on the 1835 Great Moon Hoax: how a New York newspaper convinced readers the moon was home to bat-winged humanoids and blue unicorns, fooled a team of Yale scientists sent to verify it, and briefly became the best-selling newspaper on Earth. Original commentary, not a reproduction of any source video.",
+  "tags": ["history", "greatmoonhoax", "1835", "fakenews", "newspaperhoax", "johnherschel", "historyfacts", "shorts"],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {"hook_type": "shocking_fact", "text": "The 1835 newspaper hoax that convinced half of America there were bat-people living on the moon."},
+    {"hook_type": "question", "text": "What if one newspaper convinced an entire country that bat-people lived on the moon, and nobody was ever punished for it?"},
+    {"hook_type": "myth_bust", "text": "You think fake news is new? In 1835 a newspaper invented an entire moon civilization and got away with it."},
+    {"hook_type": "story", "text": "In August 1835, a New York newspaper announced astronomers had discovered bat-winged men living on the moon."}
+  ],
+  "share_trigger": "A viewer sends this to the friend who insists 'fake news' only started with the internet, because they want to watch them lose it over bat-people on the moon in 1835.",
+  "contradicted_belief": "Most people think 'fake news' about bat-people on the moon is a modern internet invention, not something an 1835 newspaper hoax already pulled off.",
+  "closing_comment": "Wildest part of this 1835 newspaper hoax: the real astronomer never even sued over the fake bat-people on the moon.",
+  "sources": [
+    {"url": "https://hoaxes.org/archive/permalink/the_great_moon_hoax", "note": "Confirms the 1835 Sun articles and the Yale scientists sent between offices until they gave up."},
+    {"url": "https://www.history.com/this-day-in-history/august-25/the-great-moon-hoax", "note": "Confirms Herschel's name was used without consent and the September 16, 1835 admission it was fake."}
+  ],
+  "beats": [
+    {"text": "1835 newspaper hoax that convinced half of America there were **bat-people** living on the moon.", "broll_query": "dramatic 1830s engraving-style scene of bat-winged humanoid creatures standing in a glowing blue moon forest", "beat_role": "hook"},
+    {"text": "The paper said the moon was covered in blue unicorns and whole forests of **man-bats**.", "broll_query": "a blue unicorn and a bat-winged man grazing side by side in a fantastical alien moon landscape", "beat_role": "claim"},
+    {"text": "A real astronomer got the credit, and sales rocketed to over **19,000** copies a day, beating London's biggest paper.", "broll_query": "a bustling 1830s New York street, newsboys waving newspapers to a huge crowd, stacks of papers selling fast", "beat_role": "evidence"},
+    {"text": "Somehow the **unicorns** got zero headlines.", "broll_query": "a single blue unicorn standing alone and ignored while reporters and crowds rush past toward something else", "beat_role": "joke"},
+    {"text": "Then actual **Yale** University scientists showed up demanding to see the original proof.", "broll_query": "a group of formal 19th-century scholars in dark suits marching up to a newspaper office demanding entry", "beat_role": "claim"},
+    {"text": "Staff walked them between two offices for hours until they gave up, still **convinced**.", "broll_query": "the same scholars walking confused back and forth down a long hallway between two office doors", "beat_role": "evidence"},
+    {"text": "History's longest game of hallway **keep-away**.", "broll_query": "a hallway door slamming shut just as a scholar reaches for the handle", "beat_role": "joke"},
+    {"text": "Nobody at the newspaper was ever fired, sued, or forced to apologize **publicly**.", "broll_query": "an empty, undisturbed 1830s newspaper editor's desk at night, no police, no lawyers, nothing happening", "beat_role": "claim"},
+    {"text": "It's still debated whether the reporter ever fully admitted writing the hoax **himself**.", "broll_query": "a shadowy unnamed writer's silhouette at a desk, face hidden, quill in hand", "beat_role": "hedge"},
+    {"text": "Newspapers have been inventing wild stories to sell copies before the internet, so here's the", "broll_query": "a glowing modern smartphone resting next to a folded 1830s newspaper on the same wooden table", "beat_role": "ending"}
+  ]
+}
