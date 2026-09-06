@@ -1016,6 +1016,22 @@
       "share_trigger": "A viewer sends this to their friend obsessed with what-if history because they want to argue about whether one bullet could have changed everything.",
       "contradicted_belief": "Most people assume any soldier who had Hitler in his rifle sights would have simply pulled the trigger and shot him.",
       "has_sources": true
+    },
+    {
+      "topic": "Tarrare, the 18th-century French soldier whose insatiable appetite made him a document-swallowing military courier, and the fork he believed killed him",
+      "video_id": "-Q_wrU9rEDw",
+      "uploaded_at": "2026-09-06T13:13:45.922775+00:00",
+      "publish_hour_utc": 13,
+      "category": "history",
+      "seed_source_video_id": "36ktJXspJT4",
+      "seed_view_count": 1374996,
+      "hook_type": "shocking_fact",
+      "title": "The French Spy Who Smuggled Secrets By Swallowing Them",
+      "duration_seconds": 49.3,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who brags about their competitive eating record because they want to prove real history already beat them.",
+      "contradicted_belief": "Most people assume a soldier's secret documents got smuggled using disguises, not swallowed inside his own stomach.",
+      "has_sources": true
     }
   ]
 }
