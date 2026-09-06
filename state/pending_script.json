@@ -1,0 +1,116 @@
+{
+  "topic": "Tarrare, the 18th-century French soldier whose insatiable appetite made him a document-swallowing military courier, and the fork he believed killed him",
+  "category": "history",
+  "seed_source_video_id": "36ktJXspJT4",
+  "seed_view_count": 1374996,
+  "title": "The French Spy Who Smuggled Secrets By Swallowing Them",
+  "description": "AI-narrated commentary on the true story of Tarrare, the 18th-century French soldier whose bottomless appetite turned him into a document-smuggling military courier -- and later, a medical mystery that stumped his own doctors.",
+  "tags": [
+    "history",
+    "shorts",
+    "strange history",
+    "18th century france",
+    "military history",
+    "true story",
+    "medical mystery"
+  ],
+  "hook_type": "shocking_fact",
+  "hook_candidates": [
+    {
+      "hook_type": "shocking_fact",
+      "text": "This French soldier's stomach smuggled secret documents past enemy lines."
+    },
+    {
+      "hook_type": "question",
+      "text": "Would you trust top-secret war orders to a soldier who once ate live cats for breakfast?"
+    },
+    {
+      "hook_type": "myth_bust",
+      "text": "Everyone assumes a swallowed fork killed this French soldier. His autopsy proved it wasn't the fork."
+    },
+    {
+      "hook_type": "story",
+      "text": "A starving French soldier's bottomless appetite turned him into his own army's strangest secret weapon."
+    }
+  ],
+  "share_trigger": "A viewer sends this to the friend who brags about their competitive eating record because they want to prove real history already beat them.",
+  "contradicted_belief": "Most people assume a soldier's secret documents got smuggled using disguises, not swallowed inside his own stomach.",
+  "closing_comment": "He really smuggled secrets by swallowing them, then spent his last years fighting a mystery illness doctors still debate today.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Tarrare",
+      "note": "Confirms his 1798 death at 26, his role as a document-smuggling military courier, and his tuberculosis autopsy."
+    },
+    {
+      "url": "https://www.ripleys.com/stories/tarrare",
+      "note": "Confirms the autopsy found no swallowed fork; his actual cause of death was tuberculosis, not the fork."
+    }
+  ],
+  "beats": [
+    {
+      "text": "This French soldier's stomach **smuggled** secret documents past enemy lines.",
+      "broll_query": "a French Revolutionary-era soldier swallowing a rolled paper scroll, candlelit tent, tense expression, close-up",
+      "beat_role": "hook"
+    },
+    {
+      "text": "His first mission almost got him killed by his own army.",
+      "broll_query": "a bound soldier blindfolded before an 18th-century firing squad, dawn light, tense standoff",
+      "beat_role": "claim"
+    },
+    {
+      "text": "Enemy troops beat him, nearly executed him, before officers intervened.",
+      "broll_query": "French army officers galloping up waving a white flag to halt a firing squad, chaotic battlefield",
+      "beat_role": "evidence"
+    },
+    {
+      "text": "Worst first day on record.",
+      "broll_query": "a torn parchment calendar page reading 'Day One' nailed to a battered tent flap, ironic close-up",
+      "beat_role": "joke"
+    },
+    {
+      "text": "Doctors once watched him finish a meal meant for **fifteen** people.",
+      "broll_query": "an enormous banquet table piled with food for fifteen people, one lone soldier seated at the head",
+      "beat_role": "claim"
+    },
+    {
+      "text": "He swallowed live eels and squirming cats without chewing once.",
+      "broll_query": "a man's open mouth swallowing a live eel whole at a wooden table, candlelight, dramatic close-up",
+      "beat_role": "evidence"
+    },
+    {
+      "text": "Buffets would ban him on sight.",
+      "broll_query": "a hand-painted 'do not enter' sign nailed across a restaurant buffet doorway, comedic, bright daylight",
+      "beat_role": "joke"
+    },
+    {
+      "text": "That appetite is why generals recruited him as a courier.",
+      "broll_query": "a military officer sizing up a soldier's stomach with a measuring tape, 18th-century office, skeptical look",
+      "beat_role": "claim"
+    },
+    {
+      "text": "He swallowed sealed papers, crossed enemy lines, waited days to pass naturally.",
+      "broll_query": "a soldier walking past armed enemy sentries at a checkpoint, sealed papers hidden, nervous sideways glance",
+      "beat_role": "evidence"
+    },
+    {
+      "text": "History's worst mail carrier, honestly.",
+      "broll_query": "an old leather mail satchel dropped and torn open in a muddy alley, comedic composition",
+      "beat_role": "joke"
+    },
+    {
+      "text": "He spent his final years convinced a swallowed **fork** was killing him.",
+      "broll_query": "a gaunt hospital patient clutching his stomach in pain, a single golden fork on the bedside table, dim ward",
+      "beat_role": "claim"
+    },
+    {
+      "text": "His autopsy blamed tuberculosis, though doctors still debate what explains it.",
+      "broll_query": "an 18th-century physician examining autopsy notes by candlelight, somber medical study, quill and papers",
+      "beat_role": "hedge"
+    },
+    {
+      "text": "So next time a secret weapon comes up, remember it was once a stomach instead of",
+      "broll_query": "a single golden fork glinting alone on an empty wooden table, dim spotlight, lingering shot",
+      "beat_role": "ending"
+    }
+  ]
+}
