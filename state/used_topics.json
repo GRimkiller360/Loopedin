@@ -1000,6 +1000,22 @@
       "share_trigger": "A viewer sends this to the friend who insists Washington's teeth were literally made of wood, because they want to show him what the dentures were actually made from.",
       "contradicted_belief": "Most people believe George Washington's famous false teeth were carved from plain wood.",
       "has_sources": true
+    },
+    {
+      "topic": "Henry Tandey, Britain's most decorated WWI private, and the disputed legend that he spared a young Hitler's life",
+      "video_id": "DLrEADmaR7c",
+      "uploaded_at": "2026-09-06T09:12:31.470824+00:00",
+      "publish_hour_utc": 9,
+      "category": "history",
+      "seed_source_video_id": "36ktJXspJT4",
+      "seed_view_count": 1374996,
+      "hook_type": "question",
+      "title": "The WWI Soldier Who May Have Spared Hitler's Life",
+      "duration_seconds": 47.8,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to their friend obsessed with what-if history because they want to argue about whether one bullet could have changed everything.",
+      "contradicted_belief": "Most people assume any soldier who had Hitler in his rifle sights would have simply pulled the trigger and shot him.",
+      "has_sources": true
     }
   ]
 }
