@@ -984,6 +984,22 @@
       "share_trigger": "A viewer sends this to the friend who insists Coca-Cola's bottle was designed to look sexy, because they want to prove it was actually just a mix-up.",
       "contradicted_belief": "Most people assume Coca-Cola's iconic bottle shape came from pure design genius, not a mistake.",
       "has_sources": true
+    },
+    {
+      "topic": "George Washington's dentures made partly from teeth of people he enslaved, and the Waterloo teeth trade",
+      "video_id": "l6UvxHqJg1Q",
+      "uploaded_at": "2026-09-06T05:15:33.665203+00:00",
+      "publish_hour_utc": 5,
+      "category": "history",
+      "seed_source_video_id": "BT5Do_92LYY",
+      "seed_view_count": 1526937,
+      "hook_type": "shocking_fact",
+      "title": "The Dark Truth Behind George Washington's 'Wooden' Teeth",
+      "duration_seconds": 38.8,
+      "ruleset_version": "2026-08-21-no-dash-connector-v9",
+      "share_trigger": "A viewer sends this to the friend who insists Washington's teeth were literally made of wood, because they want to show him what the dentures were actually made from.",
+      "contradicted_belief": "Most people believe George Washington's famous false teeth were carved from plain wood.",
+      "has_sources": true
     }
   ]
 }
