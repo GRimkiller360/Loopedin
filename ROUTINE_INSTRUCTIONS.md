@@ -222,6 +222,24 @@ generic phrasing of the same idea even if the generic one happens to be worded a
 underlying point, the one with a specific, checkable detail wins, regardless of which
 `hook_type` label either one carries.
 
+**Contrast beats flat assertion, even at equal specificity.** A candidate that states a
+specific fact in isolation (a name, a number, a mechanism) is not automatically as
+strong as a comparably specific candidate that states the same fact as a correction to
+something the viewer probably already assumes -- "X wasn't Y, it was Z" gives the
+viewer something to resolve; "X was Z" alone, even with a real name or number attached,
+is just a fact to receive. This is independent of the `hook_type` label: a
+`shocking_fact`-labeled candidate can carry this same contrast shape (state the
+assumption implicitly, then contradict it in the same sentence) without needing to be
+relabeled `myth_bust`, and a flat `myth_bust`-labeled candidate that never actually
+states what's being corrected doesn't get credit just for the label. When candidates
+are otherwise comparably specific, prefer the one written as a correction over the one
+that's a flat statement of the same underlying fact -- don't let "specificity beats
+genre-fit" above become an excuse to default to whichever candidate happens to be
+phrased as an isolated assertion just because it's technically concrete. If you want to
+see this pattern in the channel's own real numbers, compare `hook_type` and
+`avg_view_pct` across `state/performance_log.json` yourself, fresh, rather than trusting
+a number written into this file.
+
 Pick the strongest candidate. That's your `hook_type` and the basis for `beats[0]` --
 light polish going from draft to final beat is fine, but it must genuinely be that
 candidate, not something unrelated you wrote afterward. Record every candidate you

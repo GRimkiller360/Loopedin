@@ -113,7 +113,13 @@ import sys
 # silently skips a bare dash while captions still gave it a display slot, producing a
 # stray dash on screen and desyncing caption timing for the rest of that beat. See
 # state/ruleset_changelog.json.
-RULESET_VERSION = "2026-08-21-no-dash-connector-v9"
+#
+# 2026-09-11-contrast-hook-v10: hook-winner selection now weighs "states a fact as a
+# correction to a likely assumption" as a distinct strength independent of hook_type
+# label and independent of raw specificity, after real v9 data showed flat-assertion
+# hooks (even specific ones) underperforming contrast-framed hooks. See
+# state/ruleset_changelog.json.
+RULESET_VERSION = "2026-09-11-contrast-hook-v10"
 
 REQUIRED_TOP_LEVEL = {"topic", "category", "title", "description", "tags", "beats", "seed_source_video_id", "hook_type", "hook_candidates", "share_trigger", "contradicted_belief", "closing_comment"}
 REQUIRED_BEAT_KEYS = {"text", "broll_query", "beat_role"}
