@@ -1032,6 +1032,22 @@
       "share_trigger": "A viewer sends this to the friend who brags about their competitive eating record because they want to prove real history already beat them.",
       "contradicted_belief": "Most people assume a soldier's secret documents got smuggled using disguises, not swallowed inside his own stomach.",
       "has_sources": true
+    },
+    {
+      "topic": "the Harvard Houghton Library book bound in human skin (Des destin\u00e9es de l'\u00e2me), confirmed real via 2014 peptide testing, and its 2024 removal",
+      "video_id": "EDtZcX4YzpE",
+      "uploaded_at": "2026-09-11T09:20:40.091890+00:00",
+      "publish_hour_utc": 9,
+      "category": "history",
+      "seed_source_video_id": "Rn6gGk4lAeM",
+      "seed_view_count": 994760,
+      "hook_type": "myth_bust",
+      "title": "Harvard's Human-Skin Book Was Real, Then They Quietly Took It Apart",
+      "duration_seconds": 46.4,
+      "ruleset_version": "2026-09-11-contrast-hook-v10",
+      "share_trigger": "A viewer sends this to the friend who insists every human skin book story online is an urban legend, because they want to prove Harvard actually had a real one and quietly took it apart.",
+      "contradicted_belief": "Most people assume a real human skin book is just an urban legend, not something Harvard actually owned and later took apart.",
+      "has_sources": true
     }
   ]
 }
