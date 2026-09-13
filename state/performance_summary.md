@@ -2,13 +2,13 @@
 
 ## Recent uploads (last 48h) -- early velocity signal, near-real-time (not the retention ranking below)
 
-- the Harvard Houghton Library book bound in human skin (Des destinées de l'âme), confirmed real via 2014 peptide testing, and its 2024 removal (history/myth_bust): 3 views, 0 likes, 1 comments
+- the Harvard Houghton Library book bound in human skin (Des destinées de l'âme), confirmed real via 2014 peptide testing, and its 2024 removal (history/myth_bust): 14 views, 0 likes, 1 comments
 
 ## Performance by ruleset version -- READ THIS FIRST if more than one is listed
 
 A newer version means a real pipeline/guidance change (captions, b-roll provider, hook/payoff rules, voice, motion, etc.), not just more time passing. Older versions can look artificially weak for reasons that have nothing to do with topic/category choice -- e.g. every video before 2026-08-18-retention-overhaul-v3 had a caption-visibility bug that made captions unreadable regardless of topic. Weight the *current* version's own numbers most heavily once it has a real sample size (n>=5 or so); until then, older-version data still carries topic/category signal, but read its absolute retention numbers as a floor the current pipeline should beat, not a ceiling to match.
 
-- 2026-08-21-no-dash-connector-v9: 1.559 shares/1k views, 61.0% avg view, 1.13 subs/1k views, 18.75 likes+comments/1k views (n=49)
+- 2026-08-21-no-dash-connector-v9: 1.546 shares/1k views, 61.0% avg view, 1.13 subs/1k views, 18.70 likes+comments/1k views (n=49)
 - 2026-08-19-payoff-mechanism-v4: 0.382 shares/1k views, 112.9% avg view, 1.31 subs/1k views, 8.46 likes+comments/1k views (n=5)
 - 2026-08-19-share-first-v1: 0.000 shares/1k views, 88.2% avg view, 0.00 subs/1k views, 62.50 likes+comments/1k views (n=1)
 - 2026-08-20-share-trigger-v5: 0.000 shares/1k views, 72.3% avg view, 0.42 subs/1k views, 6.37 likes+comments/1k views (n=7)
@@ -16,11 +16,11 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top categories (steer topic choice by this)
 
-- history: 1.252 shares/1k views, 66.7% avg view, 1.03 subs/1k views, 17.89 likes+comments/1k views (n=61)
+- history: 1.242 shares/1k views, 66.7% avg view, 1.03 subs/1k views, 17.85 likes+comments/1k views (n=61)
 
 ## Top hook styles (steer how you open/close by this)
 
-- shocking_fact: 1.737 shares/1k views, 65.5% avg view, 0.52 subs/1k views, 19.58 likes+comments/1k views (n=42)
+- shocking_fact: 1.723 shares/1k views, 65.5% avg view, 0.52 subs/1k views, 19.53 likes+comments/1k views (n=42)
 - myth_bust: 0.355 shares/1k views, 68.0% avg view, 2.12 subs/1k views, 14.41 likes+comments/1k views (n=15)
 - question: 0.000 shares/1k views, 120.8% avg view, 3.39 subs/1k views, 13.56 likes+comments/1k views (n=1)
 - list: 0.000 shares/1k views, 84.2% avg view, 0.00 subs/1k views, 20.56 likes+comments/1k views (n=1)
@@ -28,15 +28,15 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top video lengths (steer target narration length by this)
 
-- medium (20-40s): 1.975 shares/1k views, 72.5% avg view, 0.27 subs/1k views, 16.15 likes+comments/1k views (n=11)
-- long (40-58s): 1.203 shares/1k views, 60.2% avg view, 1.18 subs/1k views, 17.05 likes+comments/1k views (n=47)
-- short (<=20s): 0.000 shares/1k views, 118.3% avg view, 1.26 subs/1k views, 26.90 likes+comments/1k views (n=5)
+- medium (20-40s): 1.920 shares/1k views, 72.5% avg view, 0.27 subs/1k views, 15.99 likes+comments/1k views (n=11)
+- long (40-58s): 1.203 shares/1k views, 60.2% avg view, 1.18 subs/1k views, 17.04 likes+comments/1k views (n=47)
+- short (<=20s): 0.000 shares/1k views, 118.3% avg view, 1.26 subs/1k views, 26.89 likes+comments/1k views (n=5)
 
 ## Top publish hours (UTC) -- reference only, needs more spread of upload times before it means anything
 
-- 11:00 UTC: 10.223 shares/1k views, 54.3% avg view, 0.00 subs/1k views, 30.67 likes+comments/1k views (n=2)
+- 11:00 UTC: 9.921 shares/1k views, 54.4% avg view, 0.00 subs/1k views, 29.76 likes+comments/1k views (n=2)
 - 16:00 UTC: 4.854 shares/1k views, 63.8% avg view, 0.00 subs/1k views, 36.10 likes+comments/1k views (n=2)
-- 05:00 UTC: 2.023 shares/1k views, 68.2% avg view, 0.98 subs/1k views, 16.91 likes+comments/1k views (n=13)
+- 05:00 UTC: 2.023 shares/1k views, 68.2% avg view, 0.98 subs/1k views, 16.89 likes+comments/1k views (n=13)
 - 15:00 UTC: 1.656 shares/1k views, 39.7% avg view, 0.00 subs/1k views, 8.28 likes+comments/1k views (n=1)
 - 17:00 UTC: 0.948 shares/1k views, 62.0% avg view, 0.57 subs/1k views, 20.52 likes+comments/1k views (n=12)
 - 08:00 UTC: 0.617 shares/1k views, 91.4% avg view, 0.00 subs/1k views, 15.61 likes+comments/1k views (n=4)
@@ -48,8 +48,8 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 ## Top seed momentum tiers -- does a higher-view-count trend seed actually predict this channel's own performance?
 
 - no source video: 11.602 shares/1k views, 49.2% avg view, 0.00 subs/1k views, 7.20 likes+comments/1k views (n=3)
-- medium (100k-1M): 1.230 shares/1k views, 65.5% avg view, 0.60 subs/1k views, 16.91 likes+comments/1k views (n=34)
-- high (>=1M): 0.000 shares/1k views, 74.3% avg view, 1.93 subs/1k views, 19.67 likes+comments/1k views (n=23)
+- medium (100k-1M): 1.212 shares/1k views, 65.5% avg view, 0.60 subs/1k views, 16.85 likes+comments/1k views (n=34)
+- high (>=1M): 0.000 shares/1k views, 74.3% avg view, 1.93 subs/1k views, 19.66 likes+comments/1k views (n=23)
 
 ## Topic-title patterns (auto-detected, steer topic choice by this)
 
@@ -60,7 +60,7 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 ## Top individual topics (reference only -- these exact topics are already used)
 
 - the Pig War of 1859 -- a US-Britain border standoff whose only casualty was a pig: 48.4% avg view
-- Portugal's 1966 World Cup squad's colonial-Africa-born stars (Coluna, Eusébio), the same year Africa boycotted the tournament entirely: 49.7% avg view
+- Portugal's 1966 World Cup squad's colonial-Africa-born stars (Coluna, Eusébio), the same year Africa boycotted the tournament entirely: 50.0% avg view
 - the Battle of Karansebes (1788) -- an army that may have fought and defeated itself: 49.9% avg view
 - the 1904 Olympic marathon -- Fred Lorz rode in a car for 11 miles, and the actual winner was drugged with rat poison: 39.4% avg view
 - the Great Emu War of 1932 -- the Australian army sent machine guns after 20,000 emus and lost: 58.8% avg view
@@ -72,15 +72,15 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 
 ## Where views are coming from (last 28 days, channel-wide, reference only -- not a per-video lever)
 
-- SHORTS: 92.8% of views (50008)
-- YT_SEARCH: 2.9% of views (1541)
-- YT_CHANNEL: 1.9% of views (1010)
-- YT_OTHER_PAGE: 1.8% of views (967)
-- SUBSCRIBER: 0.5% of views (291)
-- NO_LINK_OTHER: 0.1% of views (34)
+- SHORTS: 92.7% of views (46527)
+- YT_SEARCH: 2.9% of views (1448)
+- YT_CHANNEL: 1.8% of views (922)
+- YT_OTHER_PAGE: 1.8% of views (917)
+- SUBSCRIBER: 0.5% of views (268)
+- NO_LINK_OTHER: 0.1% of views (35)
 - EXT_URL: 0.0% of views (22)
 - SOUND_PAGE: 0.0% of views (12)
-- NOTIFICATION: 0.0% of views (11)
+- NOTIFICATION: 0.0% of views (10)
 - PLAYLIST: 0.0% of views (4)
 - HASHTAGS: 0.0% of views (3)
 - RELATED_VIDEO: 0.0% of views (1)
