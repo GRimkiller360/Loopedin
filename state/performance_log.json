@@ -191,7 +191,7 @@
       "duration_seconds": 38.1,
       "seed_view_count": 1160351,
       "ruleset_version": "2026-08-20-share-trigger-v5",
-      "views": 2,
+      "views": 3,
       "likes": 0,
       "comments": 0,
       "shares": 0,
@@ -209,11 +209,11 @@
       "duration_seconds": 28.6,
       "seed_view_count": 542323,
       "ruleset_version": "2026-08-20-share-trigger-v5",
-      "views": 3,
+      "views": 2,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 17.79,
+      "avg_view_pct": 6.21,
       "subscribers_gained": 0
     },
     {
@@ -227,11 +227,11 @@
       "duration_seconds": 44.4,
       "seed_view_count": 478358,
       "ruleset_version": "2026-08-20-share-trigger-v5",
-      "views": 11,
+      "views": 10,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 71.53,
+      "avg_view_pct": 86.59,
       "subscribers_gained": 0
     },
     {
@@ -249,7 +249,7 @@
       "likes": 1,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 37.22,
+      "avg_view_pct": 39.32,
       "subscribers_gained": 0
     },
     {
@@ -389,11 +389,11 @@
       "duration_seconds": 41.9,
       "seed_view_count": 553904,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 6,
+      "views": 5,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 26.21,
+      "avg_view_pct": 29.21,
       "subscribers_gained": 0
     },
     {
@@ -425,7 +425,7 @@
       "duration_seconds": 44.7,
       "seed_view_count": null,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 5,
+      "views": 3,
       "likes": 0,
       "comments": 0,
       "shares": 0,
@@ -461,12 +461,12 @@
       "duration_seconds": 46.2,
       "seed_view_count": 1114947,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 119,
-      "likes": 5,
+      "views": 74,
+      "likes": 3,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 55.66,
-      "subscribers_gained": 1
+      "avg_view_pct": 47.88,
+      "subscribers_gained": 0
     },
     {
       "video_id": "bOuYZmhZAwA",
@@ -497,7 +497,7 @@
       "duration_seconds": 48.5,
       "seed_view_count": null,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 3,
+      "views": 2,
       "likes": 0,
       "comments": 0,
       "shares": 0,
@@ -515,11 +515,11 @@
       "duration_seconds": 39.4,
       "seed_view_count": 936795,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 17,
-      "likes": 2,
+      "views": 8,
+      "likes": 1,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 42.52,
+      "avg_view_pct": 57.879999999999995,
       "subscribers_gained": 0
     },
     {
@@ -533,11 +533,11 @@
       "duration_seconds": 44.2,
       "seed_view_count": 608296,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 55,
+      "views": 12,
       "likes": 1,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 34.59,
+      "avg_view_pct": 59.21999999999999,
       "subscribers_gained": 0
     },
     {
@@ -551,11 +551,11 @@
       "duration_seconds": 53.3,
       "seed_view_count": 238696,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 52,
-      "likes": 3,
+      "views": 10,
+      "likes": 1,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 82.38,
+      "avg_view_pct": 85.94,
       "subscribers_gained": 0
     },
     {
@@ -569,11 +569,11 @@
       "duration_seconds": 16.4,
       "seed_view_count": 726116,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 76,
-      "likes": -1,
+      "views": 8,
+      "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 77.54,
+      "avg_view_pct": 101,
       "subscribers_gained": 0
     },
     {
@@ -587,11 +587,11 @@
       "duration_seconds": 47.0,
       "seed_view_count": 710454,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 343,
-      "likes": 4,
+      "views": 262,
+      "likes": 2,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 103.45,
+      "avg_view_pct": 43.61,
       "subscribers_gained": 0
     },
     {
@@ -605,11 +605,11 @@
       "duration_seconds": 46.6,
       "seed_view_count": 345098,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 154,
+      "views": 80,
       "likes": 1,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 52.25,
+      "avg_view_pct": 46.65,
       "subscribers_gained": 0
     },
     {
@@ -623,11 +623,11 @@
       "duration_seconds": 51.4,
       "seed_view_count": 336336,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 39,
+      "views": 19,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 35.21,
+      "avg_view_pct": 19.42,
       "subscribers_gained": 0
     },
     {
@@ -641,11 +641,11 @@
       "duration_seconds": 51.3,
       "seed_view_count": 633435,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 35,
+      "views": 33,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 65.74,
+      "avg_view_pct": 65.22,
       "subscribers_gained": 0
     },
     {
@@ -785,11 +785,11 @@
       "duration_seconds": 49.5,
       "seed_view_count": 1010561,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 832,
+      "views": 834,
       "likes": 17,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 83.8,
+      "avg_view_pct": 83.63,
       "subscribers_gained": 0
     },
     {
@@ -947,7 +947,7 @@
       "duration_seconds": 50.2,
       "seed_view_count": 751145,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 294,
+      "views": 295,
       "likes": 6,
       "comments": 0,
       "shares": 0,
@@ -1001,7 +1001,7 @@
       "duration_seconds": 50.5,
       "seed_view_count": 483249,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 818,
+      "views": 817,
       "likes": 18,
       "comments": 0,
       "shares": 0,
