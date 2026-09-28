@@ -4,48 +4,48 @@
 
 A newer version means a real pipeline/guidance change (captions, b-roll provider, hook/payoff rules, voice, motion, etc.), not just more time passing. Older versions can look artificially weak for reasons that have nothing to do with topic/category choice -- e.g. every video before 2026-08-18-retention-overhaul-v3 had a caption-visibility bug that made captions unreadable regardless of topic. Weight the *current* version's own numbers most heavily once it has a real sample size (n>=5 or so); until then, older-version data still carries topic/category signal, but read its absolute retention numbers as a floor the current pipeline should beat, not a ceiling to match.
 
-- 2026-08-21-no-dash-connector-v9: 0.021 shares/1k views, 46.8% avg view, 0.90 subs/1k views, 14.01 likes+comments/1k views (n=49)
-- 2026-08-19-payoff-mechanism-v4: 0.000 shares/1k views, 335.5% avg view, 0.00 subs/1k views, 50.00 likes+comments/1k views (n=5)
+- 2026-08-21-no-dash-connector-v9: 0.021 shares/1k views, 48.8% avg view, 1.31 subs/1k views, 13.70 likes+comments/1k views (n=49)
+- 2026-08-19-payoff-mechanism-v4: 0.000 shares/1k views, 335.5% avg view, 0.00 subs/1k views, -150.00 likes+comments/1k views (n=5)
 - 2026-09-11-contrast-hook-v10: 0.000 shares/1k views, 41.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
-- 2026-08-20-share-trigger-v5: 0.000 shares/1k views, 20.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=7)
+- 2026-08-20-share-trigger-v5: 0.000 shares/1k views, 18.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=7)
 - 2026-08-18-retention-overhaul-v3: 0.000 shares/1k views, 0.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 - 2026-08-19-share-first-v1: 0.000 shares/1k views, 0.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 
 ## Top categories (steer topic choice by this)
 
-- history: 0.016 shares/1k views, 67.1% avg view, 0.71 subs/1k views, 15.11 likes+comments/1k views (n=62)
+- history: 0.016 shares/1k views, 68.4% avg view, 1.03 subs/1k views, 14.86 likes+comments/1k views (n=62)
 
 ## Top hook styles (steer how you open/close by this)
 
-- shocking_fact: 0.024 shares/1k views, 75.6% avg view, 0.61 subs/1k views, 19.75 likes+comments/1k views (n=42)
+- shocking_fact: 0.024 shares/1k views, 78.4% avg view, 0.61 subs/1k views, 18.17 likes+comments/1k views (n=42)
 - question: 0.000 shares/1k views, 119.9% avg view, 3.37 subs/1k views, 13.47 likes+comments/1k views (n=1)
-- list: 0.000 shares/1k views, 83.6% avg view, 0.00 subs/1k views, 20.38 likes+comments/1k views (n=1)
-- myth_bust: 0.000 shares/1k views, 39.4% avg view, 0.83 subs/1k views, 3.91 likes+comments/1k views (n=16)
-- story: 0.000 shares/1k views, 36.8% avg view, 0.54 subs/1k views, 2.68 likes+comments/1k views (n=4)
+- list: 0.000 shares/1k views, 55.4% avg view, 0.00 subs/1k views, 17.09 likes+comments/1k views (n=1)
+- myth_bust: 0.000 shares/1k views, 38.9% avg view, 2.21 subs/1k views, 8.00 likes+comments/1k views (n=16)
+- story: 0.000 shares/1k views, 37.9% avg view, 0.00 subs/1k views, -250.00 likes+comments/1k views (n=4)
 
 ## Top video lengths (steer target narration length by this)
 
-- long (40-58s): 0.021 shares/1k views, 46.3% avg view, 0.92 subs/1k views, 9.71 likes+comments/1k views (n=48)
-- short (<=20s): 0.000 shares/1k views, 302.8% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=5)
+- long (40-58s): 0.021 shares/1k views, 48.1% avg view, 1.34 subs/1k views, 9.40 likes+comments/1k views (n=48)
+- short (<=20s): 0.000 shares/1k views, 302.8% avg view, 0.00 subs/1k views, -200.00 likes+comments/1k views (n=5)
 - medium (20-40s): 0.000 shares/1k views, 38.1% avg view, 0.00 subs/1k views, 42.75 likes+comments/1k views (n=11)
 
 ## Top publish hours (UTC) -- reference only, needs more spread of upload times before it means anything
 
-- 13:00 UTC: 0.092 shares/1k views, 35.6% avg view, 0.46 subs/1k views, 10.62 likes+comments/1k views (n=11)
+- 13:00 UTC: 0.092 shares/1k views, 46.5% avg view, 0.46 subs/1k views, 10.62 likes+comments/1k views (n=11)
 - 06:00 UTC: 0.000 shares/1k views, 419.4% avg view, 0.00 subs/1k views, 62.50 likes+comments/1k views (n=4)
-- 17:00 UTC: 0.000 shares/1k views, 57.5% avg view, 0.41 subs/1k views, 18.35 likes+comments/1k views (n=12)
-- 05:00 UTC: 0.000 shares/1k views, 52.3% avg view, 1.02 subs/1k views, 16.35 likes+comments/1k views (n=13)
-- 07:00 UTC: 0.000 shares/1k views, 43.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
-- 09:00 UTC: 0.000 shares/1k views, 42.7% avg view, 1.92 subs/1k views, 8.12 likes+comments/1k views (n=11)
+- 05:00 UTC: 0.000 shares/1k views, 56.2% avg view, 2.71 subs/1k views, 23.20 likes+comments/1k views (n=13)
+- 17:00 UTC: 0.000 shares/1k views, 52.3% avg view, 0.41 subs/1k views, 10.85 likes+comments/1k views (n=12)
+- 09:00 UTC: 0.000 shares/1k views, 41.7% avg view, 1.72 subs/1k views, 6.85 likes+comments/1k views (n=11)
 - 16:00 UTC: 0.000 shares/1k views, 38.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
+- 07:00 UTC: 0.000 shares/1k views, 36.9% avg view, 0.00 subs/1k views, -500.00 likes+comments/1k views (n=2)
 - 11:00 UTC: 0.000 shares/1k views, 30.1% avg view, 0.00 subs/1k views, 23.81 likes+comments/1k views (n=2)
 - 08:00 UTC: 0.000 shares/1k views, 6.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
 - 19:00 UTC: 0.000 shares/1k views, 0.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 
 ## Top seed momentum tiers -- does a higher-view-count trend seed actually predict this channel's own performance?
 
-- medium (100k-1M): 0.029 shares/1k views, 42.7% avg view, 0.84 subs/1k views, 10.51 likes+comments/1k views (n=35)
-- high (>=1M): 0.000 shares/1k views, 115.2% avg view, 0.64 subs/1k views, 24.72 likes+comments/1k views (n=23)
+- medium (100k-1M): 0.029 shares/1k views, 45.9% avg view, 1.41 subs/1k views, -16.33 likes+comments/1k views (n=35)
+- high (>=1M): 0.000 shares/1k views, 114.1% avg view, 0.64 subs/1k views, 21.43 likes+comments/1k views (n=23)
 - no source video: 0.000 shares/1k views, 3.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=3)
 
 ## Topic-title patterns (auto-detected, steer topic choice by this)
@@ -59,21 +59,21 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 - the Lucifer of Liège (Le Génie du Mal) -- a devil statue a Belgian bishop banned from his own cathedral in 1844 for looking too seductive, later bought by a king, while its 'toned down' replacement became more famous than the banned original: 52.7% avg view
 - the WWI fatigue study that accidentally won the 8-hour workday: 1513.8% avg view
 - Henry Tandey, Britain's most decorated WWI private, and the disputed legend that he spared a young Hitler's life: 119.9% avg view
-- the Hiroshima 'human shadow' that's actually bleached stone, not a burn: 112.7% avg view
 - the press conference mistake that brought down the Berlin Wall: 102.5% avg view
 - the VOC's nutmeg monopoly: a real massacre funded a company worth more than Apple and Amazon, before it collapsed from its own corruption: 101.8% avg view
 - George Washington's dentures made partly from teeth of people he enslaved, and the Waterloo teeth trade: 100.2% avg view
+- Cyril Radcliffe drew the India-Pakistan border in five weeks having never visited India, then vanished before it was published: 93.4% avg view
+- Castle Bravo's 1954 miscalculated H-bomb test, the Lucky Dragon 5 fallout disaster, and how it inspired Godzilla: 92.5% avg view
 - the 1908 Tunguska explosion -- 80 million trees flattened by a blast with no crater: 91.1% avg view
-- Thrinaxodon and Broomistega -- predator and injured amphibian shared a burrow, fossilized together by a flash flood: 86.6% avg view
-- the US military intervention in the Russian Civil War, Kolchak's betrayal, and the Czechoslovak Legion mutiny: 83.6% avg view
+- the 1904 Olympic marathon -- Fred Lorz rode in a car for 11 miles, and the actual winner was drugged with rat poison: 77.8% avg view
 
 ## Where views are coming from (last 28 days, channel-wide, reference only -- not a per-video lever)
 
-- SHORTS: 92.3% of views (8453)
-- YT_SEARCH: 5.5% of views (504)
-- YT_OTHER_PAGE: 0.9% of views (82)
-- YT_CHANNEL: 0.7% of views (60)
-- SUBSCRIBER: 0.5% of views (44)
+- SHORTS: 90.8% of views (6260)
+- YT_SEARCH: 6.7% of views (465)
+- YT_OTHER_PAGE: 1.1% of views (76)
+- YT_CHANNEL: 0.7% of views (48)
+- SUBSCRIBER: 0.5% of views (35)
 - HASHTAGS: 0.1% of views (5)
 - EXT_URL: 0.0% of views (3)
 - NO_LINK_OTHER: 0.0% of views (2)
