@@ -191,7 +191,7 @@
       "duration_seconds": 38.1,
       "seed_view_count": 1160351,
       "ruleset_version": "2026-08-20-share-trigger-v5",
-      "views": 3,
+      "views": 2,
       "likes": 0,
       "comments": 0,
       "shares": 0,
@@ -227,7 +227,7 @@
       "duration_seconds": 44.4,
       "seed_view_count": 478358,
       "ruleset_version": "2026-08-20-share-trigger-v5",
-      "views": 7,
+      "views": 6,
       "likes": 0,
       "comments": 0,
       "shares": 0,
@@ -389,11 +389,11 @@
       "duration_seconds": 41.9,
       "seed_view_count": 553904,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 4,
+      "views": 3,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 61.67,
+      "avg_view_pct": 101.9,
       "subscribers_gained": 0
     },
     {
@@ -461,7 +461,7 @@
       "duration_seconds": 46.2,
       "seed_view_count": 1114947,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 7,
+      "views": 6,
       "likes": 0,
       "comments": 0,
       "shares": 0,
@@ -515,11 +515,11 @@
       "duration_seconds": 39.4,
       "seed_view_count": 936795,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 8,
+      "views": 7,
       "likes": 1,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 57.879999999999995,
+      "avg_view_pct": 69.28,
       "subscribers_gained": 0
     },
     {
@@ -551,11 +551,11 @@
       "duration_seconds": 53.3,
       "seed_view_count": 238696,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 3,
+      "views": 1,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 101.83,
+      "avg_view_pct": 0,
       "subscribers_gained": 0
     },
     {
@@ -573,7 +573,7 @@
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 0,
+      "avg_view_pct": 64.71,
       "subscribers_gained": 0
     },
     {
@@ -587,7 +587,7 @@
       "duration_seconds": 47.0,
       "seed_view_count": 710454,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 3,
+      "views": 2,
       "likes": 0,
       "comments": 0,
       "shares": 0,
@@ -641,11 +641,11 @@
       "duration_seconds": 51.3,
       "seed_view_count": 633435,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 29,
+      "views": 23,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 59.099999999999994,
+      "avg_view_pct": 68.05,
       "subscribers_gained": 0
     },
     {
@@ -713,12 +713,12 @@
       "duration_seconds": 52.0,
       "seed_view_count": 733512,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 37,
-      "likes": 4,
+      "views": 9,
+      "likes": 2,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 92.53,
-      "subscribers_gained": 1
+      "avg_view_pct": 155.1,
+      "subscribers_gained": 0
     },
     {
       "video_id": "EogrbDsSJzk",
@@ -731,7 +731,7 @@
       "duration_seconds": 44.2,
       "seed_view_count": 1544200,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 2,
+      "views": 1,
       "likes": 0,
       "comments": 0,
       "shares": 0,
@@ -749,11 +749,11 @@
       "duration_seconds": 41.9,
       "seed_view_count": 733512,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 16,
+      "views": 4,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 50.56,
+      "avg_view_pct": 83.01,
       "subscribers_gained": 0
     },
     {
@@ -785,11 +785,11 @@
       "duration_seconds": 49.5,
       "seed_view_count": 1010561,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 117,
-      "likes": 2,
+      "views": 30,
+      "likes": 1,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 55.43,
+      "avg_view_pct": 53.61,
       "subscribers_gained": 0
     },
     {
@@ -803,11 +803,11 @@
       "duration_seconds": 45.7,
       "seed_view_count": 1160099,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 60,
-      "likes": 2,
+      "views": 16,
+      "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 61.14999999999999,
+      "avg_view_pct": 49.86,
       "subscribers_gained": 0
     },
     {
@@ -821,11 +821,11 @@
       "duration_seconds": 46.3,
       "seed_view_count": 385547,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 48,
+      "views": 20,
       "likes": 1,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 67.59,
+      "avg_view_pct": 74.32,
       "subscribers_gained": 0
     },
     {
@@ -839,11 +839,11 @@
       "duration_seconds": 49.0,
       "seed_view_count": 819309,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 4,
+      "views": 2,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 65,
+      "avg_view_pct": 100,
       "subscribers_gained": 0
     },
     {
@@ -857,11 +857,11 @@
       "duration_seconds": 42.9,
       "seed_view_count": 698742,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 1007,
-      "likes": 19,
-      "comments": 1,
+      "views": 20,
+      "likes": 1,
+      "comments": 0,
       "shares": 0,
-      "avg_view_pct": 63.190000000000005,
+      "avg_view_pct": 59.03,
       "subscribers_gained": 0
     },
     {
@@ -1019,11 +1019,11 @@
       "duration_seconds": 51.4,
       "seed_view_count": 881426,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 990,
+      "views": 991,
       "likes": 24,
       "comments": 0,
       "shares": 1,
-      "avg_view_pct": 52.66,
+      "avg_view_pct": 52.56000000000001,
       "subscribers_gained": 4
     },
     {

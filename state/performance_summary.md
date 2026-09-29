@@ -4,7 +4,7 @@
 
 A newer version means a real pipeline/guidance change (captions, b-roll provider, hook/payoff rules, voice, motion, etc.), not just more time passing. Older versions can look artificially weak for reasons that have nothing to do with topic/category choice -- e.g. every video before 2026-08-18-retention-overhaul-v3 had a caption-visibility bug that made captions unreadable regardless of topic. Weight the *current* version's own numbers most heavily once it has a real sample size (n>=5 or so); until then, older-version data still carries topic/category signal, but read its absolute retention numbers as a floor the current pipeline should beat, not a ceiling to match.
 
-- 2026-08-21-no-dash-connector-v9: 0.021 shares/1k views, 48.8% avg view, 1.31 subs/1k views, 13.70 likes+comments/1k views (n=49)
+- 2026-08-21-no-dash-connector-v9: 0.021 shares/1k views, 51.7% avg view, 0.76 subs/1k views, 17.26 likes+comments/1k views (n=49)
 - 2026-08-19-payoff-mechanism-v4: 0.000 shares/1k views, 335.5% avg view, 0.00 subs/1k views, -150.00 likes+comments/1k views (n=5)
 - 2026-09-11-contrast-hook-v10: 0.000 shares/1k views, 41.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 - 2026-08-20-share-trigger-v5: 0.000 shares/1k views, 18.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=7)
@@ -13,29 +13,29 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top categories (steer topic choice by this)
 
-- history: 0.016 shares/1k views, 68.4% avg view, 1.03 subs/1k views, 14.86 likes+comments/1k views (n=62)
+- history: 0.016 shares/1k views, 70.7% avg view, 0.60 subs/1k views, 17.67 likes+comments/1k views (n=62)
 
 ## Top hook styles (steer how you open/close by this)
 
-- shocking_fact: 0.024 shares/1k views, 78.4% avg view, 0.61 subs/1k views, 18.17 likes+comments/1k views (n=42)
+- shocking_fact: 0.024 shares/1k views, 78.5% avg view, 0.61 subs/1k views, 18.49 likes+comments/1k views (n=42)
 - question: 0.000 shares/1k views, 119.9% avg view, 3.37 subs/1k views, 13.47 likes+comments/1k views (n=1)
-- list: 0.000 shares/1k views, 55.4% avg view, 0.00 subs/1k views, 17.09 likes+comments/1k views (n=1)
-- myth_bust: 0.000 shares/1k views, 38.9% avg view, 2.21 subs/1k views, 8.00 likes+comments/1k views (n=16)
+- list: 0.000 shares/1k views, 53.6% avg view, 0.00 subs/1k views, 33.33 likes+comments/1k views (n=1)
+- myth_bust: 0.000 shares/1k views, 47.6% avg view, 0.52 subs/1k views, 17.01 likes+comments/1k views (n=16)
 - story: 0.000 shares/1k views, 37.9% avg view, 0.00 subs/1k views, -250.00 likes+comments/1k views (n=4)
 
 ## Top video lengths (steer target narration length by this)
 
-- long (40-58s): 0.021 shares/1k views, 48.1% avg view, 1.34 subs/1k views, 9.40 likes+comments/1k views (n=48)
-- short (<=20s): 0.000 shares/1k views, 302.8% avg view, 0.00 subs/1k views, -200.00 likes+comments/1k views (n=5)
-- medium (20-40s): 0.000 shares/1k views, 38.1% avg view, 0.00 subs/1k views, 42.75 likes+comments/1k views (n=11)
+- long (40-58s): 0.021 shares/1k views, 49.5% avg view, 0.77 subs/1k views, 12.66 likes+comments/1k views (n=48)
+- short (<=20s): 0.000 shares/1k views, 315.7% avg view, 0.00 subs/1k views, -200.00 likes+comments/1k views (n=5)
+- medium (20-40s): 0.000 shares/1k views, 39.2% avg view, 0.00 subs/1k views, 44.37 likes+comments/1k views (n=11)
 
 ## Top publish hours (UTC) -- reference only, needs more spread of upload times before it means anything
 
-- 13:00 UTC: 0.092 shares/1k views, 46.5% avg view, 0.46 subs/1k views, 10.62 likes+comments/1k views (n=11)
+- 13:00 UTC: 0.092 shares/1k views, 49.7% avg view, 0.45 subs/1k views, 10.62 likes+comments/1k views (n=11)
 - 06:00 UTC: 0.000 shares/1k views, 419.4% avg view, 0.00 subs/1k views, 62.50 likes+comments/1k views (n=4)
-- 05:00 UTC: 0.000 shares/1k views, 56.2% avg view, 2.71 subs/1k views, 23.20 likes+comments/1k views (n=13)
-- 17:00 UTC: 0.000 shares/1k views, 52.3% avg view, 0.41 subs/1k views, 10.85 likes+comments/1k views (n=12)
-- 09:00 UTC: 0.000 shares/1k views, 41.7% avg view, 1.72 subs/1k views, 6.85 likes+comments/1k views (n=11)
+- 05:00 UTC: 0.000 shares/1k views, 57.6% avg view, 0.64 subs/1k views, 35.59 likes+comments/1k views (n=13)
+- 17:00 UTC: 0.000 shares/1k views, 54.5% avg view, 0.41 subs/1k views, 10.58 likes+comments/1k views (n=12)
+- 09:00 UTC: 0.000 shares/1k views, 47.4% avg view, 1.72 subs/1k views, 8.32 likes+comments/1k views (n=11)
 - 16:00 UTC: 0.000 shares/1k views, 38.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
 - 07:00 UTC: 0.000 shares/1k views, 36.9% avg view, 0.00 subs/1k views, -500.00 likes+comments/1k views (n=2)
 - 11:00 UTC: 0.000 shares/1k views, 30.1% avg view, 0.00 subs/1k views, 23.81 likes+comments/1k views (n=2)
@@ -44,8 +44,8 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top seed momentum tiers -- does a higher-view-count trend seed actually predict this channel's own performance?
 
-- medium (100k-1M): 0.029 shares/1k views, 45.9% avg view, 1.41 subs/1k views, -16.33 likes+comments/1k views (n=35)
-- high (>=1M): 0.000 shares/1k views, 114.1% avg view, 0.64 subs/1k views, 21.43 likes+comments/1k views (n=23)
+- medium (100k-1M): 0.029 shares/1k views, 50.3% avg view, 0.64 subs/1k views, -10.86 likes+comments/1k views (n=35)
+- high (>=1M): 0.000 shares/1k views, 113.5% avg view, 0.64 subs/1k views, 20.69 likes+comments/1k views (n=23)
 - no source video: 0.000 shares/1k views, 3.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=3)
 
 ## Topic-title patterns (auto-detected, steer topic choice by this)
@@ -56,26 +56,26 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 
 ## Top individual topics (reference only -- these exact topics are already used)
 
-- the Lucifer of Liège (Le Génie du Mal) -- a devil statue a Belgian bishop banned from his own cathedral in 1844 for looking too seductive, later bought by a king, while its 'toned down' replacement became more famous than the banned original: 52.7% avg view
+- the Lucifer of Liège (Le Génie du Mal) -- a devil statue a Belgian bishop banned from his own cathedral in 1844 for looking too seductive, later bought by a king, while its 'toned down' replacement became more famous than the banned original: 52.6% avg view
 - the WWI fatigue study that accidentally won the 8-hour workday: 1513.8% avg view
+- Castle Bravo's 1954 miscalculated H-bomb test, the Lucky Dragon 5 fallout disaster, and how it inspired Godzilla: 155.1% avg view
 - Henry Tandey, Britain's most decorated WWI private, and the disputed legend that he spared a young Hitler's life: 119.9% avg view
 - the press conference mistake that brought down the Berlin Wall: 102.5% avg view
-- the VOC's nutmeg monopoly: a real massacre funded a company worth more than Apple and Amazon, before it collapsed from its own corruption: 101.8% avg view
+- medieval anchoress living-burial ritual and Julian of Norwich's 20-year enclosure: 101.9% avg view
 - George Washington's dentures made partly from teeth of people he enslaved, and the Waterloo teeth trade: 100.2% avg view
+- the 897 Cadaver Synod trial of Pope Formosus's corpse: 100.0% avg view
 - Cyril Radcliffe drew the India-Pakistan border in five weeks having never visited India, then vanished before it was published: 93.4% avg view
-- Castle Bravo's 1954 miscalculated H-bomb test, the Lucky Dragon 5 fallout disaster, and how it inspired Godzilla: 92.5% avg view
 - the 1908 Tunguska explosion -- 80 million trees flattened by a blast with no crater: 91.1% avg view
-- the 1904 Olympic marathon -- Fred Lorz rode in a car for 11 miles, and the actual winner was drugged with rat poison: 77.8% avg view
 
 ## Where views are coming from (last 28 days, channel-wide, reference only -- not a per-video lever)
 
-- SHORTS: 90.8% of views (6260)
-- YT_SEARCH: 6.7% of views (465)
-- YT_OTHER_PAGE: 1.1% of views (76)
-- YT_CHANNEL: 0.7% of views (48)
-- SUBSCRIBER: 0.5% of views (35)
+- SHORTS: 90.0% of views (5112)
+- YT_SEARCH: 7.5% of views (425)
+- YT_OTHER_PAGE: 1.0% of views (59)
+- YT_CHANNEL: 0.8% of views (45)
+- SUBSCRIBER: 0.4% of views (25)
 - HASHTAGS: 0.1% of views (5)
-- EXT_URL: 0.0% of views (3)
+- EXT_URL: 0.1% of views (4)
 - NO_LINK_OTHER: 0.0% of views (2)
 - PLAYLIST: 0.0% of views (1)
 - SOUND_PAGE: 0.0% of views (1)
