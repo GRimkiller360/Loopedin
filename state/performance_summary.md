@@ -4,7 +4,7 @@
 
 A newer version means a real pipeline/guidance change (captions, b-roll provider, hook/payoff rules, voice, motion, etc.), not just more time passing. Older versions can look artificially weak for reasons that have nothing to do with topic/category choice -- e.g. every video before 2026-08-18-retention-overhaul-v3 had a caption-visibility bug that made captions unreadable regardless of topic. Weight the *current* version's own numbers most heavily once it has a real sample size (n>=5 or so); until then, older-version data still carries topic/category signal, but read its absolute retention numbers as a floor the current pipeline should beat, not a ceiling to match.
 
-- 2026-08-21-no-dash-connector-v9: 1.855 shares/1k views, 33.5% avg view, 4.54 subs/1k views, 0.82 likes+comments/1k views (n=49)
+- 2026-08-21-no-dash-connector-v9: 1.855 shares/1k views, 31.4% avg view, 4.54 subs/1k views, 0.82 likes+comments/1k views (n=49)
 - 2026-08-19-payoff-mechanism-v4: 0.000 shares/1k views, 411.2% avg view, 0.00 subs/1k views, 50.00 likes+comments/1k views (n=5)
 - 2026-09-11-contrast-hook-v10: 0.000 shares/1k views, 40.1% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 - 2026-08-20-share-trigger-v5: 0.000 shares/1k views, 8.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=7)
@@ -13,19 +13,19 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top categories (steer topic choice by this)
 
-- history: 1.466 shares/1k views, 61.2% avg view, 3.58 subs/1k views, 4.68 likes+comments/1k views (n=62)
+- history: 1.466 shares/1k views, 59.5% avg view, 3.58 subs/1k views, 4.68 likes+comments/1k views (n=62)
 
 ## Top hook styles (steer how you open/close by this)
 
 - list: 90.909 shares/1k views, 44.5% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
-- shocking_fact: 0.000 shares/1k views, 74.0% avg view, 5.29 subs/1k views, 6.90 likes+comments/1k views (n=42)
-- myth_bust: 0.000 shares/1k views, 34.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=16)
+- shocking_fact: 0.000 shares/1k views, 71.7% avg view, 5.29 subs/1k views, 6.90 likes+comments/1k views (n=42)
+- myth_bust: 0.000 shares/1k views, 34.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=16)
 - story: 0.000 shares/1k views, 19.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
 - question: 0.000 shares/1k views, 14.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 
 ## Top video lengths (steer target narration length by this)
 
-- long (40-58s): 1.894 shares/1k views, 32.0% avg view, 4.63 subs/1k views, 0.00 likes+comments/1k views (n=48)
+- long (40-58s): 1.894 shares/1k views, 29.9% avg view, 4.63 subs/1k views, 0.00 likes+comments/1k views (n=48)
 - short (<=20s): 0.000 shares/1k views, 391.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=5)
 - medium (20-40s): 0.000 shares/1k views, 27.3% avg view, 0.00 subs/1k views, 26.36 likes+comments/1k views (n=11)
 
@@ -33,9 +33,9 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 - 09:00 UTC: 8.264 shares/1k views, 29.6% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
 - 06:00 UTC: 0.000 shares/1k views, 514.0% avg view, 0.00 subs/1k views, 62.50 likes+comments/1k views (n=4)
-- 13:00 UTC: 0.000 shares/1k views, 41.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
 - 16:00 UTC: 0.000 shares/1k views, 38.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
-- 17:00 UTC: 0.000 shares/1k views, 34.6% avg view, 18.52 subs/1k views, 0.00 likes+comments/1k views (n=12)
+- 17:00 UTC: 0.000 shares/1k views, 34.2% avg view, 18.52 subs/1k views, 0.00 likes+comments/1k views (n=12)
+- 13:00 UTC: 0.000 shares/1k views, 32.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
 - 11:00 UTC: 0.000 shares/1k views, 31.9% avg view, 0.00 subs/1k views, 20.00 likes+comments/1k views (n=2)
 - 05:00 UTC: 0.000 shares/1k views, 28.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=13)
 - 08:00 UTC: 0.000 shares/1k views, 6.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
@@ -44,8 +44,8 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top seed momentum tiers -- does a higher-view-count trend seed actually predict this channel's own performance?
 
-- high (>=1M): 3.953 shares/1k views, 111.1% avg view, 0.00 subs/1k views, 10.87 likes+comments/1k views (n=23)
-- medium (100k-1M): 0.000 shares/1k views, 35.0% avg view, 6.35 subs/1k views, 1.14 likes+comments/1k views (n=35)
+- high (>=1M): 3.953 shares/1k views, 110.7% avg view, 0.00 subs/1k views, 10.87 likes+comments/1k views (n=23)
+- medium (100k-1M): 0.000 shares/1k views, 32.3% avg view, 6.35 subs/1k views, 1.14 likes+comments/1k views (n=35)
 - no source video: 0.000 shares/1k views, 3.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=3)
 
 ## Topic-title patterns (auto-detected, steer topic choice by this)
@@ -65,15 +65,15 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 - Hawa Mahal, Jaipur's 'Palace of Winds': barely a room deep behind 953 one-way lattice windows, engineered to lean 87 degrees with no real foundation: 99.2% avg view
 - Cyril Radcliffe drew the India-Pakistan border in five weeks having never visited India, then vanished before it was published: 93.4% avg view
 - the 1908 Tunguska explosion -- 80 million trees flattened by a blast with no crater: 91.1% avg view
-- Elizabeth I's lead-based Mask of Youth makeup, the hair loss and mirror ban it caused: 90.5% avg view
+- Jack Broughton and the 1743 boxing rules created after his 1741 fight killed George Stevenson: 81.0% avg view
 
 ## Where views are coming from (last 28 days, channel-wide, reference only -- not a per-video lever)
 
-- YT_SEARCH: 80.0% of views (140)
-- SHORTS: 12.0% of views (21)
-- HASHTAGS: 2.9% of views (5)
-- EXT_URL: 2.3% of views (4)
-- SUBSCRIBER: 1.7% of views (3)
+- YT_SEARCH: 83.4% of views (131)
+- SHORTS: 7.6% of views (12)
+- HASHTAGS: 3.2% of views (5)
+- EXT_URL: 2.5% of views (4)
+- SUBSCRIBER: 1.9% of views (3)
 - NO_LINK_OTHER: 0.6% of views (1)
 - YT_CHANNEL: 0.6% of views (1)
 
