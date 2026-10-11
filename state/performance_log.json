@@ -119,11 +119,11 @@
       "duration_seconds": 29.2,
       "seed_view_count": 1703205,
       "ruleset_version": "2026-08-19-payoff-mechanism-v4",
-      "views": 2,
+      "views": 1,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 102.53000000000002,
+      "avg_view_pct": 0,
       "subscribers_gained": 0
     },
     {
@@ -191,11 +191,11 @@
       "duration_seconds": 38.1,
       "seed_view_count": 1160351,
       "ruleset_version": "2026-08-20-share-trigger-v5",
-      "views": 2,
+      "views": 3,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 0,
+      "avg_view_pct": 94.82,
       "subscribers_gained": 0
     },
     {
@@ -245,11 +245,11 @@
       "duration_seconds": 35.9,
       "seed_view_count": 452169,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 16,
+      "views": 13,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 49.66,
+      "avg_view_pct": 53.23,
       "subscribers_gained": 0
     },
     {
@@ -551,11 +551,11 @@
       "duration_seconds": 53.3,
       "seed_view_count": 238696,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 1,
+      "views": 2,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 0,
+      "avg_view_pct": 102.46,
       "subscribers_gained": 0
     },
     {
@@ -623,11 +623,11 @@
       "duration_seconds": 51.4,
       "seed_view_count": 336336,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 3,
+      "views": 4,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 31.480000000000004,
+      "avg_view_pct": 46.41,
       "subscribers_gained": 0
     },
     {
@@ -641,11 +641,11 @@
       "duration_seconds": 51.3,
       "seed_view_count": 633435,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 12,
+      "views": 11,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 35.48,
+      "avg_view_pct": 38.58,
       "subscribers_gained": 0
     },
     {
@@ -677,11 +677,11 @@
       "duration_seconds": 43.3,
       "seed_view_count": 1537285,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 4,
+      "views": 2,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 81.05,
+      "avg_view_pct": 71.59,
       "subscribers_gained": 0
     },
     {
@@ -1145,11 +1145,11 @@
       "duration_seconds": 46.4,
       "seed_view_count": 994760,
       "ruleset_version": "2026-09-11-contrast-hook-v10",
-      "views": 11,
+      "views": 6,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 24.83,
+      "avg_view_pct": 31.77,
       "subscribers_gained": 0
     }
   ]
