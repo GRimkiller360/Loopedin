@@ -4,7 +4,7 @@
 
 A newer version means a real pipeline/guidance change (captions, b-roll provider, hook/payoff rules, voice, motion, etc.), not just more time passing. Older versions can look artificially weak for reasons that have nothing to do with topic/category choice -- e.g. every video before 2026-08-18-retention-overhaul-v3 had a caption-visibility bug that made captions unreadable regardless of topic. Weight the *current* version's own numbers most heavily once it has a real sample size (n>=5 or so); until then, older-version data still carries topic/category signal, but read its absolute retention numbers as a floor the current pipeline should beat, not a ceiling to match.
 
-- 2026-08-21-no-dash-connector-v9: 1.570 shares/1k views, 37.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=49)
+- 2026-08-21-no-dash-connector-v9: 1.570 shares/1k views, 37.1% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=49)
 - 2026-08-19-payoff-mechanism-v4: 0.000 shares/1k views, 501.5% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=5)
 - 2026-09-11-contrast-hook-v10: 0.000 shares/1k views, 31.8% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 - 2026-08-20-share-trigger-v5: 0.000 shares/1k views, 21.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=7)
@@ -19,7 +19,7 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 - list: 76.923 shares/1k views, 53.8% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 - shocking_fact: 0.000 shares/1k views, 89.5% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=42)
-- myth_bust: 0.000 shares/1k views, 38.1% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=16)
+- myth_bust: 0.000 shares/1k views, 38.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=16)
 - story: 0.000 shares/1k views, 19.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
 - question: 0.000 shares/1k views, 14.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 
@@ -33,10 +33,10 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 - 09:00 UTC: 6.993 shares/1k views, 31.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
 - 06:00 UTC: 0.000 shares/1k views, 626.8% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
-- 13:00 UTC: 0.000 shares/1k views, 45.5% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
+- 13:00 UTC: 0.000 shares/1k views, 45.8% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
 - 17:00 UTC: 0.000 shares/1k views, 41.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=12)
 - 16:00 UTC: 0.000 shares/1k views, 38.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
-- 05:00 UTC: 0.000 shares/1k views, 38.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=13)
+- 05:00 UTC: 0.000 shares/1k views, 38.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=13)
 - 11:00 UTC: 0.000 shares/1k views, 35.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
 - 08:00 UTC: 0.000 shares/1k views, 6.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
 - 19:00 UTC: 0.000 shares/1k views, 0.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
@@ -44,8 +44,8 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top seed momentum tiers -- does a higher-view-count trend seed actually predict this channel's own performance?
 
-- high (>=1M): 3.344 shares/1k views, 138.5% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=23)
-- medium (100k-1M): 0.000 shares/1k views, 37.6% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=35)
+- high (>=1M): 3.344 shares/1k views, 138.6% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=23)
+- medium (100k-1M): 0.000 shares/1k views, 37.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=35)
 - no source video: 0.000 shares/1k views, 3.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=3)
 
 ## Topic-title patterns (auto-detected, steer topic choice by this)
@@ -59,8 +59,8 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 - the US military intervention in the Russian Civil War, Kolchak's betrayal, and the Czechoslovak Legion mutiny: 53.8% avg view
 - the WWI fatigue study that accidentally won the 8-hour workday: 2507.3% avg view
 - Castle Bravo's 1954 miscalculated H-bomb test, the Lucky Dragon 5 fallout disaster, and how it inspired Godzilla: 108.3% avg view
+- Hawa Mahal, Jaipur's 'Palace of Winds': barely a room deep behind 953 one-way lattice windows, engineered to lean 87 degrees with no real foundation: 105.2% avg view
 - the VOC's nutmeg monopoly: a real massacre funded a company worth more than Apple and Amazon, before it collapsed from its own corruption: 102.5% avg view
-- Hawa Mahal, Jaipur's 'Palace of Winds': barely a room deep behind 953 one-way lattice windows, engineered to lean 87 degrees with no real foundation: 102.2% avg view
 - medieval anchoress living-burial ritual and Julian of Norwich's 20-year enclosure: 101.9% avg view
 - medieval myths media gets wrong: armor weight/mobility, the chastity belt, spices masking rotten meat, and the iron maiden: 101.6% avg view
 - Night of the Grizzlies -- two women killed by different grizzlies the same night in Glacier National Park (1967), caused by hotel bear-feeding shows and a failed huckleberry crop: 100.0% avg view
@@ -69,8 +69,8 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 
 ## Where views are coming from (last 28 days, channel-wide, reference only -- not a per-video lever)
 
-- YT_SEARCH: 94.8% of views (128)
-- HASHTAGS: 3.0% of views (4)
+- YT_SEARCH: 94.9% of views (129)
+- HASHTAGS: 2.9% of views (4)
 - EXT_URL: 2.2% of views (3)
 - NO_LINK_OTHER: 0.0% of views (0)
 
