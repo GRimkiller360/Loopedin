@@ -11,7 +11,7 @@
       "duration_seconds": 17.3,
       "seed_view_count": 764575,
       "ruleset_version": "2026-08-18-retention-overhaul-v3",
-      "views": 0,
+      "views": 1,
       "likes": 0,
       "comments": 0,
       "shares": 0,
@@ -569,11 +569,11 @@
       "duration_seconds": 16.4,
       "seed_view_count": 726116,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 2,
+      "views": 1,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 64.71,
+      "avg_view_pct": 0,
       "subscribers_gained": 0
     },
     {
@@ -623,11 +623,11 @@
       "duration_seconds": 51.4,
       "seed_view_count": 336336,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 2,
+      "views": 3,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 46.41,
+      "avg_view_pct": 45.81,
       "subscribers_gained": 0
     },
     {
@@ -785,11 +785,11 @@
       "duration_seconds": 49.5,
       "seed_view_count": 1010561,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 14,
+      "views": 11,
       "likes": 0,
       "comments": 0,
       "shares": 1,
-      "avg_view_pct": 60.52000000000001,
+      "avg_view_pct": 62.23,
       "subscribers_gained": 0
     },
     {
@@ -1023,7 +1023,7 @@
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 4.61,
+      "avg_view_pct": 5.29,
       "subscribers_gained": 0
     },
     {
