@@ -4,7 +4,7 @@
 
 A newer version means a real pipeline/guidance change (captions, b-roll provider, hook/payoff rules, voice, motion, etc.), not just more time passing. Older versions can look artificially weak for reasons that have nothing to do with topic/category choice -- e.g. every video before 2026-08-18-retention-overhaul-v3 had a caption-visibility bug that made captions unreadable regardless of topic. Weight the *current* version's own numbers most heavily once it has a real sample size (n>=5 or so); until then, older-version data still carries topic/category signal, but read its absolute retention numbers as a floor the current pipeline should beat, not a ceiling to match.
 
-- 2026-08-21-no-dash-connector-v9: 3.968 shares/1k views, 37.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=49)
+- 2026-08-21-no-dash-connector-v9: 3.741 shares/1k views, 35.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=49)
 - 2026-09-11-contrast-hook-v10: 0.000 shares/1k views, 36.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 - 2026-08-20-share-trigger-v5: 0.000 shares/1k views, 18.1% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=7)
 - 2026-08-19-payoff-mechanism-v4: 0.000 shares/1k views, 17.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=5)
@@ -13,30 +13,30 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top categories (steer topic choice by this)
 
-- history: 3.136 shares/1k views, 33.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=62)
+- history: 2.957 shares/1k views, 32.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=62)
 
 ## Top hook styles (steer how you open/close by this)
 
 - list: 83.333 shares/1k views, 62.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
-- shocking_fact: 2.646 shares/1k views, 32.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=42)
-- myth_bust: 0.000 shares/1k views, 33.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=16)
+- shocking_fact: 2.381 shares/1k views, 31.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=42)
+- myth_bust: 0.000 shares/1k views, 33.1% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=16)
 - story: 0.000 shares/1k views, 23.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
 - question: 0.000 shares/1k views, 14.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 
 ## Top video lengths (steer target narration length by this)
 
-- long (40-58s): 4.051 shares/1k views, 38.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=48)
+- long (40-58s): 3.819 shares/1k views, 36.8% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=48)
 - short (<=20s): 0.000 shares/1k views, 17.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=5)
-- medium (20-40s): 0.000 shares/1k views, 13.6% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
+- medium (20-40s): 0.000 shares/1k views, 13.1% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
 
 ## Top publish hours (UTC) -- reference only, needs more spread of upload times before it means anything
 
-- 13:00 UTC: 10.101 shares/1k views, 42.1% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
-- 09:00 UTC: 7.576 shares/1k views, 26.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
-- 17:00 UTC: 0.000 shares/1k views, 47.6% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=12)
+- 13:00 UTC: 9.091 shares/1k views, 39.6% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
+- 09:00 UTC: 7.576 shares/1k views, 26.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
+- 17:00 UTC: 0.000 shares/1k views, 43.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=12)
 - 16:00 UTC: 0.000 shares/1k views, 38.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
 - 05:00 UTC: 0.000 shares/1k views, 36.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=13)
-- 11:00 UTC: 0.000 shares/1k views, 33.1% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
+- 11:00 UTC: 0.000 shares/1k views, 30.8% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
 - 06:00 UTC: 0.000 shares/1k views, 22.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
 - 07:00 UTC: 0.000 shares/1k views, 7.8% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
 - 08:00 UTC: 0.000 shares/1k views, 6.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
@@ -44,8 +44,8 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top seed momentum tiers -- does a higher-view-count trend seed actually predict this channel's own performance?
 
-- high (>=1M): 3.623 shares/1k views, 30.1% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=23)
-- medium (100k-1M): 3.175 shares/1k views, 39.1% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=35)
+- high (>=1M): 3.623 shares/1k views, 28.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=23)
+- medium (100k-1M): 2.857 shares/1k views, 38.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=35)
 - no source video: 0.000 shares/1k views, 3.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=3)
 
 ## Topic-title patterns (auto-detected, steer topic choice by this)
@@ -56,7 +56,7 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 
 ## Top individual topics (reference only -- these exact topics are already used)
 
-- Cyril Radcliffe drew the India-Pakistan border in five weeks having never visited India, then vanished before it was published: 95.5% avg view
+- Cyril Radcliffe drew the India-Pakistan border in five weeks having never visited India, then vanished before it was published: 77.1% avg view
 - the US military intervention in the Russian Civil War, Kolchak's betrayal, and the Czechoslovak Legion mutiny: 62.2% avg view
 - China's last Mongol emperor got an 'Obedient Emperor' title after fleeing his throne: 139.9% avg view
 - Castle Bravo's 1954 miscalculated H-bomb test, the Lucky Dragon 5 fallout disaster, and how it inspired Godzilla: 108.3% avg view
@@ -69,8 +69,8 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 
 ## Where views are coming from (last 28 days, channel-wide, reference only -- not a per-video lever)
 
-- YT_SEARCH: 93.6% of views (132)
-- EXT_URL: 3.5% of views (5)
-- HASHTAGS: 2.8% of views (4)
+- YT_SEARCH: 94.0% of views (140)
+- EXT_URL: 3.4% of views (5)
+- HASHTAGS: 2.7% of views (4)
 - NO_LINK_OTHER: 0.0% of views (0)
 
