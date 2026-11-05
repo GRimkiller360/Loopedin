@@ -4,7 +4,7 @@
 
 A newer version means a real pipeline/guidance change (captions, b-roll provider, hook/payoff rules, voice, motion, etc.), not just more time passing. Older versions can look artificially weak for reasons that have nothing to do with topic/category choice -- e.g. every video before 2026-08-18-retention-overhaul-v3 had a caption-visibility bug that made captions unreadable regardless of topic. Weight the *current* version's own numbers most heavily once it has a real sample size (n>=5 or so); until then, older-version data still carries topic/category signal, but read its absolute retention numbers as a floor the current pipeline should beat, not a ceiling to match.
 
-- 2026-08-21-no-dash-connector-v9: 2.041 shares/1k views, 27.7% avg view, 0.00 subs/1k views, -19.05 likes+comments/1k views (n=49)
+- 2026-08-21-no-dash-connector-v9: 2.041 shares/1k views, 28.1% avg view, 0.00 subs/1k views, -8.63 likes+comments/1k views (n=49)
 - 2026-08-19-payoff-mechanism-v4: 0.000 shares/1k views, 17.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=5)
 - 2026-08-20-share-trigger-v5: 0.000 shares/1k views, 14.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=7)
 - 2026-09-11-contrast-hook-v10: 0.000 shares/1k views, 6.6% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
@@ -13,20 +13,20 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top categories (steer topic choice by this)
 
-- history: 1.613 shares/1k views, 25.1% avg view, 0.00 subs/1k views, -15.05 likes+comments/1k views (n=62)
+- history: 1.613 shares/1k views, 25.5% avg view, 0.00 subs/1k views, -6.82 likes+comments/1k views (n=62)
 
 ## Top hook styles (steer how you open/close by this)
 
-- shocking_fact: 2.381 shares/1k views, 27.0% avg view, 0.00 subs/1k views, -23.81 likes+comments/1k views (n=42)
-- list: 0.000 shares/1k views, 45.9% avg view, 0.00 subs/1k views, 66.67 likes+comments/1k views (n=1)
+- shocking_fact: 2.381 shares/1k views, 27.6% avg view, 0.00 subs/1k views, -11.90 likes+comments/1k views (n=42)
+- list: 0.000 shares/1k views, 38.3% avg view, 0.00 subs/1k views, 76.92 likes+comments/1k views (n=1)
 - story: 0.000 shares/1k views, 23.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
 - myth_bust: 0.000 shares/1k views, 17.1% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=16)
 - question: 0.000 shares/1k views, 14.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 
 ## Top video lengths (steer target narration length by this)
 
-- long (40-58s): 2.083 shares/1k views, 28.4% avg view, 0.00 subs/1k views, 1.39 likes+comments/1k views (n=48)
-- short (<=20s): 0.000 shares/1k views, 17.7% avg view, 0.00 subs/1k views, -200.00 likes+comments/1k views (n=5)
+- long (40-58s): 2.083 shares/1k views, 28.3% avg view, 0.00 subs/1k views, 1.60 likes+comments/1k views (n=48)
+- short (<=20s): 0.000 shares/1k views, 23.0% avg view, 0.00 subs/1k views, -100.00 likes+comments/1k views (n=5)
 - medium (20-40s): 0.000 shares/1k views, 9.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
 
 ## Top publish hours (UTC) -- reference only, needs more spread of upload times before it means anything
@@ -35,8 +35,8 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 - 16:00 UTC: 0.000 shares/1k views, 38.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
 - 11:00 UTC: 0.000 shares/1k views, 36.8% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
 - 17:00 UTC: 0.000 shares/1k views, 33.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=12)
+- 09:00 UTC: 0.000 shares/1k views, 24.8% avg view, 0.00 subs/1k views, -38.46 likes+comments/1k views (n=11)
 - 05:00 UTC: 0.000 shares/1k views, 24.5% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=13)
-- 09:00 UTC: 0.000 shares/1k views, 23.1% avg view, 0.00 subs/1k views, -84.85 likes+comments/1k views (n=11)
 - 06:00 UTC: 0.000 shares/1k views, 22.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
 - 07:00 UTC: 0.000 shares/1k views, 7.8% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
 - 08:00 UTC: 0.000 shares/1k views, 6.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
@@ -44,8 +44,8 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top seed momentum tiers -- does a higher-view-count trend seed actually predict this channel's own performance?
 
-- medium (100k-1M): 2.857 shares/1k views, 32.0% avg view, 0.00 subs/1k views, -28.57 likes+comments/1k views (n=35)
-- high (>=1M): 0.000 shares/1k views, 18.6% avg view, 0.00 subs/1k views, 2.90 likes+comments/1k views (n=23)
+- medium (100k-1M): 2.857 shares/1k views, 32.7% avg view, 0.00 subs/1k views, -14.29 likes+comments/1k views (n=35)
+- high (>=1M): 0.000 shares/1k views, 18.2% avg view, 0.00 subs/1k views, 3.34 likes+comments/1k views (n=23)
 - no source video: 0.000 shares/1k views, 3.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=3)
 
 ## Topic-title patterns (auto-detected, steer topic choice by this)
@@ -69,8 +69,9 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 
 ## Where views are coming from (last 28 days, channel-wide, reference only -- not a per-video lever)
 
-- YT_SEARCH: 95.5% of views (128)
-- EXT_URL: 3.7% of views (5)
-- HASHTAGS: 0.7% of views (1)
+- YT_SEARCH: 94.6% of views (122)
+- EXT_URL: 3.9% of views (5)
+- SHORTS: 0.8% of views (1)
+- HASHTAGS: 0.8% of views (1)
 - NO_LINK_OTHER: 0.0% of views (0)
 
