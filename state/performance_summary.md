@@ -69,8 +69,8 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 
 ## Where views are coming from (last 28 days, channel-wide, reference only -- not a per-video lever)
 
-- YT_SEARCH: 91.8% of views (78)
-- EXT_URL: 5.9% of views (5)
+- YT_SEARCH: 91.5% of views (75)
+- EXT_URL: 6.1% of views (5)
 - SHORTS: 1.2% of views (1)
 - HASHTAGS: 1.2% of views (1)
 - NO_LINK_OTHER: 0.0% of views (0)
