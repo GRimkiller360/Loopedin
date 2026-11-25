@@ -4,7 +4,7 @@
 
 A newer version means a real pipeline/guidance change (captions, b-roll provider, hook/payoff rules, voice, motion, etc.), not just more time passing. Older versions can look artificially weak for reasons that have nothing to do with topic/category choice -- e.g. every video before 2026-08-18-retention-overhaul-v3 had a caption-visibility bug that made captions unreadable regardless of topic. Weight the *current* version's own numbers most heavily once it has a real sample size (n>=5 or so); until then, older-version data still carries topic/category signal, but read its absolute retention numbers as a floor the current pipeline should beat, not a ceiling to match.
 
-- 2026-08-21-no-dash-connector-v9: 0.000 shares/1k views, 19.6% avg view, 0.00 subs/1k views, -19.21 likes+comments/1k views (n=49)
+- 2026-08-21-no-dash-connector-v9: 0.000 shares/1k views, 19.0% avg view, 0.00 subs/1k views, 1.28 likes+comments/1k views (n=49)
 - 2026-08-20-share-trigger-v5: 0.000 shares/1k views, 12.6% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=7)
 - 2026-09-11-contrast-hook-v10: 0.000 shares/1k views, 6.6% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 - 2026-08-18-retention-overhaul-v3: 0.000 shares/1k views, 0.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
@@ -13,30 +13,30 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top categories (steer topic choice by this)
 
-- history: 0.000 shares/1k views, 17.0% avg view, 0.00 subs/1k views, -15.18 likes+comments/1k views (n=62)
+- history: 0.000 shares/1k views, 16.6% avg view, 0.00 subs/1k views, 1.01 likes+comments/1k views (n=62)
 
 ## Top hook styles (steer how you open/close by this)
 
-- list: 0.000 shares/1k views, 65.0% avg view, 0.00 subs/1k views, 58.82 likes+comments/1k views (n=1)
+- list: 0.000 shares/1k views, 71.5% avg view, 0.00 subs/1k views, 62.50 likes+comments/1k views (n=1)
 - story: 0.000 shares/1k views, 19.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
-- myth_bust: 0.000 shares/1k views, 18.1% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=16)
+- myth_bust: 0.000 shares/1k views, 16.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=16)
 - question: 0.000 shares/1k views, 14.7% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
-- shocking_fact: 0.000 shares/1k views, 14.5% avg view, 0.00 subs/1k views, -23.81 likes+comments/1k views (n=42)
+- shocking_fact: 0.000 shares/1k views, 14.5% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=42)
 
 ## Top video lengths (steer target narration length by this)
 
-- long (40-58s): 0.000 shares/1k views, 20.0% avg view, 0.00 subs/1k views, 1.23 likes+comments/1k views (n=48)
+- long (40-58s): 0.000 shares/1k views, 19.5% avg view, 0.00 subs/1k views, 1.30 likes+comments/1k views (n=48)
 - medium (20-40s): 0.000 shares/1k views, 5.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
-- short (<=20s): 0.000 shares/1k views, 5.3% avg view, 0.00 subs/1k views, -200.00 likes+comments/1k views (n=5)
+- short (<=20s): 0.000 shares/1k views, 5.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=5)
 
 ## Top publish hours (UTC) -- reference only, needs more spread of upload times before it means anything
 
 - 16:00 UTC: 0.000 shares/1k views, 38.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
-- 09:00 UTC: 0.000 shares/1k views, 26.5% avg view, 0.00 subs/1k views, -85.56 likes+comments/1k views (n=11)
-- 13:00 UTC: 0.000 shares/1k views, 23.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
+- 09:00 UTC: 0.000 shares/1k views, 27.1% avg view, 0.00 subs/1k views, 5.68 likes+comments/1k views (n=11)
+- 13:00 UTC: 0.000 shares/1k views, 26.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=11)
 - 11:00 UTC: 0.000 shares/1k views, 16.5% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=2)
-- 05:00 UTC: 0.000 shares/1k views, 15.5% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=13)
 - 17:00 UTC: 0.000 shares/1k views, 14.3% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=12)
+- 05:00 UTC: 0.000 shares/1k views, 10.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=13)
 - 08:00 UTC: 0.000 shares/1k views, 5.4% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
 - 19:00 UTC: 0.000 shares/1k views, 0.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=1)
 - 06:00 UTC: 0.000 shares/1k views, 0.0% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=4)
@@ -44,8 +44,8 @@ A newer version means a real pipeline/guidance change (captions, b-roll provider
 
 ## Top seed momentum tiers -- does a higher-view-count trend seed actually predict this channel's own performance?
 
-- medium (100k-1M): 0.000 shares/1k views, 21.8% avg view, 0.00 subs/1k views, -28.57 likes+comments/1k views (n=35)
-- high (>=1M): 0.000 shares/1k views, 12.2% avg view, 0.00 subs/1k views, 2.56 likes+comments/1k views (n=23)
+- medium (100k-1M): 0.000 shares/1k views, 19.9% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=35)
+- high (>=1M): 0.000 shares/1k views, 13.9% avg view, 0.00 subs/1k views, 2.72 likes+comments/1k views (n=23)
 - no source video: 0.000 shares/1k views, 3.2% avg view, 0.00 subs/1k views, 0.00 likes+comments/1k views (n=3)
 
 ## Topic-title patterns (auto-detected, steer topic choice by this)
@@ -56,22 +56,22 @@ No signal has cleared both the sample-size and gap thresholds yet -- expected wh
 
 ## Top individual topics (reference only -- these exact topics are already used)
 
-- medieval anchoress living-burial ritual and Julian of Norwich's 20-year enclosure: 101.9% avg view
 - the 1908 Tunguska explosion -- 80 million trees flattened by a blast with no crater: 91.1% avg view
 - Elizabeth I's lead-based Mask of Youth makeup, the hair loss and mirror ban it caused: 82.4% avg view
 - the 1904 Olympic marathon -- Fred Lorz rode in a car for 11 miles, and the actual winner was drugged with rat poison: 77.8% avg view
 - Andrés Escobar's 1994 World Cup own goal and the shooting that followed ten days later: 77.7% avg view
+- the US military intervention in the Russian Civil War, Kolchak's betrayal, and the Czechoslovak Legion mutiny: 71.5% avg view
 - Vivekananda almost rejected from the 1893 Parliament of Religions over missing credentials: 66.9% avg view
-- the US military intervention in the Russian Civil War, Kolchak's betrayal, and the Czechoslovak Legion mutiny: 65.0% avg view
 - Marina Abramović and Ulay's reunion that ended in a lawsuit, not peace: 62.5% avg view
 - Night of the Grizzlies -- two women killed by different grizzlies the same night in Glacier National Park (1967), caused by hotel bear-feeding shows and a failed huckleberry crop: 60.8% avg view
 - the 1518 dancing plague in Strasbourg -- why hundreds of people danced themselves to exhaustion and death: 52.2% avg view
+- the Lucifer of Liège (Le Génie du Mal) -- a devil statue a Belgian bishop banned from his own cathedral in 1844 for looking too seductive, later bought by a king, while its 'toned down' replacement became more famous than the banned original: 49.5% avg view
 
 ## Where views are coming from (last 28 days, channel-wide, reference only -- not a per-video lever)
 
-- YT_SEARCH: 92.3% of views (60)
-- SHORTS: 3.1% of views (2)
+- YT_SEARCH: 93.9% of views (62)
 - NO_LINK_OTHER: 1.5% of views (1)
 - EXT_URL: 1.5% of views (1)
+- SHORTS: 1.5% of views (1)
 - HASHTAGS: 1.5% of views (1)
 
