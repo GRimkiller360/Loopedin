@@ -389,11 +389,11 @@
       "duration_seconds": 41.9,
       "seed_view_count": 553904,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 3,
+      "views": 4,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 36.15,
+      "avg_view_pct": 48.09,
       "subscribers_gained": 0
     },
     {
@@ -461,11 +461,11 @@
       "duration_seconds": 46.2,
       "seed_view_count": 1114947,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
-      "views": 6,
+      "views": 7,
       "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 42.45,
+      "avg_view_pct": 30.53,
       "subscribers_gained": 0
     },
     {
@@ -786,10 +786,10 @@
       "seed_view_count": 1010561,
       "ruleset_version": "2026-08-21-no-dash-connector-v9",
       "views": 16,
-      "likes": 1,
+      "likes": 0,
       "comments": 0,
       "shares": 0,
-      "avg_view_pct": 71.5,
+      "avg_view_pct": 71.39,
       "subscribers_gained": 0
     },
     {
@@ -1145,7 +1145,7 @@
       "duration_seconds": 46.4,
       "seed_view_count": 994760,
       "ruleset_version": "2026-09-11-contrast-hook-v10",
-      "views": 1,
+      "views": 3,
       "likes": 0,
       "comments": 0,
       "shares": 0,
